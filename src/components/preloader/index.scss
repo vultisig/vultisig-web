@@ -1,0 +1,16 @@
+.modal-preloader {
+  text-align: center;
+  width: auto !important;
+
+  .ant-spin {
+    display: block;
+  }
+
+  .ant-modal-title {
+    font-weight: 400;
+  }
+
+  .ant-modal-footer {
+    display: none;
+  }
+}

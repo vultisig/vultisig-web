@@ -5,6 +5,7 @@ import {
   ChainStrRef,
   CurrencyRef,
   LanguageRef,
+  OneInchRef,
   TokenProps,
 } from "utils/interfaces";
 
@@ -58,18 +59,6 @@ export enum Language {
   SPANISH = "es",
 }
 
-export enum OneInch {
-  ARBITRUM = 1,
-  AVALANCHE = 43114,
-  BASE = 8453,
-  BLAST = 81457,
-  BSCCHAIN = 56,
-  CRONOSCHAIN = 25,
-  ETHEREUM = 1,
-  OPTIMISM = 10,
-  POLYGON = 137,
-}
-
 export const storageKey = keyMirror({
   CURRENCY: true,
   LANGUAGE: true,
@@ -86,6 +75,7 @@ export const errorKey = keyMirror({
   FAIL_TO_GET_COIN: true,
   FAIL_TO_GET_ADDRESS: true,
   FAIL_TO_GET_VAULT: true,
+  FAIL_TO_INIT_WASM: true,
   FAIL_TO_JOIN_REGISTRY: true,
   FAIL_TO_REGISTER_VAULT: true,
   FORBIDDEN_ACCESS: true,
@@ -93,6 +83,7 @@ export const errorKey = keyMirror({
   INVALID_FILE: true,
   INVALID_QRCODE: true,
   INVALID_REQUEST: true,
+  INVALID_TOKEN: true,
   INVALID_VAULT: true,
   VAULT_ALREADY_REGISTERED: true,
   VAULT_NOT_FOUND: true,
@@ -220,6 +211,18 @@ export const languageName: LanguageRef = {
   [Language.PORTUGUESE]: "Português",
   [Language.RUSSIAN]: "Русский",
   [Language.SPANISH]: "Espanol",
+};
+
+export const oneInchRef: OneInchRef = {
+  [Chain.ARBITRUM]: 1,
+  [Chain.AVALANCHE]: 43114,
+  [Chain.BASE]: 8453,
+  [Chain.BLAST]: 81457,
+  [Chain.BSCCHAIN]: 56,
+  [Chain.CRONOSCHAIN]: 25,
+  [Chain.ETHEREUM]: 1,
+  [Chain.OPTIMISM]: 10,
+  [Chain.POLYGON]: 137,
 };
 
 export const defTokens: TokenProps[] = [

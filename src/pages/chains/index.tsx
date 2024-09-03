@@ -1,30 +1,23 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  Button,
-  Card,
-  Dropdown,
-  Empty,
-  Input,
-  MenuProps,
-  Spin,
-  Tooltip,
-} from "antd";
+import { Button, Dropdown, Empty, Input, MenuProps, Tooltip } from "antd";
 
-import { useVaultContext } from "context";
+import { useBaseContext } from "context/base";
+import { useVaultContext } from "context/vault";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
 import { CaretRightOutlined, PlusCircleFilled, RefreshOutlined } from "icons";
-import BalanceItem from "components/balance-item";
+import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
 import JoinAirdrop from "modals/join-airdrop";
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const { useVault, currency, vault, vaults } = useVaultContext();
+  const { currency } = useBaseContext();
+  const { useVault, vault, vaults } = useVaultContext();
 
   const items: MenuProps["items"] = [
     ...vaults.map((vault) => ({
@@ -61,47 +54,54 @@ const Component: FC = () => {
     },
   ];
 
-  return (
+  return vault ? (
     <>
-      <div className="balance-page">
+      <div className="chains-page">
         <div className="breadcrumb">
           <Dropdown menu={{ items }} className="menu">
-            <Input value={vault?.name || ""} readOnly />
+            <Input value={vault.name || ""} readOnly />
           </Dropdown>
-          {vault && (
-            <Tooltip title="Refresh">
-              <Button type="link" onClick={() => useVault(vault)}>
-                <RefreshOutlined />
-              </Button>
-            </Tooltip>
-          )}
+          <Tooltip title="Refresh">
+            <Button type="link" onClick={() => useVault(vault)}>
+              <RefreshOutlined />
+            </Button>
+          </Tooltip>
         </div>
-        <div className="balance">
+        <div className="total-balance">
           <span className="title">{t(translation.TOTAL_BALANCE)}</span>
           <span className="value">
-            {vault
-              ? vault.coins
-                  .reduce((acc, coin) => acc + coin.balance * coin.value, 0)
-                  .toValueFormat(currency)
-              : (0).toValueFormat(currency)}
+            {vault.chains
+              .reduce(
+                (acc, chain) =>
+                  acc +
+                  chain.coins.reduce(
+                    (acc, coin) => acc + coin.balance * coin.value,
+                    0
+                  ),
+                0
+              )
+              .toValueFormat(currency)}
           </span>
         </div>
-        {vault ? (
-          vault.coins.length ? (
-            vault.coins
-              .filter((coin) => coin.isNativeToken)
-              .slice()
-              .sort((a, b) => b.totalValue - a.totalValue)
-              .map(({ chain, ...res }) => (
-                <BalanceItem key={chain} {...{ ...res, chain }} />
-              ))
-          ) : (
-            <Card className="empty">
-              <Empty description="Choose a chain..." />
-            </Card>
-          )
+        {vault.chains.length ? (
+          vault.chains
+            .slice()
+            .sort(
+              (a, b) =>
+                b.coins.reduce(
+                  (acc, coin) => acc + coin.balance * coin.value,
+                  0
+                ) -
+                a.coins.reduce(
+                  (acc, coin) => acc + coin.balance * coin.value,
+                  0
+                )
+            )
+            .map(({ name, ...res }) => (
+              <ChainItem key={name} {...{ ...res, name }} />
+            ))
         ) : (
-          <Spin />
+          <Empty description="Choose a chain..." />
         )}
         <Link to={`#${constantModals.CHOOSE_CHAIN}`} className="add">
           <PlusCircleFilled /> {t(translation.CHOOSE_CHAIN)}
@@ -111,6 +111,8 @@ const Component: FC = () => {
       <ChooseChain />
       <JoinAirdrop />
     </>
+  ) : (
+    <></>
   );
 };
 

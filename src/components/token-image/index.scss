@@ -1,0 +1,20 @@
+.token-image {
+  align-items: center;
+  display: flex;
+  height: 3rem;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.5s;
+  width: 3rem;
+
+  &:where(span) {
+    background-color: $gray-1;
+    border-radius: 50%;
+    color: $gray-13;
+    font-weight: 600;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+}

@@ -24,6 +24,7 @@
     "react-dom": "^18.3.1",
     "react-i18next": "^15.0.0",
     "react-router-dom": "^6.26.0",
+    "uuid": "^10.0.0",
     "zxing-wasm": "^1.2.12"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-truncate": "^2.3.7",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react-swc": "^3.5.0",

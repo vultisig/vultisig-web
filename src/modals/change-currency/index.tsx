@@ -2,28 +2,30 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
 
-import { useVaultContext } from "context";
+import { useBaseContext } from "context/base";
 import { Currency, currencyName } from "utils/constants";
 import constantModals from "modals/constant-modals";
+
+interface ComponentProps {
+  onChange: (currency: Currency) => void;
+}
 
 interface InitialState {
   visible: boolean;
 }
 
-const Component: FC = () => {
+const Component: FC<ComponentProps> = ({ onChange }) => {
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
-  const { changeCurrency, currency, vault } = useVaultContext();
+  const { currency } = useBaseContext();
   const { hash } = useLocation();
   const navigate = useNavigate();
 
   const handleSelect = (key: Currency): void => {
-    if (vault) {
-      changeCurrency(vault, key);
+    onChange(key);
 
-      navigate(-1);
-    }
+    navigate(-1);
   };
 
   const componentDidUpdate = (): void => {
