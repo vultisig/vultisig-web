@@ -4,10 +4,11 @@ import { Button, Upload, UploadProps } from "antd";
 import { useTranslation } from "react-i18next";
 import { ReaderOptions, readBarcodesFromImageFile } from "zxing-wasm/reader";
 
-import { useVaultContext } from "context";
 import { toCamelCase } from "utils/case-converter";
 import { errorKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
+import { getVaults, setVaults } from "utils/vault";
+import api from "utils/api";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 
@@ -25,16 +26,21 @@ const Component: FC = () => {
   const initialState: InitialState = { loading: false, status: "default" };
   const [state, setState] = useState(initialState);
   const { file, loading, status, vault } = state;
-  const { addVault } = useVaultContext();
   const navigate = useNavigate();
 
   const handleStart = (): void => {
     if (!loading && vault && status === "success") {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      addVault(vault)
+      api.vault
+        .add(vault)
         .then(() => {
-          setState((prevState) => ({ ...prevState, loading: false }));
+          const vaults = getVaults();
+          const index = vaults.findIndex((old) => old.uid === vault.uid);
+
+          setVaults(
+            index >= 0 ? vaults.splice(index, 1, vault) : [vault, ...vaults]
+          );
 
           navigate(constantPaths.chains);
         })
@@ -147,7 +153,7 @@ const Component: FC = () => {
   useEffect(componentDidMount, []);
 
   return (
-    <div className="landing-page">
+    <div className="import-page">
       <img src="/images/logo-type.svg" alt="logo" className="logo" />
       <div className="wrapper">
         <h2 className="heading">{t(translation.UPLOAD_VAULT_SHARE)}</h2>

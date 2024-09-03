@@ -1,6 +1,6 @@
 import { ConfigProvider, theme } from "antd";
 
-import VaultContext from "context";
+import BaseContext from "context/base";
 import Routes from "routes";
 
 const App = () => {
@@ -34,9 +34,9 @@ const App = () => {
         },
       }}
     >
-      <VaultContext>
+      <BaseContext>
         <Routes />
-      </VaultContext>
+      </BaseContext>
     </ConfigProvider>
   );
 };

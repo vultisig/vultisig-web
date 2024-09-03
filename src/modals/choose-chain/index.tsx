@@ -2,17 +2,17 @@ import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Drawer, Input, List, Spin, Switch } from "antd";
 
-import { useVaultContext } from "context";
+import { useVaultContext } from "context/vault";
 import { Chain, defTokens } from "utils/constants";
 import { TokenProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 
 import { SearchOutlined } from "icons";
+import TokenImage from "components/token-image";
 
 interface InitialState {
   loading: Chain | null;
   search: string;
-  tokens: TokenProps[];
   visible: boolean;
 }
 
@@ -20,20 +20,16 @@ const Component: FC = () => {
   const initialState: InitialState = {
     loading: null,
     search: "",
-    tokens: [],
     visible: false,
   };
   const [state, setState] = useState(initialState);
-  const { loading, search, tokens, visible } = state;
+  const { loading, search, visible } = state;
   const { toggleCoin, vault } = useVaultContext();
   const { hash } = useLocation();
   const navigate = useNavigate();
 
   const handleSearch = (value: string): void => {
-    setState((prevState) => ({
-      ...prevState,
-      search: value.toLocaleLowerCase(),
-    }));
+    setState((prevState) => ({ ...prevState, search: value.toLowerCase() }));
   };
 
   const handleToggle = (coin: TokenProps): void => {
@@ -52,11 +48,7 @@ const Component: FC = () => {
   const componentDidUpdate = (): void => {
     switch (hash) {
       case `#${constantModals.CHOOSE_CHAIN}`: {
-        setState((prevState) => ({
-          ...prevState,
-          tokens: defTokens.filter(({ isNative }) => isNative),
-          visible: true,
-        }));
+        setState((prevState) => ({ ...prevState, visible: true }));
 
         break;
       }
@@ -80,6 +72,7 @@ const Component: FC = () => {
           placeholder="Search..."
           prefix={<SearchOutlined />}
           value={search}
+          allowClear
         />
       }
       closeIcon={false}
@@ -88,15 +81,18 @@ const Component: FC = () => {
     >
       {visible ? (
         <List
-          dataSource={tokens.filter(
-            ({ chain }) =>
-              chain.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) >= 0
-          )}
+          dataSource={defTokens
+            .filter(({ isNative }) => isNative)
+            .filter(
+              ({ chain }) =>
+                chain.toLowerCase().indexOf(search.toLowerCase()) >= 0
+            )}
           renderItem={(item) => {
             const checked = vault
-              ? vault?.coins.findIndex(
-                  (coin) =>
-                    coin.chain === item.chain && coin.ticker === item.ticker
+              ? vault?.chains.findIndex(
+                  ({ coins, name }) =>
+                    name === item.chain &&
+                    coins.findIndex(({ ticker }) => ticker === item.ticker) >= 0
                 ) >= 0
               : false;
 
@@ -112,12 +108,7 @@ const Component: FC = () => {
                 }
               >
                 <List.Item.Meta
-                  avatar={
-                    <img
-                      src={`/coins/${item.chain.toLocaleLowerCase()}.svg`}
-                      style={{ height: 48, width: 48 }}
-                    />
-                  }
+                  avatar={<TokenImage alt={item.chain} />}
                   title={item.chain}
                   description={item.ticker}
                 />

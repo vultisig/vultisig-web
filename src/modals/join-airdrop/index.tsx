@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button, Form, List, Modal, Switch } from "antd";
 
-import { useVaultContext } from "context";
+import { useVaultContext } from "context/vault";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 

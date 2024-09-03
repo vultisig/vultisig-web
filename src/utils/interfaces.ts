@@ -17,7 +17,7 @@ export namespace Balance {
       jsonrpc: string;
       method: string;
       params: [string | { to: string; data: string }, string];
-      id: number;
+      id: string;
     }
 
     export interface Props {
@@ -42,7 +42,7 @@ export namespace Balance {
       jsonrpc: string;
       method: string;
       params: [string] | [string, { mint: string }, { encoding: string }];
-      id: number;
+      id: string;
     }
 
     export interface Props {
@@ -59,6 +59,18 @@ export namespace Balance {
   }
 }
 
+export namespace CMC {
+  export interface ID {
+    data: { [cmcId: string]: { id: number } };
+  }
+
+  export interface Value {
+    data: {
+      [id: string]: { quote: { [currency: string]: { price: number } } };
+    };
+  }
+}
+
 export namespace Derivation {
   export interface Params {
     publicKeyEcdsa: string;
@@ -69,6 +81,13 @@ export namespace Derivation {
   export interface Props {
     publicKey: string;
   }
+}
+
+export interface ChainProps {
+  address: string;
+  name: Chain;
+  coins: CoinProps[];
+  hexPublicKey: string;
 }
 
 export interface ChainBoolRef {
@@ -123,46 +142,32 @@ export interface ChainStrRef {
   [Chain.ZKSYNC]: string;
 }
 
-export interface CoinProps {
+export interface CoinParams {
   address: string;
-  balance: number;
   chain: Chain;
   cmcId: number;
   contractAddress: string;
   decimals: number;
   hexPublicKey: string;
-  ID: number;
-  isNativeToken: boolean;
+  isNative: boolean;
   logo: string;
   ticker: string;
-  totalValue: number;
+}
+
+export interface CoinProps {
+  balance: number;
+  cmcId: number;
+  contractAddress: string;
+  decimals: number;
+  id: number;
+  isNative: boolean;
+  logo: string;
+  ticker: string;
   value: number;
 }
 
 export interface CoinRef {
-  [Chain.ARBITRUM]?: CoinType;
-  [Chain.AVALANCHE]?: CoinType;
-  [Chain.BASE]?: CoinType;
-  [Chain.BITCOIN]?: CoinType;
-  [Chain.BITCOINCASH]?: CoinType;
-  [Chain.BLAST]?: CoinType;
-  [Chain.BSCCHAIN]?: CoinType;
-  [Chain.CRONOSCHAIN]?: CoinType;
-  [Chain.DASH]?: CoinType;
-  [Chain.DOGECOIN]?: CoinType;
-  [Chain.DYDX]?: CoinType;
-  [Chain.ETHEREUM]?: CoinType;
-  [Chain.GAIACHAIN]?: CoinType;
-  [Chain.KUJIRA]?: CoinType;
-  [Chain.LITECOIN]?: CoinType;
-  [Chain.MAYACHAIN]?: CoinType;
-  [Chain.OPTIMISM]?: CoinType;
-  [Chain.POLKADOT]?: CoinType;
-  [Chain.POLYGON]?: CoinType;
-  [Chain.SOLANA]?: CoinType;
-  [Chain.SUI]?: CoinType;
-  [Chain.THORCHAIN]?: CoinType;
-  [Chain.ZKSYNC]?: CoinType;
+  [chain: string]: CoinType;
 }
 
 export interface CurrencyRef {
@@ -189,6 +194,10 @@ export interface LanguageRef {
   [Language.SPANISH]: string;
 }
 
+export interface OneInchRef {
+  [chain: string]: number;
+}
+
 export interface FileProps {
   data: string;
   name: string;
@@ -213,10 +222,10 @@ export interface TokenProps {
 }
 
 export interface VaultProps {
-  coins: CoinProps[];
-  name: string;
+  chains: ChainProps[];
   hexChainCode: string;
   joinAirdrop: boolean;
+  name: string;
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   totalPoints: number;

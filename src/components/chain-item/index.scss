@@ -1,7 +1,6 @@
 .chain-item {
   background-color: $blue-base;
   border-radius: 0.5rem;
-  margin-top: 1rem;
   overflow: hidden;
   padding: 1rem 1.25rem;
   position: relative;
@@ -11,7 +10,7 @@
     padding-left: 3rem;
     position: relative;
 
-    .logo {
+    .token-image {
       height: 2rem;
       left: 0;
       position: absolute;
@@ -110,8 +109,8 @@
     }
   }
 
-  &:first-child {
-    margin-top: 2rem;
+  + .chain-item {
+    margin-top: 1rem;
   }
 }
 

@@ -1,14 +1,10 @@
-.balance-page {
-  margin: 0 auto;
-  max-width: 72.5rem;
-  overflow: hidden;
-  padding: 0 1rem;
-
+.chains-page {
   .breadcrumb {
     align-items: center;
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+    margin-bottom: 1.5rem;
 
     .ant-input {
       background-color: $blue-base;
@@ -31,14 +27,8 @@
     }
   }
 
-  .empty {
-    background-color: $blue-base;
-    border: none;
-    margin-top: 1rem;
-  }
-
-  .balance {
-    margin-top: 1.5rem;
+  .total-balance {
+    margin-bottom: 2rem;
 
     .title {
       display: block;

@@ -6,14 +6,17 @@ import {
 } from "react-router-dom";
 import React from "react";
 
-import { useVaultContext } from "context";
 import constantPaths from "routes/constant-paths";
 
-import Layout from "layout";
+import ShareLayout from "layout/shared";
+import VaultLayout from "layout/vault";
 
-import AssetPage from "pages/asset";
+import AssetPage from "pages/assets";
 import ChainsPage from "pages/chains";
 import ImportPage from "pages/import";
+
+import SharedAssetsPage from "pages/shared/assets";
+import SharedChainsPage from "pages/shared/chains";
 
 interface RouteConfig {
   path: string;
@@ -23,8 +26,6 @@ interface RouteConfig {
 }
 
 const Component = () => {
-  const { vaults } = useVaultContext();
-
   const processRoutes = (routes: RouteConfig[]): RouteObject[] => {
     return routes.reduce<RouteObject[]>(
       (acc, { children, element, path, redirect }) => {
@@ -52,38 +53,56 @@ const Component = () => {
   const routes: RouteConfig[] = [
     {
       path: constantPaths.root,
-      redirect: vaults.length ? constantPaths.chains : constantPaths.import,
+      redirect: constantPaths.chains,
     },
     {
       path: constantPaths.import,
       element: <ImportPage />,
     },
-    ...(vaults.length
-      ? [
-          {
-            path: constantPaths.root,
-            element: <Layout />,
-            children: [
-              {
-                path: constantPaths.root,
-                redirect: constantPaths.chains,
-              },
-              {
-                path: constantPaths.chains,
-                element: <ChainsPage />,
-              },
-              {
-                path: constantPaths.asset,
-                element: <AssetPage />,
-              },
-              {
-                path: "*",
-                redirect: constantPaths.root,
-              },
-            ],
-          },
-        ]
-      : []),
+    {
+      path: constantPaths.shared.root,
+      element: <ShareLayout />,
+      children: [
+        {
+          path: constantPaths.shared.root,
+          redirect: constantPaths.root,
+        },
+        {
+          path: constantPaths.shared.chains,
+          element: <SharedChainsPage />,
+        },
+        {
+          path: constantPaths.shared.assets,
+          element: <SharedAssetsPage />,
+        },
+        {
+          path: "*",
+          redirect: constantPaths.root,
+        },
+      ],
+    },
+    {
+      path: constantPaths.root,
+      element: <VaultLayout />,
+      children: [
+        {
+          path: constantPaths.root,
+          redirect: constantPaths.chains,
+        },
+        {
+          path: constantPaths.chains,
+          element: <ChainsPage />,
+        },
+        {
+          path: constantPaths.assets,
+          element: <AssetPage />,
+        },
+        {
+          path: "*",
+          redirect: constantPaths.root,
+        },
+      ],
+    },
     {
       path: "*",
       redirect: constantPaths.root,

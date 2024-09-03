@@ -1,27 +1,27 @@
 import { FC } from "react";
 
-import { useVaultContext } from "context";
-import { CoinProps } from "utils/interfaces";
+import { useBaseContext } from "context/base";
 
-const Component: FC<CoinProps> = ({ balance, logo, ticker, value }) => {
-  const { currency } = useVaultContext();
+import TokenImage from "components/token-image";
+
+interface ComponentProps {
+  balance: number;
+  logo: string;
+  ticker: string;
+  value: number;
+}
+
+const Component: FC<ComponentProps> = ({ balance, logo, ticker, value }) => {
+  const { currency } = useBaseContext();
 
   return (
     <div className="asset-item">
       <div className="token">
-        <img
-          src={logo || `/coins/${ticker.toLocaleLowerCase()}.svg`}
-          alt="bitcoin"
-          className="logo"
-        />
+        <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>
       </div>
       <span className="balance">{balance.toBalanceFormat()}</span>
-      <span className="value">
-        {balance
-          ? (balance * value).toValueFormat(currency)
-          : (0).toValueFormat(currency)}
-      </span>
+      <span className="value">{(balance * value).toValueFormat(currency)}</span>
     </div>
   );
 };

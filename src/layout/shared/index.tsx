@@ -3,12 +3,12 @@ import { Outlet, Link } from "react-router-dom";
 import { Button, Dropdown, MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { useVaultContext } from "context";
+import { useBaseContext } from "context/base";
 import { Language, languageName } from "utils/constants";
 import i18n from "i18n/config";
+import SharedContext from "context/shared";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
-import constantPaths from "routes/constant-paths";
 
 import {
   ChainOutlined,
@@ -19,12 +19,10 @@ import {
   ShareOutlined,
   UserOutlined,
 } from "icons";
-import ChangeCurrency from "modals/change-currency";
-import ChangeLanguage from "modals/change-language";
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const { currency } = useVaultContext();
+  const { currency } = useBaseContext();
   let language: Language;
 
   switch (i18n.language) {
@@ -138,24 +136,22 @@ const Component: FC = () => {
   ];
 
   return (
-    <>
-      <div className="default-layout">
+    <SharedContext>
+      <div className="layout">
         <div className="header">
-          <Link to={constantPaths.root} className="logo">
-            <img src="/images/logo-type.svg" alt={t(translation.LOGO)} />
-          </Link>
+          <img src="/images/logo-type.svg" alt={t(translation.LOGO)} />
+
           <Dropdown menu={{ items }} className="menu">
             <Button type="link">
               <UserOutlined />
             </Button>
           </Dropdown>
         </div>
-        <Outlet />
+        <div className="content">
+          <Outlet />
+        </div>
       </div>
-
-      <ChangeCurrency />
-      <ChangeLanguage />
-    </>
+    </SharedContext>
   );
 };
 
