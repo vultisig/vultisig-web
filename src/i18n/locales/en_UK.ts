@@ -30,7 +30,7 @@ export default {
   // R
   [translation.START]: "Start",
   [translation.SECURE_CRYPTO_VAULT]: "SECURE CRYPTO VAULT",
-  [translation.SHARE_APP]: "Share The App",
+  [translation.SHARE_VAULT]: "Share your Vault",
   [translation.TOTAL_BALANCE]: "Total Balance",
   // U
   [translation.UPLOAD_IT]: "upload it",

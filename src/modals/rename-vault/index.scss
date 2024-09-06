@@ -1,0 +1,17 @@
+.modal-rename-vault {
+  .ant-input {
+    background-color: $blue-base !important;
+    border: none;
+    box-shadow: none !important;
+    line-height: 3rem;
+  }
+
+  .ant-btn {
+    color: $blue-dark !important;
+    height: 2.75rem;
+  }
+
+  .ant-modal-footer {
+    margin: 0;
+  }
+}

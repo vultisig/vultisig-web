@@ -14,7 +14,7 @@ const Component: FC = () => {
   const { vault } = useSharedContext();
 
   return vault ? (
-    <div className="chains-page">
+    <div className="layout-content chains-page">
       <div className="total-balance">
         <span className="title">{t(translation.TOTAL_BALANCE)}</span>
         <span className="value">

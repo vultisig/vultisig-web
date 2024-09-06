@@ -222,6 +222,7 @@ export interface TokenProps {
 }
 
 export interface VaultProps {
+  alias: string;
   chains: ChainProps[];
   hexChainCode: string;
   joinAirdrop: boolean;

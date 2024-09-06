@@ -1,0 +1,63 @@
+.modal-settings {
+  .ant-list-item-meta-avatar {
+    svg {
+      fill: $gray-1;
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+  }
+
+  .ant-list-item-meta-description {
+    color: $gray-6 !important;
+    font-size: 0.75rem !important;
+  }
+
+  .ant-list-item-meta {
+    align-items: center !important;
+  }
+
+  .ant-list-item {
+    background-color: $blue-base;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    justify-content: center;
+    padding: 0.875rem;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: $blue-light;
+    }
+
+    + .ant-list-item {
+      margin-top: 1rem;
+    }
+  }
+
+  .arrow {
+    fill: $gray-1;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .delete {
+    svg {
+      fill: $red-base !important;
+    }
+
+    .ant-list-item-meta-title {
+      color: $red-base !important;
+    }
+    .ant-list-item-meta-description {
+      color: $red-base !important;
+    }
+  }
+
+  .ant-modal-footer {
+    display: none;
+  }
+
+  .ant-modal-content {
+    padding: 0 1.875rem 1.875rem;
+  }
+}
