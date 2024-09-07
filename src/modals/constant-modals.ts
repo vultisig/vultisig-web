@@ -5,6 +5,9 @@ export default keyMirror({
   CHANGE_LANG: true,
   CHOOSE_CHAIN: true,
   CHOOSE_TOKEN: true,
+  DELETE_VAULT: true,
   JOIN_AIRDROP: true,
   QR_CODE: true,
+  RENAME_VAULT: true,
+  VAULT_SETTINGS: true,
 });

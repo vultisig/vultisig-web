@@ -26,13 +26,16 @@ import {
   VaultProps,
 } from "utils/interfaces";
 import { getBalance, getValue, getVaults, setVaults } from "utils/vault";
+import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
-import ChangeCurrency from "modals/change-currency";
-import ChangeLanguage from "modals/change-language";
+import Header from "components/header";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
-import constantPaths from "routes/constant-paths";
+import ChangeCurrency from "modals/change-currency";
+import ChangeLanguage from "modals/change-language";
+import RenameVault from "modals/rename-vault";
+import VaultSettings from "modals/vault-settings";
 
 interface VaultContext {
   fetchTokens: (chain: ChainProps) => Promise<void>;
@@ -499,13 +502,14 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
             Promise.all(promises).then((coins) => {
               getValue(coins, currency).then((coins) => {
                 resolve({
-                  ...vault,
+                  ...data,
                   chains: data.chains.map((chain) => ({
                     ...chain,
                     coins: chain.coins.map(
                       (coin) => coins.find(({ id }) => id === coin.id) || coin
                     ),
                   })),
+                  hexChainCode: vault.hexChainCode,
                 });
               });
             });
@@ -533,15 +537,17 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
   const setVault = (vault: VaultProps): void => {
     setState((prevState) => {
-      const vaults = prevState.vaults.map((item) => ({
-        ...item,
-        joinAirdrop:
-          item.uid === vault.uid ? vault.joinAirdrop : item.joinAirdrop,
-      }));
+      const vaults = prevState.vaults.map((item) =>
+        item.uid === vault.uid ? vault : item
+      );
 
       setVaults(vaults);
 
-      return { ...prevState, vaults };
+      return {
+        ...prevState,
+        vault: prevState.vault?.uid === vault.uid ? vault : prevState.vault,
+        vaults,
+      };
     });
   };
 
@@ -618,9 +624,14 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     >
       {loaded ? (
         <>
-          {children}
+          <div className="layout">
+            <Header uid={vault?.uid} />
+            {children}
+          </div>
           <ChangeCurrency onChange={changeCurrency} />
           <ChangeLanguage />
+          <RenameVault setVault={setVault} vault={vault} />
+          <VaultSettings vault={vault} />
           <Preloader visible={loading} />
         </>
       ) : (

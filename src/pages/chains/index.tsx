@@ -21,7 +21,7 @@ const Component: FC = () => {
 
   const items: MenuProps["items"] = [
     ...vaults.map((vault) => ({
-      label: vault.name,
+      label: vault.alias,
       key: vault.uid,
       onClick: () => useVault(vault),
     })),
@@ -56,10 +56,10 @@ const Component: FC = () => {
 
   return vault ? (
     <>
-      <div className="chains-page">
+      <div className="layout-content chains-page">
         <div className="breadcrumb">
           <Dropdown menu={{ items }} className="menu">
-            <Input value={vault.name || ""} readOnly />
+            <Input value={vault.alias || ""} readOnly />
           </Dropdown>
           <Tooltip title="Refresh">
             <Button type="link" onClick={() => useVault(vault)}>

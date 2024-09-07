@@ -28,7 +28,7 @@ export default keyMirror({
   // R
   START: true,
   SECURE_CRYPTO_VAULT: true,
-  SHARE_APP: true,
+  SHARE_VAULT: true,
   TOTAL_BALANCE: true,
   // U
   UPLOAD_IT: true,

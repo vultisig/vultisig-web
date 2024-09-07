@@ -15,6 +15,7 @@ import { getBalance, getValue } from "utils/vault";
 import api from "utils/api";
 import constantPaths from "routes/constant-paths";
 
+import Header from "components/header";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
 import Preloader from "components/preloader";
@@ -102,7 +103,10 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     <SharedContext.Provider value={{ vault }}>
       {loaded ? (
         <>
-          {children}
+          <div className="layout">
+            <Header />
+            {children}
+          </div>
           <ChangeCurrency onChange={changeCurrency} />
           <ChangeLanguage />
           <Preloader visible={loading} />

@@ -52,7 +52,7 @@ const Component: FC = () => {
 
   return chain ? (
     <>
-      <div className="assets-page">
+      <div className="layout-content assets-page">
         <div className="breadcrumb">
           <Button type="link" className="back" onClick={() => navigate(-1)}>
             <CaretRightOutlined />

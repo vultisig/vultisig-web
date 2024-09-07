@@ -14,6 +14,8 @@
 @import "../modals/change-language";
 @import "../modals/join-airdrop";
 @import "../modals/qr-code";
+@import "../modals/rename-vault";
+@import "../modals/vault-settings";
 
 @import "../pages/assets";
 @import "../pages/chains";
@@ -158,6 +160,28 @@ body {
   }
 }
 
+.ant-modal {
+  .ant-modal-close {
+    right: 1.875rem;
+    top: 1.125rem;
+  }
+
+  .ant-modal-title {
+    font-weight: normal;
+    line-height: 2rem;
+    text-align: center;
+  }
+
+  .ant-modal-header {
+    margin: 0;
+    padding: 1.125rem 0;
+  }
+
+  .ant-modal-content {
+    padding: 0 1.875rem 1.875rem;
+  }
+}
+
 .ant-select {
   height: 3rem;
 
@@ -201,23 +225,19 @@ body {
 }
 
 .layout {
-  min-height: 100vh;
-  padding: 8.25rem 0 2rem;
-
-  > .header {
-    background-color: $blue-dark;
+  &-header {
     align-items: center;
+    background-color: $blue-dark;
     border-bottom: solid 1px $blue-light;
     display: flex;
     height: 6.25rem;
     justify-content: space-between;
-    left: 0;
     min-width: 22.5rem;
     padding: 1.875rem 1rem;
-    position: fixed;
-    right: 0;
+    position: sticky;
     top: 0;
-    z-index: 2;
+    width: 100%;
+    z-index: 1;
 
     .logo {
       img {
@@ -234,11 +254,12 @@ body {
     }
   }
 
-  > .content {
+  &-content {
     margin: 0 auto;
     max-width: 72.5rem;
     overflow: hidden;
-    padding: 0 1rem;
+    padding: 2rem 1rem;
+    width: 100%;
   }
 }
 

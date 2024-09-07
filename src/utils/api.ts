@@ -114,6 +114,12 @@ export default {
     getById: async (id: string) => {
       return await api.get<VaultProps>(`vault/shared/${id}`);
     },
+    rename: async (params: VaultProps) => {
+      return await api.post(
+        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
+        params
+      );
+    },
   },
   derivePublicKey: async (params: Derivation.Params) => {
     return await api.post<Derivation.Props>("derive-public-key", params);
