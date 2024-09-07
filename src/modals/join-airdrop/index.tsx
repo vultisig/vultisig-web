@@ -119,7 +119,7 @@ const Component: FC = () => {
                 </Form.Item>
               }
             >
-              <List.Item.Meta title={item.name} />
+              <List.Item.Meta title={item.alias} />
             </List.Item>
           )}
         />
