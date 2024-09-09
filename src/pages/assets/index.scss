@@ -42,7 +42,8 @@
     }
 
     .key {
-      margin-top: 1rem;
+      height: 2.75rem;
+      line-height: 2.75rem;
       overflow: hidden;
       text-align: center;
       width: 100%;
@@ -56,24 +57,6 @@
       position: absolute;
       right: 0;
       top: 1rem;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      margin-top: 1rem;
-
-      svg {
-        fill: $cyan-base;
-        height: 1.25rem;
-        width: 1.25rem;
-      }
-
-      a {
-        align-items: center;
-        display: flex;
-      }
     }
   }
 
@@ -106,19 +89,7 @@
       display: flex;
       gap: 1.5rem;
 
-      .key {
-        height: 2.75rem;
-        line-height: 2.75rem;
-        margin-top: 0;
-      }
-
       .amount {
-        position: static;
-      }
-
-      .actions {
-        margin-top: 0;
-        padding: 0.5rem 0;
         position: static;
       }
     }

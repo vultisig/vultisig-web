@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Drawer, Input, List, Spin, Switch } from "antd";
 
 import { useVaultContext } from "context/vault";
 import { Chain, defTokens } from "utils/constants";
 import { TokenProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 import { SearchOutlined } from "icons";
 import TokenImage from "components/token-image";
@@ -26,7 +27,7 @@ const Component: FC = () => {
   const { loading, search, visible } = state;
   const { toggleCoin, vault } = useVaultContext();
   const { hash } = useLocation();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSearch = (value: string): void => {
     setState((prevState) => ({ ...prevState, search: value.toLowerCase() }));
@@ -65,7 +66,7 @@ const Component: FC = () => {
   return (
     <Drawer
       footer={false}
-      onClose={() => navigate(-1)}
+      onClose={() => goBack()}
       title={
         <Input
           onChange={(e) => handleSearch(e.target.value)}

@@ -80,7 +80,7 @@ const Component: FC<ComponentProps> = ({ uid }) => {
           {
             key: "1",
             label: (
-              <Link to={`#${constantModals.VAULT_SETTINGS}`}>
+              <Link to={`#${constantModals.VAULT_SETTINGS}`} state={true}>
                 {t(translation.VAULT_SETTINGS)}
               </Link>
             ),
@@ -92,7 +92,7 @@ const Component: FC<ComponentProps> = ({ uid }) => {
       key: "2",
       label: (
         <>
-          <Link to={`#${constantModals.CHANGE_LANG}`}>
+          <Link to={`#${constantModals.CHANGE_LANG}`} state={true}>
             {t(translation.LANGUAGE)}
           </Link>
           <span>{languageName[language]}</span>
@@ -104,7 +104,7 @@ const Component: FC<ComponentProps> = ({ uid }) => {
       key: "3",
       label: (
         <>
-          <Link to={`#${constantModals.CHANGE_CURRENCY}`}>
+          <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
             {t(translation.CURRENCY)}
           </Link>
           <span>{currency}</span>

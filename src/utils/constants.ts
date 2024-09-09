@@ -144,7 +144,7 @@ export const chooseToken: ChainBoolRef = {
   [Chain.OPTIMISM]: true,
   [Chain.POLKADOT]: false,
   [Chain.POLYGON]: true,
-  [Chain.SOLANA]: false,
+  [Chain.SOLANA]: true,
   [Chain.SUI]: false,
   [Chain.THORCHAIN]: false,
   [Chain.ZKSYNC]: false,

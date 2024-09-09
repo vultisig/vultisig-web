@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button, Form, Input, Modal } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
+import useGoBack from "utils/custom-back";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -26,7 +27,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
   const { visible, submitting } = state;
   const { hash } = useLocation();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSubmit = () => {
     form
@@ -40,7 +41,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
             .then(() => {
               setVault({ ...vault, alias });
 
-              navigate(-1);
+              goBack();
             })
             .catch(() => {
               setState((prevState) => ({ ...prevState, submitting: false }));
@@ -90,7 +91,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
           Save
         </Button>
       }
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={480}

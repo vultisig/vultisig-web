@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Modal, QRCode, Typography } from "antd";
 
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 interface InitialState {
   visible: boolean;
@@ -16,7 +17,7 @@ const Component: FC<{
   const [state, setState] = useState(initialState);
   const { visible } = state;
   const { hash } = useLocation();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const componentDidUpdate = () => {
     if (hash.startsWith(`#${constantModals.QR_CODE}`)) {
@@ -38,7 +39,7 @@ const Component: FC<{
       className="modal-qr-code"
       centered={true}
       footer={false}
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       open={visible}
       title="Address"
       width={360}

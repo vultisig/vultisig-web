@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
 
 import { useBaseContext } from "context/base";
 import { Currency, currencyName } from "utils/constants";
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 interface ComponentProps {
   onChange: (currency: Currency) => void;
@@ -20,12 +21,12 @@ const Component: FC<ComponentProps> = ({ onChange }) => {
   const { visible } = state;
   const { currency } = useBaseContext();
   const { hash } = useLocation();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSelect = (key: Currency): void => {
     onChange(key);
 
-    navigate(-1);
+    goBack();
   };
 
   const componentDidUpdate = (): void => {
@@ -94,7 +95,7 @@ const Component: FC<ComponentProps> = ({ onChange }) => {
       title="Change Currency"
       centered={true}
       footer={false}
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={360}
