@@ -1,63 +1,42 @@
 import { FC, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button, Empty, message, Tooltip } from "antd";
+import { Button, Empty } from "antd";
 import { Truncate } from "@re-dev/react-truncate";
 
 import { useBaseContext } from "context/base";
 import { useVaultContext } from "context/vault";
-import { chooseToken, exploreToken } from "utils/constants";
+import { chooseToken } from "utils/constants";
+import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
+import useGoBack from "utils/custom-back";
 
+import { CaretRightOutlined, PlusCircleFilled } from "icons";
 import AssetItem from "components/asset-item";
-import TokenImage from "components/token-image";
 import ChooseToken from "modals/choose-token";
-import QRCode from "modals/qr-code";
-import translation from "i18n/constant-keys";
-
-import {
-  CaretRightOutlined,
-  CopyOutlined,
-  CubeOutlined,
-  PlusCircleFilled,
-  QRCodeOutlined,
-} from "icons";
+import TokenActions from "components/token-actions";
+import TokenImage from "components/token-image";
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const { chainKey } = useParams();
   const { currency } = useBaseContext();
   const { fetchTokens, vault } = useVaultContext();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const chain = vault?.chains.find(
     ({ name }) => name.toLowerCase() === chainKey
   );
 
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(chain?.address || "")
-      .then(() => {
-        messageApi.open({
-          type: "success",
-          content: "Address copied to clipboard",
-        });
-      })
-      .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: "Failed to copy address",
-        });
-      });
-  };
-
   const componentDidUpdate = () => {
     if (chain) {
-      fetchTokens(chain)
-        .then(() => {})
-        .catch(() => {});
+      if (chooseToken[chain.name]) {
+        fetchTokens(chain)
+          .then(() => {})
+          .catch(() => {});
+      }
     } else {
       navigate(constantPaths.chains);
     }
@@ -69,7 +48,11 @@ const Component: FC = () => {
     <>
       <div className="layout-content assets-page">
         <div className="breadcrumb">
-          <Button type="link" className="back" onClick={() => navigate(-1)}>
+          <Button
+            type="link"
+            className="back"
+            onClick={() => goBack(constantPaths.chains)}
+          >
             <CaretRightOutlined />
           </Button>
           <h1>{chain.name}</h1>
@@ -90,29 +73,7 @@ const Component: FC = () => {
                 .reduce((acc, coin) => acc + coin.balance * coin.value, 0)
                 .toValueFormat(currency)}
             </span>
-            <div className="actions">
-              <Tooltip title="Copy Address">
-                <Button type="link" onClick={handleCopy}>
-                  <CopyOutlined />
-                </Button>
-              </Tooltip>
-              <Tooltip title="View QRCode">
-                <Link
-                  to={`#${constantModals.QR_CODE}_${chain.name.toUpperCase()}`}
-                >
-                  <QRCodeOutlined />
-                </Link>
-              </Tooltip>
-              <Tooltip title="Link to Address">
-                <a
-                  href={`${exploreToken[chain.name]}${chain.address}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <CubeOutlined />
-                </a>
-              </Tooltip>
-            </div>
+            <TokenActions address={chain.address} name={chain.name} />
           </div>
           {chain.coins.length ? (
             chain.coins
@@ -126,16 +87,17 @@ const Component: FC = () => {
           )}
         </div>
         {chooseToken[chain.name] && (
-          <Link to={`#${constantModals.CHOOSE_TOKEN}`} className="add">
+          <Link
+            to={`#${constantModals.CHOOSE_TOKEN}`}
+            state={true}
+            className="add"
+          >
             <PlusCircleFilled /> {t(translation.CHOOSE_TOKEN)}
           </Link>
         )}
       </div>
 
-      <ChooseToken />
-      <QRCode address={chain.address} chain={chain.name} />
-
-      {contextHolder}
+      {chooseToken[chain.name] && <ChooseToken />}
     </>
   ) : (
     <></>

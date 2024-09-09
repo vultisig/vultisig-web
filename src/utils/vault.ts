@@ -110,17 +110,28 @@ export const getBalance = (
             params: coin.isNative
               ? [address]
               : [
-                  "address",
+                  address,
                   { mint: coin.contractAddress },
                   { encoding: "jsonParsed" },
                 ],
             id: uid,
           })
           .then(({ data }) => {
-            resolve({
-              ...coin,
-              balance: data.result.value / Math.pow(10, coin.decimals),
-            });
+            let balance = 0;
+
+            if (Array.isArray(data.result.value)) {
+              const [value] = data.result.value;
+
+              if (value?.account?.data?.parsed?.info?.tokenAmount?.amount) {
+                balance =
+                  value.account.data.parsed.info.tokenAmount.amount /
+                  Math.pow(10, coin.decimals);
+              }
+            } else {
+              balance = data.result.value / Math.pow(10, coin.decimals);
+            }
+
+            resolve({ ...coin, balance });
           })
           .catch(() => {
             resolve({ ...coin, balance: 0 });

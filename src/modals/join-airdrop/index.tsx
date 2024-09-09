@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button, Form, List, Modal, Switch } from "antd";
 
 import { useVaultContext } from "context/vault";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
+import useGoBack from "utils/custom-back";
 
 interface InitialState {
   submitting: boolean;
@@ -18,7 +19,7 @@ const Component: FC = () => {
   const { setVault, vaults } = useVaultContext();
   const { hash } = useLocation();
   const [form] = Form.useForm();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSubmit = () => {
     if (!submitting) {
@@ -46,7 +47,7 @@ const Component: FC = () => {
           });
 
           setTimeout(() => {
-            navigate(-1);
+            goBack();
           }, 1000);
         })
         .catch(() => {
@@ -97,7 +98,7 @@ const Component: FC = () => {
           Done
         </Button>
       }
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={550}
@@ -130,12 +131,14 @@ const Component: FC = () => {
         <span className="desc">
           You are registering your Public Keys and vault addresses.
         </span>
-        <Link
-          to="https://github.com/vultisig/airdrop-registry"
+        <a
+          href="https://github.com/vultisig/airdrop-registry"
+          rel="noopener noreferrer"
+          target="_blank"
           className="link"
         >
           Inspect the code here.
-        </Link>
+        </a>
       </div>
 
       <div className="hint">
@@ -148,12 +151,14 @@ const Component: FC = () => {
 
       <div className="hint">
         <span className="desc">No other information is collected.</span>
-        <Link
-          to="https://github.com/vultisig/docs/blob/main/other/privacy.md"
+        <a
+          href="https://github.com/vultisig/docs/blob/main/other/privacy.md"
+          rel="noopener noreferrer"
+          target="_blank"
           className="link"
         >
           Read the Privacy Policy here
-        </Link>
+        </a>
       </div>
 
       <div className="hint">

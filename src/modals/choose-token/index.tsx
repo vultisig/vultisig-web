@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Drawer, Input, List, Spin, Switch } from "antd";
 
 import { useVaultContext } from "context/vault";
 import { Chain } from "utils/constants";
 import { TokenProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 import { SearchOutlined } from "icons";
 import TokenImage from "components/token-image";
@@ -28,7 +29,7 @@ const Component: FC = () => {
   const { hash } = useLocation();
   const { chainKey } = useParams();
   const { tokens } = useVaultContext();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSearch = (value: string): void => {
     setState((prevState) => ({ ...prevState, search: value.toLowerCase() }));
@@ -67,7 +68,7 @@ const Component: FC = () => {
   return (
     <Drawer
       footer={false}
-      onClose={() => navigate(-1)}
+      onClose={() => goBack()}
       title={
         <Input
           onChange={(e) => handleSearch(e.target.value)}
@@ -82,6 +83,12 @@ const Component: FC = () => {
     >
       {visible ? (
         <List
+          loading={
+            tokens.filter(
+              ({ chain, isNative }) =>
+                !isNative && chain.toLowerCase() === chainKey
+            ).length <= 0
+          }
           dataSource={tokens
             .filter(
               ({ chain, isNative }) =>

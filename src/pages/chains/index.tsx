@@ -12,7 +12,6 @@ import constantPaths from "routes/constant-paths";
 import { CaretRightOutlined, PlusCircleFilled, RefreshOutlined } from "icons";
 import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
-import JoinAirdrop from "modals/join-airdrop";
 
 const Component: FC = () => {
   const { t } = useTranslation();
@@ -44,7 +43,7 @@ const Component: FC = () => {
       key: "2",
       label: (
         <>
-          <Link to={`#${constantModals.JOIN_AIRDROP}`}>
+          <Link to={`#${constantModals.JOIN_AIRDROP}`} state={true}>
             {t(translation.JOIN_AIRDROP)}
           </Link>
           <CaretRightOutlined />
@@ -103,13 +102,16 @@ const Component: FC = () => {
         ) : (
           <Empty description="Choose a chain..." />
         )}
-        <Link to={`#${constantModals.CHOOSE_CHAIN}`} className="add">
+        <Link
+          to={`#${constantModals.CHOOSE_CHAIN}`}
+          state={true}
+          className="add"
+        >
           <PlusCircleFilled /> {t(translation.CHOOSE_CHAIN)}
         </Link>
       </div>
 
       <ChooseChain />
-      <JoinAirdrop />
     </>
   ) : (
     <></>

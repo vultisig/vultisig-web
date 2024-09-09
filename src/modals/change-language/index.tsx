@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
 
 import { Language, languageName, storageKey } from "utils/constants";
 import i18n from "i18n/config";
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 interface InitialState {
   visible: boolean;
@@ -15,14 +16,14 @@ const Component: FC = () => {
   const [state, setState] = useState(initialState);
   const { visible } = state;
   const { hash } = useLocation();
-  const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const handleSelect = (key: string): void => {
     i18n.changeLanguage(key);
 
     localStorage.setItem(storageKey.LANGUAGE, key);
 
-    navigate(-1);
+    goBack();
   };
 
   const componentDidUpdate = (): void => {
@@ -83,7 +84,7 @@ const Component: FC = () => {
       title="Change Language"
       centered={true}
       footer={false}
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={360}

@@ -4,6 +4,7 @@ import { List, Modal } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
+import useGoBack from "utils/custom-back";
 
 import { CaretRightOutlined, EditOutlined, TrashOutlined } from "icons";
 
@@ -21,6 +22,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
   const { visible } = state;
   const { hash } = useLocation();
   const navigate = useNavigate();
+  const goBack = useGoBack();
 
   const componentDidUpdate = (): void => {
     switch (hash) {
@@ -45,7 +47,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
       title={vault?.alias}
       centered={true}
       footer={false}
-      onCancel={() => navigate(-1)}
+      onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={480}

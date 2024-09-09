@@ -34,12 +34,14 @@ import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
+import DeleteVault from "modals/delete-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
 
 interface VaultContext {
   fetchTokens: (chain: ChainProps) => Promise<void>;
   setVault: (vault: VaultProps) => void;
+  delVault: (vault: VaultProps) => void;
   useVault: (vault: VaultProps) => void;
   toggleCoin: (coin: TokenProps, vault: VaultProps) => Promise<void>;
   tokens: TokenProps[];
@@ -145,16 +147,16 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
   const fetchTokens = (chain: ChainProps): Promise<void> => {
     return new Promise((resolve, reject) => {
-      let id = oneInchRef[chain.name];
       const token = defTokens.find((item) => item.chain === chain.name);
+      const tokens: TokenProps[] = [];
 
-      if (id && token) {
-        api
-          .oneInch(id)
-          .then(({ data }) => {
-            setState((prevState) => {
-              const tokens: TokenProps[] = [];
+      let id = oneInchRef[chain.name];
 
+      if (token) {
+        if (id) {
+          api
+            .oneInch(id)
+            .then(({ data }) => {
               Object.entries(data.tokens).forEach(([key, value]) => {
                 const notFound =
                   defTokens.findIndex(
@@ -177,14 +179,75 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
                 }
               });
 
-              return { ...prevState, tokens: [...defTokens, ...tokens] };
-            });
+              setState((prevState) => ({
+                ...prevState,
+                tokens: [...defTokens, ...tokens],
+              }));
 
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
+              resolve();
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else if (token.chain === Chain.SOLANA) {
+          api.discovery
+            .spl(chain.address)
+            .then(({ data }) => {
+              if (data?.result?.value && data.result.value.length) {
+                const tokens: TokenProps[] = data.result.value
+                  .filter((item) =>
+                    item?.account?.data?.parsed?.info
+                      ? !item.account.data.parsed.info.isNative &&
+                        item.account.data.parsed.info.mint
+                      : false
+                  )
+                  .map((item) => ({
+                    chain: Chain.SOLANA,
+                    cmcId: 0,
+                    contractAddress: item.account.data.parsed.info.mint,
+                    decimals:
+                      item.account.data.parsed.info.tokenAmount.decimals,
+                    hexPublicKey: "EDDSA",
+                    isDefault: false,
+                    isLocally: false,
+                    isNative: false,
+                    logo: "",
+                    ticker: "",
+                  }));
+
+                if (tokens.length) {
+                  api.discovery.info
+                    .spl(tokens.map(({ contractAddress }) => contractAddress))
+                    .then(({ data }) => {
+                      const promises = tokens.map((token) => getCMC(token));
+
+                      Promise.all(promises).then((numbers) => {
+                        tokens.forEach((token, index) => {
+                          const item = data[token.contractAddress];
+
+                          token.cmcId = numbers[index];
+                          token.isLocally = true;
+                          token.logo = item.tokenList.image;
+                          token.ticker = item.tokenList.symbol;
+                        });
+
+                        setState((prevState) => ({ ...prevState, tokens }));
+
+                        resolve();
+                      });
+                    })
+                    .catch(() => {
+                      reject(errorKey.INVALID_TOKEN);
+                    });
+                }
+              }
+            })
+            .catch(() => {
+              reject(errorKey.INVALID_TOKEN);
+            });
+        } else {
+          reject(errorKey.INVALID_TOKEN);
+        }
       } else {
         reject(errorKey.INVALID_TOKEN);
       }
@@ -551,6 +614,33 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
+  const delVault = (vault: VaultProps): void => {
+    const modifiedVaults = vaults.filter(({ uid }) => uid !== vault.uid);
+
+    validation(modifiedVaults)
+      .then((vaults) => {
+        if (vaults.length) {
+          const [vault] = vaults;
+
+          setState((prevState) => ({
+            ...prevState,
+            vault,
+            vaults,
+            loaded: true,
+          }));
+
+          setVaults(vaults);
+        } else {
+          navigate(constantPaths.import);
+        }
+      })
+      .catch(() => {
+        setVaults(vaults);
+
+        navigate(constantPaths.import);
+      });
+  };
+
   const useVault = (vault: VaultProps): void => {
     if (!loading) {
       setState((prevState) => ({ ...prevState, loading: true }));
@@ -614,6 +704,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     <VaultContext.Provider
       value={{
         fetchTokens,
+        delVault,
         setVault,
         useVault,
         toggleCoin,
@@ -630,6 +721,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           </div>
           <ChangeCurrency onChange={changeCurrency} />
           <ChangeLanguage />
+          <DeleteVault delVault={delVault} vault={vault} />
           <RenameVault setVault={setVault} vault={vault} />
           <VaultSettings vault={vault} />
           <Preloader visible={loading} />
