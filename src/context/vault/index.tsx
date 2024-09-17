@@ -133,7 +133,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           loading: false,
           vault: {
             ...vault,
-            coins: vault.chains.map((chain) => ({
+            chains: vault.chains.map((chain) => ({
               ...chain,
               coins: chain.coins.map(
                 (coin) => coins.find(({ id }) => id === coin.id) || coin

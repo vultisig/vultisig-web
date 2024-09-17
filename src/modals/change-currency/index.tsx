@@ -15,7 +15,7 @@ interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ onChange }) => {
+const Component: FC<ComponentProps> = ({ onChange}) => {
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
@@ -72,8 +72,8 @@ const Component: FC<ComponentProps> = ({ onChange }) => {
       title: currencyName[Currency.RUB],
     },
     {
-      key: Currency.GPB,
-      title: currencyName[Currency.GPB],
+      key: Currency.GBP,
+      title: currencyName[Currency.GBP],
     },
     {
       key: Currency.JPY,
