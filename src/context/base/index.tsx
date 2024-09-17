@@ -49,8 +49,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       case Currency.EUR:
         currency = Currency.EUR;
         break;
-      case Currency.GPB:
-        currency = Currency.GPB;
+      case Currency.GBP:
+        currency = Currency.GBP;
         break;
       case Currency.JPY:
         currency = Currency.JPY;

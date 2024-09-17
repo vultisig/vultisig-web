@@ -94,7 +94,7 @@ export interface CurrencyRef {
   [Currency.CAD]: string;
   [Currency.CNY]: string;
   [Currency.EUR]: string;
-  [Currency.GPB]: string;
+  [Currency.GBP]: string;
   [Currency.JPY]: string;
   [Currency.RUB]: string;
   [Currency.SEK]: string;
