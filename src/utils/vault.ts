@@ -15,28 +15,24 @@ export const getBalance = (
 
     switch (chain) {
       // Cosmos
-      case Chain.DYDX:
-      case Chain.GAIACHAIN:
-      case Chain.KUJIRA:
-      case Chain.MAYACHAIN:
+      case Chain.DYDX: {
+        getAmount(path, address, "adydx", coin, resolve);
+        break;
+      }
+      case Chain.GAIACHAIN: {
+        getAmount(path, address, "uatom", coin, resolve);
+        break;
+      }
+      case Chain.KUJIRA: {
+        getAmount(path, address, "ukuji", coin, resolve);
+        break;
+      }
+      case Chain.MAYACHAIN: {
+        getAmount(path, address, "cacao", coin, resolve);
+        break;
+      }
       case Chain.THORCHAIN: {
-        api.balance
-          .cosmos(`${path}/${address}`)
-          .then(({ data: { balances } }) => {
-            if (balances.length && balances[0].amount) {
-              resolve({
-                ...coin,
-                balance:
-                  parseInt(balances[0].amount) / Math.pow(10, coin.decimals),
-              });
-            } else {
-              resolve({ ...coin, balance: 0 });
-            }
-          })
-          .catch(() => {
-            resolve({ ...coin, balance: 0 });
-          });
-
+        getAmount(path, address, "rune", coin, resolve);
         break;
       }
       // EVM
@@ -222,3 +218,23 @@ export const getVaults = (): VaultProps[] => {
 export const setVaults = (vaults: VaultProps[]): void => {
   localStorage.setItem(storageKey.VAULTS, JSON.stringify(vaults));
 };
+
+export const getAmount = (path: string, address: string, dom: string, coin: CoinProps, resolve: any): void => {
+  api.balance
+    .cosmos(`${path}/${address}`)
+    .then(({ data: { balances } }) => {
+      const amount = balances.find(({ denom }) => denom === dom)?.amount;
+      if (amount) {
+        resolve({
+          ...coin,
+          balance:
+            parseInt(amount) / Math.pow(10, coin.decimals),
+        });
+      } else {
+        resolve({ ...coin, balance: 0 });
+      }
+    })
+    .catch(() => {
+      resolve({ ...coin, balance: 0 });
+    });
+}
