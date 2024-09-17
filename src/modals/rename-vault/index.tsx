@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Button, Form, Input, Modal } from "antd";
-
+import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 import useGoBack from "utils/custom-back";
+import translation from "i18n/constant-keys";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -22,6 +23,7 @@ type FieldType = {
 };
 
 const Component: FC<ComponentProps> = ({ setVault, vault }) => {
+  const { t } = useTranslation();
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
   const { visible, submitting } = state;
@@ -77,7 +79,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
   return (
     <Modal
       className="modal-rename-vault"
-      title="Rename Vault"
+      title={t(translation.RENAME_VAULT)}
       centered={true}
       footer={
         <Button
@@ -88,7 +90,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
           type="primary"
           block
         >
-          Save
+          {t(translation.SAVE)}
         </Button>
       }
       onCancel={() => goBack()}

@@ -8,8 +8,10 @@ export default {
   [translation.CURRENCY]: "Currency",
   [translation.DOWNLOAD_APP]: "Don’t have a vault yet? Download Vultisig now",
   [translation.DEFAULT_CHAINS]: "Default Chains",
+  [translation.DELETE_VAULT_WARNING]: "You are removing Vault",
   [translation.DROP_FILE_HERE]: "Drop your file here or",
   // E
+  [translation.EDIT_VAULT]: "Edit your vault name",
   // F
   [translation.FAQ]: "FAQ",
   // G
@@ -28,7 +30,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Remove your vault from web",
+  [translation.REMOVE_VAULT_TITLE]: "Remove Vault",
+  [translation.REMOVE]: "Remove",
+  [translation.RENAME_VAULT]: "Rename vault",
+  [translation.RENAME]: "Rename",
+  // S
   [translation.START]: "Start",
+  [translation.SAVE]: "Save",
   [translation.SECURE_CRYPTO_VAULT]: "SECURE CRYPTO VAULT",
   [translation.SHARE_VAULT]: "Share your Vault",
   [translation.TOTAL_BALANCE]: "Total Balance",

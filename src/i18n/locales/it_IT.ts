@@ -9,8 +9,10 @@ export default {
   [translation.DOWNLOAD_APP]:
     "Non hai ancora una cassaforte? Scarica Vultisig ora",
   [translation.DEFAULT_CHAINS]: "Catene predefinite",
+  [translation.DELETE_VAULT_WARNING]: "Stai rimuovendo il Vault",
   [translation.DROP_FILE_HERE]: "Trascina qui il tuo file o",
   // E
+  [translation.EDIT_VAULT]: "Modifica il nome della tua cassaforte",
   // F
   [translation.FAQ]: "Domande frequenti",
   // G
@@ -29,7 +31,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Rimuovi la tua cassaforte dal web",
+  [translation.REMOVE_VAULT_TITLE]: "Rimuovi Vault",
+  [translation.REMOVE]: "Rimuovi",
+  [translation.RENAME_VAULT]: "Rinomina la cassaforte",
+  [translation.RENAME]: "Rinomina",
+  // S
   [translation.START]: "Inizia",
+  [translation.SAVE]: "Salva",
   [translation.SECURE_CRYPTO_VAULT]: "CASSAFORTE CRIPTO SICURA",
   [translation.SHARE_VAULT]: "Condividi l'Vault",
   [translation.TOTAL_BALANCE]: "Saldo totale",

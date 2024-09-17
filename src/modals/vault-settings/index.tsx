@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
-
+import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import useGoBack from "utils/custom-back";
+import translation from "i18n/constant-keys";
 
 import { CaretRightOutlined, EditOutlined, TrashOutlined } from "icons";
 
@@ -17,6 +18,7 @@ interface InitialState {
 }
 
 const Component: FC<ComponentProps> = ({ vault }) => {
+  const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
@@ -59,8 +61,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<EditOutlined />}
-            description={"Edit your vault name"}
-            title={"Rename"}
+            description={t(translation.EDIT_VAULT)}
+            title={t(translation.RENAME)}
           />
         </List.Item>
         <List.Item
@@ -70,8 +72,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<TrashOutlined />}
-            description={"Delete your vault share permanently"}
-            title={"Delete"}
+            description={t(translation.REMOVE_VAULT)}
+            title={t(translation.REMOVE)}
           />
         </List.Item>
       </List>

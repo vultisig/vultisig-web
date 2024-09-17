@@ -8,8 +8,10 @@ export default {
   [translation.CURRENCY]: "Valuta",
   [translation.DOWNLOAD_APP]: "Heb je nog geen kluis? Download nu Vultisig",
   [translation.DEFAULT_CHAINS]: "Standaard ketens",
+  [translation.DELETE_VAULT_WARNING]: "Je verwijdert Kluis",
   [translation.DROP_FILE_HERE]: "Sleep je bestand hierheen of",
   // E
+  [translation.EDIT_VAULT]: "Bewerk de naam van je kluis",
   // F
   [translation.FAQ]: "Veelgestelde vragen",
   // G
@@ -28,7 +30,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Verwijder je kluis van het web",
+  [translation.REMOVE_VAULT_TITLE]: "Verwijder kluis",
+  [translation.REMOVE]: "Verwijderen",
+  [translation.RENAME_VAULT]: "Kluis hernoemen",
+  [translation.RENAME]: "Hernoemen",
+  // S
   [translation.START]: "Start",
+  [translation.SAVE]: "Opslaan",
   [translation.SECURE_CRYPTO_VAULT]: "VEILIGE CRYPTO KLUIS",
   [translation.SHARE_VAULT]: "Deel de Vault",
   [translation.TOTAL_BALANCE]: "Totale balans",

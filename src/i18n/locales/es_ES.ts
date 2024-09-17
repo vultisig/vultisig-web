@@ -9,8 +9,10 @@ export default {
   [translation.DOWNLOAD_APP]:
     "¿Aún no tienes una bóveda? Descarga Vultisig ahora",
   [translation.DEFAULT_CHAINS]: "Cadenas predeterminadas",
+  [translation.DELETE_VAULT_WARNING]: "Estás eliminando el Bóveda",
   [translation.DROP_FILE_HERE]: "Suelta tu archivo aquí o",
   // E
+  [translation.EDIT_VAULT]: "Edita el nombre de tu bóveda",
   // F
   [translation.FAQ]: "Preguntas frecuentes",
   // G
@@ -29,7 +31,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Elimina tu bóveda de la web",
+  [translation.REMOVE_VAULT_TITLE]: "Eliminar bóveda",
+  [translation.REMOVE]: "Eliminar",
+  [translation.RENAME_VAULT]: "Renombrar bóveda",
+  [translation.RENAME]: "Renombrar",
+  // S
   [translation.START]: "Comenzar",
+  [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "BÓVEDA CRIPTO SEGURA",
   [translation.SHARE_VAULT]: "Comparte la Vault",
   [translation.TOTAL_BALANCE]: "Saldo total",

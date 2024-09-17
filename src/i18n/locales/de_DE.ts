@@ -9,8 +9,10 @@ export default {
   [translation.DOWNLOAD_APP]:
     "Haben Sie noch keinen Tresor? Laden Sie Vultisig jetzt herunter",
   [translation.DEFAULT_CHAINS]: "Standardketten",
+  [translation.DELETE_VAULT_WARNING]: "Sie entfernen Tresor",
   [translation.DROP_FILE_HERE]: "Legen Sie Ihre Datei hier ab oder",
   // E
+  [translation.EDIT_VAULT]: "Bearbeiten Sie den Namen Ihres Tresors",
   // F
   [translation.FAQ]: "Häufig gestellte Fragen",
   // G
@@ -29,7 +31,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Entfernen Sie Ihren Tresor aus dem Web",
+  [translation.REMOVE_VAULT_TITLE]: "Entfernen löschen",
+  [translation.REMOVE]: "Entfernen",
+  [translation.RENAME_VAULT]: "Tresor umbenennen",
+  [translation.RENAME]: "Umbenennen",
+  // S
   [translation.START]: "Start",
+  [translation.SAVE]: "Speichern",
   [translation.SECURE_CRYPTO_VAULT]: "SICHERER KRYPTO-TRESOR",
   [translation.SHARE_VAULT]: "Vault teilen",
   [translation.TOTAL_BALANCE]: "Gesamtguthaben",
