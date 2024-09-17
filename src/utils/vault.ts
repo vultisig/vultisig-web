@@ -82,11 +82,11 @@ export const getBalance = (
           .polkadot(path, { key: address })
           .then(({ data: { data } }) => {
             if (data && data.account && data.account.balance) {
-              const balance = data.account.balance.replace(".", "");
+              const balance = data.account.balance;
 
               resolve({
                 ...coin,
-                balance: parseInt(balance) / Math.pow(10, coin.decimals),
+                balance: parseFloat(balance),
               });
             } else {
               resolve({ ...coin, balance: 0 });
