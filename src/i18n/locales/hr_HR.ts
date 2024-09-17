@@ -8,8 +8,10 @@ export default {
   [translation.CURRENCY]: "Valuta",
   [translation.DOWNLOAD_APP]: "Još nemate trezor? Preuzmite Vultisig sada",
   [translation.DEFAULT_CHAINS]: "Zadani lanci",
+  [translation.DELETE_VAULT_WARNING]: "Uklanjate Spremište",
   [translation.DROP_FILE_HERE]: "Ispustite datoteku ovdje ili",
   // E
+  [translation.EDIT_VAULT]: "Uredite naziv svog spremišta",
   // F
   [translation.FAQ]: "Često postavljana pitanja",
   // G
@@ -28,7 +30,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Uklonite svoje spremište s weba",
+  [translation.REMOVE_VAULT_TITLE]: "Uklonite spremište",
+  [translation.REMOVE]: "Ukloni",
+  [translation.RENAME_VAULT]: "Preimenuj spremište",
+  [translation.RENAME]: "Preimenuj",
+  // S
   [translation.START]: "Započni",
+  [translation.SAVE]: "Spremi",
   [translation.SECURE_CRYPTO_VAULT]: "SIGURNI KRIPTO TREZOR",
   [translation.SHARE_VAULT]: "Podijelite Vault",
   [translation.TOTAL_BALANCE]: "Ukupni saldo",

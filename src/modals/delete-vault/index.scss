@@ -1,14 +1,28 @@
 .modal-delete-vault {
+
+  .vault-name-container {
+    text-align: center;
+
+  }
+
+  .ant-input {
+    background-color: $blue-base !important;
+    border: none;
+    box-shadow: none !important;
+    line-height: 3rem;
+    width: 60%;
+  }
+
   .ant-btn {
-    background-color: $red-base;
+    background-color: $orange-base;
 
     &:hover {
-      background-color: $red-light !important;
+      background-color: $orange-light !important;
     }
   }
 
   .icon {
-    fill: $red-base;
+    fill: $orange-base;
     height: 4rem;
     margin: 0 auto;
   }

@@ -8,8 +8,10 @@ export default {
   [translation.CURRENCY]: "Валюта",
   [translation.DOWNLOAD_APP]: "Еще нет хранилища? Скачайте Vultisig сейчас",
   [translation.DEFAULT_CHAINS]: "Цепочки по умолчанию",
+  [translation.DELETE_VAULT_WARNING]: "Вы удаляете Хранилище",
   [translation.DROP_FILE_HERE]: "Перетащите файл сюда или",
   // E
+  [translation.EDIT_VAULT]: "Редактировать название хранилища",
   // F
   [translation.FAQ]: "Часто задаваемые вопросы",
   // G
@@ -28,7 +30,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Удалить хранилище с веб-сайта",
+  [translation.REMOVE_VAULT_TITLE]: "Удалить хранилище",
+  [translation.REMOVE]: "Удалить",
+  [translation.RENAME_VAULT]: "Переименовать хранилище",
+  [translation.RENAME]: "Переименовать",
+  // S
   [translation.START]: "Начать",
+  [translation.SAVE]: "Сохранить",
   [translation.SECURE_CRYPTO_VAULT]: "БЕЗОПАСНОЕ КРИПТО ХРАНИЛИЩЕ",
   [translation.SHARE_VAULT]: "Поделитесь своим Vault",
   [translation.TOTAL_BALANCE]: "Общий баланс",

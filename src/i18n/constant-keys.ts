@@ -8,8 +8,10 @@ export default keyMirror({
   CURRENCY: true,
   DOWNLOAD_APP: true,
   DEFAULT_CHAINS: true,
+  DELETE_VAULT_WARNING: true,
   DROP_FILE_HERE: true,
   // E
+  EDIT_VAULT: true,
   // F
   FAQ: true,
   // G
@@ -26,7 +28,13 @@ export default keyMirror({
   OTHER: true,
   // P
   // R
+  REMOVE_VAULT: true,
+  REMOVE_VAULT_TITLE: true,
+  REMOVE: true,
+  RENAME_VAULT: true,
+  RENAME: true,
   START: true,
+  SAVE: true,
   SECURE_CRYPTO_VAULT: true,
   SHARE_VAULT: true,
   TOTAL_BALANCE: true,

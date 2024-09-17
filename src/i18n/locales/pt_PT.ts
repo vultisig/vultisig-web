@@ -8,8 +8,10 @@ export default {
   [translation.CURRENCY]: "Moeda",
   [translation.DOWNLOAD_APP]: "Ainda não tem um cofre? Baixe o Vultisig agora",
   [translation.DEFAULT_CHAINS]: "Cadeias padrão",
+  [translation.DELETE_VAULT_WARNING]: "Você está removendo o Cofre",
   [translation.DROP_FILE_HERE]: "Solte seu arquivo aqui ou",
   // E
+  [translation.EDIT_VAULT]: "Edite o nome do seu cofre",
   // F
   [translation.FAQ]: "Perguntas frequentes",
   // G
@@ -28,7 +30,14 @@ export default {
   // P
   // Q
   // R
+  [translation.REMOVE_VAULT]: "Remova o seu cofre da web",
+  [translation.REMOVE_VAULT_TITLE]: "Remova cofre",
+  [translation.REMOVE]: "Remover",
+  [translation.RENAME_VAULT]: "Renomear cofre",
+  [translation.RENAME]: "Renomear",
+  // S
   [translation.START]: "Iniciar",
+  [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "COFRE CRIPTO SEGURO",
   [translation.SHARE_VAULT]: "Compartilhar o Vault",
   [translation.TOTAL_BALANCE]: "Saldo total",
