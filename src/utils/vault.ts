@@ -185,15 +185,35 @@ export const getValue = (
       api.coin
         .values(cmcIds, currency)
         .then(({ data }) => {
-          resolve(
-            coins.map((coin) => ({
-              ...coin,
-              value:
-                data?.data && data?.data[coin.cmcId]?.quote
-                  ? data.data[coin.cmcId].quote[currency]?.price || 0
-                  : 0,
-            }))
-          );
+          const cacao = coins.find(({ ticker }) => ticker === "CACAO");
+          const modifedCoins = coins.map((coin) => ({
+            ...coin,
+            value:
+              data?.data && data?.data[coin.cmcId]?.quote
+                ? data.data[coin.cmcId].quote[currency]?.price || 0
+                : 0,
+          }));
+
+          if (cacao) {
+            api.coin
+              .coingeckoValue(cacao.ticker, currency)
+              .then(({ data }) => {
+                resolve(
+                  modifedCoins.map((coin) => ({
+                    ...coin,
+                    value:
+                      coin.ticker === cacao.ticker
+                        ? data.cacao[currency.toLowerCase()] || 0
+                        : coin.value,
+                  }))
+                );
+              })
+              .catch(() => {
+                resolve(coins.map((coin) => ({ ...coin, value: 0 })));
+              });
+          } else {
+            resolve(modifedCoins);
+          }
         })
         .catch(() => {
           resolve(coins.map((coin) => ({ ...coin, value: 0 })));
