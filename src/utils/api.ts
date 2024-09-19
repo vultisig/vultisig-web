@@ -221,6 +221,11 @@ export default {
           .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
       );
     },
+    coingeckoValue: async (priceProviderId:string, currency: Currency) => {
+      return await api.get<{ cacao: { [language: string]: number } }>(
+        `https://api.vultisig.com/coingeicko/api/v3/simple/price?ids=${priceProviderId}&vs_currencies=${currency}`
+      );
+    },
   },
   discovery: {
     info: {
