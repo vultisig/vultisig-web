@@ -11,11 +11,71 @@ import useGoBack from "utils/custom-back";
 import { SearchOutlined } from "icons";
 import TokenImage from "components/token-image";
 
+interface TokenListProps {
+  onSelect: (coin: TokenProps) => void;
+  loading: Chain | null;
+  search: string;
+  tokens: TokenProps[];
+}
+
 interface InitialState {
   loading: Chain | null;
   search: string;
   visible: boolean;
 }
+
+const TokenList: FC<TokenListProps> = ({
+  onSelect,
+  loading,
+  search,
+  tokens,
+}) => {
+  const { chainKey } = useParams();
+  const { vault } = useVaultContext();
+
+  return (
+    <List
+      loading={
+        tokens.filter(
+          ({ chain, isNative }) => !isNative && chain.toLowerCase() === chainKey
+        ).length <= 0
+      }
+      dataSource={tokens.filter(({ isLocally, ticker }) =>
+        search.length < 3
+          ? isLocally
+          : ticker.toLowerCase().indexOf(search) >= 0
+      )}
+      renderItem={(item) => {
+        const checked = vault
+          ? vault?.chains.findIndex(
+              ({ coins, name }) =>
+                name === item.chain &&
+                coins.findIndex(({ ticker }) => ticker === item.ticker) >= 0
+            ) >= 0
+          : false;
+
+        return (
+          <List.Item
+            key={item.chain}
+            extra={
+              <Switch
+                checked={checked}
+                loading={item.chain === loading}
+                onClick={() => onSelect(item)}
+              />
+            }
+          >
+            <List.Item.Meta
+              avatar={<TokenImage alt={item.ticker} url={item.logo} />}
+              title={item.ticker}
+              description={item.chain}
+            />
+          </List.Item>
+        );
+      }}
+    />
+  );
+};
 
 const Component: FC = () => {
   const initialState: InitialState = {
@@ -25,10 +85,10 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { loading, search, visible } = state;
-  const { toggleCoin, vault } = useVaultContext();
+  const { toggleCoin, tokens, vault } = useVaultContext();
   const { hash } = useLocation();
   const { chainKey } = useParams();
-  const { tokens } = useVaultContext();
+
   const goBack = useGoBack();
 
   const handleSearch = (value: string): void => {
@@ -63,7 +123,7 @@ const Component: FC = () => {
     }
   };
 
-  useEffect(componentDidUpdate, [hash, tokens]);
+  useEffect(componentDidUpdate, [hash]);
 
   return (
     <Drawer
@@ -82,51 +142,43 @@ const Component: FC = () => {
       width={320}
     >
       {visible ? (
-        <List
-          loading={
-            tokens.filter(
-              ({ chain, isNative }) =>
-                !isNative && chain.toLowerCase() === chainKey
-            ).length <= 0
-          }
-          dataSource={tokens
-            .filter(
-              ({ chain, isNative }) =>
-                !isNative && chain.toLowerCase() === chainKey
-            )
-            .filter(({ isLocally, ticker }) =>
-              search.length < 3
-                ? isLocally
-                : ticker.toLowerCase().indexOf(search) >= 0
-            )}
-          renderItem={(item) => {
-            const checked = vault
-              ? vault?.chains.findIndex(
-                  ({ coins, name }) =>
-                    name === item.chain &&
-                    coins.findIndex(({ ticker }) => ticker === item.ticker) >= 0
-                ) >= 0
-              : false;
+        <TokenList
+          onSelect={handleToggle}
+          search={search}
+          loading={loading}
+          tokens={[
+            ...(vault?.chains
+              .filter(({ name }) => name.toLowerCase() === chainKey)
+              .flatMap(({ coins, name }) => {
+                const modifiedCoins: TokenProps[] = coins.map((coin) => ({
+                  chain: name,
+                  cmcId: coin.cmcId,
+                  contractAddress: coin.contractAddress,
+                  decimals: coin.decimals,
+                  hexPublicKey: "ECDSA",
+                  isDefault: false,
+                  isLocally: true,
+                  isNative: false,
+                  logo: coin.logo,
+                  ticker: coin.ticker,
+                }));
 
-            return (
-              <List.Item
-                key={item.chain}
-                extra={
-                  <Switch
-                    checked={checked}
-                    loading={item.chain === loading}
-                    onClick={() => handleToggle(item)}
-                  />
-                }
-              >
-                <List.Item.Meta
-                  avatar={<TokenImage alt={item.ticker} url={item.logo} />}
-                  title={item.ticker}
-                  description={item.chain}
-                />
-              </List.Item>
-            );
-          }}
+                return modifiedCoins;
+              }) ?? []),
+            ...tokens
+              .filter(
+                ({ chain, isNative }) =>
+                  !isNative && chain.toLowerCase() === chainKey
+              )
+              .filter(
+                ({ ticker }) =>
+                  !vault?.chains.find(
+                    ({ name, coins }) =>
+                      name.toLowerCase() === chainKey &&
+                      coins.findIndex(({ ticker: t }) => t === ticker) >= 0
+                  )
+              ),
+          ]}
         />
       ) : (
         <Spin className="center-spin" />
