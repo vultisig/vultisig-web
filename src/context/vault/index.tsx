@@ -37,6 +37,7 @@ import ChangeLanguage from "modals/change-language";
 import DeleteVault from "modals/delete-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
+import JoinAirDrop from "modals/join-airdrop";
 
 interface VaultContext {
   fetchTokens: (chain: ChainProps) => Promise<void>;
@@ -725,6 +726,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           <RenameVault setVault={setVault} vault={vault} />
           <VaultSettings vault={vault} />
           <Preloader visible={loading} />
+          <JoinAirDrop/>
         </>
       ) : (
         <SplashScreen />
