@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Other",
   // P
+  [translation.POWERED_BY]: "Powered by",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Remove your vault from web",
@@ -40,6 +41,9 @@ export default {
   [translation.SAVE]: "Save",
   [translation.SECURE_CRYPTO_VAULT]: "SECURE CRYPTO VAULT",
   [translation.SHARE_VAULT]: "Share your Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Share Settings",
+  [translation.SHARE_SETTINGS]: "Change colors for your sharing page",
+  //T
   [translation.TOTAL_BALANCE]: "Total Balance",
   // U
   [translation.UPLOAD_IT]: "upload it",

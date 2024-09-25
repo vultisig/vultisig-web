@@ -10,6 +10,7 @@
 @import "../components/splash-screen";
 @import "../components/token-actions";
 @import "../components/token-image";
+@import "../components/footer";
 
 @import "../modals/change-currency";
 @import "../modals/change-language";
@@ -18,6 +19,7 @@
 @import "../modals/qr-code";
 @import "../modals/rename-vault";
 @import "../modals/vault-settings";
+@import "../modals/share-settings";
 
 @import "../pages/assets";
 @import "../pages/chains";
@@ -48,6 +50,14 @@ body {
   border: none;
   height: auto;
   padding: 0;
+}
+
+.ant-btn-primary {
+  background-color: $cyan-base;
+}
+
+.ant-btn-primary:hover {
+  background-color: $cyan-light !important;
 }
 
 .ant-drawer {
@@ -181,6 +191,17 @@ body {
 
   .ant-modal-content {
     padding: 0 1.875rem 1.875rem;
+    background-color: $blue-base;
+    .ant-modal-header {
+      background-color: $blue-base;
+    }
+    .ant-list-item {
+      background-color: $blue-light;
+      color: $gray-7;
+    }
+    .active {
+      color: $gray-1;
+    }
   }
 }
 
@@ -239,11 +260,17 @@ body {
     position: sticky;
     top: 0;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
 
     .logo {
-      img {
-        height: 100%;
+      display: flex;
+      .shape {
+        width: 3rem !important;
+      }
+      .text {
+        fill: $gray-1;
+        width: 9rem !important;
+        padding: 1rem 0.4rem 0.4rem 0.4rem;
       }
     }
 
@@ -260,8 +287,333 @@ body {
     margin: 0 auto;
     max-width: 72.5rem;
     overflow: hidden;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 8rem 1rem;
     width: 100%;
+  }
+}
+
+.ant-tooltip {
+  .ant-tooltip-inner {
+    background-color: $blue-light !important;
+    color: $gray-1;
+  }
+  .ant-tooltip-arrow {
+    &::after,
+    &::before {
+      background-color: $blue-light !important;
+    }
+  }
+}
+
+.ant-message {
+  .ant-message-notice-content {
+    background-color: $blue-light !important;
+  }
+}
+
+html[theme="Dark"] {
+  body {
+    background-color: $gray-13;
+  }
+
+  body::-webkit-scrollbar {
+    background-color: $gray-12;
+  }
+
+  body::-webkit-scrollbar-corner {
+    background-color: $gray-12;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: $gray-11;
+  }
+
+  .layout-header {
+    background-color: $gray-13;
+    border-bottom: 1px solid $gray-11;
+  }
+
+  .ant-drawer {
+    .ant-drawer-body {
+      &::-webkit-scrollbar {
+        background-color: $gray-13;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: $gray-13;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $gray-12;
+      }
+    }
+
+    .ant-drawer-content {
+      background-color: $gray-12;
+    }
+  }
+
+  .ant-dropdown {
+    .ant-dropdown-menu {
+      background-color: $gray-11 !important;
+    }
+  }
+
+  .ant-empty {
+    background-color: $gray-13;
+  }
+
+  .ant-input-affix-wrapper {
+    background-color: $gray-11 !important;
+
+    &.ant-input-affix-wrapper-focused {
+      background-color: $gray-11 !important;
+    }
+  }
+
+  .ant-select {
+    .ant-select-selector {
+      background-color: $gray-13 !important;
+    }
+  }
+
+  .ant-input {
+    background-color: $gray-11 !important;
+  }
+
+  .ant-select-dropdown {
+    background-color: $gray-13;
+  }
+
+  .ant-modal-content {
+    background-color: $gray-12;
+    .ant-modal-header {
+      background-color: $gray-12;
+    }
+    .ant-list-item {
+      background-color: $gray-11;
+    }
+    .ant-list-items {
+      .ant-list-item {
+        color: $gray-7;
+      }
+      .active {
+        color: $gray-1;
+      }
+    }
+  }
+
+  .layout {
+    &-header {
+      background-color: $gray-13;
+      border-bottom: solid 1px $gray-12;
+      .logo {
+        .text {
+          fill: $gray-1;
+        }
+      }
+    }
+  }
+
+  .ant-tooltip-inner {
+    background-color: $gray-10 !important;
+    color: $gray-1;
+  }
+
+  .ant-tooltip {
+    .ant-tooltip-inner {
+      background-color: $gray-8 !important;
+      color: $gray-5 !important;
+    }
+    .ant-tooltip-arrow {
+      &::after,
+      &::before {
+        background-color: $gray-8 !important;
+      }
+    }
+  }
+
+  .ant-message {
+    .ant-message-notice-content {
+      background-color: $gray-12 !important;
+    }
+  }
+}
+
+html[theme="Light"] {
+  body {
+    background-color: $gray-1;
+    color: $gray-8;
+  }
+  body::-webkit-scrollbar {
+    background-color: $gray-6;
+  }
+  body::-webkit-scrollbar-corner {
+    background-color: $gray-6;
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: $gray-5;
+  }
+  .layout-header {
+    background-color: $gray-1;
+    border-bottom: 1px solid $gray-8;
+    .logo {
+      .text {
+        fill: $gray-8;
+      }
+    }
+  }
+
+  .ant-drawer {
+    .ant-drawer-body {
+      &::-webkit-scrollbar {
+        background-color: $gray-5;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: $gray-5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $gray-4;
+      }
+    }
+    .ant-drawer-content {
+      background-color: $gray-5;
+    }
+  }
+
+  .ant-upload-drag-container {
+    .name {
+      color: $gray-8;
+    }
+  }
+
+  .ant-dropdown {
+    .ant-dropdown-menu-item-icon {
+      fill: $gray-8;
+    }
+    .primary {
+      .ant-dropdown-menu-title-content {
+        svg {
+          fill: $gray-8;
+        }
+      }
+    }
+    .ant-dropdown-menu {
+      background-color: $gray-4 !important;
+      color: $gray-10;
+    }
+    .ant-dropdown-menu-item {
+      color: $gray-8 !important;
+    }
+  }
+
+  .ant-empty {
+    background-color: $gray-3;
+    .ant-empty-description {
+      color: $gray-8;
+    }
+
+    .ant-empty-image {
+      svg {
+        fill: $gray-8;
+      }
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    background-color: $gray-6 !important;
+    .ant-input {
+      background-color: $gray-6 !important;
+      color: $gray-8;
+    }
+    &.ant-input-affix-wrapper-focused {
+      background-color: $gray-6 !important;
+    }
+  }
+
+  .ant-select {
+    .ant-select-selector {
+      background-color: $gray-5 !important;
+    }
+  }
+
+  .ant-input {
+    background-color: $gray-3 !important;
+    color: $gray-8;
+  }
+
+  .ant-select-dropdown {
+    background-color: $gray-5;
+  }
+
+  .ant-modal-title {
+    color: $gray-8 !important;
+  }
+
+  .ant-modal {
+    .ant-modal-close {
+      color: $gray-8;
+    }
+  }
+
+  .ant-modal-content {
+    background-color: $gray-5;
+    .ant-modal-header {
+      background-color: $gray-5;
+    }
+    .ant-list-item {
+      background-color: $gray-4;
+      svg {
+        fill: $gray-8;
+      }
+    }
+    .ant-list-items {
+      .ant-list-item {
+        color: $gray-7;
+      }
+      .active {
+        color: $gray-12;
+      }
+    }
+  }
+
+  .layout {
+    &-header {
+      background-color: $gray-1;
+      border-bottom: solid 1px $gray-5;
+    }
+    .add{
+      color: $gray-8;
+    }
+    .menu {
+      svg {
+        fill: $gray-8;
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+    }
+  }
+
+  .ant-tooltip {
+    .ant-tooltip-inner {
+      background-color: $gray-5 !important;
+      color: $gray-8;
+    }
+    .ant-tooltip-arrow {
+      &::after,
+      &::before {
+        background-color: $gray-5 !important;
+      }
+    }
+  }
+
+  .ant-message {
+    .ant-message-notice-content {
+      background-color: $gray-5 !important;
+      color: $gray-8;
+    }
   }
 }
 

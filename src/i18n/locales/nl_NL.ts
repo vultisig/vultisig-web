@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Overig",
   // P
+  [translation.POWERED_BY]: "Aangedreven door",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Verwijder je kluis van het web",
@@ -40,6 +41,9 @@ export default {
   [translation.SAVE]: "Opslaan",
   [translation.SECURE_CRYPTO_VAULT]: "VEILIGE CRYPTO KLUIS",
   [translation.SHARE_VAULT]: "Deel de Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Deelinstellingen",
+  [translation.SHARE_SETTINGS]: "Wijzig de kleuren voor je deelpagina",
+  //T
   [translation.TOTAL_BALANCE]: "Totale balans",
   // U
   [translation.UPLOAD_IT]: "upload het",

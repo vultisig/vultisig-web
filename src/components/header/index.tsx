@@ -9,6 +9,7 @@ import i18n from "i18n/config";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
+import { Vultisig, VultisigText } from "icons";
 
 import {
   ChainOutlined,
@@ -22,9 +23,10 @@ import {
 
 interface ComponentProps {
   uid?: string;
+  alias?: string;
 }
 
-const Component: FC<ComponentProps> = ({ uid }) => {
+const Component: FC<ComponentProps> = ({ uid, alias }) => {
   const { t } = useTranslation();
   const [messageApi, contextHolder] = message.useMessage();
   const { currency } = useBaseContext();
@@ -32,7 +34,7 @@ const Component: FC<ComponentProps> = ({ uid }) => {
 
   const handleShare = (): void => {
     navigator.clipboard
-      .writeText(`${location.origin}/shared/${uid}`)
+      .writeText(`${location.origin}/shared/vault/${alias}/${uid}`)
       .then(() => {
         messageApi.open({
           type: "success",
@@ -170,7 +172,8 @@ const Component: FC<ComponentProps> = ({ uid }) => {
     <>
       <div className="layout-header">
         <Link to={constantPaths.root} className="logo">
-          <img src="/images/logo-type.svg" alt={t(translation.LOGO)} />
+            <Vultisig className="shape" />
+            <VultisigText className="text"/>
         </Link>
         <Dropdown menu={{ items }} className="menu">
           <Button type="link">

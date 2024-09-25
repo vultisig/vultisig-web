@@ -7,7 +7,7 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "utils/custom-back";
 import translation from "i18n/constant-keys";
 
-import { CaretRightOutlined, EditOutlined, TrashOutlined } from "icons";
+import { CaretRightOutlined, EditOutlined, TrashOutlined, ShareOutlined} from "icons";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -74,6 +74,17 @@ const Component: FC<ComponentProps> = ({ vault }) => {
             avatar={<TrashOutlined />}
             description={t(translation.REMOVE_VAULT)}
             title={t(translation.REMOVE)}
+          />
+        </List.Item>
+        <List.Item
+          extra={<CaretRightOutlined className="arrow" />}
+          onClick={() => navigate(`#${constantModals.SHARE_SETTINGS}`)}
+          className="share-setting"
+        >
+          <List.Item.Meta
+            avatar={<ShareOutlined />}
+            description={t(translation.SHARE_SETTINGS)}
+            title={t(translation.SHARE_SETTINGS_TITLE)}
           />
         </List.Item>
       </List>

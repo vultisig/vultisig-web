@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { toCamelCase, toSnakeCase } from "utils/case-converter";
+import { toCamelCase, toSnakeCase } from "utils/functions";
 import { Currency, errorKey } from "utils/constants";
 import { CoinParams, CoinProps, VaultProps } from "utils/interfaces";
 

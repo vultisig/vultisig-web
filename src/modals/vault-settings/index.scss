@@ -53,11 +53,52 @@
     }
   }
 
+  .share-setting {
+    svg {
+      fill: $cyan-light !important;
+    }
+
+    .ant-list-item-meta-title {
+      color: $cyan-light !important;
+    }
+    .ant-list-item-meta-description {
+      color: $cyan-light !important;
+    }
+  }
+
   .ant-modal-footer {
     display: none;
   }
 
   .ant-modal-content {
     padding: 0 1.875rem 1.875rem;
+  }
+}
+
+html[theme="Dark"] {
+  .ant-list-item-meta-description {
+    color: $gray-1 !important;
+  }
+  .ant-list-item-meta-title {
+    color: $gray-1 !important;
+  }
+  .ant-list-item-meta-avatar {
+    svg {
+      fill: $gray-1;
+    }
+  }
+}
+
+html[theme="Light"] {
+  .ant-list-item-meta-description {
+    color: $gray-8 !important;
+  }
+  .ant-list-item-meta-title {
+    color: $gray-8 !important;
+  }
+  .ant-list-item-meta-avatar{
+    svg {
+      fill: $gray-8;
+    }
   }
 }

@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Outro",
   // P
+  [translation.POWERED_BY]: "Com o apoio da",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Remova o seu cofre da web",
@@ -40,6 +41,9 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "COFRE CRIPTO SEGURO",
   [translation.SHARE_VAULT]: "Compartilhar o Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Configurações de compartilhamento",
+  [translation.SHARE_SETTINGS]: "Mude as cores para a sua página de compartilhamento",
+  //T
   [translation.TOTAL_BALANCE]: "Saldo total",
   // U
   [translation.UPLOAD_IT]: "faça o upload",

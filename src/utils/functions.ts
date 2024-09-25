@@ -52,4 +52,14 @@ const toSnakeCase = (obj: any): any => {
   return obj;
 };
 
-export { toCamelCase, toSnakeCase };
+enum Theme {
+  DARK = "Dark",
+  LIGHT = "Light",
+  VULTISIG = "Vultisig",
+}
+
+const changeTheme = (theme: Theme): void => {
+  document.documentElement.setAttribute("theme", theme);
+};
+
+export { changeTheme, toCamelCase, toSnakeCase, Theme };

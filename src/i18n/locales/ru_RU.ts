@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Другое",
   // P
+  [translation.POWERED_BY]: "Под управлением",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Удалить хранилище с веб-сайта",
@@ -40,6 +41,9 @@ export default {
   [translation.SAVE]: "Сохранить",
   [translation.SECURE_CRYPTO_VAULT]: "БЕЗОПАСНОЕ КРИПТО ХРАНИЛИЩЕ",
   [translation.SHARE_VAULT]: "Поделитесь своим Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Настройки обмена",
+  [translation.SHARE_SETTINGS]: "Измените цвета для вашей страницы обмена",
+  //T
   [translation.TOTAL_BALANCE]: "Общий баланс",
   // U
   [translation.UPLOAD_IT]: "загрузите его",

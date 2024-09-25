@@ -4,7 +4,19 @@
   min-height: 100vh;
   padding: 3rem 1rem;
   text-align: center;
-
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 3rem;
+    .shape {
+      width: 3rem !important;
+    }
+    .text {
+      fill: $gray-1;
+      width: 9rem !important;
+      padding: 0rem 0.4rem 0.4rem 0.4rem;
+    }
+  }
   .ant-upload-btn {
     display: block !important;
     padding: 3rem 1rem !important;
@@ -156,6 +168,58 @@
     background-color: $blue-base;
     border-radius: 0.75rem;
     padding: 2rem;
+  }
+}
+
+html[theme="Dark"] {
+  .wrapper {
+    background-color: $gray-12;
+  }
+  .import-page {
+    .logo-container {
+      .text {
+        fill: $gray-1;
+      }
+    }
+
+    .download {
+      img {
+        background-color: $gray-12;
+      }
+    }
+  }
+}
+
+html[theme="Light"] {
+  .wrapper {
+    background-color: $gray-3;
+  }
+  .import-page {
+    .logo-container {
+      .text {
+        fill: $gray-8;
+      }
+    }
+
+    .download {
+      img {
+        background-color: $gray-6;
+      }
+    }
+  }
+  .ant-btn-default:disabled {
+    background-color: $gray-6;
+  }
+  .close {
+    svg {
+      fill: $gray-8;
+    }
+  }
+  .ant-upload-drag-container {
+    .title,
+    .text {
+      color: $gray-8;
+    }
   }
 }
 

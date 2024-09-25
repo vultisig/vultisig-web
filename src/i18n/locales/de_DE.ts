@@ -29,6 +29,7 @@ export default {
   // O
   [translation.OTHER]: "Andere",
   // P
+  [translation.POWERED_BY]: "Angetrieben von",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Entfernen Sie Ihren Tresor aus dem Web",
@@ -41,6 +42,9 @@ export default {
   [translation.SAVE]: "Speichern",
   [translation.SECURE_CRYPTO_VAULT]: "SICHERER KRYPTO-TRESOR",
   [translation.SHARE_VAULT]: "Vault teilen",
+  [translation.SHARE_SETTINGS_TITLE]: "Freigabeeinstellungen",
+  [translation.SHARE_SETTINGS]: "Ändern Sie die Farben für Ihre Freigabeseite",
+  //T
   [translation.TOTAL_BALANCE]: "Gesamtguthaben",
   // U
   [translation.UPLOAD_IT]: "hochladen",

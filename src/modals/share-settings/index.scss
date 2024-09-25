@@ -1,0 +1,38 @@
+.modal-share-settings {
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    div {
+      width: 6rem;
+      height: 4rem;
+      border-radius: 0.7rem;
+      border: 3px solid $gray-9;
+      transition: border 1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    div:hover {
+      border: 3px solid $gray-6;
+    }
+    .dark {
+      background-color: $gray-13;
+      color: $gray-1;
+    }
+    .light {
+      background-color: $gray-1;
+      color: $gray-13;
+    }
+    .vultisig {
+      background-color: $blue-base;
+      color: $gray-1;
+    }
+    .selected {
+      border: 3px solid $cyan-light !important;
+    }
+  }
+}

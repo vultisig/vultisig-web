@@ -83,6 +83,18 @@
   }
 }
 
+html[theme="Dark"] {
+  .content {
+    background-color: $gray-13;
+  }
+}
+
+html[theme="Light"] {
+  .content {
+    background-color: $gray-5;
+  }
+}
+
 @media (min-width: 48rem) {
   .assets-page {
     .chain {
@@ -91,6 +103,14 @@
 
       .amount {
         position: static;
+      }
+    }
+    .add{
+      color: $gray-1;
+    }
+    .breadcrumb {
+      svg{
+        fill: $gray-5;
       }
     }
   }

@@ -20,6 +20,7 @@ import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
+import Footer from "components/footer";
 
 interface SharedContext {
   vault?: VaultProps;
@@ -106,6 +107,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="layout">
             <Header />
             {children}
+            <Footer />
           </div>
           <ChangeCurrency onChange={changeCurrency} />
           <ChangeLanguage />

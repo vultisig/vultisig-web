@@ -29,6 +29,7 @@ export default {
   // O
   [translation.OTHER]: "Otro",
   // P
+  [translation.POWERED_BY]: "Impulsado por",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Elimina tu bóveda de la web",
@@ -41,6 +42,10 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "BÓVEDA CRIPTO SEGURA",
   [translation.SHARE_VAULT]: "Comparte la Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Configuración de compartir",
+  [translation.SHARE_SETTINGS]: "Cambia los colores de tu página de compartir",
+  
+  //T
   [translation.TOTAL_BALANCE]: "Saldo total",
   // U
   [translation.UPLOAD_IT]: "cárgalo",

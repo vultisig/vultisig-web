@@ -27,16 +27,21 @@ export default keyMirror({
   // O
   OTHER: true,
   // P
+  POWERED_BY:true,
   // R
   REMOVE_VAULT: true,
   REMOVE_VAULT_TITLE: true,
   REMOVE: true,
   RENAME_VAULT: true,
   RENAME: true,
+  //S
   START: true,
   SAVE: true,
   SECURE_CRYPTO_VAULT: true,
   SHARE_VAULT: true,
+  SHARE_SETTINGS: true,
+  SHARE_SETTINGS_TITLE: true,
+  //T
   TOTAL_BALANCE: true,
   // U
   UPLOAD_IT: true,
