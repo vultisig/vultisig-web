@@ -37,7 +37,6 @@ import ChangeLanguage from "modals/change-language";
 import DeleteVault from "modals/delete-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
-import JoinAirDrop from "modals/join-airdrop";
 
 interface VaultContext {
   fetchTokens: (chain: ChainProps) => Promise<void>;
@@ -638,7 +637,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       .catch(() => {
         setVaults(vaults);
 
-        navigate(constantPaths.import);
+        navigate(constantPaths.root);
       });
   };
 
@@ -661,12 +660,15 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       const [vault, ...remainingVaults] = vaults;
 
       if (vault) {
+        setState((prevState) => ({ ...prevState, loading: true }));
         getVault(vault)
           .then((vault) => {
             resolve([vault, ...remainingVaults]);
+            setState((prevState) => ({ ...prevState, loading: false }));
           })
           .catch(() => {
             validation(remainingVaults).then(resolve).catch(reject);
+            setState((prevState) => ({ ...prevState, loading: false }));
           });
       } else {
         reject();
