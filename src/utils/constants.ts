@@ -172,7 +172,7 @@ export const exploreToken: ChainStrRef = {
   [Chain.POLYGON]: "https://polygonscan.com/address/",
   [Chain.SOLANA]: "https://explorer.solana.com/address/",
   [Chain.SUI]: "https://suiscan.xyz/mainnet/address/",
-  [Chain.THORCHAIN]: "https://runescan.io/address/",
+  [Chain.THORCHAIN]: "https://thorchain.net/address/",
   [Chain.ZKSYNC]: "https://explorer.zksync.io/address/",
 };
 
