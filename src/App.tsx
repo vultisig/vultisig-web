@@ -7,10 +7,11 @@ const App = () => {
   return (
     <ConfigProvider
       theme={{
+        
         algorithm: theme.darkAlgorithm,
         components: {
           Modal: {
-            colorBgElevated: "#02122b",
+            //colorBgElevated: "#02122b",
             paddingLG: 8,
           },
           Dropdown: {
@@ -20,17 +21,17 @@ const App = () => {
             itemPadding: "12px 0",
           },
           Message: {
-            contentBg: "#11284a",
+            //contentBg: "#11284a",
           },
           Tooltip: {
-            colorBgSpotlight: "#33e6bf",
-            colorTextLightSolid: "#000",
+            // colorBgSpotlight: "#33e6bf",
+            // colorTextLightSolid: "#000",
           },
         },
         token: {
           colorPrimary: "#33e6bf",
           colorPrimaryText: "#000",
-          fontFamily: "Montserrat",
+          fontFamily: "inherit",
         },
       }}
     >

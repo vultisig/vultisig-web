@@ -7,6 +7,8 @@ export default {
   shared: {
     root: "/shared",
     chains: "/shared/:uid",
+    chainsAlias: "/shared/vault/:alias/:uid",
     assets: "/shared/:uid/:chainKey",
+    assetsAlias: "/shared/vault/:alias/:uid/:chainKey",
   },
 };

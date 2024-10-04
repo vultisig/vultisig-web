@@ -61,3 +61,31 @@
     padding: 0 1.875rem 1.875rem;
   }
 }
+
+html[theme="Dark"] {
+  .ant-list-item-meta-description {
+    color: $gray-1 !important;
+  }
+  .ant-list-item-meta-title {
+    color: $gray-1 !important;
+  }
+  .ant-list-item-meta-avatar {
+    svg {
+      fill: $gray-1;
+    }
+  }
+}
+
+html[theme="Light"] {
+  .ant-list-item-meta-description {
+    color: $gray-8 !important;
+  }
+  .ant-list-item-meta-title {
+    color: $gray-8 !important;
+  }
+  .ant-list-item-meta-avatar{
+    svg {
+      fill: $gray-8;
+    }
+  }
+}

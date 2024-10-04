@@ -4,14 +4,14 @@ import { Button, Upload, UploadProps, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ReaderOptions, readBarcodesFromImageFile } from "zxing-wasm/reader";
 
-import { toCamelCase } from "utils/case-converter";
+import { toCamelCase } from "utils/functions";
 import { errorKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
 import { getVaults, setVaults } from "utils/vault";
 import api from "utils/api";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
-
+import { Vultisig, VultisigText } from "icons";
 import { CloseOutlined } from "icons";
 
 interface InitialState {
@@ -173,7 +173,10 @@ const Component: FC = () => {
   return (
     <>
       <div className="import-page">
-        <img src="/images/logo-type.svg" alt="logo" className="logo" />
+      <div className="logo-container">
+        <Vultisig className="shape" />
+        <VultisigText className="text" />
+      </div>
         <div className="wrapper">
           <h2 className="heading">{t(translation.UPLOAD_VAULT_SHARE)}</h2>
           <Upload.Dragger {...props} className={status}>

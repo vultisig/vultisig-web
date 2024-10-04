@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Ostalo",
   // P
+  [translation.POWERED_BY]: "Pokreće",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Uklonite svoje spremište s weba",
@@ -40,6 +41,13 @@ export default {
   [translation.SAVE]: "Spremi",
   [translation.SECURE_CRYPTO_VAULT]: "SIGURNI KRIPTO TREZOR",
   [translation.SHARE_VAULT]: "Podijelite Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Prilagodite svoje stranice dijeljenog trezora",
+  [translation.SHARE_SETTINGS]: "Prilagodite izgled dijeljenog trezora",
+  [translation.SHARE_VAULT_THEME]: "Tema dijeljenog trezora",
+  [translation.SHARE_VAULT_LOGO]: "Logo dijeljenog trezora",
+  [translation.SHARE_CURRENT_LOGO]: "Vaš trenutni logo",
+  [translation.SHARE_UPLOAD_LOGO]: "Učitajte svoj logo",
+  //T
   [translation.TOTAL_BALANCE]: "Ukupni saldo",
   // U
   [translation.UPLOAD_IT]: "učitaj ga",

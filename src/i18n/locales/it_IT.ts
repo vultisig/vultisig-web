@@ -29,6 +29,7 @@ export default {
   // O
   [translation.OTHER]: "Altro",
   // P
+  [translation.POWERED_BY]: "Powered by",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Rimuovi la tua cassaforte dal web",
@@ -41,6 +42,13 @@ export default {
   [translation.SAVE]: "Salva",
   [translation.SECURE_CRYPTO_VAULT]: "CASSAFORTE CRIPTO SICURA",
   [translation.SHARE_VAULT]: "Condividi l'Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Personalizza le tue pagine dell'Vault condiviso",
+  [translation.SHARE_SETTINGS]: "Personalizza l'aspetto dell'Vault condiviso",
+  [translation.SHARE_VAULT_THEME]: "Tema dell'Vault condiviso",
+  [translation.SHARE_VAULT_LOGO]: "Logo dell'Vault condiviso",
+  [translation.SHARE_CURRENT_LOGO]: "Il tuo logo attuale",
+  [translation.SHARE_UPLOAD_LOGO]: "Carica il tuo logo",
+  //T
   [translation.TOTAL_BALANCE]: "Saldo totale",
   // U
   [translation.UPLOAD_IT]: "caricalo",

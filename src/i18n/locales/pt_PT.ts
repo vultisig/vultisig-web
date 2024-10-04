@@ -28,6 +28,7 @@ export default {
   // O
   [translation.OTHER]: "Outro",
   // P
+  [translation.POWERED_BY]: "Com o apoio da",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Remova o seu cofre da web",
@@ -40,6 +41,13 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "COFRE CRIPTO SEGURO",
   [translation.SHARE_VAULT]: "Compartilhar o Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Personalize suas páginas de cofre compartilhado",
+  [translation.SHARE_SETTINGS]: "Personalize a aparência do cofre compartilhado",
+  [translation.SHARE_VAULT_THEME]: "Tema do cofre compartilhado",
+  [translation.SHARE_VAULT_LOGO]: "Logotipo do cofre compartilhado",
+  [translation.SHARE_CURRENT_LOGO]: "Seu logotipo atual",
+  [translation.SHARE_UPLOAD_LOGO]: "Carregar seu logotipo",
+  //T
   [translation.TOTAL_BALANCE]: "Saldo total",
   // U
   [translation.UPLOAD_IT]: "faça o upload",

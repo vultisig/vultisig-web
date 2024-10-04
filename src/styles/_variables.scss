@@ -1,7 +1,11 @@
-﻿$blue-light: #11284a;
+﻿@use "sass:math";
+
+$blue-light: #11284a;
 $blue-base: #061b3a;
 $blue-dark: #02122b;
 $cyan-base: #33e6bf;
+$cyan-light: #2ed5c0;
+$cyan-dark: #2ed5c0;
 $red-base: #ee2b2b;
 $orange-base: #f7961b;
 $orange-light: #f3ad52;
@@ -21,3 +25,7 @@ $gray-10: #262626;
 $gray-11: #1f1f1f;
 $gray-12: #141414;
 $gray-13: #000000;
+
+@function rem($px, $base: 16) {
+  @return #{math.div($px, $base)}rem;
+}

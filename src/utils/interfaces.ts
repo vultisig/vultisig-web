@@ -1,6 +1,7 @@
 import type { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
 
 import { Chain, Currency, Language } from "utils/constants";
+import { Theme } from "./functions";
 
 export interface ChainProps {
   address: string;
@@ -150,4 +151,13 @@ export interface VaultProps {
   publicKeyEddsa: string;
   totalPoints: number;
   uid: string;
+}
+
+export interface SharedSettings {
+  logo: string;
+  theme: Theme;
+  publicKeyEcdsa?: string;
+  publicKeyEddsa?: string;
+  uid?: string;
+  hexChainCode?: string;
 }

@@ -63,6 +63,8 @@ export const storageKey = keyMirror({
   CURRENCY: true,
   LANGUAGE: true,
   VAULTS: true,
+  SHARED_LOGO: true,
+  SHARED_THEME: true,
 });
 
 export const errorKey = keyMirror({
@@ -85,6 +87,7 @@ export const errorKey = keyMirror({
   INVALID_REQUEST: true,
   INVALID_TOKEN: true,
   INVALID_VAULT: true,
+  LOGO_TOO_LARGE:true,
   VAULT_ALREADY_REGISTERED: true,
   VAULT_NOT_FOUND: true,
   UNKNOWN_ERROR: true,

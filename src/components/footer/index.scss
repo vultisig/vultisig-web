@@ -1,0 +1,33 @@
+.footer-container {
+    border-top: 1px solid $blue-light;
+    background-color: $blue-dark;
+    align-items: center;
+    display: flex;
+    height: 6.25rem;
+    justify-content: space-between;
+    min-width: 22.5rem;
+    padding: 1.875rem 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+
+    a {
+        color: $cyan-light;
+    }
+}
+
+html[theme="Dark"] {
+  .footer-container {
+    background-color: $gray-13;
+    border-top: 1px solid $gray-11;
+  }
+}
+
+html[theme="Light"] {
+  .footer-container {
+    background-color: $gray-1;
+    color: $gray-8;
+    border-top: 1px solid $gray-5;
+  }
+}

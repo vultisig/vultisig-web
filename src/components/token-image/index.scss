@@ -18,3 +18,19 @@
     opacity: 0;
   }
 }
+
+html[theme="Dark"] {
+  .token-image {
+    &:where(span) {
+      background-color: $gray-5;
+    }
+  }
+}
+
+html[theme="Light"] {
+  .token-image {
+    &:where(span) {
+      background-color: $gray-5;
+    }
+  }
+}

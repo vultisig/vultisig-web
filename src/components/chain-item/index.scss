@@ -90,6 +90,32 @@
   }
 }
 
+html[theme="Dark"] {
+  .chain-item {
+    background-color: $gray-12;
+    color: $gray-1;
+  }
+  .chains-page .breadcrumb .ant-input {
+    background-color: $gray-12;
+  }
+}
+
+html[theme="Light"] {
+  .chain-item {
+    background-color: $gray-3;
+    color: $gray-8;
+    .token-image {
+      border: 1px solid #dedede;
+      border-radius: 50%;
+    }
+    .arrow {
+      svg {
+        fill: $gray-6;
+      }
+    }
+  }
+}
+
 @media (min-width: 48rem) {
   .chain-item {
     display: flex;
