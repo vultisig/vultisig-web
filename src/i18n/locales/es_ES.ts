@@ -29,6 +29,7 @@ export default {
   // O
   [translation.OTHER]: "Otro",
   // P
+  [translation.POWERED_BY]: "Impulsado por",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Elimina tu bóveda de la web",
@@ -41,6 +42,13 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "BÓVEDA CRIPTO SEGURA",
   [translation.SHARE_VAULT]: "Comparte la Vault",
+  [translation.SHARE_SETTINGS_TITLE]: "Personaliza tus páginas de bóveda compartida",
+  [translation.SHARE_SETTINGS]: "Personalizar la apariencia de la bóveda compartida",
+  [translation.SHARE_VAULT_THEME]: "Tema de la bóveda compartida",
+  [translation.SHARE_VAULT_LOGO]: "Logotipo de la bóveda compartida",
+  [translation.SHARE_CURRENT_LOGO]: "Tu logotipo actual",
+  [translation.SHARE_UPLOAD_LOGO]: "Sube tu logotipo",
+  //T
   [translation.TOTAL_BALANCE]: "Saldo total",
   // U
   [translation.UPLOAD_IT]: "cárgalo",

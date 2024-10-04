@@ -25,7 +25,13 @@ import {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
-import { getBalance, getValue, getVaults, setVaults } from "utils/vault";
+import {
+  getBalance,
+  getValue,
+  getVaults,
+  setVaults,
+  setSharedSettings,
+} from "utils/vault";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
@@ -37,6 +43,7 @@ import ChangeLanguage from "modals/change-language";
 import DeleteVault from "modals/delete-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
+import ShareSettings from "modals/share-settings";
 import JoinAirDrop from "modals/join-airdrop";
 
 interface VaultContext {
@@ -690,6 +697,10 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
             loaded: true,
           }));
 
+          api.sharedSettings.get(vault.uid).then(({ data }) => {
+            setSharedSettings(data.logo, data.theme);
+          });
+
           setVaults(vaults);
         } else {
           navigate(constantPaths.import);
@@ -720,7 +731,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       {loaded ? (
         <>
           <div className="layout">
-            <Header uid={vault?.uid} />
+            <Header uid={vault?.uid} alias={vault?.alias} />
             {children}
           </div>
           <ChangeCurrency onChange={changeCurrency} />
@@ -728,6 +739,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           <DeleteVault delVault={delVault} vault={vault} />
           <RenameVault setVault={setVault} vault={vault} />
           <VaultSettings vault={vault} />
+          <ShareSettings vault={vault}/>
           <Preloader visible={loading} />
           <JoinAirDrop/>
         </>

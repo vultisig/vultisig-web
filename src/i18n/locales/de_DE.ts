@@ -29,6 +29,7 @@ export default {
   // O
   [translation.OTHER]: "Andere",
   // P
+  [translation.POWERED_BY]: "Angetrieben von",
   // Q
   // R
   [translation.REMOVE_VAULT]: "Entfernen Sie Ihren Tresor aus dem Web",
@@ -41,6 +42,13 @@ export default {
   [translation.SAVE]: "Speichern",
   [translation.SECURE_CRYPTO_VAULT]: "SICHERER KRYPTO-TRESOR",
   [translation.SHARE_VAULT]: "Vault teilen",
+  [translation.SHARE_SETTINGS_TITLE]: "Personalisieren Sie Ihre freigegebenen Tresorseiten",
+  [translation.SHARE_SETTINGS]: "Freigegebenes Tresoraussehen anpassen",
+  [translation.SHARE_VAULT_THEME]: "Freigegebenes Tresorthema",
+  [translation.SHARE_VAULT_LOGO]: "Freigegebenes Tresorlogo",
+  [translation.SHARE_CURRENT_LOGO]: "Ihr aktuelles Logo",
+  [translation.SHARE_UPLOAD_LOGO]: "Laden Sie Ihr Logo hoch",
+  //T
   [translation.TOTAL_BALANCE]: "Gesamtguthaben",
   // U
   [translation.UPLOAD_IT]: "hochladen",

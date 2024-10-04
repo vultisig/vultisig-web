@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Chain, Currency, balanceAPI, storageKey } from "utils/constants";
-import { CoinProps, VaultProps } from "utils/interfaces";
+import { CoinProps, SharedSettings, VaultProps } from "utils/interfaces";
 import api from "utils/api";
+import { Theme } from "./functions";
 
 export const getBalance = (
   coin: CoinProps,
@@ -257,4 +258,33 @@ export const getAmount = (path: string, address: string, dom: string, coin: Coin
     .catch(() => {
       resolve({ ...coin, balance: 0 });
     });
-}
+};
+
+export const setSharedSettings = (logo: string, theme: string): void => {
+  localStorage.setItem(storageKey.SHARED_LOGO, logo);
+  localStorage.setItem(storageKey.SHARED_THEME, theme);
+};
+
+export const getSharedSettings = (): SharedSettings => {
+
+  let t : Theme;
+  switch (localStorage.getItem(storageKey.SHARED_THEME)) {
+    case Theme.VULTISIG:
+      t = Theme.VULTISIG;
+      break;
+    case Theme.DARK:
+      t = Theme.DARK;
+      break;
+    case Theme.LIGHT:
+      t = Theme.LIGHT;
+      break;
+    default:
+      t = Theme.VULTISIG;
+      break;
+  }
+
+  return {
+    logo: localStorage.getItem(storageKey.SHARED_LOGO) || "",
+    theme: t,
+  };
+};

@@ -14,7 +14,7 @@ const Component: FC = () => {
   const { vault } = useSharedContext();
 
   return vault ? (
-    <div className="layout-content chains-page">
+    <div className="layout-content chains-page theme">
       <div className="breadcrumb">
         <Input value={vault.alias || ""} readOnly />
       </div>

@@ -1,8 +1,6 @@
 .modal-delete-vault {
-
   .vault-name-container {
     text-align: center;
-
   }
 
   .ant-input {
@@ -34,5 +32,12 @@
     margin: 1.5rem auto;
     text-align: center;
     width: 14rem;
+  }
+}
+html[theme="Light"] {
+  .modal-delete-vault {
+    .warning {
+      color: $gray-8 !important;
+    }
   }
 }

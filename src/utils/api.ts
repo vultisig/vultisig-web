@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import { toCamelCase, toSnakeCase } from "utils/case-converter";
+import { toCamelCase, toSnakeCase } from "utils/functions";
 import { Currency, errorKey } from "utils/constants";
-import { CoinParams, CoinProps, VaultProps } from "utils/interfaces";
+import { CoinParams, CoinProps, SharedSettings, VaultProps } from "utils/interfaces";
 
 //import paths from "routes/constant-paths";
 
@@ -283,6 +283,19 @@ export default {
       return await api.post(
         `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
         toSnakeCase(params)
+      );
+    },
+  },
+  sharedSettings: {
+    set: async (params: SharedSettings) => {
+      return await api.post(
+        "vault/theme",
+        toSnakeCase(params)
+      );
+    },
+    get: async (uid: string) => {
+      return await api.get<SharedSettings>(
+        `vault/theme/${uid}`
       );
     },
   },

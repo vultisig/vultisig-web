@@ -72,7 +72,15 @@ const Component = () => {
           element: <SharedChainsPage />,
         },
         {
+          path: constantPaths.shared.chainsAlias,
+          element: <SharedChainsPage />,
+        },
+        {
           path: constantPaths.shared.assets,
+          element: <SharedAssetsPage />,
+        },
+        {
+          path: constantPaths.shared.assetsAlias,
           element: <SharedAssetsPage />,
         },
         {

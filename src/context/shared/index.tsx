@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBaseContext } from "context/base";
 import { Currency } from "utils/constants";
 import { CoinProps, VaultProps } from "utils/interfaces";
-import { getBalance, getValue } from "utils/vault";
+import { getBalance, getSharedSettings, getValue, setSharedSettings } from "utils/vault";
 import api from "utils/api";
 import constantPaths from "routes/constant-paths";
 
@@ -20,6 +20,8 @@ import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
+import Footer from "components/footer";
+import { changeTheme } from "utils/functions";
 
 interface SharedContext {
   vault?: VaultProps;
@@ -92,6 +94,12 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         .catch(() => {
           navigate(constantPaths.root);
         });
+
+      api.sharedSettings.get(uid).then(({ data }) => {
+        setSharedSettings(data.logo, data.theme);
+        changeTheme(data.theme)
+      });
+
     } else {
       navigate(constantPaths.root);
     }
@@ -104,8 +112,9 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       {loaded ? (
         <>
           <div className="layout">
-            <Header />
+            <Header logo={getSharedSettings().logo}/>
             {children}
+            <Footer />
           </div>
           <ChangeCurrency onChange={changeCurrency} />
           <ChangeLanguage />

@@ -57,3 +57,29 @@
     }
   }
 }
+
+html[theme="Dark"] {
+  .chains-page {
+    .breadcrumb {
+      .add {
+        color: $gray-5;
+      }
+      .ant-input {
+        background-color: $gray-12;
+      }
+    }
+  }
+}
+
+html[theme="Light"] {
+  .chains-page {
+    .add {
+      color: $gray-8;
+    }
+    .breadcrumb {
+      .add {
+        color: $gray-5;
+      }
+    }
+  }
+}
