@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Empty, Input } from "antd";
+import { Empty } from "antd";
 
 import { useBaseContext } from "context/base";
 import { useSharedContext } from "context/shared";
@@ -15,9 +15,6 @@ const Component: FC = () => {
 
   return vault ? (
     <div className="layout-content chains-page theme">
-      <div className="breadcrumb">
-        <Input value={vault.alias || ""} readOnly />
-      </div>
       <div className="total-balance">
         <span className="title">{t(translation.TOTAL_BALANCE)}</span>
         <span className="value">
