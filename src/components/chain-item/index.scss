@@ -98,6 +98,11 @@ html[theme="Dark"] {
   .chains-page .breadcrumb .ant-input {
     background-color: $gray-12;
   }
+  .asset {
+    &.multi {
+      background-color: $gray-10;
+    }
+  }
 }
 
 html[theme="Light"] {
@@ -112,6 +117,11 @@ html[theme="Light"] {
       svg {
         fill: $gray-6;
       }
+    }
+  }
+  .asset {
+    &.multi {
+      background-color: $gray-5;
     }
   }
 }

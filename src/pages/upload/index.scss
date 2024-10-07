@@ -1,4 +1,4 @@
-.import-page {
+.upload-page {
   margin: 0 auto;
   max-width: 42rem;
   min-height: 100vh;
@@ -17,6 +17,41 @@
       padding: 0rem 0.4rem 0.4rem 0.4rem;
     }
   }
+  .ant-upload-btn {
+    display: block !important;
+    padding: 3rem 1rem !important;
+  }
+
+  .ant-upload-drag-container {
+    display: block !important;
+  }
+
+  .ant-upload-drag {
+    background-color: rgba($color: $cyan-base, $alpha: 0.1);
+    border-color: $cyan-base;
+    color: $gray-1;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: rgba($color: $cyan-base, $alpha: 0.2);
+    }
+  }
+
+  .ant-upload-wrapper {
+    &.error {
+      .ant-upload-drag {
+        background-color: rgba($color: $red-dark, $alpha: 0.1);
+        border-color: $red-base;
+        border-style: solid;
+      }
+    }
+
+    &.success {
+      .ant-upload-drag {
+        border-style: solid;
+      }
+    }
+  }
 
   .logo {
     margin: 0 auto 3rem;
@@ -26,7 +61,6 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    line-height: rem(36);
   }
 
   .icon {
@@ -48,6 +82,24 @@
     }
   }
 
+  .close {
+    height: 0.875rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    width: 0.875rem;
+
+    svg {
+      fill: $gray-1;
+    }
+  }
+
+  .image {
+    height: 8rem;
+    margin: 0 auto 1.5rem;
+    max-width: 100%;
+  }
+
   .name {
     font-weight: 700;
     overflow: hidden;
@@ -64,12 +116,6 @@
   .hint {
     font-size: 0.875rem;
     margin: 2rem 0;
-  }
-
-  .ant-btn{
-    +.ant-btn{
-      margin-top: rem(28);
-    }
   }
 
   .download {
@@ -113,15 +159,15 @@
   .wrapper {
     background-color: $blue-base;
     border-radius: 0.75rem;
-    padding: rem(36) rem(48);
+    padding: 2rem;
   }
 }
 
 html[theme="Dark"] {
+  .wrapper {
+    background-color: $gray-12;
+  }
   .import-page {
-    .wrapper {
-      background-color: $gray-12;
-    }
     .logo-container {
       .text {
         fill: $gray-1;
@@ -137,10 +183,10 @@ html[theme="Dark"] {
 }
 
 html[theme="Light"] {
+  .wrapper {
+    background-color: $gray-3;
+  }
   .import-page {
-    .wrapper {
-      background-color: $gray-3;
-    }
     .logo-container {
       .text {
         fill: $gray-8;
@@ -152,22 +198,23 @@ html[theme="Light"] {
         background-color: $gray-6;
       }
     }
-    .close {
-      svg {
-        fill: $gray-8;
-      }
+  }
+
+  .close {
+    svg {
+      fill: $gray-8;
     }
-    .ant-upload-drag-container {
-      .title,
-      .text {
-        color: $gray-8;
-      }
+  }
+  .ant-upload-drag-container {
+    .title,
+    .text {
+      color: $gray-8;
     }
   }
 }
 
 @media (min-width: 576px) {
-  .import-page {
+  .upload-page {
     .download {
       flex-direction: row;
     }

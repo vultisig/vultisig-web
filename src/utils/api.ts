@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { toCamelCase, toSnakeCase } from "utils/functions";
-import { Currency, errorKey } from "utils/constants";
+import { Currency } from "utils/constants";
 import { CoinParams, CoinProps, SharedSettings, VaultProps } from "utils/interfaces";
 
 //import paths from "routes/constant-paths";
@@ -253,15 +253,15 @@ export default {
     },
   },
   vault: {
-    add: (params: VaultProps): Promise<void> => {
+    add: (params: VaultProps): Promise<VaultProps> => {
       return new Promise((resolve, reject) => {
         api
-          .post("vault", toSnakeCase(params))
-          .then(() => {
-            resolve();
+          .post<VaultProps>("vault", toSnakeCase(params))
+          .then(({data}) => {
+            resolve(data);
           })
-          .catch((error) => {
-            error === errorKey.VAULT_ALREADY_REGISTERED ? resolve() : reject();
+          .catch(() => {
+            reject();//error === errorKey.VAULT_ALREADY_REGISTERED ? resolve() : reject();
           });
       });
     },

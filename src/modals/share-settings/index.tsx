@@ -130,6 +130,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         errorMessage = "Logo size exceeds the maximum allowed limit of 30KB";
         break;
       default:
+        
         console.error("Someting is wrong");
         errorMessage = "Someting is wrong";
         break;
@@ -287,6 +288,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         <h4 className="title error">{state.error_Status}</h4>
       ) : null}
       <Button
+      shape="round"
         disabled={status !== "success"}
         loading={loading}
         onClick={handleSave}

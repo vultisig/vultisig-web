@@ -173,12 +173,22 @@ const Component: FC<ComponentProps> = ({ uid, alias,logo }) => {
     <>
       <div className="layout-header">
         <Link to={constantPaths.root} className="logo">
-          {logo ? (
-            <img className="shape" src={logo} />
+          {uid ? (
+            <>
+              <Vultisig className="shape" />
+              <VultisigText className="text" />
+            </>
           ) : (
-            <Vultisig className="shape" />
+            <>
+              {logo ? (
+                <img className="shape" src={logo} />
+              ) : (
+                <Vultisig className="shape" />
+              )}
+
+              <h1 className="shared-vault-name">{alias}</h1>
+            </>
           )}
-          <VultisigText className="text" />
         </Link>
         <Dropdown menu={{ items }} className="menu">
           <Button type="link">

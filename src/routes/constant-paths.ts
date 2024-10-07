@@ -4,6 +4,7 @@ export default {
   assets: "/chains/:chainKey",
   chains: "/chains",
   import: "/import",
+  upload: "/upload",
   shared: {
     root: "/shared",
     chains: "/shared/:uid",

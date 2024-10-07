@@ -112,7 +112,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       {loaded ? (
         <>
           <div className="layout">
-            <Header logo={getSharedSettings().logo}/>
+            <Header logo={getSharedSettings().logo} alias={vault?.alias} />
             {children}
             <Footer />
           </div>
