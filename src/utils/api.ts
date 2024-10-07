@@ -1,8 +1,13 @@
 import axios from "axios";
 
 import { toCamelCase, toSnakeCase } from "utils/functions";
-import { Currency } from "utils/constants";
-import { CoinParams, CoinProps, SharedSettings, VaultProps } from "utils/interfaces";
+import { Currency, errorKey } from "utils/constants";
+import {
+  CoinParams,
+  CoinProps,
+  SharedSettings,
+  VaultProps,
+} from "utils/interfaces";
 
 //import paths from "routes/constant-paths";
 
@@ -169,7 +174,7 @@ namespace OneInch {
   }
 }
 
-export default {
+const service = {
   airdrop: {
     join: async (params: VaultProps) => {
       return await api.post("vault/join-airdrop", toSnakeCase(params));
@@ -257,11 +262,21 @@ export default {
       return new Promise((resolve, reject) => {
         api
           .post<VaultProps>("vault", toSnakeCase(params))
-          .then(({data}) => {
-            resolve(data);
+          .then(() => {
+            service.vault
+              .get(params)
+              .then(({ data }) => resolve(data))
+              .catch(reject);
           })
-          .catch(() => {
-            reject();//error === errorKey.VAULT_ALREADY_REGISTERED ? resolve() : reject();
+          .catch((error) => {
+            if (error === errorKey.VAULT_ALREADY_REGISTERED) {
+              service.vault
+                .get(params)
+                .then(({ data }) => resolve(data))
+                .catch(reject);
+            } else {
+              reject();
+            }
           });
       });
     },
@@ -271,9 +286,9 @@ export default {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    get: async ({ publicKeyEcdsa, publicKeyEddsa }: VaultProps) => {
+    get: async (params: VaultProps) => {
       return await api.get<VaultProps>(
-        `vault/${publicKeyEcdsa}/${publicKeyEddsa}`
+        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}`
       );
     },
     getById: async (id: string) => {
@@ -288,15 +303,10 @@ export default {
   },
   sharedSettings: {
     set: async (params: SharedSettings) => {
-      return await api.post(
-        "vault/theme",
-        toSnakeCase(params)
-      );
+      return await api.post("vault/theme", toSnakeCase(params));
     },
     get: async (uid: string) => {
-      return await api.get<SharedSettings>(
-        `vault/theme/${uid}`
-      );
+      return await api.get<SharedSettings>(`vault/theme/${uid}`);
     },
   },
   derivePublicKey: async (params: Derivation.Params) => {
@@ -311,3 +321,5 @@ export default {
     );
   },
 };
+
+export default service;
