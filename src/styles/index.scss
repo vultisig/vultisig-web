@@ -273,6 +273,12 @@ body {
         width: 9rem !important;
         padding: 0.4rem;
       }
+      .shared-vault-name{
+        color: $gray-1;
+        font-size: 27pt;
+        padding: 0.4rem;
+        font-weight: 100;
+      }
     }
 
     .menu {
@@ -461,6 +467,9 @@ html[theme="Light"] {
     .logo {
       .text {
         fill: $gray-8;
+      }
+      .shared-vault-name{
+        color: $gray-8;
       }
     }
   }
