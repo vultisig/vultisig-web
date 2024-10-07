@@ -13,6 +13,7 @@ import VaultLayout from "layout/vault";
 
 import AssetPage from "pages/assets";
 import ChainsPage from "pages/chains";
+import UploadPage from "pages/upload";
 import ImportPage from "pages/import";
 
 import SharedAssetsPage from "pages/shared/assets";
@@ -58,6 +59,10 @@ const Component = () => {
     {
       path: constantPaths.import,
       element: <ImportPage />,
+    },
+    {
+      path: constantPaths.upload,
+      element: <UploadPage />,
     },
     {
       path: constantPaths.shared.root,

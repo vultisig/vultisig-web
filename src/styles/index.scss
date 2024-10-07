@@ -24,6 +24,7 @@
 @import "../pages/assets";
 @import "../pages/chains";
 @import "../pages/import";
+@import "../pages/upload";
 
 body {
   background-color: $blue-dark;
@@ -46,18 +47,38 @@ body {
   }
 }
 
+.ant-btn-default {
+  background-color: $blue-base !important;
+  border-color: $cyan-base;
+  color: $cyan-base;
+
+  &:hover {
+    box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
+  }
+}
+
+.ant-btn-primary {
+  border: none;
+  color: $blue-dark !important;
+}
+
+.ant-btn {
+  font-weight: 700;
+  height: 2.5rem;
+
+  &:disabled {
+    background-color: $blue-dark !important;
+    box-shadow: none;
+    color: $gray-8 !important;
+    cursor: default;
+    border: none;
+  }
+}
+
 .ant-btn-link {
   border: none;
   height: auto;
   padding: 0;
-}
-
-.ant-btn-primary {
-  background-color: $cyan-base;
-}
-
-.ant-btn-primary:hover {
-  background-color: $cyan-light !important;
 }
 
 .ant-drawer {
@@ -273,7 +294,7 @@ body {
         width: 9rem !important;
         padding: 0.4rem;
       }
-      .shared-vault-name{
+      .shared-vault-name {
         color: $gray-1;
         font-size: 27pt;
         padding: 0.4rem;
@@ -422,6 +443,22 @@ html[theme="Dark"] {
     }
   }
 
+  .ant-btn-default {
+    background-color: $gray-11 !important;
+  }
+  
+  .ant-btn-primary {
+    color: $gray-11 !important;
+  }
+  
+  .ant-btn {
+  
+    &:disabled {
+      background-color: $gray-9 !important;
+      color: $gray-6 !important;
+    }
+  }
+
   .ant-tooltip-inner {
     background-color: $gray-10 !important;
     color: $gray-1;
@@ -468,7 +505,7 @@ html[theme="Light"] {
       .text {
         fill: $gray-8;
       }
-      .shared-vault-name{
+      .shared-vault-name {
         color: $gray-8;
       }
     }
@@ -568,6 +605,22 @@ html[theme="Light"] {
     }
   }
 
+  .ant-btn-default {
+    background-color: $gray-3 !important;
+  }
+  
+  .ant-btn-primary {
+    color: $gray-1 !important;
+  }
+  
+  .ant-btn {
+  
+    &:disabled {
+      background-color: $gray-5 !important;
+      color: $gray-3 !important;
+    }
+  }
+
   .ant-modal-content {
     background-color: $gray-5;
     .ant-modal-header {
@@ -587,10 +640,10 @@ html[theme="Light"] {
         color: $gray-12;
       }
     }
-    .ant-typography{
+    .ant-typography {
       color: $gray-8;
     }
-    .ant-qrcode{
+    .ant-qrcode {
       background-color: $gray-7 !important;
     }
   }
@@ -600,7 +653,7 @@ html[theme="Light"] {
       background-color: $gray-1;
       border-bottom: solid 1px $gray-5;
     }
-    .add{
+    .add {
       color: $gray-8;
     }
     .menu {
