@@ -127,7 +127,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         break;
       case errorKey.LOGO_TOO_LARGE:
         console.error("logo too large");
-        errorMessage = "Logo size exceeds the maximum allowed limit of 30KB";
+        errorMessage = "Logo size exceeds the maximum allowed limit of 100KB";
         break;
       default:
         
