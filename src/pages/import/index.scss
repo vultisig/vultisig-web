@@ -4,6 +4,7 @@
   min-height: 100vh;
   padding: 3rem 1rem;
   text-align: center;
+
   .logo-container {
     display: flex;
     justify-content: center;
@@ -66,8 +67,8 @@
     margin: 2rem 0;
   }
 
-  .ant-btn{
-    +.ant-btn{
+  .ant-btn {
+    + .ant-btn {
       margin-top: rem(28);
     }
   }

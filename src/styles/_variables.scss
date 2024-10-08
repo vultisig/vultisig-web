@@ -1,8 +1,16 @@
 ﻿@use "sass:math";
 
+$opacity-03: #0a1932;
+$opacity-05: #0f1e36;
+$opacity-10: #0f1e36;
+$opacity-15: #28354b;
+$opacity-50: #818995;
+
 $blue-light: #11284a;
 $blue-base: #061b3a;
 $blue-dark: #02122b;
+$blue-persian: #4879fd;
+$blue-sharp: #0439c7;
 $cyan-base: #33e6bf;
 $cyan-light: #2ed5c0;
 $cyan-dark: #2ed5c0;
@@ -25,6 +33,12 @@ $gray-10: #262626;
 $gray-11: #1f1f1f;
 $gray-12: #141414;
 $gray-13: #000000;
+
+$box-shadow: "0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2)";
+$linear-gradient: linear-gradient(102deg, $cyan-base 14%, $blue-sharp 140%);
+
+$primary-font: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
+$secondary-font: "Menlo", Tahoma, Geneva, Verdana, sans-serif;
 
 @function rem($px, $base: 16) {
   @return #{math.div($px, $base)}rem;

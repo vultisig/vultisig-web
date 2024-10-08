@@ -27,7 +27,7 @@ export default keyMirror({
   // O
   OTHER: true,
   // P
-  POWERED_BY:true,
+  POWERED_BY: true,
   // R
   REMOVE_VAULT: true,
   REMOVE_VAULT_TITLE: true,
@@ -45,9 +45,13 @@ export default keyMirror({
   SHARE_VAULT_LOGO: true,
   SHARE_CURRENT_LOGO: true,
   SHARE_UPLOAD_LOGO: true,
+  SUCCESSFUL_COPY_LINK: true,
+  SUCCESSFUL_COPY_TEXT: true,
   //T
   TOTAL_BALANCE: true,
   // U
+  UNSUCCESSFUL_COPY_LINK: true,
+  UNSUCCESSFUL_COPY_TEXT: true,
   UPLOAD_IT: true,
   UPLOAD_QR_CODE: true,
   UPLOAD_VAULT_SHARE: true,

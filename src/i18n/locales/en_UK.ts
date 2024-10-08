@@ -47,9 +47,13 @@ export default {
   [translation.SHARE_VAULT_LOGO]: "Shared Vault Logo",
   [translation.SHARE_CURRENT_LOGO]: "Your Current Logo",
   [translation.SHARE_UPLOAD_LOGO]: "Upload Your Logo",
+  [translation.SUCCESSFUL_COPY_LINK]: "Link copied to clipboard",
+  [translation.SUCCESSFUL_COPY_TEXT]: "Text copied to clipboard",
   //T
   [translation.TOTAL_BALANCE]: "Total Balance",
   // U
+  [translation.UNSUCCESSFUL_COPY_LINK]: "Failed to copy link",
+  [translation.UNSUCCESSFUL_COPY_TEXT]: "Failed to copy text",
   [translation.UPLOAD_IT]: "upload it",
   [translation.UPLOAD_QR_CODE]: "Upload your QR code here",
   [translation.UPLOAD_VAULT_SHARE]: "Upload your Vultisig Public Key to start",

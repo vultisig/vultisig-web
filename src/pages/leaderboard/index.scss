@@ -1,0 +1,282 @@
+.leaderboard-page {
+  .breadcrumb {
+    border-bottom: solid rem(1) $opacity-10;
+    display: flex;
+    flex-direction: column;
+    gap: rem(16);
+    justify-content: space-between;
+    margin-bottom: rem(32);
+    padding-bottom: rem(32);
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      height: rem(48);
+      justify-content: space-between;
+      position: relative;
+
+      .icon {
+        height: rem(48);
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .label {
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+      }
+
+      .value {
+        color: $cyan-base;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+      }
+    }
+
+    .divider {
+      background-color: $opacity-10;
+      width: rem(1);
+    }
+
+    .rank {
+      padding-left: rem(64);
+    }
+
+    .result {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .vault {
+      background-color: $blue-base;
+      border-radius: rem(8);
+      cursor: pointer;
+      display: block;
+      height: rem(48);
+      line-height: rem(48);
+      padding: 0 rem(16);
+    }
+  }
+
+  .board {
+    background-color: $opacity-03;
+    border-radius: rem(24);
+    padding: rem(16);
+
+    .icon {
+      margin: 0 auto;
+    }
+
+    .point {
+      .avatar {
+        background-color: $cyan-base;
+        border-radius: 50%;
+        display: block;
+        height: rem(48);
+        margin: 0 auto rem(8);
+        width: rem(48);
+      }
+
+      .name {
+        color: $gray-1;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        text-align: center;
+      }
+
+      .value {
+        color: $cyan-base;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        text-align: center;
+      }
+    }
+
+    .rank {
+      .value {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+        text-align: center;
+      }
+
+      .price {
+        color: $gray-5;
+        display: block;
+        font-size: rem(20);
+        font-weight: 700;
+        line-height: rem(30);
+        margin-top: rem(4);
+        text-align: center;
+      }
+    }
+
+    .item {
+      align-items: center;
+      background-color: $blue-base;
+      border-radius: rem(8);
+      display: flex;
+      flex-direction: column;
+      gap: rem(16);
+      justify-content: space-between;
+      padding: rem(16) rem(24);
+
+      + .item {
+        margin-top: rem(16);
+      }
+    }
+
+    .divider {
+      background-color: transparent;
+      border: dashed rem(1) $blue-light;
+      justify-content: center;
+
+      .stats {
+        .numb {
+          color: $gray-5;
+          display: block;
+          font-size: rem(16);
+          font-weight: 700;
+          line-height: rem(22);
+          text-align: center;
+        }
+
+        .more {
+          color: rgba($color: $gray-1, $alpha: 0.6);
+          display: block;
+          font-size: rem(14);
+          font-weight: 500;
+          line-height: rem(22);
+          margin-top: rem(4);
+          text-align: center;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .active {
+      background-color: $blue-persian;
+    }
+
+    .list {
+      + .list {
+        margin-top: rem(16);
+      }
+
+      &.top {
+        background-image: $linear-gradient;
+        border-radius: rem(24);
+        margin: rem(-16) rem(-16) 0 rem(-16);
+        padding: rem(16);
+        position: relative;
+
+        .item {
+          border: solid rem(1) $opacity-15;
+          position: relative;
+        }
+
+        &::before {
+          background-color: $opacity-05;
+          border-radius: rem(24);
+          bottom: rem(1);
+          content: "";
+          left: rem(1);
+          position: absolute;
+          right: rem(1);
+          top: rem(1);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .leaderboard-page {
+    .board {
+      .icon {
+        left: rem(24);
+        margin: 0;
+        position: absolute;
+        top: rem(16);
+      }
+
+      .point {
+        padding-left: rem(64);
+        position: relative;
+
+        .avatar {
+          left: 0;
+          margin: 0;
+          position: absolute;
+          top: 0;
+        }
+
+        .name {
+          text-align: left;
+        }
+
+        .value {
+          text-align: left;
+        }
+      }
+
+      .rank {
+        .value {
+          text-align: right;
+        }
+
+        .price {
+          text-align: right;
+        }
+      }
+
+      .item {
+        flex-direction: row;
+        height: rem(100);
+      }
+
+      .list {
+        &.top {
+          .item {
+            padding-left: rem(112);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .leaderboard-page {
+    .breadcrumb {
+      flex-direction: row;
+
+      .result {
+        gap: rem(24);
+      }
+
+      .vault {
+        width: rem(328);
+      }
+    }
+  }
+}
+
+html[theme="Dark"] {
+  .leaderboard-page {
+  }
+}
+
+html[theme="Light"] {
+  .leaderboard-page {
+  }
+}
