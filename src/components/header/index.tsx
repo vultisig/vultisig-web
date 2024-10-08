@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Dropdown, MenuProps, message } from "antd";
 import { useTranslation } from "react-i18next";
+import MediaQuery from "react-responsive";
 
 import { useBaseContext } from "context/base";
 import { Language, languageName } from "utils/constants";
@@ -9,7 +10,8 @@ import i18n from "i18n/config";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
-import { Vultisig, VultisigText } from "icons";
+
+import { Vultisig } from "icons";
 
 import {
   ChainOutlined,
@@ -24,13 +26,14 @@ import {
 interface ComponentProps {
   uid?: string;
   alias?: string;
-  logo?:string;
+  logo?: string;
 }
 
-const Component: FC<ComponentProps> = ({ uid, alias,logo }) => {
+const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
   const { t } = useTranslation();
   const [messageApi, contextHolder] = message.useMessage();
   const { currency } = useBaseContext();
+  const { pathname } = useLocation();
   let language: Language;
 
   const handleShare = (): void => {
@@ -39,13 +42,13 @@ const Component: FC<ComponentProps> = ({ uid, alias,logo }) => {
       .then(() => {
         messageApi.open({
           type: "success",
-          content: "Share link copied to clipboard",
+          content: t(translation.SUCCESSFUL_COPY_LINK),
         });
       })
       .catch(() => {
         messageApi.open({
           type: "error",
-          content: "Failed to copy share link",
+          content: t(translation.UNSUCCESSFUL_COPY_LINK),
         });
       });
   };
@@ -172,11 +175,18 @@ const Component: FC<ComponentProps> = ({ uid, alias,logo }) => {
   return (
     <>
       <div className="layout-header">
+        <Dropdown menu={{ items }} className="menu">
+          <Button type="link">
+            <UserOutlined />
+          </Button>
+        </Dropdown>
+
         <Link to={constantPaths.root} className="logo">
           {uid ? (
             <>
               <Vultisig className="shape" />
-              <VultisigText className="text" />
+
+              <span className="name">Vultisig</span>
             </>
           ) : (
             <>
@@ -186,15 +196,41 @@ const Component: FC<ComponentProps> = ({ uid, alias,logo }) => {
                 <Vultisig className="shape" />
               )}
 
-              <h1 className="shared-vault-name">{alias}</h1>
+              <span className="name">{alias}</span>
             </>
           )}
         </Link>
-        <Dropdown menu={{ items }} className="menu">
-          <Button type="link">
-            <UserOutlined />
-          </Button>
-        </Dropdown>
+
+        {uid && (
+          <MediaQuery minWidth={992}>
+            <div className="navbar">
+              <Link
+                to={constantPaths.chains}
+                className={`${
+                  pathname === constantPaths.chains ? "active" : ""
+                }`}
+              >
+                Balances
+              </Link>
+              <Link
+                to={constantPaths.positions}
+                className={`${
+                  pathname === constantPaths.positions ? "active" : ""
+                }`}
+              >
+                Active Positions
+              </Link>
+              <Link
+                to={constantPaths.leaderboard}
+                className={`${
+                  pathname === constantPaths.leaderboard ? "active" : ""
+                }`}
+              >
+                Airdrop Leaderboard
+              </Link>
+            </div>
+          </MediaQuery>
+        )}
       </div>
 
       {contextHolder}

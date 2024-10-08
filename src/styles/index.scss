@@ -1,16 +1,18 @@
 @use "sass:math";
 
 @import "_normalize";
+@import "_menlo";
 @import "_montserrat";
 @import "_variables";
 
 @import "../components/asset-item";
 @import "../components/chain-item";
+@import "../components/footer";
 @import "../components/preloader";
 @import "../components/splash-screen";
 @import "../components/token-actions";
 @import "../components/token-image";
-@import "../components/footer";
+@import "../components/vulti-loading";
 
 @import "../modals/change-currency";
 @import "../modals/change-language";
@@ -24,18 +26,19 @@
 @import "../pages/assets";
 @import "../pages/chains";
 @import "../pages/import";
+@import "../pages/leaderboard";
 @import "../pages/upload";
 
 body {
   background-color: $blue-dark;
   color: $gray-1;
   font-family: "Montserrat";
-  min-width: 22.5rem;
+  min-width: rem(360);
   overflow-x: hidden;
 
   &::-webkit-scrollbar {
     background-color: $blue-base;
-    width: 0.5rem;
+    width: rem(8);
   }
 
   &::-webkit-scrollbar-corner {
@@ -48,9 +51,26 @@ body {
 }
 
 .ant-btn-default {
-  background-color: $blue-base !important;
+  background-image: $linear-gradient !important;
   border-color: $cyan-base;
   color: $cyan-base;
+
+  span {
+    background-image: $linear-gradient;
+    background-clip: text;
+    color: transparent;
+  }
+
+  &::before {
+    background-color: $blue-base;
+    border-radius: rem(24);
+    bottom: rem(1);
+    content: "";
+    left: rem(1);
+    position: absolute;
+    right: rem(1);
+    top: rem(1);
+  }
 
   &:hover {
     box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
@@ -58,27 +78,63 @@ body {
 }
 
 .ant-btn-primary {
-  border: none;
+  background-color: $cyan-base;
   color: $blue-dark !important;
-}
 
-.ant-btn {
-  font-weight: 700;
-  height: 2.5rem;
+  &::before {
+    background-image: $linear-gradient;
+    border-radius: rem(24);
+    bottom: 0;
+    content: "";
+    left: 0;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity 0.3s;
+  }
 
-  &:disabled {
-    background-color: $blue-dark !important;
-    box-shadow: none;
-    color: $gray-8 !important;
-    cursor: default;
-    border: none;
+  &:hover {
+    &::before {
+      opacity: 0;
+    }
   }
 }
 
 .ant-btn-link {
-  border: none;
-  height: auto;
+  height: auto !important;
   padding: 0;
+}
+
+.ant-btn {
+  border: none;
+  box-shadow: none;
+  font-weight: 700;
+  height: rem(40);
+  position: relative;
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:disabled {
+    background-color: $blue-dark !important;
+    background-image: none !important;
+    border: none;
+    box-shadow: none;
+    color: $gray-8 !important;
+    cursor: default;
+
+    span {
+      background-image: none;
+      color: $gray-8;
+    }
+
+    &::before {
+      content: none;
+    }
+  }
 }
 
 .ant-drawer {
@@ -193,6 +249,12 @@ body {
   }
 }
 
+.ant-message {
+  .ant-message-notice-content {
+    background-color: $blue-light !important;
+  }
+}
+
 .ant-modal {
   .ant-modal-close {
     right: 1.875rem;
@@ -268,58 +330,6 @@ body {
   }
 }
 
-.layout {
-  &-header {
-    align-items: center;
-    background-color: $blue-dark;
-    border-bottom: solid 1px $blue-light;
-    display: flex;
-    height: 6.25rem;
-    justify-content: space-between;
-    min-width: 22.5rem;
-    padding: 1.875rem 1rem;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 2;
-
-    .logo {
-      display: flex;
-      align-items: center;
-      .shape {
-        height: rem(50) !important;
-      }
-      .text {
-        fill: $gray-1;
-        width: 9rem !important;
-        padding: 0.4rem;
-      }
-      .shared-vault-name {
-        color: $gray-1;
-        font-size: 27pt;
-        padding: 0.4rem;
-        font-weight: 100;
-      }
-    }
-
-    .menu {
-      svg {
-        fill: $gray-1;
-        height: 1.5rem;
-        width: 1.5rem;
-      }
-    }
-  }
-
-  &-content {
-    margin: 0 auto;
-    max-width: 72.5rem;
-    overflow: hidden;
-    padding: 2rem 1rem 8rem 1rem;
-    width: 100%;
-  }
-}
-
 .ant-tooltip {
   .ant-tooltip-inner {
     background-color: $blue-light !important;
@@ -333,9 +343,101 @@ body {
   }
 }
 
-.ant-message {
-  .ant-message-notice-content {
-    background-color: $blue-light !important;
+.layout {
+  &-header {
+    background-color: $blue-dark;
+    border-bottom: solid rem(1) $blue-light;
+    height: rem(100);
+    min-width: rem(360);
+    padding: rem(30) rem(16);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+
+    .logo {
+      align-items: center;
+      display: flex;
+      float: left;
+      gap: rem(8);
+      height: 100%;
+
+      .shape {
+        height: 100%;
+      }
+
+      .name {
+        color: $gray-1;
+        font-size: rem(32);
+        font-weight: 600;
+      }
+    }
+
+    .menu {
+      float: right;
+      margin: rem(8) 0;
+
+      svg {
+        fill: $gray-1;
+        height: rem(24);
+        width: rem(24);
+      }
+    }
+
+    .navbar {
+      display: flex;
+      float: left;
+      gap: rem(32);
+      margin-left: rem(90);
+
+      a {
+        color: $gray-1;
+        display: block;
+        line-height: rem(40);
+        padding: 0 rem(4);
+        position: relative;
+
+        &::before {
+          background-image: linear-gradient(
+            102deg,
+            $cyan-base 14%,
+            $blue-sharp 140%
+          );
+          bottom: 0;
+          content: "";
+          height: rem(2);
+          left: 50%;
+          position: absolute;
+          transform: translateX(-50%);
+          transition: width 0.3s;
+          width: 0;
+        }
+
+        &:hover,
+        &.active {
+          &::before {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  &-content {
+    margin: 0 auto;
+    max-width: rem(1160);
+    min-height: calc(100vh - rem(100));
+    overflow: hidden;
+    padding: rem(32) rem(16);
+    position: relative;
+    width: 100%;
+
+    > .vulti-loading {
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 
@@ -354,11 +456,6 @@ html[theme="Dark"] {
 
   body::-webkit-scrollbar-thumb {
     background-color: $gray-11;
-  }
-
-  .layout-header {
-    background-color: $gray-13;
-    border-bottom: 1px solid $gray-11;
   }
 
   .ant-drawer {
@@ -431,28 +528,15 @@ html[theme="Dark"] {
     }
   }
 
-  .layout {
-    &-header {
-      background-color: $gray-13;
-      border-bottom: solid 1px $gray-12;
-      .logo {
-        .text {
-          fill: $gray-1;
-        }
-      }
-    }
-  }
-
   .ant-btn-default {
     background-color: $gray-11 !important;
   }
-  
+
   .ant-btn-primary {
     color: $gray-11 !important;
   }
-  
+
   .ant-btn {
-  
     &:disabled {
       background-color: $gray-9 !important;
       color: $gray-6 !important;
@@ -482,32 +566,45 @@ html[theme="Dark"] {
       background-color: $gray-12 !important;
     }
   }
+
+  .layout {
+    &-header {
+      background-color: $gray-13;
+      border-color: $gray-12;
+    }
+  }
 }
 
 html[theme="Light"] {
   body {
     background-color: $gray-1;
     color: $gray-8;
+
+    &::-webkit-scrollbar {
+      background-color: $gray-6;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: $gray-6;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $gray-5;
+    }
   }
-  body::-webkit-scrollbar {
-    background-color: $gray-6;
+
+  .ant-btn-default {
+    background-color: $gray-3 !important;
   }
-  body::-webkit-scrollbar-corner {
-    background-color: $gray-6;
+
+  .ant-btn-primary {
+    color: $gray-1 !important;
   }
-  body::-webkit-scrollbar-thumb {
-    background-color: $gray-5;
-  }
-  .layout-header {
-    background-color: $gray-1;
-    border-bottom: 1px solid $gray-8;
-    .logo {
-      .text {
-        fill: $gray-8;
-      }
-      .shared-vault-name {
-        color: $gray-8;
-      }
+
+  .ant-btn {
+    &:disabled {
+      background-color: $gray-5 !important;
+      color: $gray-3 !important;
     }
   }
 
@@ -527,12 +624,6 @@ html[theme="Light"] {
     }
     .ant-drawer-content {
       background-color: $gray-5;
-    }
-  }
-
-  .ant-upload-drag-container {
-    .name {
-      color: $gray-8;
     }
   }
 
@@ -605,19 +696,10 @@ html[theme="Light"] {
     }
   }
 
-  .ant-btn-default {
-    background-color: $gray-3 !important;
-  }
-  
-  .ant-btn-primary {
-    color: $gray-1 !important;
-  }
-  
-  .ant-btn {
-  
-    &:disabled {
+  .ant-message {
+    .ant-message-notice-content {
       background-color: $gray-5 !important;
-      color: $gray-3 !important;
+      color: $gray-8;
     }
   }
 
@@ -648,23 +730,6 @@ html[theme="Light"] {
     }
   }
 
-  .layout {
-    &-header {
-      background-color: $gray-1;
-      border-bottom: solid 1px $gray-5;
-    }
-    .add {
-      color: $gray-8;
-    }
-    .menu {
-      svg {
-        fill: $gray-8;
-        height: 1.5rem;
-        width: 1.5rem;
-      }
-    }
-  }
-
   .ant-tooltip {
     .ant-tooltip-inner {
       background-color: $gray-5 !important;
@@ -678,18 +743,30 @@ html[theme="Light"] {
     }
   }
 
-  .ant-message {
-    .ant-message-notice-content {
-      background-color: $gray-5 !important;
+  .ant-upload-drag-container {
+    .name {
       color: $gray-8;
     }
   }
-}
 
-@media (min-width: 72.5rem) {
   .layout {
-    > .header {
-      padding: 1.875rem 2.5rem;
+    &-header {
+      background-color: $gray-1;
+      border-color: $gray-5;
+
+      .menu {
+        svg {
+          fill: $gray-8;
+        }
+      }
+
+      .name {
+        color: $gray-8;
+      }
+    }
+
+    .add {
+      color: $gray-8;
     }
   }
 }

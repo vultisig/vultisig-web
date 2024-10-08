@@ -1,4 +1,6 @@
 .chains-page {
+  padding-bottom: rem(128);
+
   .breadcrumb {
     align-items: center;
     display: flex;
@@ -64,6 +66,7 @@ html[theme="Dark"] {
       .add {
         color: $gray-5;
       }
+
       .ant-input {
         background-color: $gray-12;
       }
@@ -73,9 +76,6 @@ html[theme="Dark"] {
 
 html[theme="Light"] {
   .chains-page {
-    .add {
-      color: $gray-8;
-    }
     .breadcrumb {
       .add {
         color: $gray-5;

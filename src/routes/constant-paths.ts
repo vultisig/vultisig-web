@@ -4,6 +4,8 @@ export default {
   assets: "/chains/:chainKey",
   chains: "/chains",
   import: "/import",
+  leaderboard: "/leaderboard",
+  positions: "/positions",
   upload: "/upload",
   shared: {
     root: "/shared",
