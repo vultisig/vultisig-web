@@ -549,7 +549,7 @@ export default class VaultProvider {
                 .map((chain) => ({
                   ...chain,
                   coins:
-                    token.chain === chain.name
+                  token.isNative && token.chain === chain.name
                       ? []
                       : chain.coins.filter(
                           ({ ticker }) =>
