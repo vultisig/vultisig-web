@@ -474,7 +474,7 @@ const service = {
   },
   oneInch: async (id: number) => {
     return await api.get<OneInch.Props>(
-      `https:// api.vultisig.com/1inch/swap/v6.0/${id}/tokens`
+      `https://api.vultisig.com/1inch/swap/v6.0/${id}/tokens`
     );
   },
 };
