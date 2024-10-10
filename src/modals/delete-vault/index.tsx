@@ -1,16 +1,18 @@
 import { FC, useEffect, useState } from "react";
-import { Button, Modal, Input } from "antd";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Button, Modal, Input } from "antd";
+
+import { VaultProps } from "utils/interfaces";
+import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import useGoBack from "hooks/go-back";
-import { useTranslation } from "react-i18next";
+
 import { WarningOutlined } from "icons";
-import { VaultProps } from "utils/interfaces";
 
 interface ComponentProps {
-  delVault: (vault: VaultProps) => void;
+  deleteVault: (vault: VaultProps) => void;
   vault?: VaultProps;
 }
 
@@ -19,7 +21,7 @@ interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ delVault, vault }) => {
+const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
@@ -34,9 +36,9 @@ const Component: FC<ComponentProps> = ({ delVault, vault }) => {
       api.vault
         .del(vault)
         .then(() => {
-          delVault(vault);
-
           goBack();
+
+          deleteVault(vault);
         })
         .catch(() => {
           setState((prevState) => ({ ...prevState, submitting: false }));

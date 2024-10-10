@@ -9,8 +9,8 @@ import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 
 interface ComponentProps {
+  updateVault: (vault: VaultProps) => void;
   vault?: VaultProps;
-  setVault: (vault: VaultProps) => void;
 }
 
 interface InitialState {
@@ -22,7 +22,7 @@ type FieldType = {
   alias: string;
 };
 
-const Component: FC<ComponentProps> = ({ setVault, vault }) => {
+const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
@@ -41,7 +41,7 @@ const Component: FC<ComponentProps> = ({ setVault, vault }) => {
           api.vault
             .rename({ ...vault, name: alias })
             .then(() => {
-              setVault({ ...vault, alias });
+              updateVault({ ...vault, alias });
 
               goBack();
             })

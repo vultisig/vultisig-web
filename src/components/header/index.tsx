@@ -14,7 +14,7 @@ import constantPaths from "routes/constant-paths";
 import { Vultisig } from "icons";
 
 import {
-  ChainOutlined,
+  //ChainOutlined,
   CurrencyOutlined,
   GearOutlined,
   GlobeOutlined,
@@ -118,15 +118,15 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       ),
       icon: <CurrencyOutlined />,
     },
-    ...(uid
-      ? [
-          {
-            key: "4",
-            label: t(translation.DEFAULT_CHAINS),
-            icon: <ChainOutlined />,
-          },
-        ]
-      : []),
+    // ...(uid
+    //   ? [
+    //       {
+    //         key: "4",
+    //         label: t(translation.DEFAULT_CHAINS),
+    //         icon: <ChainOutlined />,
+    //       },
+    //     ]
+    //   : []),
     {
       key: "5",
       label: (

@@ -157,32 +157,32 @@ export default class VaultProvider {
   ): Promise<CoinParams & CoinProps> => {
     return new Promise((resolve, reject) => {
       this.getCMC(token).then((cmcId) => {
-        const newCoin: CoinParams & CoinProps = {
-          address: "",
-          balance: 0,
-          chain: token.chain,
-          cmcId,
-          contractAddress: token.contractAddress,
-          decimals: token.decimals,
-          hexPublicKey:
-            token.hexPublicKey === "ECDSA"
-              ? vault.publicKeyEcdsa
-              : vault.publicKeyEddsa,
-          id: 0,
-          isNative: token.isNative,
-          logo: token.logo,
-          ticker: token.ticker,
-          value: 0,
-        };
-
         this.getAddress(token, vault)
           .then((address) => {
-            newCoin.address = address;
+            const baseCoin: CoinParams = {
+              address,
+              chain: token.chain,
+              cmcId,
+              contractAddress: token.contractAddress,
+              decimals: token.decimals,
+              hexPublicKey:
+                token.hexPublicKey === "ECDSA"
+                  ? vault.publicKeyEcdsa
+                  : vault.publicKeyEddsa,
+              isNative: token.isNative,
+              logo: token.logo,
+              ticker: token.ticker,
+            };
 
             api.coin
-              .add(vault, newCoin)
+              .add(vault, baseCoin)
               .then(({ data: { coinId } }) => {
-                newCoin.id = coinId;
+                const newCoin: CoinParams & CoinProps = {
+                  ...baseCoin,
+                  balance: 0,
+                  id: coinId,
+                  value: 0,
+                };
 
                 this.getBalance(newCoin, newCoin.chain, newCoin.address).then(
                   ({ balance }) => {
@@ -235,7 +235,7 @@ export default class VaultProvider {
           case ChainKey.BITCOINCASH: {
             this.getECDSAAddress(chain, vault)
               .then((address) => {
-                resolve(address);
+                resolve(address.replace("bitcoincash:", ""));
               })
               .catch(reject);
 
@@ -434,7 +434,7 @@ export default class VaultProvider {
               resolve([...defTokens, ...tokens]);
             })
             .catch(() => {
-              resolve([]);
+              resolve(defTokens);
             });
         } else if (token.chain === ChainKey.SOLANA) {
           api.discovery.spl(chain.address).then((tokens) => {
@@ -545,13 +545,19 @@ export default class VaultProvider {
           .then(() => {
             resolve({
               ...vault,
-              chains: vault.chains.map((chain) => ({
-                ...chain,
-                coins: chain.coins.filter(
-                  ({ ticker }) =>
-                    token.chain !== chain.name || token.ticker !== ticker
-                ),
-              })),
+              chains: vault.chains
+                .map((chain) => ({
+                  ...chain,
+                  coins:
+                    token.chain === chain.name
+                      ? []
+                      : chain.coins.filter(
+                          ({ ticker }) =>
+                            token.chain !== chain.name ||
+                            token.ticker !== ticker
+                        ),
+                }))
+                .filter(({ coins }) => !!coins.length),
             });
           })
           .catch(reject);

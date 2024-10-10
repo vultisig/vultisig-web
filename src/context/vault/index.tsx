@@ -155,6 +155,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const deleteVault = (vault: VaultProps): void => {
     const modifiedVaults = vaults.filter(({ uid }) => uid !== vault.uid);
 
+    setStoredVaults(modifiedVaults);
+
     if (modifiedVaults.length) {
       const [vault] = modifiedVaults;
 
@@ -163,10 +165,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         vault,
         vaults: modifiedVaults,
       }));
-
-      setStoredVaults(modifiedVaults);
     } else {
-      navigate(constantPaths.import);
+      navigate(constantPaths.import, { replace: true });
     }
   };
 
@@ -175,11 +175,9 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       api.vault
         .get(vault)
         .then(({ data }) => {
-          api.sharedSettings
-            .get(vault.uid)
-            .then(({ data: { logo, theme } }) => {
-              resolve({ ...data, ...{ logo, theme } });
-            });
+          api.sharedSettings.get(data.uid).then(({ data: { logo, theme } }) => {
+            resolve({ ...vault, ...data, logo, theme, updated: false });
+          });
         })
         .catch(() => resolve(undefined));
     });
@@ -298,6 +296,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
             vault,
             vaults,
           }));
+
+          setStoredVaults(vaults);
         } else {
           navigate(constantPaths.import, { replace: true });
         }
@@ -331,8 +331,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           </div>
           <ChangeCurrency onChange={updateCurrency} />
           <ChangeLanguage />
-          <DeleteVault delVault={deleteVault} vault={vault} />
-          <RenameVault setVault={updateVault} vault={vault} />
+          <DeleteVault deleteVault={deleteVault} vault={vault} />
+          <RenameVault updateVault={updateVault} vault={vault} />
           <VaultSettings vault={vault} />
           <SharedSettings vault={vault} updateVault={updateVault} />
           <Preloader visible={loading} />

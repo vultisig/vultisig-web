@@ -57,19 +57,23 @@
 
 html[theme="dark"] {
   .chains-page {
-    .breadcrumb {
-      .add {
-        color: $gray-5;
-      }
+    .add {
+      color: $gray-1;
     }
   }
 }
 
 html[theme="light"] {
   .chains-page {
+    .add {
+      color: $gray-8;
+    }
+
     .breadcrumb {
-      .add {
-        color: $gray-5;
+      .ant-btn {
+        svg {
+          fill: $gray-8;
+        }
       }
     }
   }

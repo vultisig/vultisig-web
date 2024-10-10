@@ -1,6 +1,6 @@
 .join-airdrop {
   .ant-form {
-    margin: 1.5rem 0;
+    margin: rem(24) 0;
   }
 
   .ant-list-item-meta-title {
@@ -10,23 +10,23 @@
   .ant-list-item {
     background-color: $blue-base;
     border: none;
-    border-radius: 0.5rem;
-    padding: 0.875rem;
+    border-radius: rem(8);
+    padding: rem(14);
 
     + .ant-list-item {
-      margin-top: 1rem;
+      margin-top: rem(16);
     }
   }
 
   .ant-modal-body {
-    padding: 1.5rem 0;
+    padding: rem(24) 0;
 
     .value {
       display: block;
-      font-size: 1.5rem;
+      font-size: rem(24);
       font-weight: 700;
-      line-height: 2.25rem;
-      margin-bottom: 1.5rem;
+      line-height: rem(36);
+      margin-bottom: rem(24);
       text-align: center;
     }
 
@@ -38,17 +38,17 @@
 
     .desc {
       display: block;
-      font-size: 0.75rem;
+      font-size: rem(12);
     }
 
     .link {
       color: $cyan-base;
-      font-size: 0.75rem;
+      font-size: rem(12);
     }
 
     .hint {
       + .hint {
-        margin-top: 2rem;
+        margin-top: rem(32);
       }
     }
   }
@@ -58,6 +58,6 @@
   }
 
   .ant-modal-content {
-    padding: 0 1.875rem 1.875rem;
+    padding: 0 rem(30) rem(30);
   }
 }

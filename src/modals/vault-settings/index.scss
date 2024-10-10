@@ -2,14 +2,14 @@
   .ant-list-item-meta-avatar {
     svg {
       fill: $gray-1;
-      height: 1.5rem;
-      width: 1.5rem;
+      height: rem(24);
+      width: rem(24);
     }
   }
 
   .ant-list-item-meta-description {
     color: $gray-6 !important;
-    font-size: 0.75rem !important;
+    font-size: rem(12) !important;
   }
 
   .ant-list-item-meta {
@@ -19,10 +19,10 @@
   .ant-list-item {
     background-color: $blue-base;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: rem(8);
     cursor: pointer;
     justify-content: center;
-    padding: 0.875rem;
+    padding: rem(14);
     transition: all 0.3s;
 
     &:hover {
@@ -30,14 +30,14 @@
     }
 
     + .ant-list-item {
-      margin-top: 1rem;
+      margin-top: rem(16);
     }
   }
 
   .arrow {
     fill: $gray-1;
-    height: 1rem;
-    width: 1rem;
+    height: rem(16);
+    width: rem(16);
   }
 
   .delete {
@@ -58,7 +58,7 @@
   }
 
   .ant-modal-content {
-    padding: 0 1.875rem 1.875rem;
+    padding: 0 rem(30) rem(30);
   }
 }
 

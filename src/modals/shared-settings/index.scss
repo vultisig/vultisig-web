@@ -1,108 +1,102 @@
 .modal-share-settings {
+  .title {
+    display: block;
+    font-weight: 200;
+  }
+
   .themes {
-    margin-top: 0.3rem;
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    // padding: 1rem;
-    // border: 1px dashed $cyan-base;
-    // border-radius: 0.5rem;
+    gap: rem(8);
+    margin: rem(8) 0 rem(16);
+
     span {
-      width: 100%;
-      height: 3.5rem;
-      border-radius: 0.7rem;
-      border: 3px solid $gray-9;
-      transition: border 1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border: solid rem(3) $gray-9;
+      border-radius: rem(8);
       cursor: pointer;
+      height: rem(56);
+      line-height: rem(50);
+      text-align: center;
+      transition: border-color 0.3s;
+      width: 100%;
 
       &:hover {
-        border: 3px solid $gray-6;
+        border-color: $gray-6;
+      }
+
+      &.selected {
+        border-color: $cyan-light;
       }
     }
+
     .dark {
       background-color: $gray-13;
       color: $gray-1;
     }
+
     .light {
       background-color: $gray-1;
       color: $gray-13;
     }
+
     .vultisig {
       background-color: $blue-base;
       color: $gray-1;
     }
-    .selected {
-      border: 3px solid $cyan-light !important;
-    }
   }
 
-  .title {
-    margin-top: 1rem;
-    font-weight: 200;
-    .shape{
-      width: 1rem;
-    }
-  }
-  
-  .ant-upload-btn {
-    display: block !important;
-    padding: 3rem 1rem !important;
-  }
-
-  .ant-upload-drag-container {
-    display: block !important;
+  .ant-upload-wrapper {
+    display: block;
+    margin-top: rem(8);
 
     .icon {
-      height: rem(50) !important;
-      max-width: rem(100) !important;
-      margin: 0 auto 1.5rem;
+      height: rem(50);
+      max-width: rem(100);
+      margin: 0 auto rem(16);
     }
+
     .name {
-      margin-top: 1rem;
+      display: block;
       font-weight: 700;
+      margin-top: rem(16);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .error {
-      color: $red-base;
-      font-size: 0.875rem;
-      margin-top: 0.5rem;
+
+    .text {
+      color: $gray-6;
+      display: block;
+
+      u {
+        margin-left: rem(4);
+      }
+
+      &.error {
+        color: $red-dark;
+      }
     }
-  }
 
-  .ant-btn {
-    margin-top: 1rem;
-  }
-
-  .close {
-    height: 0.875rem;
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    width: 0.875rem;
-    margin-top: 0rem !important;
-    svg {
-      fill: $gray-1;
+    .ant-upload-drag-container {
+      display: block;
     }
-  }
 
-  .ant-upload-drag {
-    margin-top: 0.3rem;
-    border-color: $cyan-base;
-    color: $gray-1;
-    transition: background-color 0.3s;
+    .ant-upload-drag {
+      border-color: $cyan-base;
+      color: $gray-1;
+      transition: background-color 0.3s;
 
-    &:hover {
-      background-color: rgba($color: $cyan-base, $alpha: 0.2);
+      &:hover {
+        background-color: rgba($color: $cyan-base, $alpha: 0.2);
+      }
     }
-  }
 
-  .ant-upload-wrapper {
+    .ant-upload-btn {
+      display: block;
+      padding: rem(48) rem(16);
+    }
+
     &.error {
       .ant-upload-drag {
         background-color: rgba($color: $red-dark, $alpha: 0.1);
@@ -118,24 +112,25 @@
     }
   }
 
-  .logo {
-    margin: 0 auto 3rem;
-  }
+  .remove {
+    border-radius: 50%;
+    padding: rem(8) !important;
+    position: absolute;
+    right: rem(8);
+    top: rem(140);
 
-  .logo-preview-wraper {
-    margin-top: 0.3rem;
-    display: flex;
-    .logo-preview {
-      width: 3rem;
-    }
-    p {
-      line-height: normal;
-      margin-top: 0.5rem;
-      margin-left: 1rem;
+    svg {
+      fill: $gray-1;
+      height: rem(14);
+      width: rem(14);
     }
   }
 
-  .error{
-    color: $red-dark;
+  .ant-modal-body {
+    position: relative;
+  }
+
+  .ant-modal-footer {
+    margin-top: rem(16);
   }
 }

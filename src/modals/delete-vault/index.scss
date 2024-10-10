@@ -7,13 +7,15 @@
     background-color: $blue-dark !important;
     border: none;
     box-shadow: none !important;
-    line-height: 3rem;
+    line-height: rem(48);
     width: 60%;
   }
 
   .ant-btn {
-    background-color: $orange-base;
-
+    background-color: $orange-base !important;
+    &::before {
+      content: none !important;
+    }
     &:hover {
       background-color: $orange-light !important;
     }
@@ -21,17 +23,17 @@
 
   .icon {
     fill: $orange-base;
-    height: 4rem;
+    height: rem(64);
     margin: 0 auto;
   }
 
   .warning {
     display: block;
-    font-size: 1rem;
+    font-size: rem(16);
     font-weight: 700;
-    margin: 1.5rem auto;
+    margin: rem(24) auto;
     text-align: center;
-    width: 14rem;
+    width: rem(16) (64);
   }
 }
 html[theme="light"] {

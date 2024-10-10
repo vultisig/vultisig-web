@@ -1,40 +1,40 @@
 .chain-item {
   background-color: $blue-base;
-  border-radius: 0.5rem;
+  border-radius: rem(8);
   overflow: hidden;
-  padding: 1rem 1.25rem;
+  padding: rem(16) rem(20);
   position: relative;
 
   .token-image {
-    height: 2rem;
+    height: rem(32);
     left: 0;
     position: absolute;
-    top: 0.375rem;
-    width: 2rem;
+    top: rem(6);
+    width: rem(32);
   }
 
   .type {
-    height: 2.75rem;
-    padding-left: 3rem;
+    height: rem(44);
+    padding-left: rem(48);
     position: relative;
 
     .name {
       display: block;
       font-weight: 700;
-      line-height: 1.375rem;
+      line-height: rem(22);
     }
 
     .text {
       display: block;
-      font-size: 0.75rem;
+      font-size: rem(12);
       font-weight: 600;
-      line-height: 1.375rem;
+      line-height: rem(22);
     }
   }
 
   .key {
-    height: 2.75rem;
-    line-height: 2.75rem;
+    height: rem(44);
+    line-height: rem(44);
     overflow: hidden;
     text-align: center;
     width: 100%;
@@ -42,17 +42,17 @@
 
   .asset {
     display: block;
-    font-size: 0.75rem;
-    line-height: 1.375rem;
+    font-size: rem(12);
+    line-height: rem(24);
     position: absolute;
-    right: 1.25rem;
-    top: 2.375rem;
+    right: rem(20);
+    top: rem(38);
     white-space: nowrap;
 
     &.multi {
-      border-radius: 1rem;
+      border-radius: rem(16);
       background-color: $blue-light;
-      padding: 0 0.75rem;
+      padding: 0 rem(12);
     }
   }
 
@@ -60,10 +60,10 @@
     display: block;
     font-size: 1.25em;
     font-weight: 700;
-    line-height: 1.375rem;
+    line-height: rem(22);
     position: absolute;
-    right: 1.25rem;
-    top: 1rem;
+    right: rem(20);
+    top: rem(16);
   }
 
   .arrow {
@@ -72,7 +72,7 @@
     display: flex;
     justify-content: end;
     left: 0;
-    padding-right: 1.25rem;
+    padding-right: rem(20);
     position: absolute;
     right: 0;
     top: 0;
@@ -80,13 +80,13 @@
     svg {
       display: none;
       fill: $gray-1;
-      height: 1.25rem;
-      height: 1.25rem;
+      height: rem(20);
+      height: rem(20);
     }
   }
 
   + .chain-item {
-    margin-top: 1rem;
+    margin-top: rem(16);
   }
 }
 
@@ -129,11 +129,11 @@ html[theme="light"] {
 @media (min-width: 48rem) {
   .chain-item {
     display: flex;
-    gap: 1.5rem;
-    padding-right: 4rem;
+    gap: rem(24);
+    padding-right: rem(64);
 
     .type {
-      min-width: 10rem;
+      min-width: rem(160);
     }
 
     .key {
@@ -141,12 +141,12 @@ html[theme="light"] {
     }
 
     .asset {
-      margin: 0.8125rem 0;
+      margin: rem(12) 0;
       position: static;
     }
 
     .amount {
-      line-height: 3rem;
+      line-height: rem(48);
       position: static;
     }
 

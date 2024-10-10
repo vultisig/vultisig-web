@@ -1,4 +1,4 @@
-.active-position-page {
+.positions-page {
   .breadcrumb {
     align-items: center;
     display: flex;
@@ -33,8 +33,8 @@
   }
   .amount-text {
     color: rgb(174, 176, 180);
-    font-size: 0.8rem;
-    margin-top: 0.2rem;
+    font-size: rem(12);
+    margin-top: 0 rem(32);
   }
   .type {
     height: rem(44);
@@ -110,8 +110,9 @@
     .lp-pool {
       display: flex;
       width: 100%;
+
       .convert {
-        padding: 0.8rem 1.5rem;
+        padding: rem(12) rem(24);
       }
     }
   }
@@ -135,12 +136,6 @@
       display: flex;
       flex-wrap: wrap;
       width: 100%;
-
-      @media (min-width: rem(768)) {
-        .lp-saver {
-          flex-wrap: nowrap;
-        }
-      }
 
       .lp-pool-saver {
         display: flex;
@@ -172,14 +167,63 @@
       height: rem(38);
       width: rem(38);
     }
-    p{
+    p {
       display: flex;
       align-items: center;
       color: $gray-7;
     }
   }
+}
 
-  @media (max-width: rem(592)) {
+html[theme="dark"] {
+  .positions-page {
+    .lp-row {
+      background-color: $gray-12;
+    }
+    .saver {
+      .lp-saver {
+        background-color: $gray-12;
+      }
+    }
+    .no-data {
+      background-color: $gray-12;
+    }
+  }
+}
+
+html[theme="light"] {
+  .positions-page {
+    .lp-row {
+      background-color: $gray-3;
+    }
+    .saver {
+      .lp-saver {
+        background-color: $gray-3;
+      }
+    }
+    .no-data {
+      background-color: $gray-3;
+    }
+    .breadcrumb {
+      .ant-btn {
+        svg {
+          fill: $gray-8;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .positions-page {
+    .lp-saver {
+      flex-wrap: nowrap;
+    }
+  }
+}
+
+@media (max-width: rem(592)) {
+  .positions-page {
     .lp-row {
       flex-wrap: wrap;
       .lp-amount {
@@ -189,8 +233,10 @@
       }
     }
   }
+}
 
-  @media (min-width: rem(480)) {
+@media (min-width: rem(480)) {
+  .positions-page {
     .saver {
       flex-wrap: nowrap;
       .lp-saver-item {
@@ -202,8 +248,10 @@
       }
     }
   }
+}
 
-  @media (max-width: rem(432)) {
+@media (max-width: rem(432)) {
+  .positions-page {
     .lp-row {
       padding: rem(8);
       display: flex;
@@ -242,33 +290,5 @@
         margin-top: 0;
       }
     }
-  }
-}
-
-html[theme="dark"] {
-  .lp-row {
-    background-color: $gray-12;
-  }
-  .saver {
-    .lp-saver {
-      background-color: $gray-12;
-    }
-  }
-  .no-data {
-    background-color: $gray-12;
-  }
-}
-
-html[theme="light"] {
-  .lp-row {
-    background-color: $gray-5;
-  }
-  .saver {
-    .lp-saver {
-      background-color: $gray-5;
-    }
-  }
-  .no-data {
-    background-color: $gray-5;
   }
 }

@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react";
-import { Button, Empty, Tooltip } from "antd";
+import { Button, Tooltip } from "antd"; //Empty
 import { CodeSandboxOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context/base";
@@ -163,7 +163,7 @@ const Component: FC = () => {
       <VultiLoading />
     </div>
   ) : (
-    <div className="layout-content active-position-page">
+    <div className="layout-content positions-page">
       {vault ? (
         <div className="breadcrumb">
           <VaultDropdown

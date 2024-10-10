@@ -93,7 +93,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
               changeValue(coins, currency, { ...data, logo, theme })
             );
 
-            changeTheme(data.theme);
+            changeTheme(theme);
           });
         })
         .catch(() => {
@@ -110,7 +110,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     <SharedContext.Provider value={{ vault }}>
       {loaded ? (
         <>
-          <div className="layout">
+          <div className="layout layout-shared">
             <Header logo={vault?.logo} alias={vault?.alias} />
             {children}
             <Footer />

@@ -295,10 +295,83 @@
 
 html[theme="dark"] {
   .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-11;
+      .divider {
+        background-color: $gray-11;
+      }
+    }
+    .board {
+      background-color: $gray-11;
+      .item {
+        background-color: $gray-12;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-9;
+          }
+          &::before {
+            background-color: $gray-10;
+          }
+        }
+      }
+    }
   }
 }
 
 html[theme="light"] {
   .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-3;
+      .divider {
+        background-color: $gray-3;
+      }
+    }
+    .board {
+      background-color: $gray-4;
+      .divider{
+        border-color: $gray-6;
+      }
+      .point {
+        .name {
+          color: $gray-8;
+        }
+      }
+      .rank {
+        .value {
+          color: $gray-6;
+        }
+        .price {
+          color: $gray-8;
+        }
+      }
+      .shape{
+        .bottom,.top {
+          border-color: $gray-2;
+        }
+      }
+      .stats {
+        .more {
+          color: $gray-8;
+        }
+        .numb {
+          color: $gray-6;
+        }
+      }
+      .item {
+        background-color: $gray-2;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-5;
+          }
+          &::before {
+            background-color: $gray-4;
+          }
+        }
+      }
+    }
   }
 }

@@ -129,8 +129,6 @@ const Component: FC = () => {
           if (result) {
             try {
               const vault: VaultProps = JSON.parse(result.text);
-              console.log("readBarcodesFromImageFile", vault);
-
               setState((prevState) => ({
                 ...prevState,
                 vault: toCamelCase(vault),

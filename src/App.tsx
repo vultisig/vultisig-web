@@ -16,17 +16,6 @@ const App = () => {
     <ConfigProvider
       theme={{
         algorithm: theme.darkAlgorithm,
-        components: {
-          Modal: {
-            paddingLG: 800,
-          },
-          Dropdown: {
-            paddingBlock: 8,
-          },
-          List: {
-            itemPadding: "12px 0",
-          },
-        },
         token: {
           colorPrimary: "#33e6bf",
           colorPrimaryText: "#000",

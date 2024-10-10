@@ -37,7 +37,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
     error: "",
   };
   const [state, setState] = useState(initialState);
-  const { file, status, submitting, theme, visible } = state;
+  const { error, file, status, submitting, theme, visible } = state;
   const { hash } = useLocation();
   const goBack = useGoBack();
 
@@ -47,12 +47,12 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
 
   const handleSubmit = (): void => {
     if (!submitting && vault && status !== "error") {
-      setState((prevState) => ({ ...prevState, loading: true }));
+      setState((prevState) => ({ ...prevState, submitting: true }));
 
       api.sharedSettings
         .set({
           uid: vault.uid,
-          logo: file.data,
+          logo: file.data ?? "",
           theme,
           publicKeyEcdsa: vault.publicKeyEcdsa,
           publicKeyEddsa: vault.publicKeyEddsa,
@@ -61,7 +61,9 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
         .then(() => {
           updateVault({ ...vault, logo: file.data, theme });
 
-          setState((prevState) => ({ ...prevState, loading: false }));
+          setState((prevState) => ({ ...prevState, submitting: false }));
+          
+          goBack();
         })
         .catch((data) => {
           handleError(data);
@@ -89,7 +91,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
         errorMessage = "Invalid file";
         break;
       case errorKey.LOGO_TOO_LARGE:
-        errorMessage = "Logo size exceeds the maximum allowed limit of 30KB";
+        errorMessage = "The maximum allowed logo size is 100KB";
         break;
       default:
         errorMessage = "Someting is wrong";
@@ -99,7 +101,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
     setState((prevState) => ({
       ...prevState,
       error: errorMessage,
-      loading: false,
+      submitting: false,
       status: "error",
     }));
   };
@@ -151,8 +153,16 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       case `#${constantModals.SHARE_SETTINGS}`: {
         setState((prevState) => ({
           ...prevState,
-          file: { data: vault?.logo ?? "", name: vault?.alias ?? "" },
-          theme: vault?.theme ?? Theme.VULTISIG,
+          file: {
+            data: vault?.logo ?? "",
+            name: vault?.alias ?? "",
+          },
+          theme:
+            vault?.theme === Theme.DARK
+              ? Theme.DARK
+              : vault?.theme === Theme.LIGHT
+              ? Theme.LIGHT
+              : Theme.VULTISIG,
           visible: !!vault,
         }));
 
@@ -173,7 +183,18 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       className="modal-share-settings"
       title={t(translation.SHARE_SETTINGS_TITLE)}
       centered={true}
-      footer={false}
+      footer={
+        <Button
+          disabled={status === "error"}
+          loading={submitting}
+          type="primary"
+          onClick={handleSubmit}
+          shape="round"
+          block
+        >
+          {t(translation.SAVE)}
+        </Button>
+      }
       onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
@@ -205,47 +226,37 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       <span className="title">{t(translation.SHARE_VAULT_LOGO)}:</span>
 
       <Upload.Dragger {...props} className={status}>
-        {file?.name ? (
+        {file?.data ? (
           <>
-            <Button type="link" className="close" onClick={handleRemove}>
-              <CloseOutlined />
-            </Button>
-            <img src={file.data} className="icon" alt="image" />
-            <span className="name">{`${file.name} Uploaded`}</span>
-          </>
-        ) : state.file?.data !== "" ? (
-          <>
-            <Button type="link" className="close" onClick={handleRemove}>
-              <CloseOutlined />
-            </Button>
-            <img src={state.file?.data} className="icon" />
-            <span className="title">{t(translation.SHARE_CURRENT_LOGO)}</span>
+            <img src={file.data} className="icon" />
+            <span className="name">
+              {status === "default"
+                ? `${file.name} Uploaded`
+                : t(translation.SHARE_CURRENT_LOGO)}
+            </span>
+            {error ? (
+              <span className="text error">{error}</span>
+            ) : (
+              <span className="text">File successfully selected</span>
+            )}
           </>
         ) : (
           <>
-            <Button type="link" className="close" onClick={handleRemove}>
-              <CloseOutlined />
-            </Button>
             <Vultisig className="icon" />
-            <span className="title">{t(translation.SHARE_UPLOAD_LOGO)}</span>
+            <span className="name">{t(translation.SHARE_UPLOAD_LOGO)}</span>
             <span className="text">
-              {t(translation.DROP_FILE_HERE) + " "}
+              {t(translation.DROP_FILE_HERE)}
               <u>{t(translation.UPLOAD_IT)}</u>
             </span>
           </>
         )}
       </Upload.Dragger>
-      {state.error ? <span className="title error">{state.error}</span> : null}
-      <Button
-        disabled={status !== "success"}
-        loading={submitting}
-        type={status === "success" ? "primary" : "default"}
-        onClick={handleSubmit}
-        shape="round"
-        block
-      >
-        {t(translation.SAVE)}
-      </Button>
+
+      {status !== "default" && (
+        <Button type="link" className="remove" onClick={handleRemove}>
+          <CloseOutlined />
+        </Button>
+      )}
     </Modal>
   );
 };

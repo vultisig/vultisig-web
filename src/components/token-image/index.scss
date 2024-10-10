@@ -1,11 +1,11 @@
 .token-image {
   align-items: center;
   display: flex;
-  height: 3rem;
+  height: rem(48);
   justify-content: center;
   opacity: 1;
   transition: opacity 0.5s;
-  width: 3rem;
+  width: rem(48);
 
   &:where(span) {
     background-color: $gray-1;

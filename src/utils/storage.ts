@@ -96,5 +96,10 @@ export const getStoredVaults = (): VaultProps[] => {
 };
 
 export const setStoredVaults = (vaults: VaultProps[]): void => {
-  localStorage.setItem(storageKey.VAULTS, JSON.stringify(vaults));
+  localStorage.setItem(
+    storageKey.VAULTS,
+    JSON.stringify(
+      vaults.map((vault) => ({ ...vault, chains: [], updated: false }))
+    )
+  );
 };

@@ -1,14 +1,14 @@
 .footer-container {
-  border-top: 1px solid $blue-light;
-  background-color: $blue-dark;
   align-items: center;
-  display: flex;
-  height: 6.25rem;
-  justify-content: space-between;
-  min-width: 22.5rem;
-  padding: 1.875rem 1rem;
-  position: fixed;
+  background-color: $blue-dark;
+  border-top: solid rem(1) $blue-light;
   bottom: 0;
+  display: flex;
+  height: rem(100);
+  justify-content: space-between;
+  min-width: rem(360);
+  padding: rem(30) rem(16);
+  position: sticky;
   width: 100%;
   z-index: 2;
 
