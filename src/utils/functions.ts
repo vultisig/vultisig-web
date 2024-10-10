@@ -1,3 +1,5 @@
+import { Theme } from "utils/constants";
+
 const isArray = (arr: any): arr is any[] => {
   return Array.isArray(arr);
 };
@@ -52,14 +54,8 @@ const toSnakeCase = (obj: any): any => {
   return obj;
 };
 
-enum Theme {
-  DARK = "Dark",
-  LIGHT = "Light",
-  VULTISIG = "Vultisig",
-}
-
-const changeTheme = (theme: Theme): void => {
-  document.documentElement.setAttribute("theme", theme);
+const changeTheme = (theme?: Theme): void => {
+  document.documentElement.setAttribute("theme", theme ?? "");
 };
 
-export { changeTheme, toCamelCase, toSnakeCase, Theme };
+export { changeTheme, toCamelCase, toSnakeCase };

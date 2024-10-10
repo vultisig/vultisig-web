@@ -3,23 +3,23 @@ import { useLocation, useParams } from "react-router-dom";
 import { Drawer, Input, List, Spin, Switch } from "antd";
 
 import { useVaultContext } from "context/vault";
-import { Chain } from "utils/constants";
+import { ChainKey } from "utils/constants";
 import { TokenProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 import { SearchOutlined } from "icons";
 import TokenImage from "components/token-image";
 
 interface TokenListProps {
   onSelect: (coin: TokenProps) => void;
-  loading: Chain | null;
+  loading: ChainKey | null;
   search: string;
   tokens: TokenProps[];
 }
 
 interface InitialState {
-  loading: Chain | null;
+  loading: ChainKey | null;
   search: string;
   visible: boolean;
 }
@@ -85,7 +85,7 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { loading, search, visible } = state;
-  const { toggleCoin, tokens, vault } = useVaultContext();
+  const { toggleToken, tokens, vault } = useVaultContext();
   const { hash } = useLocation();
   const { chainKey } = useParams();
 
@@ -99,7 +99,7 @@ const Component: FC = () => {
     if (vault && loading === null) {
       setState((prevState) => ({ ...prevState, loading: coin.chain }));
 
-      toggleCoin(coin, vault)
+      toggleToken(coin, vault)
         .then(() => {})
         .catch(() => {})
         .finally(() => {

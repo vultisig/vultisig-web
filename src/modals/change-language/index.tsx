@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
 
-import { Language, languageName, storageKey } from "utils/constants";
-import i18n from "i18n/config";
+import { useBaseContext } from "context/base";
+import { Language, languageName } from "utils/constants";
 import constantModals from "modals/constant-modals";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 interface InitialState {
   visible: boolean;
@@ -15,13 +15,12 @@ const Component: FC = () => {
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
+  const { changeLanguage, language } = useBaseContext();
   const { hash } = useLocation();
   const goBack = useGoBack();
 
-  const handleSelect = (key: string): void => {
-    i18n.changeLanguage(key);
-
-    localStorage.setItem(storageKey.LANGUAGE, key);
+  const handleSelect = (language: Language): void => {
+    changeLanguage(language);
 
     goBack();
   };
@@ -94,7 +93,7 @@ const Component: FC = () => {
         renderItem={({ key, title }) => (
           <List.Item
             onClick={() => handleSelect(key)}
-            className={i18n.language === key ? "active" : ""}
+            className={language === key ? "active" : ""}
           >
             {title}
           </List.Item>

@@ -34,12 +34,10 @@
     width: 14rem;
   }
 }
-html[theme="Light"] {
+html[theme="light"] {
   .modal-delete-vault {
     .warning {
       color: $gray-8 !important;
     }
   }
 }
-
-

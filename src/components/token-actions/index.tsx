@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Tooltip, message } from "antd";
-import { Chain, exploreToken } from "utils/constants";
+
+import { ChainKey, exploreToken } from "utils/constants";
 import constantModals from "modals/constant-modals";
 
 import { CopyOutlined, CubeOutlined, QRCodeOutlined } from "icons";
@@ -9,7 +10,7 @@ import QRCode from "modals/qr-code";
 
 interface ComponentProps {
   address: string;
-  name: Chain;
+  name: ChainKey;
 }
 
 const Component: FC<ComponentProps> = ({ address, name }) => {

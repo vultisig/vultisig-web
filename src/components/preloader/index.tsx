@@ -1,5 +1,7 @@
 import { FC } from "react";
-import { Modal, Spin } from "antd";
+import { Modal } from "antd";
+
+import VultiLoading from "components/vulti-loading";
 
 interface ComponentProps {
   visible: boolean;
@@ -16,7 +18,7 @@ const Component: FC<ComponentProps> = ({ visible }) => {
       title="Loading..."
       centered
     >
-      <Spin size="large" />
+      <VultiLoading />
     </Modal>
   );
 };

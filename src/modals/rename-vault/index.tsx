@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 
 interface ComponentProps {

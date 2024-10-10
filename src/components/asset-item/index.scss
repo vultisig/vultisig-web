@@ -42,9 +42,9 @@
   }
 }
 
-html[theme="Dark"] {
-  .assets-page{
-    .content{
+html[theme="dark"] {
+  .assets-page {
+    .content {
       background-color: $gray-12;
     }
     .asset-item {
@@ -53,9 +53,9 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
-  .assets-page{
-    .content{
+html[theme="light"] {
+  .assets-page {
+    .content {
       background-color: $gray-3;
       color: $gray-8;
     }

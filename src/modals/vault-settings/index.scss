@@ -62,7 +62,7 @@
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .ant-list-item-meta-description {
     color: $gray-1 !important;
   }
@@ -76,14 +76,14 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .ant-list-item-meta-description {
     color: $gray-8 !important;
   }
   .ant-list-item-meta-title {
     color: $gray-8 !important;
   }
-  .ant-list-item-meta-avatar{
+  .ant-list-item-meta-avatar {
     svg {
       fill: $gray-8;
     }

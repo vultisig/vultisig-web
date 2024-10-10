@@ -12,6 +12,7 @@
 @import "../components/splash-screen";
 @import "../components/token-actions";
 @import "../components/token-image";
+@import "../components/vault-dropdown";
 @import "../components/vulti-loading";
 
 @import "../modals/change-currency";
@@ -20,12 +21,13 @@
 @import "../modals/join-airdrop";
 @import "../modals/qr-code";
 @import "../modals/rename-vault";
+@import "../modals/shared-settings";
 @import "../modals/vault-settings";
-@import "../modals/share-settings";
 
 @import "../pages/assets";
 @import "../pages/chains";
 @import "../pages/import";
+@import "../pages/positions";
 @import "../pages/leaderboard";
 @import "../pages/upload";
 
@@ -50,64 +52,9 @@ body {
   }
 }
 
-.ant-btn-default {
-  background-image: $linear-gradient !important;
-  border-color: $cyan-base;
-  color: $cyan-base;
-
-  span {
-    background-image: $linear-gradient;
-    background-clip: text;
-    color: transparent;
-  }
-
-  &::before {
-    background-color: $blue-base;
-    border-radius: rem(24);
-    bottom: rem(1);
-    content: "";
-    left: rem(1);
-    position: absolute;
-    right: rem(1);
-    top: rem(1);
-  }
-
-  &:hover {
-    box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
-  }
-}
-
-.ant-btn-primary {
-  background-color: $cyan-base;
-  color: $blue-dark !important;
-
-  &::before {
-    background-image: $linear-gradient;
-    border-radius: rem(24);
-    bottom: 0;
-    content: "";
-    left: 0;
-    opacity: 1;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: opacity 0.3s;
-  }
-
-  &:hover {
-    &::before {
-      opacity: 0;
-    }
-  }
-}
-
-.ant-btn-link {
-  height: auto !important;
-  padding: 0;
-}
-
 .ant-btn {
   border: none;
+  border-radius: rem(20);
   box-shadow: none;
   font-weight: 700;
   height: rem(40);
@@ -116,6 +63,62 @@ body {
   span {
     position: relative;
     z-index: 1;
+  }
+
+  &.ant-btn-default {
+    background-image: $linear-gradient !important;
+    border-color: $cyan-base;
+    color: $cyan-base;
+
+    span {
+      background-image: $linear-gradient;
+      background-clip: text;
+      color: transparent;
+    }
+
+    &::before {
+      background-color: $blue-base;
+      border-radius: rem(24);
+      bottom: rem(1);
+      content: "";
+      left: rem(1);
+      position: absolute;
+      right: rem(1);
+      top: rem(1);
+    }
+
+    &:hover {
+      box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
+    }
+  }
+
+  &.ant-btn-primary {
+    background-color: $cyan-base;
+    color: $blue-dark !important;
+
+    &::before {
+      background-image: $linear-gradient;
+      border-radius: rem(24);
+      bottom: 0;
+      content: "";
+      left: 0;
+      opacity: 1;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover {
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.ant-btn-link {
+    height: auto !important;
+    padding: 0;
   }
 
   &:disabled {
@@ -441,7 +444,7 @@ body {
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   body {
     background-color: $gray-13;
   }
@@ -485,7 +488,7 @@ html[theme="Dark"] {
   }
 
   .ant-empty {
-    background-color: $gray-13;
+    background-color: $gray-12;
   }
 
   .ant-input-affix-wrapper {
@@ -575,7 +578,7 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   body {
     background-color: $gray-1;
     color: $gray-8;
@@ -760,13 +763,17 @@ html[theme="Light"] {
         }
       }
 
-      .name {
-        color: $gray-8;
+      .logo {
+        .name {
+          color: $gray-8;
+        }
       }
-    }
 
-    .add {
-      color: $gray-8;
+      .navbar {
+        a {
+          color: $gray-8;
+        }
+      }
     }
   }
 }

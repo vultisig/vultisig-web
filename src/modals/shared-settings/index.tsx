@@ -1,99 +1,67 @@
 import { FC, useEffect, useState } from "react";
-import constantModals from "modals/constant-modals";
 import { useLocation } from "react-router-dom";
 import { Button, Modal, Upload, UploadProps } from "antd";
-import { FileProps, VaultProps } from "utils/interfaces";
-//import { getVaults, setVaults } from "utils/vault";
 import { useTranslation } from "react-i18next";
-import useGoBack from "utils/custom-back";
-//import api from "utils/api";
-import { Theme } from "utils/functions";
-import { errorKey } from "utils/constants";
-import { CloseOutlined } from "icons";
+
+import { Theme, errorKey } from "utils/constants";
+import { FileProps, VaultProps } from "utils/interfaces";
+import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
-import { getSharedSettings, setSharedSettings } from "utils/vault";
+import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import { Vultisig } from "icons";
+
+import { CloseOutlined, Vultisig } from "icons";
 
 interface ComponentProps {
+  updateVault(vault: VaultProps): void;
   vault?: VaultProps;
 }
 
 interface InitialState {
-  file?: FileProps;
-  loading: boolean;
+  file: FileProps;
+  submitting: boolean;
   status: "default" | "error" | "success";
   theme: Theme;
   visible: boolean;
-  error_Status: string;
+  error: string;
 }
 
-const Component: FC<ComponentProps> = ({ vault }) => {
+const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const { t } = useTranslation();
-  const shareSetting = getSharedSettings();
   const initialState: InitialState = {
-    loading: false,
+    submitting: false,
     status: "success",
-    theme: shareSetting.theme || Theme.VULTISIG,
+    theme: Theme.VULTISIG,
     visible: false,
-    file: {
-      data: shareSetting.logo,
-      name: "",
-    },
-    error_Status: "",
+    file: { data: "", name: "" },
+    error: "",
   };
-
   const [state, setState] = useState(initialState);
-  const { file, loading, status, theme, visible } = state;
+  const { file, status, submitting, theme, visible } = state;
   const { hash } = useLocation();
   const goBack = useGoBack();
 
-  const handleThemClick = (theme: Theme) => {
-    setState((prevState) => ({
-      ...prevState,
-      theme,
-      file: {
-        data: state.file?.data as string,
-        name: "",
-      },
-      error_Status: "",
-    }));
+  const handleThem = (theme: Theme) => {
+    setState((prevState) => ({ ...prevState, theme }));
   };
 
-  const handleSave = (): void => {
-    if (!loading && theme && status === "success") {
-      setState((prevState) => ({
-        ...prevState,
-        loading: true,
-        error_Status: "",
-      }));
+  const handleSubmit = (): void => {
+    if (!submitting && vault && status !== "error") {
+      setState((prevState) => ({ ...prevState, loading: true }));
 
       api.sharedSettings
         .set({
-          uid: vault?.uid,
-          logo: file?.data as string,
-          theme: theme,
-          publicKeyEcdsa: vault?.publicKeyEcdsa,
-          publicKeyEddsa: vault?.publicKeyEddsa,
-          hexChainCode: vault?.hexChainCode,
+          uid: vault.uid,
+          logo: file.data,
+          theme,
+          publicKeyEcdsa: vault.publicKeyEcdsa,
+          publicKeyEddsa: vault.publicKeyEddsa,
+          hexChainCode: vault.hexChainCode,
         })
         .then(() => {
-          const fi: FileProps =
-            (file?.data as string) != ""
-              ? { data: file?.data as string, name: "" }
-              : { data: "", name: "" };
+          updateVault({ ...vault, logo: file.data, theme });
 
-          setSharedSettings(file?.data as string, state.theme);
-
-          setState((prevState) => ({
-            ...prevState,
-            theme,
-            file: fi,
-            loading: false,
-            status: "success",
-            visible: false,
-            error_Status: "",
-          }));
+          setState((prevState) => ({ ...prevState, loading: false }));
         })
         .catch((data) => {
           handleError(data);
@@ -102,45 +70,37 @@ const Component: FC<ComponentProps> = ({ vault }) => {
   };
 
   const handleRemove = (): void => {
-    setSharedSettings("", state.theme);
     setState((prevState) => ({
       ...prevState,
-      status: "success",
-      file: {
-        data: "",
-        name: "",
-      },
-      error_Status: "",
+      error: "",
+      file: { data: "", name: "" },
+      status: "default",
     }));
   };
 
   const handleError = (error: string) => {
     let errorMessage = "";
+
     switch (error) {
       case errorKey.INVALID_EXTENSION:
-        console.error("Invalid file extension");
         errorMessage = "Invalid file extension";
         break;
       case errorKey.INVALID_FILE:
-        console.error("Invalid file");
         errorMessage = "Invalid file";
         break;
       case errorKey.LOGO_TOO_LARGE:
-        console.error("logo too large");
-        errorMessage = "Logo size exceeds the maximum allowed limit of 100KB";
+        errorMessage = "Logo size exceeds the maximum allowed limit of 30KB";
         break;
       default:
-        
-        console.error("Someting is wrong");
         errorMessage = "Someting is wrong";
         break;
     }
 
     setState((prevState) => ({
       ...prevState,
-      status: "error",
-      error_Status: errorMessage,
+      error: errorMessage,
       loading: false,
+      status: "error",
     }));
   };
 
@@ -162,7 +122,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
           name: file.name,
         },
         status: "success",
-        error_Status: "",
+        error: "",
       }));
     };
 
@@ -186,23 +146,14 @@ const Component: FC<ComponentProps> = ({ vault }) => {
     fileList: [],
   };
 
-  const setActiveClass = (value: Theme) => {
-    return theme == value ? "selected" : "";
-  };
-
   const componentDidUpdate = (): void => {
     switch (hash) {
       case `#${constantModals.SHARE_SETTINGS}`: {
-        var sharedSettings = getSharedSettings();
         setState((prevState) => ({
           ...prevState,
-          theme: sharedSettings.theme,
+          file: { data: vault?.logo ?? "", name: vault?.alias ?? "" },
+          theme: vault?.theme ?? Theme.VULTISIG,
           visible: !!vault,
-          file: {
-            data: sharedSettings.logo,
-            name: "",
-          },
-          error_Status: "",
         }));
 
         break;
@@ -215,7 +166,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
     }
   };
 
-  useEffect(componentDidUpdate, [hash]);
+  useEffect(componentDidUpdate, [hash, vault]);
 
   return (
     <Modal
@@ -228,30 +179,30 @@ const Component: FC<ComponentProps> = ({ vault }) => {
       open={visible}
       width={480}
     >
-      <h4 className="title">{t(translation.SHARE_VAULT_THEME)}:</h4>
+      <span className="title">{t(translation.SHARE_VAULT_THEME)}:</span>
 
       <div className="themes">
         <span
-          onClick={() => handleThemClick(Theme.DARK)}
-          className={`dark ${setActiveClass(Theme.DARK)}`}
+          className={`dark${theme === Theme.DARK ? " selected" : ""}`}
+          onClick={() => handleThem(Theme.DARK)}
         >
           Dark
         </span>
         <span
-          onClick={() => handleThemClick(Theme.LIGHT)}
-          className={`light ${setActiveClass(Theme.LIGHT)}`}
+          className={`light${theme === Theme.LIGHT ? " selected" : ""}`}
+          onClick={() => handleThem(Theme.LIGHT)}
         >
           Light
         </span>
         <span
-          onClick={() => handleThemClick(Theme.VULTISIG)}
-          className={`vultisig ${setActiveClass(Theme.VULTISIG)}`}
+          className={`vultisig${theme === Theme.VULTISIG ? " selected" : ""}`}
+          onClick={() => handleThem(Theme.VULTISIG)}
         >
           Vultisig
         </span>
       </div>
 
-      <h4 className="title">{t(translation.SHARE_VAULT_LOGO)}:</h4>
+      <span className="title">{t(translation.SHARE_VAULT_LOGO)}:</span>
 
       <Upload.Dragger {...props} className={status}>
         {file?.name ? (
@@ -260,7 +211,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
               <CloseOutlined />
             </Button>
             <img src={file.data} className="icon" alt="image" />
-            <h3 className="name">{`${file.name} Uploaded`}</h3>
+            <span className="name">{`${file.name} Uploaded`}</span>
           </>
         ) : state.file?.data !== "" ? (
           <>
@@ -268,7 +219,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
               <CloseOutlined />
             </Button>
             <img src={state.file?.data} className="icon" />
-            <h3 className="title">{t(translation.SHARE_CURRENT_LOGO)}</h3>
+            <span className="title">{t(translation.SHARE_CURRENT_LOGO)}</span>
           </>
         ) : (
           <>
@@ -276,7 +227,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
               <CloseOutlined />
             </Button>
             <Vultisig className="icon" />
-            <h3 className="title">{t(translation.SHARE_UPLOAD_LOGO)}</h3>
+            <span className="title">{t(translation.SHARE_UPLOAD_LOGO)}</span>
             <span className="text">
               {t(translation.DROP_FILE_HERE) + " "}
               <u>{t(translation.UPLOAD_IT)}</u>
@@ -284,15 +235,13 @@ const Component: FC<ComponentProps> = ({ vault }) => {
           </>
         )}
       </Upload.Dragger>
-      {state.error_Status ? (
-        <h4 className="title error">{state.error_Status}</h4>
-      ) : null}
+      {state.error ? <span className="title error">{state.error}</span> : null}
       <Button
-      shape="round"
         disabled={status !== "success"}
-        loading={loading}
-        onClick={handleSave}
+        loading={submitting}
         type={status === "success" ? "primary" : "default"}
+        onClick={handleSubmit}
+        shape="round"
         block
       >
         {t(translation.SAVE)}

@@ -205,25 +205,27 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           <MediaQuery minWidth={992}>
             <div className="navbar">
               <Link
-                to={constantPaths.chains}
+                to={constantPaths.vault.chains}
                 className={`${
-                  pathname === constantPaths.chains ? "active" : ""
+                  pathname.startsWith(constantPaths.vault.chains)
+                    ? "active"
+                    : ""
                 }`}
               >
                 Balances
               </Link>
               <Link
-                to={constantPaths.positions}
+                to={constantPaths.vault.positions}
                 className={`${
-                  pathname === constantPaths.positions ? "active" : ""
+                  pathname === constantPaths.vault.positions ? "active" : ""
                 }`}
               >
                 Active Positions
               </Link>
               <Link
-                to={constantPaths.leaderboard}
+                to={constantPaths.vault.leaderboard}
                 className={`${
-                  pathname === constantPaths.leaderboard ? "active" : ""
+                  pathname === constantPaths.vault.leaderboard ? "active" : ""
                 }`}
               >
                 Airdrop Leaderboard

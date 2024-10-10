@@ -83,13 +83,13 @@
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .content {
     background-color: $gray-13;
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .content {
     background-color: $gray-5;
   }
@@ -105,11 +105,11 @@ html[theme="Light"] {
         position: static;
       }
     }
-    .add{
+    .add {
       color: $gray-1;
     }
     .breadcrumb {
-      svg{
+      svg {
         fill: $gray-5;
       }
     }

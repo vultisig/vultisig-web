@@ -4,17 +4,12 @@
   .breadcrumb {
     align-items: center;
     display: flex;
-    gap: 1rem;
+    gap: rem(16);
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    margin-bottom: rem(24);
 
-    .ant-input {
-      background-color: $blue-base;
-      border: none;
-      box-shadow: none;
-      cursor: pointer;
-      height: 3rem;
-      max-width: 21.625rem;
+    .vault-dropdown {
+      max-width: rem(328);
       width: 100%;
     }
 
@@ -23,14 +18,14 @@
 
       svg {
         fill: $gray-1;
-        height: 1.5rem;
-        height: 1.5rem;
+        height: rem(24);
+        height: rem(24);
       }
     }
   }
 
   .total-balance {
-    margin-bottom: 2rem;
+    margin-bottom: rem(32);
 
     .title {
       display: block;
@@ -38,9 +33,9 @@
 
     .value {
       display: block;
-      font-size: 2.5rem;
+      font-size: rem(40);
       font-weight: 700;
-      margin-top: 1rem;
+      margin-top: rem(16);
     }
   }
 
@@ -49,32 +44,28 @@
     color: $gray-1;
     display: flex;
     float: left;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: rem(16);
+    margin-top: rem(24);
 
     svg {
       fill: $cyan-base;
-      height: 2rem;
-      width: 2rem;
+      height: rem(32);
+      width: rem(32);
     }
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .chains-page {
     .breadcrumb {
       .add {
         color: $gray-5;
       }
-
-      .ant-input {
-        background-color: $gray-12;
-      }
     }
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .chains-page {
     .breadcrumb {
       .add {

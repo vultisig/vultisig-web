@@ -10,39 +10,45 @@ import { chooseToken } from "utils/constants";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 import { CaretRightOutlined, PlusCircleFilled } from "icons";
 import AssetItem from "components/asset-item";
 import ChooseToken from "modals/choose-token";
 import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
+import VultiLoading from "components/vulti-loading";
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const { chainKey } = useParams();
   const { currency } = useBaseContext();
-  const { fetchTokens, vault } = useVaultContext();
+  const { changeVault, getTokens, vault } = useVaultContext();
   const navigate = useNavigate();
   const goBack = useGoBack();
 
-  const chain = vault?.chains.find(
-    ({ name }) => name.toLowerCase() === chainKey
-  );
+  const chain =
+    vault?.updated &&
+    vault?.chains.find(({ name }) => name.toLowerCase() === chainKey);
 
-  const componentDidUpdate = () => {
+  const chainDidUpdate = () => {
     if (chain) {
       if (chooseToken[chain.name]) {
-        fetchTokens(chain)
+        getTokens(chain)
           .then(() => {})
           .catch(() => {});
       }
     } else {
-      navigate(constantPaths.chains);
+      navigate(constantPaths.vault.chains);
     }
   };
 
-  useEffect(componentDidUpdate, [chainKey]);
+  const vaultDidUpdate = () => {
+    if (vault && !vault.updated) changeVault(vault, true);
+  };
+
+  useEffect(chainDidUpdate, [chainKey]);
+  useEffect(vaultDidUpdate, [vault]);
 
   return chain ? (
     <>
@@ -51,7 +57,7 @@ const Component: FC = () => {
           <Button
             type="link"
             className="back"
-            onClick={() => goBack(constantPaths.chains)}
+            onClick={() => goBack(constantPaths.vault.chains)}
           >
             <CaretRightOutlined />
           </Button>
@@ -100,7 +106,9 @@ const Component: FC = () => {
       {chooseToken[chain.name] && <ChooseToken />}
     </>
   ) : (
-    <></>
+    <div className="layout-content">
+      <VultiLoading />
+    </div>
   );
 };
 

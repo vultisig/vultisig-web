@@ -19,7 +19,7 @@
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .token-image {
     &:where(span) {
       background-color: $gray-5;
@@ -27,7 +27,7 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .token-image {
     &:where(span) {
       background-color: $gray-5;

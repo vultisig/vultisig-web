@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Modal, QRCode, Typography } from "antd";
 
 import constantModals from "modals/constant-modals";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 interface InitialState {
   visible: boolean;

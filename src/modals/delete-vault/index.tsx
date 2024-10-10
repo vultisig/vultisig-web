@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 import { useTranslation } from "react-i18next";
 import { WarningOutlined } from "icons";
 import { VaultProps } from "utils/interfaces";
@@ -86,7 +86,7 @@ const Component: FC<ComponentProps> = ({ delVault, vault }) => {
       <WarningOutlined className="icon" />
       <span className="warning">{t(translation.DELETE_VAULT_WARNING)}:</span>
       <div className="vault-name-container">
-        <Input value={vault?.alias} readOnly/>
+        <Input value={vault?.alias} readOnly />
       </div>
     </Modal>
   );
