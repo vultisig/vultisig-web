@@ -32,7 +32,7 @@ const Component: FC<ComponentProps> = ({ changeVault, vault, vaults }) => {
       key: "1",
       label: (
         <>
-          <Link to={constantPaths.import}>
+          <Link to={constantPaths.import} style={{ fontWeight: 'bold' }}>
             + {t(translation.ADD_NEW_VAULT)}
           </Link>
           <CaretRightOutlined />
@@ -44,7 +44,7 @@ const Component: FC<ComponentProps> = ({ changeVault, vault, vaults }) => {
       key: "2",
       label: (
         <>
-          <Link to={`#${constantModals.JOIN_AIRDROP}`} state={true}>
+          <Link to={`#${constantModals.JOIN_AIRDROP}`} state={true}  style={{ fontWeight: 'bold' }}>
             {t(translation.JOIN_AIRDROP)}
           </Link>
           <CaretRightOutlined />

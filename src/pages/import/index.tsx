@@ -103,7 +103,7 @@ const Component: FC = () => {
         <div className="wrapper">
           <h2 className="heading">
             Connect with VultiConnect<br></br>
-            or upload your vault share to start
+            or upload your vault QR to start
           </h2>
 
           <Button
