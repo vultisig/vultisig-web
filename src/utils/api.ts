@@ -469,7 +469,7 @@ const service = {
   },
   leaderboard: async (params: Leaderboard.Params) => {
     return await api.get<Leaderboard.Props>(
-      `https://airdrop.odindex.io/api/leaderboard/vaults?from=${params.from}&limit=${params.limit}`
+      `leaderboard/vaults?from=${params.from}&limit=${params.limit}`
     );
   },
   oneInch: async (id: number) => {
