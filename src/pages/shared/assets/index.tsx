@@ -7,7 +7,7 @@ import { Truncate } from "@re-dev/react-truncate";
 import { useBaseContext } from "context/base";
 import { useSharedContext } from "context/shared";
 import constantPaths from "routes/constant-paths";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 import { CaretRightOutlined } from "icons";
 import AssetItem from "components/asset-item";

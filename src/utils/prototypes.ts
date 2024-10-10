@@ -2,10 +2,21 @@ import { Currency, currencySymbol } from "utils/constants";
 
 declare global {
   interface Number {
-    toValueFormat(currency: Currency): string;
     toBalanceFormat(): string;
+    toNumberFormat(): string;
+    toValueFormat(currency: Currency): string;
   }
 }
+
+Number.prototype.toNumberFormat = function () {
+  const formattedValue = this.toLocaleString("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  return formattedValue;
+};
 
 Number.prototype.toValueFormat = function (currency: Currency) {
   const formattedValue = this.toLocaleString("en-US", {

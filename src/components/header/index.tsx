@@ -14,7 +14,7 @@ import constantPaths from "routes/constant-paths";
 import { Vultisig } from "icons";
 
 import {
-  ChainOutlined,
+  //ChainOutlined,
   CurrencyOutlined,
   GearOutlined,
   GlobeOutlined,
@@ -118,15 +118,15 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       ),
       icon: <CurrencyOutlined />,
     },
-    ...(uid
-      ? [
-          {
-            key: "4",
-            label: t(translation.DEFAULT_CHAINS),
-            icon: <ChainOutlined />,
-          },
-        ]
-      : []),
+    // ...(uid
+    //   ? [
+    //       {
+    //         key: "4",
+    //         label: t(translation.DEFAULT_CHAINS),
+    //         icon: <ChainOutlined />,
+    //       },
+    //     ]
+    //   : []),
     {
       key: "5",
       label: (
@@ -205,25 +205,27 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           <MediaQuery minWidth={992}>
             <div className="navbar">
               <Link
-                to={constantPaths.chains}
+                to={constantPaths.vault.chains}
                 className={`${
-                  pathname === constantPaths.chains ? "active" : ""
+                  pathname.startsWith(constantPaths.vault.chains)
+                    ? "active"
+                    : ""
                 }`}
               >
                 Balances
               </Link>
               <Link
-                to={constantPaths.positions}
+                to={constantPaths.vault.positions}
                 className={`${
-                  pathname === constantPaths.positions ? "active" : ""
+                  pathname === constantPaths.vault.positions ? "active" : ""
                 }`}
               >
                 Active Positions
               </Link>
               <Link
-                to={constantPaths.leaderboard}
+                to={constantPaths.vault.leaderboard}
                 className={`${
-                  pathname === constantPaths.leaderboard ? "active" : ""
+                  pathname === constantPaths.vault.leaderboard ? "active" : ""
                 }`}
               >
                 Airdrop Leaderboard

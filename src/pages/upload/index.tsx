@@ -7,12 +7,12 @@ import { ReaderOptions, readBarcodesFromImageFile } from "zxing-wasm/reader";
 import { toCamelCase } from "utils/functions";
 import { errorKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
-import { getVaults, setVaults } from "utils/vault";
 import api from "utils/api";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
-import { Vultisig, VultisigText } from "icons";
-import { CloseOutlined } from "icons";
+
+import { CloseOutlined, Vultisig, VultisigText } from "icons";
+import { getStoredVaults, setStoredVaults } from "utils/storage";
 
 interface InitialState {
   file?: FileProps;
@@ -36,7 +36,7 @@ const Component: FC = () => {
       api.vault
         .add(vault)
         .then(() => {
-          const vaults = getVaults();
+          const vaults = getStoredVaults();
           const index = vaults.findIndex(
             (old) =>
               old.publicKeyEcdsa === vault.publicKeyEcdsa &&
@@ -44,7 +44,7 @@ const Component: FC = () => {
           );
 
           if (index >= 0) {
-            setVaults(vaults.splice(index, 1, vault));
+            setStoredVaults(vaults.splice(index, 1, vault));
 
             messageApi.open({
               type: "error",
@@ -57,8 +57,8 @@ const Component: FC = () => {
               status: "error",
             }));
           } else {
-            setVaults([vault, ...vaults]);
-            navigate(constantPaths.chains);
+            setStoredVaults([vault, ...vaults]);
+            navigate(constantPaths.vault.chains);
           }
         })
         .catch(() => {
@@ -129,8 +129,6 @@ const Component: FC = () => {
           if (result) {
             try {
               const vault: VaultProps = JSON.parse(result.text);
-              console.log("readBarcodesFromImageFile", vault);
-
               setState((prevState) => ({
                 ...prevState,
                 vault: toCamelCase(vault),

@@ -1,70 +1,67 @@
-import type { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
-
-import { Chain, Currency, Language } from "utils/constants";
-import { Theme } from "./functions";
+import { ChainKey, Currency, Language, Theme } from "utils/constants";
 
 export interface ChainProps {
   address: string;
-  name: Chain;
   coins: CoinProps[];
+  name: ChainKey;
   hexPublicKey: string;
 }
 
 export interface ChainBoolRef {
-  [Chain.ARBITRUM]: boolean;
-  [Chain.AVALANCHE]: boolean;
-  [Chain.BASE]: boolean;
-  [Chain.BITCOIN]: boolean;
-  [Chain.BITCOINCASH]: boolean;
-  [Chain.BLAST]: boolean;
-  [Chain.BSCCHAIN]: boolean;
-  [Chain.CRONOSCHAIN]: boolean;
-  [Chain.DASH]: boolean;
-  [Chain.DOGECOIN]: boolean;
-  [Chain.DYDX]: boolean;
-  [Chain.ETHEREUM]: boolean;
-  [Chain.GAIACHAIN]: boolean;
-  [Chain.KUJIRA]: boolean;
-  [Chain.LITECOIN]: boolean;
-  [Chain.MAYACHAIN]: boolean;
-  [Chain.OPTIMISM]: boolean;
-  [Chain.POLKADOT]: boolean;
-  [Chain.POLYGON]: boolean;
-  [Chain.SOLANA]: boolean;
-  [Chain.SUI]: boolean;
-  [Chain.THORCHAIN]: boolean;
-  [Chain.ZKSYNC]: boolean;
+  [ChainKey.ARBITRUM]: boolean;
+  [ChainKey.AVALANCHE]: boolean;
+  [ChainKey.BASE]: boolean;
+  [ChainKey.BITCOIN]: boolean;
+  [ChainKey.BITCOINCASH]: boolean;
+  [ChainKey.BLAST]: boolean;
+  [ChainKey.BSCCHAIN]: boolean;
+  [ChainKey.CRONOSCHAIN]: boolean;
+  [ChainKey.DASH]: boolean;
+  [ChainKey.DOGECOIN]: boolean;
+  [ChainKey.DYDX]: boolean;
+  [ChainKey.ETHEREUM]: boolean;
+  [ChainKey.GAIACHAIN]: boolean;
+  [ChainKey.KUJIRA]: boolean;
+  [ChainKey.LITECOIN]: boolean;
+  [ChainKey.MAYACHAIN]: boolean;
+  [ChainKey.OPTIMISM]: boolean;
+  [ChainKey.POLKADOT]: boolean;
+  [ChainKey.POLYGON]: boolean;
+  [ChainKey.SOLANA]: boolean;
+  [ChainKey.SUI]: boolean;
+  [ChainKey.THORCHAIN]: boolean;
+  [ChainKey.ZKSYNC]: boolean;
 }
 
 export interface ChainStrRef {
-  [Chain.ARBITRUM]: string;
-  [Chain.AVALANCHE]: string;
-  [Chain.BASE]: string;
-  [Chain.BITCOIN]: string;
-  [Chain.BITCOINCASH]: string;
-  [Chain.BLAST]: string;
-  [Chain.BSCCHAIN]: string;
-  [Chain.CRONOSCHAIN]: string;
-  [Chain.DASH]: string;
-  [Chain.DOGECOIN]: string;
-  [Chain.DYDX]: string;
-  [Chain.ETHEREUM]: string;
-  [Chain.GAIACHAIN]: string;
-  [Chain.KUJIRA]: string;
-  [Chain.LITECOIN]: string;
-  [Chain.MAYACHAIN]: string;
-  [Chain.OPTIMISM]: string;
-  [Chain.POLKADOT]: string;
-  [Chain.POLYGON]: string;
-  [Chain.SOLANA]: string;
-  [Chain.SUI]: string;
-  [Chain.THORCHAIN]: string;
-  [Chain.ZKSYNC]: string;
+  [ChainKey.ARBITRUM]: string;
+  [ChainKey.AVALANCHE]: string;
+  [ChainKey.BASE]: string;
+  [ChainKey.BITCOIN]: string;
+  [ChainKey.BITCOINCASH]: string;
+  [ChainKey.BLAST]: string;
+  [ChainKey.BSCCHAIN]: string;
+  [ChainKey.CRONOSCHAIN]: string;
+  [ChainKey.DASH]: string;
+  [ChainKey.DOGECOIN]: string;
+  [ChainKey.DYDX]: string;
+  [ChainKey.ETHEREUM]: string;
+  [ChainKey.GAIACHAIN]: string;
+  [ChainKey.KUJIRA]: string;
+  [ChainKey.LITECOIN]: string;
+  [ChainKey.MAYACHAIN]: string;
+  [ChainKey.OPTIMISM]: string;
+  [ChainKey.POLKADOT]: string;
+  [ChainKey.POLYGON]: string;
+  [ChainKey.SOLANA]: string;
+  [ChainKey.SUI]: string;
+  [ChainKey.THORCHAIN]: string;
+  [ChainKey.ZKSYNC]: string;
 }
 
 export interface CoinParams {
   address: string;
-  chain: Chain;
+  chain: ChainKey;
   cmcId: number;
   contractAddress: string;
   decimals: number;
@@ -86,10 +83,6 @@ export interface CoinProps {
   value: number;
 }
 
-export interface CoinRef {
-  [chain: string]: CoinType;
-}
-
 export interface CurrencyRef {
   [Currency.AUD]: string;
   [Currency.CAD]: string;
@@ -101,6 +94,11 @@ export interface CurrencyRef {
   [Currency.SEK]: string;
   [Currency.SGD]: string;
   [Currency.USD]: string;
+}
+
+export interface Customization {
+  logo: string;
+  theme: Theme;
 }
 
 export interface LanguageRef {
@@ -128,8 +126,17 @@ export interface QRCodeProps {
   vault: VaultProps;
 }
 
+export interface SharedSettings {
+  hexChainCode?: string;
+  logo: string;
+  publicKeyEcdsa?: string;
+  publicKeyEddsa?: string;
+  theme: Theme;
+  uid?: string;
+}
+
 export interface TokenProps {
-  chain: Chain;
+  chain: ChainKey;
   cmcId: number;
   contractAddress: string;
   decimals: number;
@@ -143,21 +150,17 @@ export interface TokenProps {
 
 export interface VaultProps {
   alias: string;
+  balance: number;
   chains: ChainProps[];
   hexChainCode: string;
   joinAirdrop: boolean;
+  logo: string;
   name: string;
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
+  rank: number;
+  theme: Theme;
   totalPoints: number;
   uid: string;
-}
-
-export interface SharedSettings {
-  logo: string;
-  theme: Theme;
-  publicKeyEcdsa?: string;
-  publicKeyEddsa?: string;
-  uid?: string;
-  hexChainCode?: string;
+  updated?: boolean;
 }

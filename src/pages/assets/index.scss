@@ -1,49 +1,49 @@
 .assets-page {
   margin: 0 auto;
-  max-width: 72.5rem;
+  max-width: rem(1160);
   overflow: hidden;
-  padding: 0 1rem;
+  padding: 0 rem(16);
 
   .breadcrumb {
     display: flex;
-    gap: 1rem;
+    gap: rem(16);
 
     svg {
       transform: rotate(180deg);
       fill: $gray-1;
-      height: 1.5rem;
-      width: 1.5rem;
+      height: rem(24);
+      width: rem(24);
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: rem(24);
       font-weight: 700;
-      line-height: 2.25rem;
+      line-height: rem(36);
     }
   }
 
   .chain {
-    padding: 1rem 0;
+    padding: rem(16) 0;
     position: relative;
 
     .token-image {
-      height: 2rem;
+      height: rem(32);
       left: 0;
       position: absolute;
-      top: 0.375rem;
-      width: 2rem;
+      top: rem(6);
+      width: rem(32);
     }
 
     .type {
       font-weight: 700;
-      line-height: 2.75rem;
-      padding-left: 3rem;
+      line-height: rem(44);
+      padding-left: rem(48);
       position: relative;
     }
 
     .key {
-      height: 2.75rem;
-      line-height: 2.75rem;
+      height: rem(44);
+      line-height: rem(44);
       overflow: hidden;
       text-align: center;
       width: 100%;
@@ -53,18 +53,18 @@
       display: block;
       font-size: 1.25em;
       font-weight: 700;
-      line-height: 2.75rem;
+      line-height: rem(44);
       position: absolute;
       right: 0;
-      top: 1rem;
+      top: rem(16);
     }
   }
 
   .content {
     background-color: $blue-base;
-    border-radius: 0.5rem;
-    margin-top: 2.125rem;
-    padding: 0 1.25rem;
+    border-radius: rem(8);
+    margin-top: rem(34);
+    padding: 0 rem(20);
   }
 
   .add {
@@ -72,26 +72,50 @@
     color: $gray-1;
     display: flex;
     float: left;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: rem(16);
+    margin-top: rem(24);
 
     svg {
       fill: $cyan-base;
-      height: 2rem;
-      width: 2rem;
+      height: rem(32);
+      width: rem(32);
     }
   }
 }
 
-html[theme="Dark"] {
-  .content {
-    background-color: $gray-13;
+html[theme="dark"] {
+  .assets-page {
+    .breadcrumb {
+      svg {
+        fill: $gray-5;
+      }
+    }
+
+    .content {
+      background-color: $gray-12;
+    }
+
+    .add {
+      color: $gray-1;
+    }
   }
 }
 
-html[theme="Light"] {
-  .content {
-    background-color: $gray-5;
+html[theme="light"] {
+  .assets-page {
+    .breadcrumb {
+      svg {
+        fill: $gray-5;
+      }
+    }
+
+    .content {
+      background-color: $gray-3;
+    }
+
+    .add {
+      color: $gray-8;
+    }
   }
 }
 
@@ -99,18 +123,10 @@ html[theme="Light"] {
   .assets-page {
     .chain {
       display: flex;
-      gap: 1.5rem;
+      gap: rem(24);
 
       .amount {
         position: static;
-      }
-    }
-    .add{
-      color: $gray-1;
-    }
-    .breadcrumb {
-      svg{
-        fill: $gray-5;
       }
     }
   }

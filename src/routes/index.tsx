@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import React from "react";
 
+import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 
 import ShareLayout from "layout/shared";
@@ -15,6 +16,7 @@ import AssetPage from "pages/assets";
 import ChainsPage from "pages/chains";
 import ImportPage from "pages/import";
 import LeaderboardPage from "pages/leaderboard";
+import PositionsPage from "pages/positions";
 import UploadPage from "pages/upload";
 
 import SharedAssetsPage from "pages/shared/assets";
@@ -28,6 +30,8 @@ interface RouteConfig {
 }
 
 const Component = () => {
+  const vaults = getStoredVaults();
+
   const processRoutes = (routes: RouteConfig[]): RouteObject[] => {
     return routes.reduce<RouteObject[]>(
       (acc, { children, element, path, redirect }) => {
@@ -55,7 +59,9 @@ const Component = () => {
   const routes: RouteConfig[] = [
     {
       path: constantPaths.root,
-      redirect: constantPaths.chains,
+      redirect: vaults.length
+        ? constantPaths.vault.chains
+        : constantPaths.import,
     },
     {
       path: constantPaths.import,
@@ -96,24 +102,28 @@ const Component = () => {
       ],
     },
     {
-      path: constantPaths.root,
+      path: constantPaths.vault.root,
       element: <VaultLayout />,
       children: [
         {
-          path: constantPaths.root,
-          redirect: constantPaths.chains,
+          path: constantPaths.vault.root,
+          redirect: constantPaths.vault.chains,
         },
         {
-          path: constantPaths.chains,
+          path: constantPaths.vault.chains,
           element: <ChainsPage />,
         },
         {
-          path: constantPaths.assets,
+          path: constantPaths.vault.assets,
           element: <AssetPage />,
         },
         {
-          path: constantPaths.leaderboard,
+          path: constantPaths.vault.leaderboard,
           element: <LeaderboardPage />,
+        },
+        {
+          path: constantPaths.vault.positions,
+          element: <PositionsPage />,
         },
         {
           path: "*",

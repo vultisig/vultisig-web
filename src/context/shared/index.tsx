@@ -11,16 +11,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBaseContext } from "context/base";
 import { Currency } from "utils/constants";
 import { CoinProps, VaultProps } from "utils/interfaces";
-import { getBalance, getSharedSettings, getValue, setSharedSettings } from "utils/vault";
 import api from "utils/api";
 import constantPaths from "routes/constant-paths";
+import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
+import Footer from "components/footer";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
-import Footer from "components/footer";
 import { changeTheme } from "utils/functions";
 
 interface SharedContext {
@@ -40,7 +40,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, setState] = useState(initialState);
   const { loaded, loading, vault } = state;
   const { uid } = useParams();
-  const { setCurrency, currency } = useBaseContext();
+  const { changeCurrency, currency } = useBaseContext();
+  const vaultProvider = new VaultProvider();
   const navigate = useNavigate();
 
   const changeValue = (
@@ -48,8 +49,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     currency: Currency,
     vault: VaultProps
   ) => {
-    getValue(coins, currency).then((coins) => {
-      setCurrency(currency);
+    vaultProvider.getValues(coins, currency).then((coins) => {
+      changeCurrency(currency);
 
       setState((prevState) => ({
         ...prevState,
@@ -68,7 +69,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  const changeCurrency = (currency: Currency) => {
+  const handleCurrency = (currency: Currency) => {
     if (vault) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
@@ -83,23 +84,21 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       api.vault
         .getById(uid)
         .then(({ data }) => {
-          const promises = data.chains.flatMap(({ address, coins, name }) =>
-            coins.map((coin) => getBalance(coin, name, address))
-          );
+          api.sharedSettings.get(uid).then(({ data: { logo, theme } }) => {
+            const promises = data.chains.flatMap(({ address, coins, name }) =>
+              coins.map((coin) => vaultProvider.getBalance(coin, name, address))
+            );
 
-          Promise.all(promises).then((coins) =>
-            changeValue(coins, currency, data)
-          );
+            Promise.all(promises).then((coins) =>
+              changeValue(coins, currency, { ...data, logo, theme })
+            );
+
+            changeTheme(theme);
+          });
         })
         .catch(() => {
           navigate(constantPaths.root);
         });
-
-      api.sharedSettings.get(uid).then(({ data }) => {
-        setSharedSettings(data.logo, data.theme);
-        changeTheme(data.theme)
-      });
-
     } else {
       navigate(constantPaths.root);
     }
@@ -111,12 +110,12 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     <SharedContext.Provider value={{ vault }}>
       {loaded ? (
         <>
-          <div className="layout">
-            <Header logo={getSharedSettings().logo} alias={vault?.alias} />
+          <div className="layout layout-shared">
+            <Header logo={vault?.logo} alias={vault?.alias} />
             {children}
             <Footer />
           </div>
-          <ChangeCurrency onChange={changeCurrency} />
+          <ChangeCurrency onChange={handleCurrency} />
           <ChangeLanguage />
           <Preloader visible={loading} />
         </>

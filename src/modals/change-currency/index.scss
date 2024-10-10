@@ -2,9 +2,9 @@
   .ant-list-item {
     background-color: $blue-base;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: rem(8);
     cursor: pointer;
-    padding: 0.875rem;
+    padding: rem(14);
     transition: all 0.3s;
 
     &.active {
@@ -18,7 +18,7 @@
     }
 
     + .ant-list-item {
-      margin-top: 1rem;
+      margin-top: rem(16);
     }
   }
 
@@ -27,6 +27,6 @@
   }
 
   .ant-modal-content {
-    padding: 0 1.875rem 1.875rem;
+    padding: 0 rem(30) rem(30);
   }
 }

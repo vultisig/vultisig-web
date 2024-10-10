@@ -3,48 +3,48 @@
   position: relative;
 
   .token {
-    padding-left: 3rem;
+    padding-left: rem(48);
     position: relative;
 
     .token-image {
-      height: 1.5rem;
-      left: 0.25rem;
+      height: rem(24);
+      left: rem(4);
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 1.5rem;
+      width: rem(24);
     }
 
     .name {
       display: block;
-      font-size: 1.25rem;
-      line-height: 4.25rem;
+      font-size: rem(20);
+      line-height: rem(68);
     }
   }
 
   .balance {
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: rem(12);
+    line-height: rem(16);
     position: absolute;
     right: 0;
-    top: 2.375rem;
+    top: rem(38);
     white-space: nowrap;
   }
 
   .value {
     font-size: 1.25em;
     font-weight: 700;
-    line-height: 1.375rem;
+    line-height: rem(22);
     position: absolute;
     right: 0;
-    top: 0.75rem;
+    top: rem(12);
     white-space: nowrap;
   }
 }
 
-html[theme="Dark"] {
-  .assets-page{
-    .content{
+html[theme="dark"] {
+  .assets-page {
+    .content {
       background-color: $gray-12;
     }
     .asset-item {
@@ -53,9 +53,9 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
-  .assets-page{
-    .content{
+html[theme="light"] {
+  .assets-page {
+    .content {
       background-color: $gray-3;
       color: $gray-8;
     }
@@ -75,15 +75,15 @@ html[theme="Light"] {
     }
 
     .balance {
-      font-size: 1rem;
-      line-height: 4.25rem;
+      font-size: rem(16);
+      line-height: rem(68);
       position: static;
       text-align: center;
       width: 30%;
     }
 
     .value {
-      line-height: 4.25rem;
+      line-height: rem(68);
       position: static;
       text-align: right;
       width: 30%;

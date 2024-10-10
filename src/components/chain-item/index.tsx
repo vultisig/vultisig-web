@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Truncate } from "@re-dev/react-truncate";
 
 import { useBaseContext } from "context/base";
-import { Chain } from "utils/constants";
+import { ChainKey } from "utils/constants";
 import { CoinProps } from "utils/interfaces";
 
 import { CaretRightOutlined } from "icons";
@@ -13,7 +13,7 @@ import TokenImage from "components/token-image";
 interface ComponentProps {
   address: string;
   coins: CoinProps[];
-  name: Chain;
+  name: ChainKey;
 }
 
 const Component: FC<ComponentProps> = ({ address, coins, name }) => {

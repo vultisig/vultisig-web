@@ -1,67 +1,44 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button, Dropdown, Empty, Input, MenuProps, Tooltip } from "antd";
+import { Button, Empty, Tooltip } from "antd";
 
 import { useBaseContext } from "context/base";
 import { useVaultContext } from "context/vault";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
-import constantPaths from "routes/constant-paths";
 
-import { CaretRightOutlined, PlusCircleFilled, RefreshOutlined } from "icons";
+import { PlusCircleFilled, RefreshOutlined } from "icons";
 import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
+import VaultDropdown from "components/vault-dropdown";
+import VultiLoading from "components/vulti-loading";
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const { currency } = useBaseContext();
-  const { useVault, vault, vaults } = useVaultContext();
+  const { changeVault, vault, vaults } = useVaultContext();
 
-  const items: MenuProps["items"] = [
-    ...vaults.map((vault) => ({
-      label: vault.alias,
-      key: vault.uid,
-      onClick: () => useVault(vault),
-    })),
-    {
-      type: "divider",
-    },
-    {
-      key: "1",
-      label: (
-        <>
-          <Link to={constantPaths.import}>
-            + {t(translation.ADD_NEW_VAULT)}
-          </Link>
-          <CaretRightOutlined />
-        </>
-      ),
-      className: "primary",
-    },
-    {
-      key: "2",
-      label: (
-        <>
-          <Link to={`#${constantModals.JOIN_AIRDROP}`} state={true}>
-            {t(translation.JOIN_AIRDROP)}
-          </Link>
-          <CaretRightOutlined />
-        </>
-      ),
-      className: "primary",
-    },
-  ];
+  const componentDidUpdate = () => {
+    if (vault && !vault.updated) changeVault(vault, true);
+  };
 
-  return vault ? (
+  useEffect(componentDidUpdate, [vault]);
+
+  return vault?.updated ? (
     <>
       <div className="layout-content chains-page">
         <div className="breadcrumb">
-          <Dropdown menu={{ items }} className="menu">
-            <Input value={vault.alias || ""} readOnly />
-          </Dropdown>
+          <VaultDropdown
+            vault={vault}
+            vaults={vaults}
+            changeVault={(vault) => changeVault(vault, true)}
+          />
           <Tooltip title="Refresh">
-            <Button type="link" onClick={() => useVault(vault)}>
+            <Button
+              type="link"
+              onClick={() => changeVault({ ...vault, updated: false }, true)}
+            >
               <RefreshOutlined />
             </Button>
           </Tooltip>
@@ -114,7 +91,9 @@ const Component: FC = () => {
       <ChooseChain />
     </>
   ) : (
-    <></>
+    <div className="layout-content">
+      <VultiLoading />
+    </div>
   );
 };
 

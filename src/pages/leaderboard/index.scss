@@ -49,16 +49,6 @@
       display: flex;
       justify-content: space-between;
     }
-
-    .vault {
-      background-color: $blue-base;
-      border-radius: rem(8);
-      cursor: pointer;
-      display: block;
-      height: rem(48);
-      line-height: rem(48);
-      padding: 0 rem(16);
-    }
   }
 
   .board {
@@ -120,6 +110,56 @@
       }
     }
 
+    .shape {
+      position: relative;
+
+      .main {
+        border-radius: 50%;
+        height: rem(48);
+      }
+
+      .bottom {
+        border: solid rem(4) $blue-base;
+        border-radius: 50%;
+        bottom: rem(-12);
+        height: rem(32);
+        left: rem(-12);
+        position: absolute;
+      }
+
+      .top {
+        border: solid rem(4) $blue-base;
+        border-radius: 50%;
+        height: rem(32);
+        position: absolute;
+        right: rem(-12);
+        top: rem(-12);
+      }
+    }
+
+    .stats {
+      .numb {
+        color: $gray-5;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(22);
+        text-align: center;
+      }
+
+      .more {
+        color: rgba($color: $gray-1, $alpha: 0.6);
+        cursor: pointer;
+        display: block;
+        font-size: rem(14);
+        font-weight: 500;
+        line-height: rem(22);
+        margin-top: rem(4);
+        text-align: center;
+        text-decoration: underline;
+      }
+    }
+
     .item {
       align-items: center;
       background-color: $blue-base;
@@ -139,28 +179,10 @@
       background-color: transparent;
       border: dashed rem(1) $blue-light;
       justify-content: center;
+    }
 
-      .stats {
-        .numb {
-          color: $gray-5;
-          display: block;
-          font-size: rem(16);
-          font-weight: 700;
-          line-height: rem(22);
-          text-align: center;
-        }
-
-        .more {
-          color: rgba($color: $gray-1, $alpha: 0.6);
-          display: block;
-          font-size: rem(14);
-          font-weight: 500;
-          line-height: rem(22);
-          margin-top: rem(4);
-          text-align: center;
-          text-decoration: underline;
-        }
-      }
+    .loading {
+      justify-content: center;
     }
 
     .active {
@@ -264,19 +286,92 @@
         gap: rem(24);
       }
 
-      .vault {
+      .vault-dropdown {
         width: rem(328);
       }
     }
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-11;
+      .divider {
+        background-color: $gray-11;
+      }
+    }
+    .board {
+      background-color: $gray-11;
+      .item {
+        background-color: $gray-12;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-9;
+          }
+          &::before {
+            background-color: $gray-10;
+          }
+        }
+      }
+    }
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-3;
+      .divider {
+        background-color: $gray-3;
+      }
+    }
+    .board {
+      background-color: $gray-4;
+      .divider{
+        border-color: $gray-6;
+      }
+      .point {
+        .name {
+          color: $gray-8;
+        }
+      }
+      .rank {
+        .value {
+          color: $gray-6;
+        }
+        .price {
+          color: $gray-8;
+        }
+      }
+      .shape{
+        .bottom,.top {
+          border-color: $gray-2;
+        }
+      }
+      .stats {
+        .more {
+          color: $gray-8;
+        }
+        .numb {
+          color: $gray-6;
+        }
+      }
+      .item {
+        background-color: $gray-2;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-5;
+          }
+          &::before {
+            background-color: $gray-4;
+          }
+        }
+      }
+    }
   }
 }

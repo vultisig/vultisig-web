@@ -4,10 +4,11 @@ import { Button, message } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { VaultProps } from "utils/interfaces";
-import { getVaults, setVaults } from "utils/vault";
-import api from "utils/api";
+import { getStoredVaults, setStoredVaults } from "utils/storage";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
+import api from "utils/api";
+
 import { Vultisig, VultisigText } from "icons";
 
 interface InitialState {
@@ -32,7 +33,7 @@ const Component: FC = () => {
       api.vault
         .add(vault)
         .then((newVault) => {
-          const vaults = getVaults();
+          const vaults = getStoredVaults();
           const index = vaults.findIndex(
             (old) =>
               old.publicKeyEcdsa === vault.publicKeyEcdsa &&
@@ -45,7 +46,7 @@ const Component: FC = () => {
               content: "Vault already exists",
             });
           } else {
-            setVaults([
+            setStoredVaults([
               { ...newVault, hexChainCode: vault.hexChainCode },
               ...vaults,
             ]);
@@ -70,7 +71,7 @@ const Component: FC = () => {
           Promise.all(promises).then(() => {
             setState((prevState) => ({ ...prevState, loading: false }));
 
-            navigate(constantPaths.chains);
+            navigate(constantPaths.vault.chains);
           });
         } else {
           messageApi.open({
@@ -102,21 +103,21 @@ const Component: FC = () => {
         <div className="wrapper">
           <h2 className="heading">
             Connect with VultiConnect<br></br>
-            or upload your vault share to start
+            or upload your vault QR to start
           </h2>
 
           <Button
             disabled={!isInstalled}
             loading={loading}
             onClick={handleConnect}
+            shape="round"
             type="primary"
             block
-            shape="round"
           >
             VultiConnect
           </Button>
 
-          <Button onClick={handleUpload} type="default" block shape="round">
+          <Button onClick={handleUpload} shape="round" type="default" block>
             Upload Vault QR
           </Button>
         </div>

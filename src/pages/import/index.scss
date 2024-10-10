@@ -1,51 +1,51 @@
 .import-page {
   margin: 0 auto;
-  max-width: 42rem;
+  max-width: rem(672);
   min-height: 100vh;
-  padding: 3rem 1rem;
+  padding: rem(48) rem(16);
   text-align: center;
 
   .logo-container {
     display: flex;
     justify-content: center;
-    margin: 0 auto 3rem;
+    margin: 0 auto rem(48);
     .shape {
-      width: 3rem !important;
+      width: rem(48) !important;
     }
     .text {
       fill: $gray-1;
-      width: 9rem !important;
-      padding: 0rem 0.4rem 0.4rem 0.4rem;
+      width: rem(144) !important;
+      padding: 0 rem(4) rem(4) rem(4);
     }
   }
 
   .logo {
-    margin: 0 auto 3rem;
+    margin: 0 auto rem(48);
   }
 
   .heading {
-    font-size: 1.5rem;
+    font-size: rem(24);
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: rem(32);
     line-height: rem(36);
   }
 
   .icon {
-    height: 3rem;
-    margin: 0 auto 1.5rem;
+    height: rem(48);
+    margin: 0 auto rem(24);
   }
 
   .title {
-    font-size: 1.25rem;
+    font-size: rem(20);
     font-weight: 600;
   }
 
   .text {
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+    font-size: rem(14);
+    margin-top: rem(8);
 
     u {
-      margin-left: 0.25rem;
+      margin-left: rem(4);
     }
   }
 
@@ -58,13 +58,13 @@
 
   .error {
     color: $red-base;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+    font-size: rem(14);
+    margin-top: rem(8);
   }
 
   .hint {
-    font-size: 0.875rem;
-    margin: 2rem 0;
+    font-size: rem(14);
+    margin: rem(32) 0;
   }
 
   .ant-btn {
@@ -77,15 +77,15 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: rem(24);
     justify-content: center;
 
     img {
       background-color: $blue-base;
       border: solid 1px rgba($color: $gray-1, $alpha: 0.15);
-      border-radius: 0.5rem;
-      height: 3rem;
-      margin-bottom: 0.875rem;
+      border-radius: rem(8);
+      height: rem(48);
+      margin-bottom: rem(14);
     }
 
     .image {
@@ -94,13 +94,13 @@
       transition: all 0.3s;
 
       &:hover {
-        top: -0.25rem;
+        top: -rem(4);
       }
     }
 
     .text {
       color: $gray-1;
-      font-size: 0.875rem;
+      font-size: rem(14);
       font-weight: 500;
       opacity: 1;
       transition: opacity 0.3s;
@@ -113,16 +113,17 @@
 
   .wrapper {
     background-color: $blue-base;
-    border-radius: 0.75rem;
+    border-radius: rem(12);
     padding: rem(36) rem(48);
   }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   .import-page {
     .wrapper {
       background-color: $gray-12;
     }
+
     .logo-container {
       .text {
         fill: $gray-1;
@@ -137,7 +138,7 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   .import-page {
     .wrapper {
       background-color: $gray-3;

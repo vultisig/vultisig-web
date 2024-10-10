@@ -12,6 +12,7 @@
 @import "../components/splash-screen";
 @import "../components/token-actions";
 @import "../components/token-image";
+@import "../components/vault-dropdown";
 @import "../components/vulti-loading";
 
 @import "../modals/change-currency";
@@ -20,12 +21,13 @@
 @import "../modals/join-airdrop";
 @import "../modals/qr-code";
 @import "../modals/rename-vault";
+@import "../modals/shared-settings";
 @import "../modals/vault-settings";
-@import "../modals/share-settings";
 
 @import "../pages/assets";
 @import "../pages/chains";
 @import "../pages/import";
+@import "../pages/positions";
 @import "../pages/leaderboard";
 @import "../pages/upload";
 
@@ -50,64 +52,9 @@ body {
   }
 }
 
-.ant-btn-default {
-  background-image: $linear-gradient !important;
-  border-color: $cyan-base;
-  color: $cyan-base;
-
-  span {
-    background-image: $linear-gradient;
-    background-clip: text;
-    color: transparent;
-  }
-
-  &::before {
-    background-color: $blue-base;
-    border-radius: rem(24);
-    bottom: rem(1);
-    content: "";
-    left: rem(1);
-    position: absolute;
-    right: rem(1);
-    top: rem(1);
-  }
-
-  &:hover {
-    box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
-  }
-}
-
-.ant-btn-primary {
-  background-color: $cyan-base;
-  color: $blue-dark !important;
-
-  &::before {
-    background-image: $linear-gradient;
-    border-radius: rem(24);
-    bottom: 0;
-    content: "";
-    left: 0;
-    opacity: 1;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: opacity 0.3s;
-  }
-
-  &:hover {
-    &::before {
-      opacity: 0;
-    }
-  }
-}
-
-.ant-btn-link {
-  height: auto !important;
-  padding: 0;
-}
-
 .ant-btn {
   border: none;
+  border-radius: rem(20);
   box-shadow: none;
   font-weight: 700;
   height: rem(40);
@@ -118,11 +65,67 @@ body {
     z-index: 1;
   }
 
+  &.ant-btn-default {
+    background-image: $linear-gradient !important;
+    border-color: $cyan-base;
+    color: $cyan-base;
+
+    span {
+      background-image: $linear-gradient;
+      background-clip: text;
+      color: transparent;
+    }
+
+    &::before {
+      background-color: $blue-base;
+      border-radius: rem(24);
+      bottom: rem(1);
+      content: "";
+      left: rem(1);
+      position: absolute;
+      right: rem(1);
+      top: rem(1);
+    }
+
+    &:hover {
+      box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
+    }
+  }
+
+  &.ant-btn-primary {
+    background-color: $cyan-base;
+    color: $blue-dark !important;
+
+    &::before {
+      background-image: $linear-gradient;
+      border-radius: rem(24);
+      bottom: 0;
+      content: "";
+      left: 0;
+      opacity: 1;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover {
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.ant-btn-link {
+    height: auto !important;
+    padding: 0;
+  }
+
   &:disabled {
     background-color: $blue-dark !important;
     background-image: none !important;
     border: none;
-    box-shadow: none;
+    box-shadow: none !important;
     color: $gray-8 !important;
     cursor: default;
 
@@ -139,15 +142,15 @@ body {
 
 .ant-drawer {
   .ant-drawer-header {
-    padding: 1rem 0.5rem;
+    padding: rem(16) rem(8);
   }
 
   .ant-drawer-body {
-    padding: 0 0.5rem;
+    padding: 0 rem(8);
 
     &::-webkit-scrollbar {
       background-color: $blue-base;
-      width: 0.5rem;
+      width: rem(8);
     }
 
     &::-webkit-scrollbar-corner {
@@ -165,11 +168,11 @@ body {
 }
 
 .ant-dropdown {
-  width: 17.5rem;
+  width: rem(280);
 
   .ant-dropdown-menu-item-icon {
     fill: $gray-1;
-    height: 1.25rem;
+    height: rem(20);
   }
 
   .ant-dropdown-menu-title-content {
@@ -185,8 +188,8 @@ body {
 
   .ant-dropdown-menu-item {
     color: $gray-1 !important;
-    font-size: 0.875rem;
-    line-height: 1.75rem !important;
+    font-size: rem(14);
+    line-height: rem(28) !important;
   }
 
   .ant-dropdown-menu {
@@ -201,8 +204,8 @@ body {
 
       svg {
         fill: $gray-1;
-        height: 1.25rem;
-        width: 1.25rem;
+        height: rem(20);
+        width: rem(20);
       }
     }
   }
@@ -210,9 +213,9 @@ body {
 
 .ant-empty {
   background-color: $blue-base;
-  border-radius: 0.5rem;
+  border-radius: rem(8);
   margin: 0;
-  padding: 1.5rem 1rem;
+  padding: rem(24) rem(16);
 
   .ant-empty-description {
     color: $gray-1;
@@ -232,15 +235,15 @@ body {
 
   .ant-input {
     background-color: transparent;
-    line-height: 2rem;
+    line-height: rem(32);
   }
 
   .ant-input-prefix {
     svg {
       fill: $gray-1;
-      height: 1.5rem;
+      height: rem(24);
       opacity: 0.4;
-      width: 1.5rem;
+      width: rem(24);
     }
   }
 
@@ -257,23 +260,23 @@ body {
 
 .ant-modal {
   .ant-modal-close {
-    right: 1.875rem;
-    top: 1.125rem;
+    right: rem(30);
+    top: rem(18);
   }
 
   .ant-modal-title {
     font-weight: normal;
-    line-height: 2rem;
+    line-height: rem(32);
     text-align: center;
   }
 
   .ant-modal-header {
     margin: 0;
-    padding: 1.125rem 0;
+    padding: rem(18) 0;
   }
 
   .ant-modal-content {
-    padding: 0 1.875rem 1.875rem;
+    padding: 0 rem(30) rem(30);
     background-color: $blue-base;
     .ant-modal-header {
       background-color: $blue-base;
@@ -289,7 +292,7 @@ body {
 }
 
 .ant-select {
-  height: 3rem;
+  height: rem(48);
 
   .ant-select-selection-item {
     color: $gray-1 !important;
@@ -317,7 +320,7 @@ body {
 
   .ant-select-item {
     color: $gray-1 !important;
-    line-height: 1.75rem;
+    line-height: rem(28);
   }
 }
 
@@ -439,23 +442,41 @@ body {
       transform: translate(-50%, -50%);
     }
   }
+
+  &-shared {
+    .layout-content {
+      min-height: calc(100vh - rem(200));
+    }
+  }
 }
 
-html[theme="Dark"] {
+html[theme="dark"] {
   body {
     background-color: $gray-13;
+
+    &::-webkit-scrollbar {
+      background-color: $gray-12;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: $gray-12;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $gray-11;
+    }
   }
 
-  body::-webkit-scrollbar {
-    background-color: $gray-12;
-  }
+  .ant-btn {
+    &.ant-btn-default {
+      &::before {
+        background-color: $gray-12;
+      }
+    }
 
-  body::-webkit-scrollbar-corner {
-    background-color: $gray-12;
-  }
-
-  body::-webkit-scrollbar-thumb {
-    background-color: $gray-11;
+    &:disabled {
+      background-color: $gray-11 !important;
+    }
   }
 
   .ant-drawer {
@@ -485,7 +506,7 @@ html[theme="Dark"] {
   }
 
   .ant-empty {
-    background-color: $gray-13;
+    background-color: $gray-12;
   }
 
   .ant-input-affix-wrapper {
@@ -528,21 +549,6 @@ html[theme="Dark"] {
     }
   }
 
-  .ant-btn-default {
-    background-color: $gray-11 !important;
-  }
-
-  .ant-btn-primary {
-    color: $gray-11 !important;
-  }
-
-  .ant-btn {
-    &:disabled {
-      background-color: $gray-9 !important;
-      color: $gray-6 !important;
-    }
-  }
-
   .ant-tooltip-inner {
     background-color: $gray-10 !important;
     color: $gray-1;
@@ -575,7 +581,7 @@ html[theme="Dark"] {
   }
 }
 
-html[theme="Light"] {
+html[theme="light"] {
   body {
     background-color: $gray-1;
     color: $gray-8;
@@ -593,15 +599,19 @@ html[theme="Light"] {
     }
   }
 
-  .ant-btn-default {
-    background-color: $gray-3 !important;
-  }
-
-  .ant-btn-primary {
-    color: $gray-1 !important;
-  }
-
   .ant-btn {
+    &.ant-btn-default {
+      &::before {
+        background-color: $gray-3;
+      }
+    }
+
+    &.ant-btn-primary {
+      span {
+        color: $gray-1;
+      }
+    }
+
     &:disabled {
       background-color: $gray-5 !important;
       color: $gray-3 !important;
@@ -735,17 +745,12 @@ html[theme="Light"] {
       background-color: $gray-5 !important;
       color: $gray-8;
     }
+
     .ant-tooltip-arrow {
       &::after,
       &::before {
         background-color: $gray-5 !important;
       }
-    }
-  }
-
-  .ant-upload-drag-container {
-    .name {
-      color: $gray-8;
     }
   }
 
@@ -760,13 +765,17 @@ html[theme="Light"] {
         }
       }
 
-      .name {
-        color: $gray-8;
+      .logo {
+        .name {
+          color: $gray-8;
+        }
       }
-    }
 
-    .add {
-      color: $gray-8;
+      .navbar {
+        a {
+          color: $gray-8;
+        }
+      }
     }
   }
 }

@@ -5,7 +5,7 @@ import { Button, Form, List, Modal, Switch } from "antd";
 import { useVaultContext } from "context/vault";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import useGoBack from "utils/custom-back";
+import useGoBack from "hooks/go-back";
 
 interface InitialState {
   submitting: boolean;
@@ -16,7 +16,7 @@ const Component: FC = () => {
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
   const { visible, submitting } = state;
-  const { setVault, vaults } = useVaultContext();
+  const { updateVault, vaults } = useVaultContext();
   const { hash } = useLocation();
   const [form] = Form.useForm();
   const goBack = useGoBack();
@@ -38,7 +38,7 @@ const Component: FC = () => {
 
               action
                 .then(() => {
-                  setVault(params);
+                  updateVault(params);
                 })
                 .catch(() => {});
             } else {
@@ -61,11 +61,13 @@ const Component: FC = () => {
       case `#${constantModals.JOIN_AIRDROP}`: {
         setState((prevState) => ({ ...prevState, visible: true }));
 
-        let data: any = {};
+        setTimeout(() => {
+          const data: { [uid: string]: boolean } = {};
 
-        vaults.forEach((vault) => (data[vault.uid] = vault.joinAirdrop));
+          vaults.forEach((vault) => (data[vault.uid] = vault.joinAirdrop));
 
-        form.setFieldsValue(data);
+          form.setFieldsValue(data);
+        }, 0);
 
         break;
       }

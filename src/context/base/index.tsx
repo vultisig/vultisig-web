@@ -7,104 +7,61 @@ import {
   useContext,
 } from "react";
 
-import { Currency, Language, storageKey } from "utils/constants";
+import { Currency, Language } from "utils/constants";
+import {
+  getStoredCurrency,
+  getStoredLanguage,
+  setStoredCurrency,
+  setStoredLanguage,
+} from "utils/storage";
 import i18n from "i18n/config";
 
 interface BaseContext {
-  setCurrency: (currency: Currency) => void;
+  changeCurrency: (currency: Currency) => void;
+  changeLanguage: (language: Language) => void;
   currency: Currency;
+  language: Language;
 }
 
 interface InitialState {
   currency: Currency;
+  language: Language;
 }
 
 const BaseContext = createContext<BaseContext | undefined>(undefined);
 
 const Component: FC<{ children: ReactNode }> = ({ children }) => {
-  const initialState: InitialState = { currency: Currency.USD };
+  const initialState: InitialState = {
+    currency: getStoredCurrency(),
+    language: getStoredLanguage(),
+  };
   const [state, setState] = useState(initialState);
-  const { currency } = state;
+  const { currency, language } = state;
 
-  const setCurrency = (currency: Currency): void => {
-    localStorage.setItem(storageKey.CURRENCY, currency);
+  const changeCurrency = (currency: Currency): void => {
+    setStoredCurrency(currency);
 
     setState((prevState) => ({ ...prevState, currency }));
   };
 
-  const componentDidMount = () => {
-    let currency: Currency;
-    let language: Language;
-
-    switch (localStorage.getItem(storageKey.CURRENCY)) {
-      case Currency.AUD:
-        currency = Currency.AUD;
-        break;
-      case Currency.CNY:
-        currency = Currency.CNY;
-        break;
-      case Currency.CAD:
-        currency = Currency.CAD;
-        break;
-      case Currency.EUR:
-        currency = Currency.EUR;
-        break;
-      case Currency.GBP:
-        currency = Currency.GBP;
-        break;
-      case Currency.JPY:
-        currency = Currency.JPY;
-        break;
-      case Currency.RUB:
-        currency = Currency.RUB;
-        break;
-      case Currency.SEK:
-        currency = Currency.SEK;
-        break;
-      case Currency.SGD:
-        currency = Currency.SGD;
-        break;
-      default:
-        currency = Currency.USD;
-        break;
-    }
-
-    switch (localStorage.getItem(storageKey.LANGUAGE)) {
-      case Language.CROATIA:
-        language = Language.CROATIA;
-        break;
-      case Language.DUTCH:
-        language = Language.DUTCH;
-        break;
-      case Language.GERMAN:
-        language = Language.GERMAN;
-        break;
-      case Language.ITALIAN:
-        language = Language.ITALIAN;
-        break;
-      case Language.PORTUGUESE:
-        language = Language.PORTUGUESE;
-        break;
-      case Language.RUSSIAN:
-        language = Language.RUSSIAN;
-        break;
-      case Language.SPANISH:
-        language = Language.SPANISH;
-        break;
-      default:
-        language = Language.ENGLISH;
-        break;
-    }
+  const changeLanguage = (language: Language): void => {
+    setStoredLanguage(language);
 
     i18n.changeLanguage(language);
 
-    setState((prevState) => ({ ...prevState, currency }));
+    setState((prevState) => ({ ...prevState, language }));
+  };
+
+  const componentDidMount = () => {
+    i18n.changeLanguage(language);
   };
 
   useEffect(componentDidMount, []);
 
   return (
-    <BaseContext.Provider value={{ setCurrency, currency }}>
+    <BaseContext.Provider
+      value={{ changeCurrency, changeLanguage, currency, language }}
+    >
       {children}
     </BaseContext.Provider>
   );
