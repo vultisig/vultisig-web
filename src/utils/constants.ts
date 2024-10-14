@@ -949,7 +949,7 @@ export const defTokens: TokenProps[] = [
   {
     chain: ChainKey.BSCCHAIN,
     cmcId: 2396,
-    contractAddress: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    contractAddress: "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
     decimals: 18,
     hexPublicKey: "EDDSA",
     isDefault: false,
