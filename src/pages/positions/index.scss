@@ -21,7 +21,6 @@
       }
     }
   }
-
   .h-title {
     margin-bottom: rem(24);
     margin-top: rem(24);
@@ -41,6 +40,7 @@
     padding-left: rem(48);
     position: relative;
     justify-content: center;
+    min-width: rem(150);
 
     .name {
       display: block;
@@ -233,6 +233,9 @@ html[theme="light"] {
       }
     }
   }
+  .type {
+    min-width: rem(160);
+  }
 }
 
 @media (min-width: rem(480)) {
@@ -278,6 +281,7 @@ html[theme="light"] {
         }
         .convert {
           padding: rem(16);
+          max-width: rem(50);
           img {
             margin: rem(16) auto;
           }
@@ -289,6 +293,9 @@ html[theme="light"] {
         align-items: end;
         margin-top: 0;
       }
+    }
+    .type {
+      min-width: 0;
     }
   }
 }
