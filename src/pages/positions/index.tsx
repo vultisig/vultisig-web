@@ -284,7 +284,7 @@ const Component: FC = () => {
               <h4 className="title">Liquidity Position:</h4>
               <div className="no-data">
                 <CodeSandboxOutlined />
-                <p>THORChain address not found in your vault</p>
+                <p>No active LP positions found</p>
               </div>
             </>
           )}
@@ -331,10 +331,10 @@ const Component: FC = () => {
         </>
       ) : (
         <>
-          <h4 className="title">Liquidity Position:</h4>
+          <h4 className="title">Bond/Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>THORChain address not found in your vault</p>
+            <p>No active LP/Bond positions found</p>
           </div>
         </>
       )}
@@ -415,7 +415,7 @@ const Component: FC = () => {
               <h4 className="title">Liquidity Position:</h4>
               <div className="no-data">
                 <CodeSandboxOutlined />
-                <p>Mayachain address not found in your vault</p>
+                <p>No active LP positions found</p>
               </div>
             </>
           )}
@@ -462,9 +462,10 @@ const Component: FC = () => {
         </>
       ) : (
         <>
+         <h4 className="title">Bond/Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>Mayachain address not found in your vault</p>
+            <p>No active LP/Bond positions found</p>
           </div>
         </>
       )}
