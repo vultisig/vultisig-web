@@ -174,8 +174,8 @@ const service = {
           })
           .then(({ data }) => {
             resolve(
-              data?.result
-                ? parseInt(data.result, 16) / Math.pow(10, decimals)
+              data?.result && !isNaN(Number(data.result))
+              ? parseInt(data.result) / Math.pow(10, decimals)
                 : 0
             );
           })
