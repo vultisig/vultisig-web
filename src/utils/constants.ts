@@ -35,6 +35,27 @@ export enum ChainKey {
   ZKSYNC = "Zksync",
 }
 
+export enum MayaChainKey {
+  ARB = "Arbitrum",
+  BTC = "Bitcoin",
+  BSC = "BSC",
+  DASH = "Dash",
+  ETH = "Ethereum",
+  KUJI = "Kujira",
+  THOR = "THORChain",
+}
+
+export enum TCChainKey {
+  AVAX = "Avalanche",
+  BTC = "Bitcoin",
+  BCH = "BitcoinCash",
+  BSC = "BSC",
+  DOGE = "Dogecoin",
+  ETH = "Ethereum",
+  GAIA = "Cosmos",
+  LTC = "Litecoin",
+}
+
 export enum Currency {
   AUD = "AUD",
   CAD = "CAD",

@@ -100,6 +100,27 @@ export interface NodeInfo {
   };
 }
 
+export interface activePosition {
+  maya: {
+    assetAddress: string;
+    runeAddress: string;
+    runeAdded: number;
+    runeOrCacaoPricePriceUsd: number;
+    assetAdded: number;
+    assetPriceUsd: number;
+    pool: string;
+  }[];
+  thorchain: {
+    assetAddress: string;
+    runeAddress: string;
+    runeAdded: number;
+    runeOrCacaoPricePriceUsd: number;
+    assetAdded: number;
+    assetPriceUsd: number;
+    pool: string;
+  }[];
+}
+
 const service = {
   airdrop: {
     join: async (params: VaultProps) => {
@@ -113,6 +134,11 @@ const service = {
     nodeInfo: async () => {
       return await api.get<NodeInfo[]>(
         `https://thornode.ninerealms.com/thorchain/nodes`
+      );
+    },
+    get: async (address: string) => {
+      return await api.get<activePosition>(
+        `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${address}`
       );
     },
   },
