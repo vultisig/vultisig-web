@@ -334,7 +334,7 @@ const Component: FC = () => {
           <h4 className="title">Bond/Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>No active LP/Bond positions found</p>
+            <p>No active Bond/LP positions found</p>
           </div>
         </>
       )}
@@ -465,7 +465,7 @@ const Component: FC = () => {
          <h4 className="title">Bond/Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>No active LP/Bond positions found</p>
+            <p>No active Bond/LP positions found</p>
           </div>
         </>
       )}
