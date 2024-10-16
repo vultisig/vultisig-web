@@ -30,19 +30,121 @@ interface thorchainBonds {
   address?: string;
 }
 
+interface TGT {
+  stakedAmount: number;
+  reward: number;
+  address: string;
+  price: number;
+}
+
+interface RuneProvider {
+  address: string;
+  price: number;
+  value: number;
+}
+
 interface InitialState {
-  mayaBond?: mayaBonds;
-  thorchainBond?: thorchainBonds;
   loading?: boolean;
   liquidityPosition?: activePosition;
+  mayaBond?: mayaBonds;
+  thorchainBond?: thorchainBonds;
+  tgtStake?: TGT;
+  runeProvider?: RuneProvider;
 }
 
 const Component: FC = () => {
   const initialState: InitialState = { loading: true };
   const [state, setState] = useState(initialState);
-  const { loading, liquidityPosition, mayaBond, thorchainBond } = state;
+  const {
+    loading,
+    liquidityPosition,
+    mayaBond,
+    runeProvider,
+    tgtStake,
+    thorchainBond,
+  } = state;
   const { currency } = useBaseContext();
   const { changeVault, vault, vaults } = useVaultContext();
+
+  const getRuneProvider = (): Promise<void> => {
+    return new Promise((resolve) => {
+      const address = vault?.chains.find(
+        ({ name }) => name === ChainKey.THORCHAIN
+      )?.address;
+      const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
+
+      if (address && token) {
+        api.coin
+          .value(token.cmcId, currency)
+          .then((price) => {
+            api.activePositions
+              .getRuneProvider(address)
+              .then(({ data }) => {
+                setState((prevState) => ({
+                  ...prevState,
+                  runeProvider: {
+                    address: address,
+                    price: price,
+                    value: data.value * 1e-8,
+                  },
+                }));
+
+                resolve();
+              })
+              .catch(() => {
+                resolve();
+              });
+          })
+          .catch(() => {
+            resolve();
+          });
+      } else {
+        resolve();
+      }
+    });
+  };
+
+  const getTGTStake = (): Promise<void> => {
+    return new Promise((resolve) => {
+      const address = vault?.chains.find(
+        ({ name }) => name === ChainKey.ETHEREUM
+      )?.address;
+      
+      const token = defTokens.find(
+        (chain) => chain.chain === ChainKey.ETHEREUM && chain.ticker === "TGT"
+      );
+
+      if (address && token) {
+        api.coin
+          .value(token.cmcId, currency)
+          .then((price) => {
+            api.activePositions
+              .getTGTstake(address)
+              .then(({ data }) => {
+                setState((prevState) => ({
+                  ...prevState,
+                  tgtStake: {
+                    stakedAmount: data.stakedAmount,
+                    reward: data.reward,
+                    address: address,
+                    price: price || 0,
+                  },
+                }));
+
+                resolve();
+              })
+              .catch(() => {
+                resolve();
+              });
+          })
+          .catch(() => {
+            resolve();
+          });
+      } else {
+        resolve();
+      }
+    });
+  };
 
   const getThorchainBond = (): Promise<void> => {
     return new Promise((resolve) => {
@@ -117,8 +219,7 @@ const Component: FC = () => {
   const getLiquidityPositions = (): Promise<void> => {
     return new Promise((resolve) => {
       if (vault) {
-        let address =
-          vault.chains.map((chain) => chain.address).join(",");
+        const address = vault.chains.map((chain) => chain.address).join(",");
         api.activePositions
           .get(address)
           .then(({ data }) => {
@@ -173,7 +274,9 @@ const Component: FC = () => {
     setState((prevState) => ({
       ...prevState,
       liquidityPosition: undefined,
-      bond: undefined,
+      mayaBond: undefined,
+      thorchainBond: undefined,
+      tgtStake: undefined,
       loading: true,
     }));
 
@@ -181,6 +284,8 @@ const Component: FC = () => {
       getThorchainBond(),
       getMayaBond(),
       getLiquidityPositions(),
+      getTGTStake(),
+      getRuneProvider(),
     ]).then(() => {
       setState((prevState) => ({ ...prevState, loading: false }));
     });
@@ -213,7 +318,8 @@ const Component: FC = () => {
 
       {(liquidityPosition?.thorchain &&
         liquidityPosition.thorchain.length > 0) ||
-      thorchainBond ? (
+      thorchainBond ||
+      runeProvider ? (
         <>
           {liquidityPosition?.thorchain.length ? (
             <>
@@ -284,7 +390,55 @@ const Component: FC = () => {
               <h4 className="title">Liquidity Position:</h4>
               <div className="no-data">
                 <CodeSandboxOutlined />
-                <p>No active LP positions found</p>
+                <p>THORChain address not found in your vault</p>
+              </div>
+            </>
+          )}
+
+          {runeProvider ? (
+            <>
+              <h4 className="title">Rune Provider:</h4>
+              <div className="saver">
+                <div className="lp-saver">
+                  <div className="lp-pool-saver">
+                    <div className="type lp-item">
+                      <TokenImage alt={ChainKey.THORCHAIN} />
+                      <span className="name">THORChain</span>
+                      <span className="text">RUNE</span>
+                    </div>
+                  </div>
+                  <div className="lp-amount-saver">
+                    <div className="lp-item">
+                      {runeProvider.value
+                        ? Number(runeProvider.value).toLocaleString()
+                        : 0}
+                    </div>
+                    <div className="lp-item">
+                      {(runeProvider.value
+                        ? Number(runeProvider.value) * runeProvider.price
+                        : 0).toValueFormat(currency)}
+                    </div>
+                    <div className="lp-item link-to-address">
+                      <Tooltip title="Link to Address">
+                        <a
+                          href={`https://thorchain.net/address/${runeProvider.address}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <CubeOutlined />
+                        </a>
+                      </Tooltip>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <h4 className="title">Bond:</h4>
+              <div className="no-data">
+                <CodeSandboxOutlined />
+                <p>THORChain address not found in your vault</p>
               </div>
             </>
           )}
@@ -331,10 +485,10 @@ const Component: FC = () => {
         </>
       ) : (
         <>
-          <h4 className="title">Bond/Liquidity Position:</h4>
+          <h4 className="title">Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>No active Bond/LP positions found</p>
+            <p>THORChain address not found in your vault</p>
           </div>
         </>
       )}
@@ -415,7 +569,7 @@ const Component: FC = () => {
               <h4 className="title">Liquidity Position:</h4>
               <div className="no-data">
                 <CodeSandboxOutlined />
-                <p>No active LP positions found</p>
+                <p>Mayachain address not found in your vault</p>
               </div>
             </>
           )}
@@ -462,10 +616,64 @@ const Component: FC = () => {
         </>
       ) : (
         <>
-         <h4 className="title">Bond/Liquidity Position:</h4>
           <div className="no-data">
             <CodeSandboxOutlined />
-            <p>No active Bond/LP positions found</p>
+            <p>Mayachain address not found in your vault</p>
+          </div>
+        </>
+      )}
+
+      <div className="line"></div>
+      <h2 className="h-title">TGT:</h2>
+
+      {tgtStake ? (
+        <>
+          <h4 className="title">Stake:</h4>
+          <div className="saver">
+            <div className="lp-saver">
+              <div className="lp-pool-saver">
+                <div className="type lp-item">
+                  <TokenImage alt={"TGT"} />
+                  <span className="name">{ChainKey.ETHEREUM}</span>
+                  <span className="text">TGT</span>
+                </div>
+              </div>
+              <div className="lp-amount-saver">
+                <div className="lp-item">
+                  {tgtStake.stakedAmount
+                    ? Number(tgtStake.stakedAmount).toLocaleString()
+                    : 0}
+                </div>
+                <div className="lp-item">
+                  {(
+                    ((tgtStake.stakedAmount
+                      ? Number(tgtStake.stakedAmount)
+                      : 0) +
+                      (tgtStake.reward ? Number(tgtStake.reward) : 0)) *
+                    tgtStake.price
+                  ).toValueFormat(currency)}
+                </div>
+                <div className="lp-item link-to-address">
+                  <Tooltip title="Link to Address">
+                    <a
+                      href={`https://etherscan.io/address/${tgtStake.address}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <CubeOutlined />
+                    </a>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <h4 className="title">Stake:</h4>
+          <div className="no-data">
+            <CodeSandboxOutlined />
+            <p>Ethereum address not found in your vault</p>
           </div>
         </>
       )}
