@@ -121,6 +121,15 @@ export interface activePosition {
   }[];
 }
 
+export interface TGT {
+  stakedAmount: number;
+  reward: number;
+}
+
+export interface RuneProvider {
+  value: number;
+}
+
 const service = {
   airdrop: {
     join: async (params: VaultProps) => {
@@ -139,6 +148,16 @@ const service = {
     get: async (address: string) => {
       return await api.get<activePosition>(
         `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${address}`
+      );
+    },
+    getTGTstake: async (address: string) => {
+      return await api.get<TGT>(
+        `https://api-v2-prod.thorwallet.org/stake/${address}`
+      );
+    },
+    getRuneProvider: async (address: string) => {
+      return await api.get<RuneProvider>(
+        `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
       );
     },
   },
