@@ -62,6 +62,12 @@ export const GlobeOutlined: FC<SVGProps<SVGSVGElement>> = ({ ...props }) => (
   </svg>
 );
 
+export const BarOutlined: FC<SVGProps<SVGSVGElement>> = ({ ...props }) => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M21 18H3C2.45 18 2 17.55 2 17C2 16.45 2.45 16 3 16H21C21.55 16 22 16.45 22 17C22 17.55 21.55 18 21 18ZM21 13H3C2.45 13 2 12.55 2 12C2 11.45 2.45 11 3 11H21C21.55 11 22 11.45 22 12C22 12.55 21.55 13 21 13ZM21 8H3C2.45 8 2 7.55 2 7C2 6.45 2.45 6 3 6H21C21.55 6 22 6.45 22 7C22 7.55 21.55 8 21 8Z" />
+  </svg>
+);
+
 export const PlusCircleFilled: FC<SVGProps<SVGSVGElement>> = ({ ...props }) => (
   <svg viewBox="0 0 24 24" {...props}>
     <path d="M12,0C5.4,0,0,5.4,0,12s5.4,12,12,12,12-5.4,12-12S18.6,0,12,0ZM16.9,12.6h-4.4v4.4c0,.3-.2.6-.6.6s-.6-.2-.6-.6v-4.4h-4.4c-.3,0-.6-.2-.6-.6s.2-.6.6-.6h4.4v-4.4c0-.3.2-.6.6-.6s.6.2.6.6v4.4h4.4c.3,0,.6.2.6.6s-.2.6-.6.6Z" />

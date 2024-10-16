@@ -1,11 +1,20 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Dropdown, MenuProps, message } from "antd";
+import {
+  Button,
+  Divider,
+  Drawer,
+  Dropdown,
+  Menu,
+  MenuProps,
+  message,
+} from "antd";
 import { useTranslation } from "react-i18next";
-import MediaQuery from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 
 import { useBaseContext } from "context/base";
 import { Language, languageName } from "utils/constants";
+import useGoBack from "hooks/go-back";
 import i18n from "i18n/config";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
@@ -14,6 +23,7 @@ import constantPaths from "routes/constant-paths";
 import { Vultisig } from "icons";
 
 import {
+  BarOutlined,
   //ChainOutlined,
   CurrencyOutlined,
   GearOutlined,
@@ -29,12 +39,19 @@ interface ComponentProps {
   logo?: string;
 }
 
+interface InitialState {
+  visible: boolean;
+}
+
 const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
   const { t } = useTranslation();
+  const initialState: InitialState = { visible: false };
+  const [state, setState] = useState(initialState);
+  const { visible } = state;
   const [messageApi, contextHolder] = message.useMessage();
   const { currency } = useBaseContext();
-  const { pathname } = useLocation();
-  let language: Language;
+  const { hash, pathname } = useLocation();
+  const goBack = useGoBack();
 
   const handleShare = (): void => {
     navigator.clipboard
@@ -52,6 +69,25 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
         });
       });
   };
+
+  const componentDidUpdate = (): void => {
+    switch (hash) {
+      case `#${constantModals.MENU}`: {
+        setState((prevState) => ({ ...prevState, visible: true }));
+
+        break;
+      }
+      default: {
+        setState(initialState);
+
+        break;
+      }
+    }
+  };
+
+  useEffect(componentDidUpdate, [hash]);
+
+  let language: Language;
 
   switch (i18n.language) {
     case Language.CROATIA:
@@ -80,11 +116,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       break;
   }
 
+  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
   const items: MenuProps["items"] = [
     ...(uid
       ? [
           {
-            key: "1",
+            key: "4",
             label: (
               <Link to={`#${constantModals.VAULT_SETTINGS}`} state={true}>
                 {t(translation.VAULT_SETTINGS)}
@@ -95,7 +132,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
         ]
       : []),
     {
-      key: "2",
+      key: "5",
       label: (
         <>
           <Link to={`#${constantModals.CHANGE_LANG}`} state={true}>
@@ -107,7 +144,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       icon: <GlobeOutlined />,
     },
     {
-      key: "3",
+      key: "6",
       label: (
         <>
           <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
@@ -121,14 +158,14 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
     // ...(uid
     //   ? [
     //       {
-    //         key: "4",
+    //         key: "7",
     //         label: t(translation.DEFAULT_CHAINS),
     //         icon: <ChainOutlined />,
     //       },
     //     ]
     //   : []),
     {
-      key: "5",
+      key: "8",
       label: (
         <a
           href="https://vultisig.com/faq"
@@ -141,12 +178,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       icon: <QuestionOutlined />,
     },
     {
-      key: "6",
+      key: "9",
       type: "group",
       label: t(translation.OTHER),
       children: [
         {
-          key: "6-1",
+          key: "9-1",
           label: (
             <a
               href="https://vultisig.com/vult"
@@ -161,7 +198,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
         ...(uid
           ? [
               {
-                key: "6-2",
+                key: "9-2",
                 label: t(translation.SHARE_VAULT),
                 icon: <ShareOutlined />,
                 onClick: () => handleShare(),
@@ -172,14 +209,62 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
     },
   ];
 
+  const menu: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <Link
+          to={constantPaths.vault.chains}
+          className={`${
+            pathname.startsWith(constantPaths.vault.chains) ? "active" : ""
+          }`}
+        >
+          Balances
+        </Link>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <Link
+          to={constantPaths.vault.positions}
+          className={`${
+            pathname === constantPaths.vault.positions ? "active" : ""
+          }`}
+        >
+          Active Positions
+        </Link>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <Link
+          to={constantPaths.vault.leaderboard}
+          className={`${
+            pathname === constantPaths.vault.leaderboard ? "active" : ""
+          }`}
+        >
+          Airdrop Leaderboard
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <>
       <div className="layout-header">
-        <Dropdown menu={{ items }} className="menu">
-          <Button type="link">
-            <UserOutlined />
+        {isDesktop ? (
+          <Dropdown menu={{ items }} className="menu">
+            <Button type="link">
+              <UserOutlined />
+            </Button>
+          </Dropdown>
+        ) : (
+          <Button href={`#${constantModals.MENU}`} type="link" className="menu">
+            <BarOutlined />
           </Button>
-        </Dropdown>
+        )}
 
         <Link to={constantPaths.root} className="logo">
           {uid ? (
@@ -201,8 +286,8 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           )}
         </Link>
 
-        {uid && (
-          <MediaQuery minWidth={992}>
+        {isDesktop && uid && (
+          <>
             <div className="navbar">
               <Link
                 to={constantPaths.vault.chains}
@@ -231,9 +316,46 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
                 Airdrop Leaderboard
               </Link>
             </div>
-          </MediaQuery>
+          </>
         )}
       </div>
+
+      {!isDesktop && (
+        <Drawer
+          footer={false}
+          onClose={() => goBack()}
+          title={
+            <Link to={constantPaths.root} className="logo">
+              {uid ? (
+                <>
+                  <Vultisig className="shape" />
+
+                  <span className="name">Vultisig</span>
+                </>
+              ) : (
+                <>
+                  {logo ? (
+                    <img className="shape" src={logo} />
+                  ) : (
+                    <Vultisig className="shape" />
+                  )}
+
+                  <span className="name">{alias}</span>
+                </>
+              )}
+            </Link>
+          }
+          closeIcon={false}
+          open={visible}
+          width={320}
+          placement="left"
+          className="layout-menu"
+        >
+          <Menu items={menu} selectedKeys={[]} />
+          <Divider />
+          <Menu items={items} selectedKeys={[]} />
+        </Drawer>
+      )}
 
       {contextHolder}
     </>
