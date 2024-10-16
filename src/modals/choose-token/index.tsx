@@ -88,7 +88,6 @@ const Component: FC = () => {
   const { toggleToken, tokens, vault } = useVaultContext();
   const { hash } = useLocation();
   const { chainKey } = useParams();
-
   const goBack = useGoBack();
 
   const handleSearch = (value: string): void => {
@@ -164,7 +163,8 @@ const Component: FC = () => {
                 }));
 
                 return modifiedCoins;
-              }).filter(({ isNative }) => !isNative) ?? []),
+              })
+              .filter(({ isNative }) => !isNative) ?? []),
             ...tokens
               .filter(
                 ({ chain, isNative }) =>
