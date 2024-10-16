@@ -158,13 +158,13 @@ const Component: FC = () => {
                   hexPublicKey: "ECDSA",
                   isDefault: false,
                   isLocally: true,
-                  isNative: false,
+                  isNative: coin.isNative,
                   logo: coin.logo,
                   ticker: coin.ticker,
                 }));
 
                 return modifiedCoins;
-              }) ?? []),
+              }).filter(({ isNative }) => !isNative) ?? []),
             ...tokens
               .filter(
                 ({ chain, isNative }) =>

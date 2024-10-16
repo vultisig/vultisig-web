@@ -150,6 +150,92 @@ export default class VaultProvider {
     });
   };
 
+  private getCacaoValue = (
+    coins: CoinProps[],
+    currency: Currency
+  ): Promise<number> => {
+    return new Promise((resolve) => {
+      const cacao = coins.find(({ ticker }) => ticker === "CACAO");
+
+      if (cacao) {
+        api.coin
+          .coingeckoValue(cacao.ticker, currency)
+          .then(({ data }) => {
+            resolve(data?.cacao ? data.cacao[currency.toLowerCase()] || 0 : 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      } else {
+        resolve(0);
+      }
+    });
+  };
+
+  private getVThorValue = (
+    coins: CoinProps[],
+    currency: Currency
+  ): Promise<number> => {
+    return new Promise((resolve) => {
+      const vThor = coins.find(({ ticker }) => ticker === "vTHOR");
+
+      if (vThor) {
+        const thor = defTokens.find(({ ticker }) => ticker === "THOR");
+
+        api.coin
+          .value(thor!.cmcId, currency)
+          .then((thorPriceCurrency) => {
+            api.coin
+              .value(thor!.cmcId, Currency.USD)
+              .then((thorPriceUSD) => {
+                api.coin
+                  .lifiValue(vThor.contractAddress)
+                  .then((vTHORUPriceUSD) => {
+                    resolve(
+                      (vTHORUPriceUSD * thorPriceCurrency) / thorPriceUSD
+                    );
+                  })
+                  .catch(() => {
+                    resolve(0);
+                  });
+              })
+              .catch(() => {
+                resolve(0);
+              });
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      } else {
+        resolve(0);
+      }
+    });
+  };
+
+  private getMayaValue = (
+    coins: CoinProps[],
+    currency: Currency
+  ): Promise<number> => {
+    return new Promise((resolve) => {
+      const maya = coins.find(({ ticker }) => ticker === "MAYA");
+
+      if (maya) {
+        const usdt = defTokens.find(({ ticker }) => ticker === "USDT");
+
+        api.coin
+          .value(usdt!.cmcId, currency)
+          .then((price) => {
+            resolve(price * 40);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      } else {
+        resolve(0);
+      }
+    });
+  };
+
   public addToken = (
     token: TokenProps,
     vault: VaultProps,
@@ -294,7 +380,7 @@ export default class VaultProvider {
         }
         case ChainKey.MAYACHAIN: {
           api.balance
-            .cosmos(path, address, coin.decimals, "cacao")
+            .cosmos(path, address, coin.decimals, coin.ticker.toLowerCase())
             .then((balance) => {
               resolve({ ...coin, balance });
             });
@@ -465,7 +551,7 @@ export default class VaultProvider {
             }
           });
         } else {
-          reject(errorKey.INVALID_TOKEN);
+          resolve(defTokens.filter(({ isNative }) => !isNative));
         }
       } else {
         reject(errorKey.INVALID_TOKEN);
@@ -478,50 +564,58 @@ export default class VaultProvider {
     currency: Currency
   ): Promise<CoinProps[]> => {
     return new Promise((resolve) => {
-      const cmcIds = coins
-        .filter(({ cmcId }) => cmcId > 0)
-        .map(({ cmcId }) => cmcId);
+      const promises = [
+        this.getCacaoValue(coins, currency),
+        this.getMayaValue(coins, currency),
+        this.getVThorValue(coins, currency),
+      ];
 
-      if (cmcIds.length) {
-        api.coin
-          .values(cmcIds, currency)
-          .then(({ data }) => {
-            const cacao = coins.find(({ ticker }) => ticker === "CACAO");
-            const modifedCoins = coins.map((coin) => ({
-              ...coin,
-              value:
-                data?.data && data?.data[coin.cmcId]?.quote
-                  ? data.data[coin.cmcId].quote[currency]?.price || 0
-                  : 0,
-            }));
+      Promise.all(promises).then(([cacao, maya, vThor]) => {
+        const modifedCoins = coins.map((coin) => {
+          let value: number;
+          switch (coin.ticker) {
+            case "CACAO":
+              value = cacao;
+              break;
+            case "MAYA":
+              value = maya;
+              break;
+            case "vTHOR":
+              value = vThor;
+              break;
+            default:
+              value = 0;
+              break;
+          }
 
-            if (cacao) {
-              api.coin
-                .coingeckoValue(cacao.ticker, currency)
-                .then(({ data }) => {
-                  resolve(
-                    modifedCoins.map((coin) => ({
-                      ...coin,
-                      value:
-                        coin.ticker === cacao.ticker
-                          ? data.cacao[currency.toLowerCase()] || 0
-                          : coin.value,
-                    }))
-                  );
-                })
-                .catch(() => {
-                  resolve(coins.map((coin) => ({ ...coin, value: 0 })));
-                });
-            } else {
+          return { ...coin, value };
+        });
+
+        const cmcIds = coins
+          .filter(({ cmcId }) => cmcId > 0)
+          .map(({ cmcId }) => cmcId);
+
+        if (cmcIds.length) {
+          api.coin
+            .values(cmcIds, currency)
+            .then(({ data }) => {
+              resolve(
+                modifedCoins.map((coin) => ({
+                  ...coin,
+                  value:
+                    data?.data && data.data[coin.cmcId]?.quote
+                      ? data.data[coin.cmcId].quote[currency]?.price || 0
+                      : coin.value,
+                }))
+              );
+            })
+            .catch(() => {
               resolve(modifedCoins);
-            }
-          })
-          .catch(() => {
-            resolve(coins.map((coin) => ({ ...coin, value: 0 })));
-          });
-      } else {
-        resolve(coins.map((coin) => ({ ...coin, value: 0 })));
-      }
+            });
+        } else {
+          resolve(modifedCoins);
+        }
+      });
     });
   };
 
@@ -549,7 +643,7 @@ export default class VaultProvider {
                 .map((chain) => ({
                   ...chain,
                   coins:
-                  token.isNative && token.chain === chain.name
+                    token.isNative && token.chain === chain.name
                       ? []
                       : chain.coins.filter(
                           ({ ticker }) =>

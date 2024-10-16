@@ -356,6 +356,20 @@ const service = {
         `https://api.vultisig.com/coingeicko/api/v3/simple/price?ids=${priceProviderId}&vs_currencies=${currency}`
       );
     },
+    lifiValue: (contractAddress: string): Promise<number> => {
+      return new Promise((resolve) => {
+        api
+          .get<{ priceUSD: string }>(
+            `https://li.quest/v1/token?chain=eth&token=${contractAddress}`
+          )
+          .then(({ data }) => {
+            resolve(parseFloat(data.priceUSD) || 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
   },
   discovery: {
     info: {
