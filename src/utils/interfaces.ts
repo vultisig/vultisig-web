@@ -1,10 +1,16 @@
 import { ChainKey, Currency, Language, Theme } from "utils/constants";
 
+export interface AddressesProps {
+  [publicKey: string]: { [chain: string]: string };
+}
+
 export interface ChainProps {
   address: string;
+  balance: number;
   coins: CoinProps[];
   name: ChainKey;
   hexPublicKey: string;
+  updated?: boolean;
 }
 
 export interface ChainBoolRef {
@@ -159,6 +165,7 @@ export interface VaultProps {
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   rank: number;
+  registeredAt: number;
   theme: Theme;
   totalPoints: number;
   uid: string;

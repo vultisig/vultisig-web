@@ -8,7 +8,7 @@ import { useVaultContext } from "context/vault";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 
-import { PlusCircleFilled, RefreshOutlined } from "icons";
+import { CirclePlus, Synchronize } from "icons";
 import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
 import VaultDropdown from "components/vault-dropdown";
@@ -39,43 +39,18 @@ const Component: FC = () => {
               type="link"
               onClick={() => changeVault({ ...vault, updated: false }, true)}
             >
-              <RefreshOutlined />
+              <Synchronize />
             </Button>
           </Tooltip>
         </div>
         <div className="total-balance">
           <span className="title">{t(translation.TOTAL_BALANCE)}</span>
-          <span className="value">
-            {vault.chains
-              .reduce(
-                (acc, chain) =>
-                  acc +
-                  chain.coins.reduce(
-                    (acc, coin) => acc + coin.balance * coin.value,
-                    0
-                  ),
-                0
-              )
-              .toValueFormat(currency)}
-          </span>
+          <span className="value">{vault.balance.toValueFormat(currency)}</span>
         </div>
         {vault.chains.length ? (
-          vault.chains
-            .slice()
-            .sort(
-              (a, b) =>
-                b.coins.reduce(
-                  (acc, coin) => acc + coin.balance * coin.value,
-                  0
-                ) -
-                a.coins.reduce(
-                  (acc, coin) => acc + coin.balance * coin.value,
-                  0
-                )
-            )
-            .map(({ name, ...res }) => (
-              <ChainItem key={name} {...{ ...res, name }} />
-            ))
+          vault.chains.map(({ name, ...res }) => (
+            <ChainItem key={name} {...{ ...res, name }} />
+          ))
         ) : (
           <Empty description="Choose a chain..." />
         )}
@@ -84,7 +59,7 @@ const Component: FC = () => {
           state={true}
           className="add"
         >
-          <PlusCircleFilled /> {t(translation.CHOOSE_CHAIN)}
+          <CirclePlus /> {t(translation.CHOOSE_CHAIN)}
         </Link>
       </div>
 

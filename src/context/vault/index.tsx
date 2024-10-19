@@ -11,7 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { useBaseContext } from "context/base";
 import { Currency, defTokens } from "utils/constants";
 import { ChainProps, TokenProps, VaultProps } from "utils/interfaces";
-import { getStoredVaults, setStoredVaults } from "utils/storage";
+import {
+  getStoredAddresses,
+  getStoredVaults,
+  setStoredAddresses,
+  setStoredVaults,
+} from "utils/storage";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
@@ -71,7 +76,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       vaultProvider.getValues(coins, currency).then((coins) => {
         changeCurrency(currency);
 
-        const modifiedVault = {
+        const modifiedVault = vaultProvider.prepareVault({
           ...vault,
           chains: vault.chains.map((chain) => ({
             ...chain,
@@ -80,17 +85,21 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
             ),
           })),
           updated: true,
-        };
+        });
 
         setState((prevState) => ({
           ...prevState,
           currency,
           loading: false,
           vault: modifiedVault,
-          vaults: vaults.map((vault) => ({
-            ...vault,
-            updated: vault.uid === modifiedVault.uid,
-          })),
+          vaults: vaults.map((vault) =>
+            vault.uid === modifiedVault.uid
+              ? modifiedVault
+              : {
+                  ...vault,
+                  updated: false,
+                }
+          ),
         }));
       });
     }
@@ -101,12 +110,17 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       vaultProvider
         .toggleToken(token, vault, currency)
         .then((modifiedVault) => {
+          const preparedVault = vaultProvider.prepareVault(modifiedVault);
+
           setState((prevState) => ({
             ...prevState,
             vault:
-              prevState.vault?.uid === modifiedVault.uid
-                ? modifiedVault
+              prevState.vault?.uid === preparedVault.uid
+                ? preparedVault
                 : prevState.vault,
+            vaults: vaults.map((vault) =>
+              vault.uid === preparedVault.uid ? preparedVault : vault
+            ),
           }));
 
           resolve();
@@ -138,8 +152,6 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     if (prepare && !vault.updated) {
       prepareVault(vault)
         .then((vault) => {
-          vault.updated = true;
-
           setState((prevState) => ({
             ...prevState,
             vault,
@@ -154,7 +166,12 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
   const deleteVault = (vault: VaultProps): void => {
     const modifiedVaults = vaults.filter(({ uid }) => uid !== vault.uid);
+    const addresses = getStoredAddresses();
 
+    delete addresses[vault.publicKeyEcdsa];
+    delete addresses[vault.publicKeyEddsa];
+
+    setStoredAddresses(addresses);
     setStoredVaults(modifiedVaults);
 
     if (modifiedVaults.length) {
@@ -175,9 +192,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       api.vault
         .get(vault)
         .then(({ data }) => {
-          api.sharedSettings.get(data.uid).then(({ data: { logo, theme } }) => {
-            resolve({ ...vault, ...data, logo, theme, updated: false });
-          });
+          resolve({ ...vault, ...data, updated: false });
         })
         .catch(() => resolve(undefined));
     });
@@ -192,17 +207,19 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
         Promise.all(promises).then((coins) => {
           vaultProvider.getValues(coins, currency).then((coins) => {
-            resolve({
-              ...vault,
-              chains: vault.chains.map((chain) => ({
-                ...chain,
-                coins: chain.coins.map(
-                  (coin) => coins.find(({ id }) => id === coin.id) || coin
-                ),
-              })),
-              hexChainCode: vault.hexChainCode,
-              updated: true,
-            });
+            resolve(
+              vaultProvider.prepareVault({
+                ...vault,
+                chains: vault.chains.map((chain) => ({
+                  ...chain,
+                  coins: chain.coins.map(
+                    (coin) => coins.find(({ id }) => id === coin.id) || coin
+                  ),
+                })),
+                hexChainCode: vault.hexChainCode,
+                updated: true,
+              })
+            );
           });
         });
       } else {
@@ -236,6 +253,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
                   value,
                 }) => ({
                   address,
+                  balance: 0,
                   coins: [
                     {
                       balance,
@@ -331,12 +349,12 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           </div>
           <ChangeCurrency onChange={updateCurrency} />
           <ChangeLanguage />
-          <DeleteVault deleteVault={deleteVault} vault={vault} />
+          <JoinAirDrop updateVault={updateVault} vaults={vaults} />
           <RenameVault updateVault={updateVault} vault={vault} />
+          <DeleteVault deleteVault={deleteVault} vault={vault} />
           <VaultSettings vault={vault} />
-          <SharedSettings vault={vault} updateVault={updateVault} />
+          <SharedSettings vault={vault} />
           <Preloader visible={loading} />
-          <JoinAirDrop />
         </>
       ) : (
         <SplashScreen />

@@ -1,14 +1,16 @@
 @use "sass:math";
 
-@import "_normalize";
-@import "_menlo";
-@import "_montserrat";
+@import "@fontsource/montserrat/latin.css";
+@import "@fontsource/roboto-mono/latin.css";
+
 @import "_variables";
+@import "_normalize";
 
 @import "../components/asset-item";
 @import "../components/chain-item";
-@import "../components/footer";
 @import "../components/preloader";
+@import "../components/position-item";
+@import "../components/no-data";
 @import "../components/splash-screen";
 @import "../components/token-actions";
 @import "../components/token-image";
@@ -34,7 +36,7 @@
 body {
   background-color: $blue-dark;
   color: $gray-1;
-  font-family: "Montserrat";
+  font-family: $primary-font;
   min-width: rem(360);
   overflow-x: hidden;
 
@@ -180,9 +182,22 @@ body {
   }
 
   .ant-dropdown-menu-title-content {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a {
+      float: left;
+    }
+
+    span {
+      float: right;
+    }
+
+    svg {
+      float: right;
+      margin: rem(4) 0;
+    }
   }
 
   .ant-dropdown-menu-item-group-title {
@@ -275,6 +290,7 @@ body {
   }
 
   .ant-modal-header {
+    background-color: transparent;
     margin: 0;
     padding: rem(18) 0;
   }
@@ -282,15 +298,18 @@ body {
   .ant-modal-content {
     padding: 0 rem(30) rem(30);
     background-color: $blue-base;
-    .ant-modal-header {
-      background-color: $blue-base;
-    }
+
     .ant-list-item {
       background-color: $blue-light;
       color: $gray-7;
+
+      &.active {
+        color: $gray-1;
+      }
     }
-    .active {
-      color: $gray-1;
+
+    .vulti-loading {
+      margin: 0 auto;
     }
   }
 }
@@ -367,7 +386,8 @@ body {
       display: flex;
       float: left;
       gap: rem(8);
-      height: 100%;
+      height: rem(40);
+      max-width: rem(288);
 
       .shape {
         height: 100%;
@@ -377,7 +397,15 @@ body {
         color: $gray-1;
         font-size: rem(32);
         font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
+    }
+
+    .airdrop {
+      float: right;
+      margin-right: rem(8);
     }
 
     .menu {
@@ -444,6 +472,25 @@ body {
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
+    }
+  }
+
+  &-footer {
+    align-items: center;
+    background-color: $blue-dark;
+    border-top: solid rem(1) $blue-light;
+    bottom: 0;
+    display: flex;
+    height: rem(100);
+    gap: rem(4);
+    min-width: rem(360);
+    padding: rem(30) rem(16);
+    position: sticky;
+    width: 100%;
+    z-index: 2;
+
+    a {
+      color: $cyan-light;
     }
   }
 
@@ -668,6 +715,11 @@ html[theme="dark"] {
       background-color: $gray-13;
       border-color: $gray-12;
     }
+
+    &-footer {
+      background-color: $gray-13;
+      border-color: $gray-11;
+    }
   }
 }
 
@@ -865,6 +917,26 @@ html[theme="light"] {
         a {
           color: $gray-8;
         }
+      }
+    }
+
+    &-footer {
+      background-color: $gray-1;
+      border-color: $gray-5;
+      color: $gray-8;
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .layout {
+    &-header {
+      .airdrop {
+        margin-right: rem(16);
+      }
+
+      .logo {
+        max-width: rem(694);
       }
     }
   }

@@ -8,7 +8,7 @@ import { TokenProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 
-import { SearchOutlined } from "icons";
+import { Search } from "icons";
 import TokenImage from "components/token-image";
 
 interface InitialState {
@@ -63,6 +63,35 @@ const Component: FC = () => {
 
   useEffect(componentDidUpdate, [hash]);
 
+  const modifiedCoins: TokenProps[] = [
+    ...(vault?.chains.flatMap(({ coins, name }) => {
+      const modifiedCoins: TokenProps[] = coins
+        .filter(({ isNative }) => isNative)
+        .map((coin) => ({
+          chain: name,
+          cmcId: coin.cmcId,
+          contractAddress: coin.contractAddress,
+          decimals: coin.decimals,
+          hexPublicKey: "ECDSA",
+          isDefault: false,
+          isLocally: true,
+          isNative: true,
+          logo: coin.logo,
+          ticker: coin.ticker,
+        }));
+
+      return modifiedCoins;
+    }) ?? []),
+    ...defTokens.filter(
+      ({ isNative, chain }) =>
+        isNative &&
+        !vault?.chains.find(
+          ({ coins, name }) =>
+            coins.findIndex((coin) => coin.isNative && name === chain) >= 0
+        )
+    ),
+  ];
+
   return (
     <Drawer
       footer={false}
@@ -71,7 +100,7 @@ const Component: FC = () => {
         <Input
           onChange={(e) => handleSearch(e.target.value)}
           placeholder="Search..."
-          prefix={<SearchOutlined />}
+          prefix={<Search />}
           value={search}
           allowClear
         />
@@ -82,12 +111,10 @@ const Component: FC = () => {
     >
       {visible ? (
         <List
-          dataSource={defTokens
-            .filter(({ isNative }) => isNative)
-            .filter(
-              ({ chain }) =>
-                chain.toLowerCase().indexOf(search.toLowerCase()) >= 0
-            )}
+          dataSource={modifiedCoins.filter(
+            ({ chain }) =>
+              chain.toLowerCase().indexOf(search.toLowerCase()) >= 0
+          )}
           renderItem={(item) => {
             const checked = vault
               ? vault?.chains.findIndex(

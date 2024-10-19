@@ -6,19 +6,22 @@ $opacity-10: #0f1e36;
 $opacity-15: #28354b;
 $opacity-50: #818995;
 
-$blue-light: #11284a;
 $blue-base: #061b3a;
+$blue-light: #11284a;
 $blue-dark: #02122b;
 $blue-persian: #4879fd;
 $blue-sharp: #0439c7;
 $cyan-base: #33e6bf;
-$cyan-light: #2ed5c0;
 $cyan-dark: #2ed5c0;
-$red-base: #ee2b2b;
+$cyan-light: #2ed5c0;
+$gold-base: #ffd700;
 $orange-base: #f7961b;
 $orange-light: #f3ad52;
-$red-light: #e3534f;
+$red-base: #ee2b2b;
 $red-dark: #da2e2e;
+$red-light: #e3534f;
+$silver-base: #c1c9d2;
+$bronze-base: #c3a180;
 
 $gray-1: #ffffff;
 $gray-2: #fafafa;
@@ -38,7 +41,7 @@ $box-shadow: "0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2)";
 $linear-gradient: linear-gradient(102deg, $cyan-base 14%, $blue-sharp 140%);
 
 $primary-font: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
-$secondary-font: "Menlo", Tahoma, Geneva, Verdana, sans-serif;
+$secondary-font: "Roboto Mono", Tahoma, Geneva, Verdana, sans-serif;
 
 @function rem($px, $base: 16) {
   @return #{math.div($px, $base)}rem;

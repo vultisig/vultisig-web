@@ -11,7 +11,7 @@ import api from "utils/api";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 
-import { CloseOutlined, Vultisig, VultisigText } from "icons";
+import { CloseLG, Vultisig, VultisigText } from "icons";
 import { getStoredVaults, setStoredVaults } from "utils/storage";
 
 interface InitialState {
@@ -181,7 +181,7 @@ const Component: FC = () => {
             {file ? (
               <>
                 <Button type="link" className="close" onClick={handleRemove}>
-                  <CloseOutlined />
+                  <CloseLG />
                 </Button>
                 <img src={file.data} className="image" alt="image" />
                 <h3 className="name">{`${file.name} Uploaded`}</h3>

@@ -9,7 +9,7 @@ import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 
-import { WarningOutlined } from "icons";
+import { Warning } from "icons";
 
 interface ComponentProps {
   deleteVault: (vault: VaultProps) => void;
@@ -85,7 +85,7 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
       open={visible}
       width={550}
     >
-      <WarningOutlined className="icon" />
+      <Warning className="icon" />
       <span className="warning">{t(translation.DELETE_VAULT_WARNING)}:</span>
       <div className="vault-name-container">
         <Input value={vault?.alias} readOnly />
