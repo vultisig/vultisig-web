@@ -5,8 +5,8 @@ import { Button, Tooltip, message } from "antd";
 import { ChainKey, exploreToken } from "utils/constants";
 import constantModals from "modals/constant-modals";
 
-import { CopyOutlined, CubeOutlined, QRCodeOutlined } from "icons";
-import QRCode from "modals/qr-code";
+import { Copy, Hyperlink, QRCode } from "icons";
+import QRCodeModal from "modals/qr-code";
 
 interface ComponentProps {
   address: string;
@@ -38,7 +38,7 @@ const Component: FC<ComponentProps> = ({ address, name }) => {
       <div className="token-actions">
         <Tooltip title="Copy Address">
           <Button type="link" onClick={handleCopy}>
-            <CopyOutlined />
+            <Copy />
           </Button>
         </Tooltip>
         <Tooltip title="View QRCode">
@@ -46,7 +46,7 @@ const Component: FC<ComponentProps> = ({ address, name }) => {
             to={`#${constantModals.QR_CODE}_${name.toUpperCase()}`}
             state={true}
           >
-            <QRCodeOutlined />
+            <QRCode />
           </Link>
         </Tooltip>
         <Tooltip title="Link to Address">
@@ -55,12 +55,12 @@ const Component: FC<ComponentProps> = ({ address, name }) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <CubeOutlined />
+            <Hyperlink />
           </a>
         </Tooltip>
       </div>
 
-      <QRCode address={address} chain={name} />
+      <QRCodeModal address={address} chain={name} />
 
       {contextHolder}
     </>

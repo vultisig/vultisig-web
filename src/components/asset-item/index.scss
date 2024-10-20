@@ -65,7 +65,7 @@ html[theme="light"] {
   }
 }
 
-@media (min-width: 48rem) {
+@media (min-width: rem(768)) {
   .asset-item {
     display: flex;
     justify-content: space-between;

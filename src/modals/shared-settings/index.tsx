@@ -10,15 +10,16 @@ import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 
-import { CloseOutlined, Vultisig } from "icons";
+import { CloseLG, Vultisig } from "icons";
+import VultiLoading from "components/vulti-loading";
 
 interface ComponentProps {
-  updateVault(vault: VaultProps): void;
   vault?: VaultProps;
 }
 
 interface InitialState {
   file: FileProps;
+  loaded: boolean;
   submitting: boolean;
   status: "default" | "error" | "success";
   theme: Theme;
@@ -26,9 +27,10 @@ interface InitialState {
   error: string;
 }
 
-const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
+const Component: FC<ComponentProps> = ({ vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = {
+    loaded: false,
     submitting: false,
     status: "success",
     theme: Theme.VULTISIG,
@@ -37,7 +39,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
     error: "",
   };
   const [state, setState] = useState(initialState);
-  const { error, file, status, submitting, theme, visible } = state;
+  const { error, file, loaded, status, submitting, theme, visible } = state;
   const { hash } = useLocation();
   const goBack = useGoBack();
 
@@ -59,10 +61,6 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
           hexChainCode: vault.hexChainCode,
         })
         .then(() => {
-          updateVault({ ...vault, logo: file.data, theme });
-
-          setState((prevState) => ({ ...prevState, submitting: false }));
-          
           goBack();
         })
         .catch((data) => {
@@ -151,20 +149,27 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const componentDidUpdate = (): void => {
     switch (hash) {
       case `#${constantModals.SHARE_SETTINGS}`: {
-        setState((prevState) => ({
-          ...prevState,
-          file: {
-            data: vault?.logo ?? "",
-            name: vault?.alias ?? "",
-          },
-          theme:
-            vault?.theme === Theme.DARK
-              ? Theme.DARK
-              : vault?.theme === Theme.LIGHT
-              ? Theme.LIGHT
-              : Theme.VULTISIG,
-          visible: !!vault,
-        }));
+        if (vault) {
+          setState((prevState) => ({ ...prevState, visible: true }));
+
+          api.sharedSettings
+            .get(vault.uid)
+            .then(({ data: { logo, theme } }) => {
+              setState((prevState) => ({
+                ...prevState,
+                file: { data: logo, name: vault.alias },
+                theme:
+                  theme === Theme.DARK
+                    ? Theme.DARK
+                    : theme === Theme.LIGHT
+                    ? Theme.LIGHT
+                    : Theme.VULTISIG,
+                loaded: true,
+              }));
+            });
+        } else {
+          setState(initialState);
+        }
 
         break;
       }
@@ -184,78 +189,88 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       title={t(translation.SHARE_SETTINGS_TITLE)}
       centered={true}
       footer={
-        <Button
-          disabled={status === "error"}
-          loading={submitting}
-          type="primary"
-          onClick={handleSubmit}
-          shape="round"
-          block
-        >
-          {t(translation.SAVE)}
-        </Button>
+        loaded ? (
+          <Button
+            disabled={status === "error"}
+            loading={submitting}
+            type="primary"
+            onClick={handleSubmit}
+            shape="round"
+            block
+          >
+            {t(translation.SAVE)}
+          </Button>
+        ) : (
+          <VultiLoading />
+        )
       }
       onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={480}
     >
-      <span className="title">{t(translation.SHARE_VAULT_THEME)}:</span>
+      {loaded && (
+        <>
+          <span className="title">{t(translation.SHARE_VAULT_THEME)}:</span>
 
-      <div className="themes">
-        <span
-          className={`dark${theme === Theme.DARK ? " selected" : ""}`}
-          onClick={() => handleThem(Theme.DARK)}
-        >
-          Dark
-        </span>
-        <span
-          className={`light${theme === Theme.LIGHT ? " selected" : ""}`}
-          onClick={() => handleThem(Theme.LIGHT)}
-        >
-          Light
-        </span>
-        <span
-          className={`vultisig${theme === Theme.VULTISIG ? " selected" : ""}`}
-          onClick={() => handleThem(Theme.VULTISIG)}
-        >
-          Vultisig
-        </span>
-      </div>
-
-      <span className="title">{t(translation.SHARE_VAULT_LOGO)}:</span>
-
-      <Upload.Dragger {...props} className={status}>
-        {file?.data ? (
-          <>
-            <img src={file.data} className="icon" />
-            <span className="name">
-              {status === "default"
-                ? `${file.name} Uploaded`
-                : t(translation.SHARE_CURRENT_LOGO)}
+          <div className="themes">
+            <span
+              className={`dark${theme === Theme.DARK ? " selected" : ""}`}
+              onClick={() => handleThem(Theme.DARK)}
+            >
+              Dark
             </span>
-            {error ? (
-              <span className="text error">{error}</span>
+            <span
+              className={`light${theme === Theme.LIGHT ? " selected" : ""}`}
+              onClick={() => handleThem(Theme.LIGHT)}
+            >
+              Light
+            </span>
+            <span
+              className={`vultisig${
+                theme === Theme.VULTISIG ? " selected" : ""
+              }`}
+              onClick={() => handleThem(Theme.VULTISIG)}
+            >
+              Vultisig
+            </span>
+          </div>
+
+          <span className="title">{t(translation.SHARE_VAULT_LOGO)}:</span>
+
+          <Upload.Dragger {...props} className={status}>
+            {file?.data ? (
+              <>
+                <img src={file.data} className="icon" />
+                <span className="name">
+                  {status === "default"
+                    ? `${file.name} Uploaded`
+                    : t(translation.SHARE_CURRENT_LOGO)}
+                </span>
+                {error ? (
+                  <span className="text error">{error}</span>
+                ) : (
+                  <span className="text">File successfully selected</span>
+                )}
+              </>
             ) : (
-              <span className="text">File successfully selected</span>
+              <>
+                <Vultisig className="icon" />
+                <span className="name">{t(translation.SHARE_UPLOAD_LOGO)}</span>
+                <span className="text">
+                  {t(translation.DROP_FILE_HERE)}
+                  <u>{t(translation.UPLOAD_IT)}</u>
+                </span>
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <Vultisig className="icon" />
-            <span className="name">{t(translation.SHARE_UPLOAD_LOGO)}</span>
-            <span className="text">
-              {t(translation.DROP_FILE_HERE)}
-              <u>{t(translation.UPLOAD_IT)}</u>
-            </span>
-          </>
-        )}
-      </Upload.Dragger>
+          </Upload.Dragger>
 
-      {status !== "default" && (
-        <Button type="link" className="remove" onClick={handleRemove}>
-          <CloseOutlined />
-        </Button>
+          {status !== "default" && (
+            <Button type="link" className="remove" onClick={handleRemove}>
+              <CloseLG />
+            </Button>
+          )}
+        </>
       )}
     </Modal>
   );

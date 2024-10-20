@@ -126,7 +126,7 @@ html[theme="light"] {
   }
 }
 
-@media (min-width: 48rem) {
+@media (min-width: rem(768)) {
   .chain-item {
     display: flex;
     gap: rem(24);

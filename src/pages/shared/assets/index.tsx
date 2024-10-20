@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { useParams } from "react-router-dom";
-//import { useTranslation } from "react-i18next";
 import { Button } from "antd";
 import { Truncate } from "@re-dev/react-truncate";
 
@@ -9,14 +8,12 @@ import { useSharedContext } from "context/shared";
 import constantPaths from "routes/constant-paths";
 import useGoBack from "hooks/go-back";
 
-import { CaretRightOutlined } from "icons";
+import { ArrowRight } from "icons";
 import AssetItem from "components/asset-item";
 import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
-//import translation from "i18n/constant-keys";
 
 const Component: FC = () => {
-  //const { t } = useTranslation();
   const { chainKey, uid } = useParams();
   const { currency } = useBaseContext();
   const { vault } = useSharedContext();
@@ -34,7 +31,7 @@ const Component: FC = () => {
           className="back"
           onClick={() => goBack(`${constantPaths.shared.root}/${uid}`)}
         >
-          <CaretRightOutlined />
+          <ArrowRight />
         </Button>
         <h1>{chain.name}</h1>
       </div>
@@ -50,18 +47,13 @@ const Component: FC = () => {
             </Truncate>
           </div>
           <span className="amount">
-            {chain.coins
-              .reduce((acc, coin) => acc + coin.balance * coin.value, 0)
-              .toValueFormat(currency)}
+            {chain.balance.toValueFormat(currency)}
           </span>
           <TokenActions address={chain.address} name={chain.name} />
         </div>
-        {chain.coins
-          .slice()
-          .sort((a, b) => b.balance * b.value - a.balance * a.value)
-          .map(({ ticker, ...res }) => (
-            <AssetItem key={ticker} {...{ ...res, ticker }} />
-          ))}
+        {chain.coins.map(({ ticker, ...res }) => (
+          <AssetItem key={ticker} {...{ ...res, ticker }} />
+        ))}
       </div>
     </div>
   ) : (

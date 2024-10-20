@@ -1,6 +1,31 @@
 .leaderboard-page {
+  .warning {
+    align-items: center;
+    background-color: rgba($color: $red-dark, $alpha: 0.3);
+    border: solid rem(1) $red-base;
+    border-radius: rem(8);
+    display: flex;
+
+    font-weight: 100;
+    gap: rem(16);
+    justify-content: space-between;
+    line-height: rem(24);
+    margin-bottom: rem(32);
+    padding: rem(16);
+    text-align: center;
+
+    span {
+      flex-shrink: 48;
+    }
+
+    svg {
+      height: rem(24);
+      fill: $red-base;
+    }
+  }
+
   .breadcrumb {
-    border-bottom: solid rem(1) $opacity-10;
+    border-bottom: solid rem(1) $blue-light;
     display: flex;
     flex-direction: column;
     gap: rem(16);
@@ -22,6 +47,16 @@
         top: 0;
       }
 
+      .info {
+        border-radius: 50%;
+        cursor: pointer;
+        fill: $cyan-base;
+        height: rem(18);
+        position: absolute;
+        right: 0;
+        top: rem(2);
+      }
+
       .label {
         font-size: rem(14);
         font-weight: 600;
@@ -37,8 +72,14 @@
     }
 
     .divider {
-      background-color: $opacity-10;
+      background-color: $blue-light;
       width: rem(1);
+    }
+
+    .point {
+      .label {
+        padding-right: rem(22);
+      }
     }
 
     .rank {
@@ -58,9 +99,12 @@
 
     .icon {
       margin: 0 auto;
+      position: relative;
     }
 
     .point {
+      position: relative;
+
       .avatar {
         background-color: $cyan-base;
         border-radius: 50%;
@@ -68,6 +112,15 @@
         height: rem(48);
         margin: 0 auto rem(8);
         width: rem(48);
+      }
+
+      .rank {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(24);
+        text-align: center;
       }
 
       .name {
@@ -89,8 +142,10 @@
       }
     }
 
-    .rank {
-      .value {
+    .balance {
+      position: relative;
+
+      .date {
         color: rgba($color: $gray-1, $alpha: 0.5);
         display: block;
         font-size: rem(14);
@@ -169,53 +224,77 @@
       gap: rem(16);
       justify-content: space-between;
       padding: rem(16) rem(24);
+      position: relative;
 
-      + .item {
-        margin-top: rem(16);
-      }
-    }
-
-    .divider {
-      background-color: transparent;
-      border: dashed rem(1) $blue-light;
-      justify-content: center;
-    }
-
-    .loading {
-      justify-content: center;
-    }
-
-    .active {
-      background-color: $blue-persian;
-    }
-
-    .list {
-      + .list {
-        margin-top: rem(16);
+      &.active {
+        background-color: $blue-persian;
       }
 
       &.top {
-        background-image: $linear-gradient;
-        border-radius: rem(24);
-        margin: rem(-16) rem(-16) 0 rem(-16);
-        padding: rem(16);
-        position: relative;
-
-        .item {
-          border: solid rem(1) $opacity-15;
-          position: relative;
-        }
+        border-style: solid;
+        border-width: rem(1);
 
         &::before {
-          background-color: $opacity-05;
-          border-radius: rem(24);
-          bottom: rem(1);
+          bottom: 0;
           content: "";
-          left: rem(1);
+          left: 0;
           position: absolute;
-          right: rem(1);
-          top: rem(1);
+          right: 50%;
+          top: 0;
         }
+      }
+
+      &.bronze {
+        background-color: rgba($color: $bronze-base, $alpha: 0.05);
+        border-color: rgba($color: $bronze-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $bronze-base, $alpha: 0.1),
+            rgba($color: $bronze-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.gold {
+        background-color: rgba($color: $gold-base, $alpha: 0.05);
+        border-color: rgba($color: $gold-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $gold-base, $alpha: 0.1),
+            rgba($color: $gold-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.silver {
+        background-color: rgba($color: $silver-base, $alpha: 0.05);
+        border-color: rgba($color: $silver-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $silver-base, $alpha: 0.1),
+            rgba($color: $silver-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.divider {
+        background-color: transparent;
+        border: dashed rem(1) $blue-light;
+        justify-content: center;
+      }
+
+      &.loading {
+        justify-content: center;
+      }
+
+      + .item {
+        margin-top: rem(16);
       }
     }
   }
@@ -225,9 +304,9 @@
   .leaderboard-page {
     .board {
       .icon {
-        left: rem(24);
         margin: 0;
         position: absolute;
+        right: rem(24);
         top: rem(16);
       }
 
@@ -242,17 +321,23 @@
           top: 0;
         }
 
+        .rank {
+          float: left;
+        }
+
         .name {
-          text-align: left;
+          float: left;
+          margin-left: rem(8);
         }
 
         .value {
+          clear: both;
           text-align: left;
         }
       }
 
-      .rank {
-        .value {
+      .balance {
+        .date {
           text-align: right;
         }
 
@@ -264,13 +349,9 @@
       .item {
         flex-direction: row;
         height: rem(100);
-      }
 
-      .list {
         &.top {
-          .item {
-            padding-left: rem(112);
-          }
+          padding-right: rem(112);
         }
       }
     }
@@ -330,7 +411,7 @@ html[theme="light"] {
     }
     .board {
       background-color: $gray-4;
-      .divider{
+      .divider {
         border-color: $gray-6;
       }
       .point {
@@ -346,8 +427,9 @@ html[theme="light"] {
           color: $gray-8;
         }
       }
-      .shape{
-        .bottom,.top {
+      .shape {
+        .bottom,
+        .top {
           border-color: $gray-2;
         }
       }

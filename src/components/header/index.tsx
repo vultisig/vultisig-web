@@ -23,14 +23,13 @@ import constantPaths from "routes/constant-paths";
 import { Vultisig } from "icons";
 
 import {
-  BarOutlined,
-  //ChainOutlined,
-  CurrencyOutlined,
-  GearOutlined,
-  GlobeOutlined,
-  QuestionOutlined,
-  ShareOutlined,
-  UserOutlined,
+  CircleDollar,
+  CircleHelp,
+  CircleUser,
+  ExternalLink,
+  Globe,
+  HamburgerLG,
+  Settings,
 } from "icons";
 
 interface ComponentProps {
@@ -55,7 +54,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
 
   const handleShare = (): void => {
     navigator.clipboard
-      .writeText(`${location.origin}/shared/vault/${alias}/${uid}`)
+      .writeText(
+        `${location.origin}/shared/vault/${(alias ?? "").replace(
+          / /g,
+          "-"
+        )}/${uid}`
+      )
       .then(() => {
         messageApi.open({
           type: "success",
@@ -127,7 +131,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
                 {t(translation.VAULT_SETTINGS)}
               </Link>
             ),
-            icon: <GearOutlined />,
+            icon: <Settings />,
           },
         ]
       : []),
@@ -141,7 +145,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           <span>{languageName[language]}</span>
         </>
       ),
-      icon: <GlobeOutlined />,
+      icon: <Globe />,
     },
     {
       key: "6",
@@ -153,7 +157,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           <span>{currency}</span>
         </>
       ),
-      icon: <CurrencyOutlined />,
+      icon: <CircleDollar />,
     },
     // ...(uid
     //   ? [
@@ -175,7 +179,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           {t(translation.FAQ)}
         </a>
       ),
-      icon: <QuestionOutlined />,
+      icon: <CircleHelp />,
     },
     {
       key: "9",
@@ -200,7 +204,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
               {
                 key: "9-2",
                 label: t(translation.SHARE_VAULT),
-                icon: <ShareOutlined />,
+                icon: <ExternalLink />,
                 onClick: () => handleShare(),
               },
             ]
@@ -257,12 +261,18 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
         {isDesktop ? (
           <Dropdown menu={{ items }} className="menu">
             <Button type="link">
-              <UserOutlined />
+              <CircleUser />
             </Button>
           </Dropdown>
         ) : (
           <Button href={`#${constantModals.MENU}`} type="link" className="menu">
-            <BarOutlined />
+            <HamburgerLG />
+          </Button>
+        )}
+
+        {uid && (
+          <Button href={`#${constantModals.JOIN_AIRDROP}`} className="airdrop">
+            {t(translation.JOIN_AIRDROP)}
           </Button>
         )}
 
@@ -351,8 +361,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           placement="left"
           className="layout-menu"
         >
-          <Menu items={menu} selectedKeys={[]} />
-          <Divider />
+          {uid && (
+            <>
+              <Menu items={menu} selectedKeys={[]} />
+              <Divider />
+            </>
+          )}
           <Menu items={items} selectedKeys={[]} />
         </Drawer>
       )}

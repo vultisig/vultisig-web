@@ -7,12 +7,7 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 
-import {
-  CaretRightOutlined,
-  EditOutlined,
-  TrashOutlined,
-  ShareOutlined,
-} from "icons";
+import { ArrowRight, Delete, EditNote, ExternalLink } from "icons";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -61,32 +56,32 @@ const Component: FC<ComponentProps> = ({ vault }) => {
     >
       <List>
         <List.Item
-          extra={<CaretRightOutlined className="arrow" />}
+          extra={<ArrowRight className="arrow" />}
           onClick={() => navigate(`#${constantModals.RENAME_VAULT}`)}
         >
           <List.Item.Meta
-            avatar={<EditOutlined />}
+            avatar={<EditNote />}
             description={t(translation.EDIT_VAULT)}
             title={t(translation.RENAME)}
           />
         </List.Item>
         <List.Item
-          extra={<CaretRightOutlined className="arrow" />}
+          extra={<ArrowRight className="arrow" />}
           onClick={() => navigate(`#${constantModals.SHARE_SETTINGS}`)}
         >
           <List.Item.Meta
-            avatar={<ShareOutlined />}
+            avatar={<ExternalLink />}
             description={t(translation.SHARE_SETTINGS)}
             title={t(translation.SHARE_SETTINGS_TITLE)}
           />
         </List.Item>
         <List.Item
-          extra={<CaretRightOutlined className="arrow" />}
+          extra={<ArrowRight className="arrow" />}
           onClick={() => navigate(`#${constantModals.DELETE_VAULT}`)}
           className="delete"
         >
           <List.Item.Meta
-            avatar={<TrashOutlined />}
+            avatar={<Delete />}
             description={t(translation.REMOVE_VAULT)}
             title={t(translation.REMOVE)}
           />

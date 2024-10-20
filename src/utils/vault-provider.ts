@@ -16,6 +16,7 @@ import type {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
+import { getStoredAddress, setStoredAddress } from "utils/storage";
 import api from "utils/api";
 
 interface ChainRef {
@@ -81,45 +82,158 @@ export default class VaultProvider {
     prefix?: string
   ): Promise<string> => {
     return new Promise((resolve, reject) => {
-      this.getWalletCore()
-        .then(({ chainRef, walletCore }) => {
-          const coin = chainRef[chain];
+      const derivationKey = getStoredAddress(vault.publicKeyEcdsa, chain);
 
-          api
-            .derivePublicKey({
-              publicKeyEcdsa: vault.publicKeyEcdsa,
-              hexChainCode: vault.hexChainCode,
-              derivePath: walletCore.CoinTypeExt.derivationPath(coin),
-            })
-            .then(({ data: { publicKey: derivationKey } }) => {
-              const bytes = walletCore.HexCoding.decode(derivationKey);
-              let address: string;
+      if (derivationKey) {
+        resolve(derivationKey);
+      } else {
+        this.getWalletCore()
+          .then(({ chainRef, walletCore }) => {
+            const coin = chainRef[chain];
 
-              const publicKey = walletCore.PublicKey.createWithData(
-                bytes,
-                walletCore.PublicKeyType.secp256k1
-              );
+            api
+              .derivePublicKey({
+                publicKeyEcdsa: vault.publicKeyEcdsa,
+                hexChainCode: vault.hexChainCode,
+                derivePath: walletCore.CoinTypeExt.derivationPath(coin),
+              })
+              .then(({ data: { publicKey: derivationKey } }) => {
+                const bytes = walletCore.HexCoding.decode(derivationKey);
+                let address: string;
 
-              if (prefix) {
-                address = walletCore.AnyAddress.createBech32WithPublicKey(
-                  publicKey,
-                  coin,
-                  prefix
-                )?.description();
-              } else {
-                address = walletCore.AnyAddress.createWithPublicKey(
-                  publicKey,
-                  coin
-                )?.description();
-              }
+                const publicKey = walletCore.PublicKey.createWithData(
+                  bytes,
+                  walletCore.PublicKeyType.secp256k1
+                );
 
-              address ? resolve(address) : reject(errorKey.FAIL_TO_GET_ADDRESS);
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        })
-        .catch(reject);
+                if (prefix) {
+                  address = walletCore.AnyAddress.createBech32WithPublicKey(
+                    publicKey,
+                    coin,
+                    prefix
+                  )?.description();
+                } else {
+                  address = walletCore.AnyAddress.createWithPublicKey(
+                    publicKey,
+                    coin
+                  )?.description();
+                }
+
+                if (address) {
+                  switch (chain) {
+                    case ChainKey.ARBITRUM:
+                    case ChainKey.AVALANCHE:
+                    case ChainKey.BASE:
+                    case ChainKey.BLAST:
+                    case ChainKey.BSCCHAIN:
+                    case ChainKey.CRONOSCHAIN:
+                    case ChainKey.ETHEREUM:
+                    case ChainKey.OPTIMISM:
+                    case ChainKey.POLYGON:
+                    case ChainKey.ZKSYNC: {
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.ARBITRUM,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.AVALANCHE,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.BASE,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.BLAST,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.BSCCHAIN,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.CRONOSCHAIN,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.ETHEREUM,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.OPTIMISM,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.POLYGON,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.ZKSYNC,
+                        address
+                      );
+                      break;
+                    }
+                    case ChainKey.DYDX:
+                    case ChainKey.GAIACHAIN:
+                    case ChainKey.KUJIRA: {
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.DYDX,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.GAIACHAIN,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.KUJIRA,
+                        address
+                      );
+                      break;
+                    }
+                    case ChainKey.MAYACHAIN:
+                    case ChainKey.THORCHAIN: {
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.MAYACHAIN,
+                        address
+                      );
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.THORCHAIN,
+                        address
+                      );
+                      break;
+                    }
+                    default: {
+                      setStoredAddress(vault.publicKeyEcdsa, chain, address);
+                      break;
+                    }
+                  }
+
+                  resolve(address);
+                } else {
+                  reject(errorKey.FAIL_TO_GET_ADDRESS);
+                }
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          })
+          .catch(reject);
+      }
     });
   };
 
@@ -128,25 +242,37 @@ export default class VaultProvider {
     vault: VaultProps
   ): Promise<string> => {
     return new Promise((resolve, reject) => {
-      this.getWalletCore()
-        .then(({ chainRef, walletCore }) => {
-          const coin = chainRef[chain];
+      const derivationKey = getStoredAddress(vault.publicKeyEddsa, chain);
 
-          const bytes = walletCore.HexCoding.decode(vault.publicKeyEddsa);
+      if (derivationKey) {
+        resolve(derivationKey);
+      } else {
+        this.getWalletCore()
+          .then(({ chainRef, walletCore }) => {
+            const coin = chainRef[chain];
 
-          const publicKey = walletCore.PublicKey.createWithData(
-            bytes,
-            walletCore.PublicKeyType.ed25519
-          );
+            const bytes = walletCore.HexCoding.decode(vault.publicKeyEddsa);
 
-          const address = walletCore.AnyAddress.createWithPublicKey(
-            publicKey,
-            coin
-          )?.description();
+            const publicKey = walletCore.PublicKey.createWithData(
+              bytes,
+              walletCore.PublicKeyType.ed25519
+            );
 
-          address ? resolve(address) : reject(errorKey.FAIL_TO_GET_ADDRESS);
-        })
-        .catch(reject);
+            const address = walletCore.AnyAddress.createWithPublicKey(
+              publicKey,
+              coin
+            )?.description();
+
+            if (address) {
+              setStoredAddress(vault.publicKeyEddsa, chain, address);
+
+              resolve(address);
+            } else {
+              reject(errorKey.FAIL_TO_GET_ADDRESS);
+            }
+          })
+          .catch(reject);
+      }
     });
   };
 
@@ -272,13 +398,19 @@ export default class VaultProvider {
 
                 this.getBalance(newCoin, newCoin.chain, newCoin.address).then(
                   ({ balance }) => {
-                    newCoin.balance = balance;
+                    if (balance) {
+                      newCoin.balance = balance;
 
-                    this.getValues([newCoin], currency).then(([{ value }]) => {
-                      newCoin.value = value;
+                      this.getValues([newCoin], currency).then(
+                        ([{ value }]) => {
+                          newCoin.value = value;
 
+                          resolve(newCoin);
+                        }
+                      );
+                    } else {
                       resolve(newCoin);
-                    });
+                    }
                   }
                 );
               })
@@ -592,7 +724,7 @@ export default class VaultProvider {
         });
 
         const cmcIds = coins
-          .filter(({ cmcId }) => cmcId > 0)
+          .filter(({ balance, cmcId }) => balance > 0 && cmcId > 0)
           .map(({ cmcId }) => cmcId);
 
         if (cmcIds.length) {
@@ -617,6 +749,30 @@ export default class VaultProvider {
         }
       });
     });
+  };
+
+  public prepareVault = (vault: VaultProps): VaultProps => {
+    if (vault.updated) {
+      vault.chains = vault.chains.map((chain) => ({
+        ...chain,
+        balance: chain.coins.reduce(
+          (acc, coin) => acc + coin.balance * coin.value,
+          0
+        ),
+        coins: chain.coins
+          .slice()
+          .sort((a, b) => b.balance * b.value - a.balance * a.value),
+      }));
+
+      vault.chains = vault.chains.slice().sort((a, b) => b.balance - a.balance);
+
+      vault.balance = vault.chains.reduce(
+        (acc, chain) => acc + chain.balance,
+        0
+      );
+    }
+
+    return vault;
   };
 
   public toggleToken = (
@@ -672,6 +828,7 @@ export default class VaultProvider {
                     ...vault.chains,
                     {
                       address: newToken.address,
+                      balance: 0,
                       coins: [newToken],
                       hexPublicKey: newToken.hexPublicKey,
                       name: newToken.chain,

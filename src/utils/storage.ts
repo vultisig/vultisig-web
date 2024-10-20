@@ -1,14 +1,54 @@
 import KeyMirror from "keymirror";
 
-import { Currency, Language, Theme } from "utils/constants";
-import { Customization, VaultProps } from "utils/interfaces";
+import { ChainKey, Currency, Language, Theme } from "utils/constants";
+import { AddressesProps, Customization, VaultProps } from "utils/interfaces";
 
 export const storageKey = KeyMirror({
+  ADDRESSES: true,
   CURRENCY: true,
   CUSTOMIZATION: true,
   LANGUAGE: true,
   VAULTS: true,
 });
+
+export const getStoredAddress = (
+  publicKey: string,
+  chain: ChainKey
+): string => {
+  const addresses = getStoredAddresses();
+  const vaultAddresses = addresses[publicKey];
+
+  return vaultAddresses && (vaultAddresses[chain] || "");
+};
+
+export const setStoredAddress = (
+  publicKey: string,
+  chain: ChainKey,
+  address: string
+): void => {
+  const addresses = getStoredAddresses();
+
+  if (!addresses[publicKey]) addresses[publicKey] = {};
+
+  addresses[publicKey][chain] = address;
+
+  setStoredAddresses(addresses);
+};
+
+export const getStoredAddresses = (): AddressesProps => {
+  try {
+    const data = localStorage.getItem(storageKey.ADDRESSES);
+    const addresses: AddressesProps = data ? JSON.parse(data) : {};
+
+    return addresses;
+  } catch {
+    return {};
+  }
+};
+
+export const setStoredAddresses = (addresses: AddressesProps): void => {
+  localStorage.setItem(storageKey.ADDRESSES, JSON.stringify(addresses));
+};
 
 export const getStoredCustomization = (): Customization => {
   try {
@@ -89,7 +129,9 @@ export const getStoredVaults = (): VaultProps[] => {
     const data = localStorage.getItem(storageKey.VAULTS);
     const vaults: VaultProps[] = data ? JSON.parse(data) : [];
 
-    return Array.isArray(vaults) ? vaults : [];
+    return Array.isArray(vaults)
+      ? vaults.map((vault) => ({ ...vault, chains: [] }))
+      : [];
   } catch {
     return [];
   }
@@ -99,7 +141,12 @@ export const setStoredVaults = (vaults: VaultProps[]): void => {
   localStorage.setItem(
     storageKey.VAULTS,
     JSON.stringify(
-      vaults.map((vault) => ({ ...vault, chains: [], updated: false }))
+      vaults.map(({ hexChainCode, publicKeyEcdsa, publicKeyEddsa, uid }) => ({
+        hexChainCode,
+        publicKeyEcdsa,
+        publicKeyEddsa,
+        uid,
+      }))
     )
   );
 };

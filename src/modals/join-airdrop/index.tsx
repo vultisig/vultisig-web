@@ -1,57 +1,47 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Form, List, Modal, Switch } from "antd";
+import { Collapse, List, Modal, Switch } from "antd";
 
-import { useVaultContext } from "context/vault";
+import { VaultProps } from "utils/interfaces";
+import useGoBack from "hooks/go-back";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
-import useGoBack from "hooks/go-back";
+
+import { Info } from "icons";
+
+interface ComponentProps {
+  updateVault: (vault: VaultProps) => void;
+  vaults: VaultProps[];
+}
 
 interface InitialState {
-  submitting: boolean;
+  loading: boolean;
   visible: boolean;
 }
 
-const Component: FC = () => {
-  const initialState: InitialState = { submitting: false, visible: false };
+const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
+  const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
-  const { visible, submitting } = state;
-  const { updateVault, vaults } = useVaultContext();
+  const { visible, loading } = state;
   const { hash } = useLocation();
-  const [form] = Form.useForm();
   const goBack = useGoBack();
 
-  const handleSubmit = () => {
-    if (!submitting) {
-      setState((prevState) => ({ ...prevState, submitting: true }));
+  const handleToggle = (vault: VaultProps) => {
+    if (!loading) {
+      setState((prevState) => ({ ...prevState, loading: true }));
 
-      form
-        .validateFields()
-        .then((values) => {
-          vaults.forEach((vault) => {
-            if (vault.joinAirdrop !== values[vault.uid]) {
-              const params = { ...vault, joinAirdrop: values[vault.uid] };
+      const action = vault.joinAirdrop
+        ? api.airdrop.exit(vault)
+        : api.airdrop.join(vault);
 
-              const action = params.joinAirdrop
-                ? api.airdrop.join(params)
-                : api.airdrop.exit(params);
+      action
+        .then(() => {
+          updateVault({ ...vault, joinAirdrop: !vault.joinAirdrop });
 
-              action
-                .then(() => {
-                  updateVault(params);
-                })
-                .catch(() => {});
-            } else {
-              setState((prevState) => ({ ...prevState, submitting: false }));
-            }
-          });
-
-          setTimeout(() => {
-            goBack();
-          }, 1000);
+          setState((prevState) => ({ ...prevState, loading: false }));
         })
         .catch(() => {
-          setState((prevState) => ({ ...prevState, submitting: false }));
+          setState((prevState) => ({ ...prevState, loading: false }));
         });
     }
   };
@@ -61,19 +51,9 @@ const Component: FC = () => {
       case `#${constantModals.JOIN_AIRDROP}`: {
         setState((prevState) => ({ ...prevState, visible: true }));
 
-        setTimeout(() => {
-          const data: { [uid: string]: boolean } = {};
-
-          vaults.forEach((vault) => (data[vault.uid] = vault.joinAirdrop));
-
-          form.setFieldsValue(data);
-        }, 0);
-
         break;
       }
       default: {
-        if (visible) form.resetFields();
-
         setState(initialState);
 
         break;
@@ -86,88 +66,96 @@ const Component: FC = () => {
   return (
     <Modal
       className="join-airdrop"
-      title="Join AirDrop"
+      title="Manage Airdrop Registration"
       centered={true}
-      footer={
-        <Button
-          loading={submitting}
-          onClick={handleSubmit}
-          shape="round"
-          size="large"
-          type="primary"
-          block
-        >
-          Done
-        </Button>
-      }
+      footer={false}
       onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
       width={550}
     >
-      <span className="value">$20,000,000</span>
-      <span className="text">Current Airdrop Value</span>
-      <span className="text">Expected Drop Date: March 2025</span>
+      <span className="heading">Registred Vaults:</span>
 
-      <Form form={form} onFinish={handleSubmit}>
-        <List
-          dataSource={vaults}
-          renderItem={(item, index) => (
-            <List.Item
-              key={index}
-              className="list-item"
-              extra={
-                <Form.Item valuePropName="checked" name={item.uid} noStyle>
-                  <Switch loading={submitting} />
-                </Form.Item>
-              }
-            >
-              <List.Item.Meta title={item.alias} />
-            </List.Item>
-          )}
-        />
-        <Button htmlType="submit" style={{ display: "none" }} />
-      </Form>
+      <List
+        dataSource={vaults}
+        renderItem={(item, index) => (
+          <List.Item
+            key={index}
+            extra={
+              <Switch
+                loading={loading}
+                checked={item.joinAirdrop}
+                onClick={() => handleToggle(item)}
+              />
+            }
+          >
+            <List.Item.Meta title={item.alias} />
+          </List.Item>
+        )}
+      />
 
-      <div className="hint">
-        <span className="desc">
-          You are registering your Public Keys and vault addresses.
+      <span className="hint">
+        <Info />
+
+        <span>
+          Unregistering a vault removes it from the leaderboard. It may take up
+          to a day for the balance to be reflected again.
         </span>
-        <a
-          href="https://github.com/vultisig/airdrop-registry"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="link"
-        >
-          Inspect the code here.
-        </a>
-      </div>
+      </span>
 
-      <div className="hint">
-        <span className="desc">
-          Your Airdrop Share is based on how long you have kept funds in
-          Vultisig for. Only Layer1 assets and tokens on the 1inch Token List
-          apply.
-        </span>
-      </div>
+      <Collapse
+        items={[
+          {
+            key: "1",
+            label: "Privacy Information",
+            children: (
+              <>
+                <div className="text">
+                  <span className="desc">
+                    You are registering your Public Keys and vault addresses.
+                  </span>
+                  <a
+                    href="https://github.com/vultisig/airdrop-registry"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="link"
+                  >
+                    Inspect the code here.
+                  </a>
+                </div>
 
-      <div className="hint">
-        <span className="desc">No other information is collected.</span>
-        <a
-          href="https://github.com/vultisig/docs/blob/main/other/privacy.md"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="link"
-        >
-          Read the Privacy Policy here
-        </a>
-      </div>
+                <div className="text">
+                  <span className="desc">
+                    Your Airdrop Share is based on how long you have kept funds
+                    in Vultisig for. Only Layer1 assets and tokens on the 1inch
+                    Token List apply.
+                  </span>
+                </div>
 
-      <div className="hint">
-        <span className="desc">
-          You can register as many times as you like.
-        </span>
-      </div>
+                <div className="text">
+                  <span className="desc">
+                    No other information is collected.
+                  </span>
+                  <a
+                    href="https://github.com/vultisig/docs/blob/main/other/privacy.md"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="link"
+                  >
+                    Read the Privacy Policy here
+                  </a>
+                </div>
+
+                <div className="text">
+                  <span className="desc">
+                    You can register as many times as you like.
+                  </span>
+                </div>
+              </>
+            ),
+          },
+        ]}
+      />
     </Modal>
   );
 };

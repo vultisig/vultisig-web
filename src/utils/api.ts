@@ -11,8 +11,6 @@ import {
   VaultProps,
 } from "utils/interfaces";
 
-//import paths from "routes/constant-paths";
-
 const api = axios.create({
   baseURL: import.meta.env.VITE_SERVER_ADDRESS,
   headers: { accept: "application/json" },
@@ -45,12 +43,6 @@ namespace CMC {
     data: {
       [id: string]: { quote: { [currency: string]: { price: number } } };
     };
-  }
-}
-
-namespace Coin {
-  export interface Props {
-    coinId: number;
   }
 }
 
@@ -324,7 +316,9 @@ const service = {
   },
   coin: {
     add: async (vault: VaultProps, coin: CoinParams) => {
-      return await api.post<Coin.Props>(
+      return await api.post<{
+        coinId: number;
+      }>(
         `coin/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`,
         toSnakeCase(coin),
         { headers: { "x-hex-chain-code": vault.hexChainCode } }

@@ -5,10 +5,9 @@ import { Dropdown, MenuProps } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import translation from "i18n/constant-keys";
-import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
-import { CaretRightOutlined } from "icons";
+import { ArrowRight } from "icons";
 
 interface ComponentProps {
   changeVault(vault: VaultProps): void;
@@ -32,22 +31,8 @@ const Component: FC<ComponentProps> = ({ changeVault, vault, vaults }) => {
       key: "1",
       label: (
         <>
-          <Link to={constantPaths.import} style={{ fontWeight: 'bold' }}>
-            + {t(translation.ADD_NEW_VAULT)}
-          </Link>
-          <CaretRightOutlined />
-        </>
-      ),
-      className: "primary",
-    },
-    {
-      key: "2",
-      label: (
-        <>
-          <Link to={`#${constantModals.JOIN_AIRDROP}`} state={true}  style={{ fontWeight: 'bold' }}>
-            {t(translation.JOIN_AIRDROP)}
-          </Link>
-          <CaretRightOutlined />
+          <Link to={constantPaths.import}>{t(translation.ADD_NEW_VAULT)}</Link>
+          <ArrowRight />
         </>
       ),
       className: "primary",

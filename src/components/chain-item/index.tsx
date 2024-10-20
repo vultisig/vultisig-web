@@ -6,7 +6,7 @@ import { useBaseContext } from "context/base";
 import { ChainKey } from "utils/constants";
 import { CoinProps } from "utils/interfaces";
 
-import { CaretRightOutlined } from "icons";
+import { ArrowRight } from "icons";
 import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
 
@@ -51,7 +51,7 @@ const Component: FC<ComponentProps> = ({ address, coins, name }) => {
           state={true}
           className="arrow"
         >
-          <CaretRightOutlined />
+          <ArrowRight />
         </Link>
       </div>
     </>

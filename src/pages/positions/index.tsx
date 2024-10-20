@@ -1,55 +1,35 @@
 import { FC, useState, useEffect } from "react";
-import { Button, Tooltip } from "antd"; //Empty
-import { CodeSandboxOutlined } from "@ant-design/icons";
 
+import { Button, Tooltip } from "antd";
 import { useBaseContext } from "context/base";
 import { useVaultContext } from "context/vault";
-import { ChainKey, defTokens, MayaChainKey, TCChainKey } from "utils/constants";
-import api, { activePosition, NodeInfo } from "utils/api";
+import {
+  ChainKey,
+  defTokens,
+  MayaChainKey,
+  PositionInfo,
+  TCChainKey,
+} from "utils/constants";
 
-import { CubeOutlined, RefreshOutlined } from "icons";
-import TokenImage from "components/token-image";
+import api, { NodeInfo } from "utils/api";
+import { Synchronize } from "icons";
 import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
+import PositionItem from "components/position-item";
+import NoData from "components/no-data";
 
-interface mayaBonds {
-  chain: string;
-  token: string;
-  lpChain: string;
-  lpToken: string;
-  asset: string;
-  amount: string;
-  address?: string;
-}
-
-interface thorchainBonds {
-  chain: string;
-  token: string;
-  asset: string;
-  amount: string;
-  address?: string;
-}
-
-interface TGT {
-  stakedAmount: number;
-  reward: number;
-  address: string;
-  price: number;
-}
-
-interface RuneProvider {
-  address: string;
-  price: number;
-  value: number;
+interface activePositions {
+  maya: PositionInfo[];
+  thorchain: PositionInfo[];
 }
 
 interface InitialState {
   loading?: boolean;
-  liquidityPosition?: activePosition;
-  mayaBond?: mayaBonds;
-  thorchainBond?: thorchainBonds;
-  tgtStake?: TGT;
-  runeProvider?: RuneProvider;
+  liquidityPosition?: activePositions;
+  mayaBond?: PositionInfo[];
+  runeProvider?: PositionInfo[];
+  tgtStake?: PositionInfo[];
+  thorchainBond?: PositionInfo[];
 }
 
 const Component: FC = () => {
@@ -66,34 +46,35 @@ const Component: FC = () => {
   const { currency } = useBaseContext();
   const { changeVault, vault, vaults } = useVaultContext();
 
-  const getRuneProvider = (): Promise<void> => {
+  const getRuneProvider = (runePrice: number): Promise<void> => {
     return new Promise((resolve) => {
       const address = vault?.chains.find(
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
+
       const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
 
       if (address && token) {
-        api.coin
-          .value(token.cmcId, currency)
-          .then((price) => {
-            api.activePositions
-              .getRuneProvider(address)
-              .then(({ data }) => {
-                setState((prevState) => ({
-                  ...prevState,
-                  runeProvider: {
-                    address: address,
-                    price: price,
-                    value: data.value * 1e-8,
-                  },
-                }));
+        api.activePositions
+          .getRuneProvider(address)
+          .then(({ data }) => {
+            let positionItem: PositionInfo[] = [];
+            positionItem.push({
+              base: {
+                baseTokenAddress: `https://thorchain.net/address/${address}`,
+                baseChain: ChainKey.THORCHAIN,
+                baseTiker: token.ticker,
+                baseTokenAmount: data.value * 1e-8,
+                basePriceUsd: runePrice,
+              },
+            });
 
-                resolve();
-              })
-              .catch(() => {
-                resolve();
-              });
+            setState((prevState) => ({
+              ...prevState,
+              runeProvider: positionItem,
+            }));
+
+            resolve();
           })
           .catch(() => {
             resolve();
@@ -104,38 +85,39 @@ const Component: FC = () => {
     });
   };
 
-  const getTGTStake = (): Promise<void> => {
+  const getTGTStake = (tgtPrice: number): Promise<void> => {
     return new Promise((resolve) => {
       const address = vault?.chains.find(
         ({ name }) => name === ChainKey.ETHEREUM
       )?.address;
-      
+
       const token = defTokens.find(
         (chain) => chain.chain === ChainKey.ETHEREUM && chain.ticker === "TGT"
       );
 
       if (address && token) {
-        api.coin
-          .value(token.cmcId, currency)
-          .then((price) => {
-            api.activePositions
-              .getTGTstake(address)
-              .then(({ data }) => {
-                setState((prevState) => ({
-                  ...prevState,
-                  tgtStake: {
-                    stakedAmount: data.stakedAmount,
-                    reward: data.reward,
-                    address: address,
-                    price: price || 0,
-                  },
-                }));
+        api.activePositions
+          .getTGTstake(address)
+          .then(({ data }) => {
+            let positionItem: PositionInfo[] = [];
 
-                resolve();
-              })
-              .catch(() => {
-                resolve();
-              });
+            positionItem.push({
+              base: {
+                baseTokenAddress: `https://etherscan.io/address/${address}`,
+                baseChain: ChainKey.ETHEREUM,
+                baseTiker: token.ticker,
+                baseTokenAmount: data.stakedAmount,
+                basePriceUsd: tgtPrice,
+                reward: data.reward,
+              },
+            });
+
+            setState((prevState) => ({
+              ...prevState,
+              tgtStake: positionItem,
+            }));
+
+            resolve();
           })
           .catch(() => {
             resolve();
@@ -146,11 +128,12 @@ const Component: FC = () => {
     });
   };
 
-  const getThorchainBond = (): Promise<void> => {
+  const getThorchainBond = (runePrice: number): Promise<void> => {
     return new Promise((resolve) => {
       const address = vault?.chains.find(
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
+
       const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
 
       if (address && token) {
@@ -158,26 +141,23 @@ const Component: FC = () => {
           .nodeInfo()
           .then(({ data }) => {
             const bond = sumBonds(data, address) * 1e-8;
+            let positionItem: PositionInfo[] = [];
 
-            api.coin
-              .value(token.cmcId, currency)
-              .then((price) => {
-                setState((prevState) => ({
-                  ...prevState,
-                  thorchainBond: {
-                    chain: token.chain,
-                    token: token.ticker,
-                    asset: bond.toBalanceFormat(),
-                    amount: (bond * price).toValueFormat(currency),
-                    address: address,
-                  },
-                }));
+            positionItem.push({
+              base: {
+                baseTokenAddress: `https://thorchain.net/address/${address}`,
+                baseChain: ChainKey.THORCHAIN,
+                baseTiker: token.ticker,
+                baseTokenAmount: bond,
+                basePriceUsd: runePrice,
+              },
+            });
 
-                resolve();
-              })
-              .catch(() => {
-                resolve();
-              });
+            setState((prevState) => ({
+              ...prevState,
+              thorchainBond: positionItem,
+            }));
+            resolve();
           })
           .catch(() => {
             resolve();
@@ -194,19 +174,22 @@ const Component: FC = () => {
         ({ name }) => name === ChainKey.MAYACHAIN
       )?.address;
       const token = defTokens.find(({ chain }) => chain === ChainKey.MAYACHAIN);
+      let positionItem: PositionInfo[] = [];
 
       if (address && token) {
+        positionItem.push({
+          base: {
+            baseTokenAddress: `www.mayascan.org/address/${address}`,
+            baseChain: ChainKey.MAYACHAIN,
+            baseTiker: token.ticker,
+            baseTokenAmount: 0,
+            basePriceUsd: 0,
+          },
+        });
+
         setState((prevState) => ({
           ...prevState,
-          mayaBond: {
-            chain: token.chain,
-            token: token.ticker,
-            lpChain: token.chain,
-            lpToken: token.ticker,
-            asset: "0",
-            amount: (0).toValueFormat(currency),
-            address: address,
-          },
+          mayaBond: positionItem,
         }));
 
         resolve();
@@ -223,13 +206,72 @@ const Component: FC = () => {
         api.activePositions
           .get(address)
           .then(({ data }) => {
+            let thorchain: PositionInfo[] = [];
+            let maya: PositionInfo[] = [];
+
+            data.thorchain
+              .filter((item) => getTCChain(item.pool) != "")
+              .forEach((item) => {
+                thorchain.push({
+                  base: {
+                    baseTokenAddress: `https://thorchain.net/address/${
+                      item.runeAddress == ""
+                        ? item.assetAddress
+                        : item.runeAddress
+                    }`,
+                    baseChain: getTCChain(item.pool),
+                    baseTiker: getTiker(item.pool),
+                    baseTokenAmount: item.assetAdded,
+                    basePriceUsd: item.assetPriceUsd,
+                  },
+                  target: {
+                    targetTokenAddress: `https://thorchain.net/address/${
+                      item.runeAddress == ""
+                        ? item.assetAddress
+                        : item.runeAddress
+                    }`,
+                    targetChain: ChainKey.THORCHAIN,
+                    targetTiker: "RUNE",
+                    targetTokenAmount: item.runeAdded,
+                    targetPriceUsd: item.runeOrCacaoPricePriceUsd,
+                  },
+                });
+              });
+
+            data.maya
+              .filter((item) => getMayaChain(item.pool) != "")
+              .forEach((item) => {
+                maya.push({
+                  base: {
+                    baseTokenAddress: `https://www.mayascan.org/address/${
+                      item.runeAddress != ""
+                        ? item.runeAddress
+                        : item.assetAddress
+                    }`,
+                    baseChain: getMayaChain(item.pool),
+                    baseTiker: getTiker(item.pool),
+                    baseTokenAmount: item.assetAdded,
+                    basePriceUsd: item.assetPriceUsd,
+                  },
+                  target: {
+                    targetTokenAddress: `https://www.mayascan.org/address/${
+                      item.runeAddress != ""
+                        ? item.runeAddress
+                        : item.assetAddress
+                    }`,
+                    targetChain: ChainKey.MAYACHAIN,
+                    targetTiker: "CACAO",
+                    targetTokenAmount: item.runeAdded,
+                    targetPriceUsd: item.runeOrCacaoPricePriceUsd,
+                  },
+                });
+              });
+
             setState((prevState) => ({
               ...prevState,
               liquidityPosition: {
-                thorchain: data.thorchain.filter(
-                  (item) => getTCChain(item.pool) != ""
-                ),
-                maya: data.maya.filter((item) => getMayaChain(item.pool) != ""),
+                thorchain: thorchain,
+                maya: maya,
               },
             }));
 
@@ -271,24 +313,41 @@ const Component: FC = () => {
   };
 
   const componentDidUpdate = (): void => {
-    setState((prevState) => ({
-      ...prevState,
-      liquidityPosition: undefined,
-      mayaBond: undefined,
-      thorchainBond: undefined,
-      tgtStake: undefined,
-      loading: true,
-    }));
+    setState(initialState);
 
-    Promise.all([
-      getThorchainBond(),
-      getMayaBond(),
-      getLiquidityPositions(),
-      getTGTStake(),
-      getRuneProvider(),
-    ]).then(() => {
+    const runeCmcId = defTokens.find(
+      ({ chain, ticker }) => chain === ChainKey.THORCHAIN && ticker === "RUNE"
+    )?.cmcId;
+    const tgtCmcId = defTokens.find(
+      ({ chain, ticker }) => chain === ChainKey.ETHEREUM && ticker === "TGT"
+    )?.cmcId;
+    if (runeCmcId && tgtCmcId) {
+      api.coin.values([runeCmcId, tgtCmcId], currency).then(({ data }) => {
+        const runePrice =
+          (data?.data &&
+            data.data[runeCmcId]?.quote &&
+            data.data[runeCmcId].quote[currency]?.price) ||
+          0;
+
+        const tgtPrice =
+          (data?.data &&
+            data.data[tgtCmcId]?.quote &&
+            data.data[tgtCmcId].quote[currency]?.price) ||
+          0;
+
+        Promise.all([
+          getThorchainBond(runePrice ? runePrice : 0),
+          getMayaBond(),
+          getLiquidityPositions(),
+          getTGTStake(tgtPrice ? tgtPrice : 0),
+          getRuneProvider(runePrice ? runePrice : 0),
+        ]).then(() => {
+          setState((prevState) => ({ ...prevState, loading: false }));
+        });
+      });
+    } else {
       setState((prevState) => ({ ...prevState, loading: false }));
-    });
+    }
   };
 
   useEffect(componentDidUpdate, [currency, vault]);
@@ -308,7 +367,7 @@ const Component: FC = () => {
           />
           <Tooltip title="Refresh">
             <Button type="link" onClick={() => componentDidUpdate()}>
-              <RefreshOutlined />
+              <Synchronize />
             </Button>
           </Tooltip>
         </div>
@@ -322,360 +381,79 @@ const Component: FC = () => {
       runeProvider ? (
         <>
           {liquidityPosition?.thorchain.length ? (
-            <>
-              <h4 className="title">Liquidity Position:</h4>
-              <div className="lp">
-                {liquidityPosition.thorchain.map((item, index) => (
-                  <>
-                    <div className="lp-row" key={index}>
-                      <div className="lp-pool">
-                        <div className="type lp-item">
-                          <TokenImage alt={getTiker(item.pool)} />
-                          <span className="name">{getTCChain(item.pool)}</span>
-
-                          <span className="text">
-                            {item.assetAdded
-                              ? Number(item.assetAdded).toLocaleString()
-                              : 0}{" "}
-                            {getTiker(item.pool)}
-                          </span>
-                        </div>
-
-                        <div className="convert lp-item">
-                          <img src="/images/convert.svg" />
-                        </div>
-
-                        <div className="type lp-item">
-                          <TokenImage alt={ChainKey.THORCHAIN} />
-                          <span className="name">THORChain</span>
-                          <span className="text">
-                            {item.runeAdded
-                              ? Number(item.runeAdded).toLocaleString()
-                              : 0}{" "}
-                            Rune
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="lp-amount">
-                        <div className="lp-item">
-                          {(
-                            item.assetAdded * item.assetPriceUsd +
-                            item.runeAdded * item.runeOrCacaoPricePriceUsd
-                          ).toValueFormat(currency)}
-                        </div>
-                        <div className="lp-item link-to-address">
-                          <Tooltip title="Link to Address">
-                            <a
-                              href={`https://thorchain.net/address/${
-                                item.runeAddress == ""
-                                  ? item.assetAddress
-                                  : item.runeAddress
-                              }`}
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              <CubeOutlined />
-                            </a>
-                          </Tooltip>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ))}
-              </div>
-            </>
+            <PositionItem
+              title="Liquidity Position"
+              data={liquidityPosition.thorchain}
+            />
           ) : (
-            <>
-              <h4 className="title">Liquidity Position:</h4>
-              <div className="no-data">
-                <CodeSandboxOutlined />
-                <p>THORChain address not found in your vault</p>
-              </div>
-            </>
+            <NoData
+              title="Liquidity Position"
+              text="THORChain address not found in your vault"
+            />
           )}
 
           {runeProvider ? (
-            <>
-              <h4 className="title">Rune Provider:</h4>
-              <div className="saver">
-                <div className="lp-saver">
-                  <div className="lp-pool-saver">
-                    <div className="type lp-item">
-                      <TokenImage alt={ChainKey.THORCHAIN} />
-                      <span className="name">THORChain</span>
-                      <span className="text">RUNE</span>
-                    </div>
-                  </div>
-                  <div className="lp-amount-saver">
-                    <div className="lp-item">
-                      {runeProvider.value
-                        ? Number(runeProvider.value).toLocaleString()
-                        : 0}
-                    </div>
-                    <div className="lp-item">
-                      {(runeProvider.value
-                        ? Number(runeProvider.value) * runeProvider.price
-                        : 0).toValueFormat(currency)}
-                    </div>
-                    <div className="lp-item link-to-address">
-                      <Tooltip title="Link to Address">
-                        <a
-                          href={`https://thorchain.net/address/${runeProvider.address}`}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <CubeOutlined />
-                        </a>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
+            <PositionItem title="Rune Provider" data={runeProvider} />
           ) : (
-            <>
-              <h4 className="title">Bond:</h4>
-              <div className="no-data">
-                <CodeSandboxOutlined />
-                <p>THORChain address not found in your vault</p>
-              </div>
-            </>
+            <NoData
+              title="Rune Provider"
+              text="THORChain address not found in your vault"
+            />
           )}
 
           {thorchainBond ? (
-            <>
-              <h4 className="title">Bond:</h4>
-              <div className="saver">
-                <div className="lp-saver">
-                  <div className="lp-pool-saver">
-                    <div className="type lp-item">
-                      <TokenImage alt={ChainKey.THORCHAIN} />
-                      <span className="name">{thorchainBond.chain}</span>
-                      <span className="text">{thorchainBond.token}</span>
-                    </div>
-                  </div>
-                  <div className="lp-amount-saver">
-                    <div className="lp-item">{thorchainBond.asset}</div>
-                    <div className="lp-item">{thorchainBond.amount}</div>
-                    <div className="lp-item link-to-address">
-                      <Tooltip title="Link to Address">
-                        <a
-                          href={`https://thorchain.net/address/${thorchainBond.address}`}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <CubeOutlined />
-                        </a>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
+            <PositionItem title="Bond" data={thorchainBond} />
           ) : (
-            <>
-              <h4 className="title">Bond:</h4>
-              <div className="no-data">
-                <CodeSandboxOutlined />
-                <p>THORChain address not found in your vault</p>
-              </div>
-            </>
+            <NoData
+              title="Bond"
+              text="THORChain address not found in your vault"
+            />
           )}
         </>
       ) : (
-        <>
-          <h4 className="title">Liquidity Position:</h4>
-          <div className="no-data">
-            <CodeSandboxOutlined />
-            <p>THORChain address not found in your vault</p>
-          </div>
-        </>
+        <NoData
+          title="Liquidity Position"
+          text="THORChain address not found in your vault"
+        />
       )}
 
       <div className="line"></div>
       <h2 className="h-title">Maya:</h2>
 
-      {(liquidityPosition?.maya && liquidityPosition.maya.length > 0) ||
-      mayaBond ? (
+      {(liquidityPosition?.maya && liquidityPosition.maya.length > 0) ?( //|| mayaBond ? (
         <>
           {liquidityPosition?.maya.length ? (
-            <>
-              <h4 className="title">Liquidity Position:</h4>
-              <div className="lp">
-                {liquidityPosition.maya.map((item, index) => (
-                  <>
-                    <div className="lp-row" key={index}>
-                      <div className="lp-pool">
-                        <div className="type lp-item">
-                          <TokenImage alt={getTiker(item.pool)} />
-                          <span className="name">
-                            {getMayaChain(item.pool)}
-                          </span>
-                          <span className="text">
-                            {item.assetAdded
-                              ? Number(item.assetAdded).toLocaleString()
-                              : 0}{" "}
-                            {getTiker(item.pool)}
-                          </span>
-                        </div>
-
-                        <div className="convert lp-item">
-                          <img src="/images/convert.svg" />
-                        </div>
-
-                        <div className="type lp-item">
-                          <TokenImage alt={ChainKey.MAYACHAIN} />
-                          <span className="name">MayaChain</span>
-                          <span className="text">
-                            {" "}
-                            {item.runeAdded
-                              ? Number(item.runeAdded).toLocaleString()
-                              : 0}{" "}
-                            CACAO
-                          </span>
-                        </div>
-                      </div>
-                      <div className="lp-amount">
-                        <div className="lp-item">
-                          {(
-                            item.assetAdded * item.assetPriceUsd +
-                            item.runeAdded * item.runeOrCacaoPricePriceUsd
-                          ).toValueFormat(currency)}
-                        </div>
-                        <div className="lp-item link-to-address">
-                          <Tooltip title="Link to Address">
-                            <a
-                              href={`https://www.mayascan.org/address/${
-                                item.runeAddress != ""
-                                  ? item.runeAddress
-                                  : item.assetAddress
-                              }`}
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              <CubeOutlined />
-                            </a>
-                          </Tooltip>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ))}
-              </div>
-            </>
+            <PositionItem
+              data={liquidityPosition.maya}
+              title="Liquidity Position"
+            />
           ) : (
-            <>
-              <h4 className="title">Liquidity Position:</h4>
-              <div className="no-data">
-                <CodeSandboxOutlined />
-                <p>Mayachain address not found in your vault</p>
-              </div>
-            </>
+            <NoData
+              title="Liquidity Position"
+              text="Mayachain address not found in your vault"
+            />
           )}
 
           {mayaBond ? (
-            <>
-              <h4 className="title">Bond:</h4>
-              <div className="saver">
-                <div className="lp-saver">
-                  <div className="lp-pool-saver">
-                    <div className="type lp-item">
-                      <TokenImage alt={ChainKey.MAYACHAIN} />
-                      <span className="name">{mayaBond.chain}</span>
-                      <span className="text">{mayaBond.token}</span>
-                    </div>
-                  </div>
-                  <div className="lp-amount-saver">
-                    <div className="lp-item">{mayaBond.asset}</div>
-                    <div className="lp-item">{mayaBond.amount}</div>
-                    <div className="lp-item link-to-address">
-                      <Tooltip title="Link to Address">
-                        <a
-                          href={`https://www.mayascan.org/address/${mayaBond.address}`}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <CubeOutlined />
-                        </a>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
+            <PositionItem title="Bond" data={mayaBond} />
           ) : (
-            <>
-              <h4 className="title">Bond:</h4>
-              <div className="no-data">
-                <CodeSandboxOutlined />
-                <p>Mayachain address not found in your vault</p>
-              </div>
-            </>
+            <NoData
+              title="Bond"
+              text="Mayachain address not found in your vault"
+            />
           )}
         </>
       ) : (
-        <>
-          <div className="no-data">
-            <CodeSandboxOutlined />
-            <p>Mayachain address not found in your vault</p>
-          </div>
-        </>
+        <NoData title="Liquidity Position" text="Mayachain address not found in your vault" />
       )}
 
       <div className="line"></div>
       <h2 className="h-title">TGT:</h2>
 
       {tgtStake ? (
-        <>
-          <h4 className="title">Stake:</h4>
-          <div className="saver">
-            <div className="lp-saver">
-              <div className="lp-pool-saver">
-                <div className="type lp-item">
-                  <TokenImage alt={"TGT"} />
-                  <span className="name">{ChainKey.ETHEREUM}</span>
-                  <span className="text">TGT</span>
-                </div>
-              </div>
-              <div className="lp-amount-saver">
-                <div className="lp-item">
-                  {tgtStake.stakedAmount
-                    ? Number(tgtStake.stakedAmount).toLocaleString()
-                    : 0}
-                </div>
-                <div className="lp-item">
-                  {(
-                    ((tgtStake.stakedAmount
-                      ? Number(tgtStake.stakedAmount)
-                      : 0) +
-                      (tgtStake.reward ? Number(tgtStake.reward) : 0)) *
-                    tgtStake.price
-                  ).toValueFormat(currency)}
-                </div>
-                <div className="lp-item link-to-address">
-                  <Tooltip title="Link to Address">
-                    <a
-                      href={`https://etherscan.io/address/${tgtStake.address}`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <CubeOutlined />
-                    </a>
-                  </Tooltip>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
+        <PositionItem title="Stake" data={tgtStake} />
       ) : (
-        <>
-          <h4 className="title">Stake:</h4>
-          <div className="no-data">
-            <CodeSandboxOutlined />
-            <p>Ethereum address not found in your vault</p>
-          </div>
-        </>
+        <NoData title="Stake" text="Ethereum address not found in your vault" />
       )}
     </div>
   );

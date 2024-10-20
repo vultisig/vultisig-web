@@ -43,6 +43,7 @@ export enum MayaChainKey {
   ETH = "Ethereum",
   KUJI = "Kujira",
   THOR = "THORChain",
+  MAYACHAIN = "MayaChain",
 }
 
 export enum TCChainKey {
@@ -54,6 +55,25 @@ export enum TCChainKey {
   ETH = "Ethereum",
   GAIA = "Cosmos",
   LTC = "Litecoin",
+  THOR = "THORChain",
+}
+
+export interface PositionInfo {
+  base?: {
+    baseTokenAddress: string;
+    baseChain: string;
+    baseTiker: string;
+    basePriceUsd: number;
+    baseTokenAmount: number;
+    reward?: number;
+  };
+  target?: {
+    targetTokenAddress: string;
+    targetChain: string;
+    targetTiker: string;
+    targetPriceUsd: number;
+    targetTokenAmount: number;
+  };
 }
 
 export enum Currency {

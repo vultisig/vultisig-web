@@ -1,0 +1,43 @@
+.no-data-wrapper {
+  .title {
+    margin-bottom: rem(8);
+    margin-top: rem(24);
+  }
+  .no-data {
+    background-color: $blue-base;
+    border-radius: rem(8);
+    overflow: hidden;
+    justify-content: flex-start;
+    padding: rem(19) rem(20);
+    position: relative;
+    display: flex;
+    width: 100%;
+    gap: rem(10);
+    span svg {
+      fill: $gray-7;
+      height: rem(38);
+      width: rem(38);
+    }
+    p {
+      display: flex;
+      align-items: center;
+      color: $gray-7;
+    }
+  }
+}
+
+html[theme="dark"] {
+  .no-data-wrapper {
+    .no-data {
+      background-color: $gray-12;
+    }
+  }
+}
+
+html[theme="light"] {
+  .no-data-wrapper {
+    .no-data {
+      background-color: $gray-3;
+    }
+  }
+}

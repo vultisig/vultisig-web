@@ -12,7 +12,7 @@ import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 import useGoBack from "hooks/go-back";
 
-import { CaretRightOutlined, PlusCircleFilled } from "icons";
+import { ArrowRight, CirclePlus } from "icons";
 import AssetItem from "components/asset-item";
 import ChooseToken from "modals/choose-token";
 import TokenActions from "components/token-actions";
@@ -27,11 +27,15 @@ const Component: FC = () => {
   const navigate = useNavigate();
   const goBack = useGoBack();
 
-  const chain =
-    vault?.updated &&
-    vault?.chains.find(({ name }) => name.toLowerCase() === chainKey);
+  const chain = vault?.chains.find(
+    ({ name }) => name.toLowerCase() === chainKey
+  );
 
-  const chainDidUpdate = () => {
+  const componentDidUpdate = () => {
+    if (vault && !vault.updated) changeVault(vault, true);
+  };
+
+  const componentDidMount = () => {
     if (chain) {
       if (chooseToken[chain.name]) {
         getTokens(chain)
@@ -43,14 +47,10 @@ const Component: FC = () => {
     }
   };
 
-  const vaultDidUpdate = () => {
-    if (vault && !vault.updated) changeVault(vault, true);
-  };
+  useEffect(componentDidUpdate, [vault]);
+  useEffect(componentDidMount, []);
 
-  useEffect(chainDidUpdate, [chainKey]);
-  useEffect(vaultDidUpdate, [vault]);
-
-  return chain ? (
+  return vault?.updated && chain ? (
     <>
       <div className="layout-content assets-page">
         <div className="breadcrumb">
@@ -59,7 +59,7 @@ const Component: FC = () => {
             className="back"
             onClick={() => goBack(constantPaths.vault.chains)}
           >
-            <CaretRightOutlined />
+            <ArrowRight />
           </Button>
           <h1>{chain.name}</h1>
         </div>
@@ -75,19 +75,14 @@ const Component: FC = () => {
               </Truncate>
             </div>
             <span className="amount">
-              {chain.coins
-                .reduce((acc, coin) => acc + coin.balance * coin.value, 0)
-                .toValueFormat(currency)}
+              {chain.balance.toValueFormat(currency)}
             </span>
             <TokenActions address={chain.address} name={chain.name} />
           </div>
           {chain.coins.length ? (
-            chain.coins
-              .slice()
-              .sort((a, b) => b.balance * b.value - a.balance * a.value)
-              .map(({ ticker, ...res }) => (
-                <AssetItem key={ticker} {...{ ...res, ticker }} />
-              ))
+            chain.coins.map(({ ticker, ...res }) => (
+              <AssetItem key={ticker} {...{ ...res, ticker }} />
+            ))
           ) : (
             <Empty description="Choose a asset..." />
           )}
@@ -98,7 +93,7 @@ const Component: FC = () => {
             state={true}
             className="add"
           >
-            <PlusCircleFilled /> {t(translation.CHOOSE_TOKEN)}
+            <CirclePlus /> {t(translation.CHOOSE_TOKEN)}
           </Link>
         )}
       </div>

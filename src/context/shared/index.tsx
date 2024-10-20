@@ -6,22 +6,23 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useBaseContext } from "context/base";
 import { Currency } from "utils/constants";
+import { changeTheme } from "utils/functions";
 import { CoinProps, VaultProps } from "utils/interfaces";
 import api from "utils/api";
+import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
-import Footer from "components/footer";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
-import { changeTheme } from "utils/functions";
 
 interface SharedContext {
   vault?: VaultProps;
@@ -36,6 +37,7 @@ interface InitialState {
 const SharedContext = createContext<SharedContext | undefined>(undefined);
 
 const Component: FC<{ children: ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
   const initialState: InitialState = { loaded: false, loading: true };
   const [state, setState] = useState(initialState);
   const { loaded, loading, vault } = state;
@@ -56,7 +58,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         ...prevState,
         loaded: true,
         loading: false,
-        vault: {
+        vault: vaultProvider.prepareVault({
           ...vault,
           chains: vault.chains.map((chain) => ({
             ...chain,
@@ -64,7 +66,8 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
               (coin) => coins.find(({ id }) => id === coin.id) || coin
             ),
           })),
-        },
+          updated: true,
+        }),
       }));
     });
   };
@@ -113,7 +116,10 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
           <div className="layout layout-shared">
             <Header logo={vault?.logo} alias={vault?.alias} />
             {children}
-            <Footer />
+            <div className="layout-footer">
+              <span className="powered_by">{t(constantKeys.POWERED_BY)} </span>
+              <Link to="https://vultisig.com/">Vultisig</Link>
+            </div>
           </div>
           <ChangeCurrency onChange={handleCurrency} />
           <ChangeLanguage />
