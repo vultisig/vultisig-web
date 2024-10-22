@@ -1,6 +1,6 @@
-.chains-page {
-  padding-bottom: rem(128);
+@use "~variables" as *;
 
+.chains-page {
   .breadcrumb {
     align-items: center;
     display: flex;
@@ -29,6 +29,8 @@
 
     .title {
       display: block;
+      font-family: $secondary-font;
+      font-size: rem(16);
     }
 
     .value {
@@ -43,8 +45,11 @@
     align-items: center;
     color: $gray-1;
     display: flex;
+    font-family: $secondary-font;
+    font-weight: 700;
     float: left;
     gap: rem(16);
+    line-height: rem(32);
     margin-top: rem(24);
 
     svg {

@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { Drawer, Input, List, Spin, Switch } from "antd";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import { Drawer, Input, List, Switch } from "antd";
 
-import { useVaultContext } from "context/vault";
 import { ChainKey } from "utils/constants";
-import { TokenProps } from "utils/interfaces";
+import { TokenProps, VaultOutletContext } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 
 import { Search } from "icons";
 import TokenImage from "components/token-image";
+import VultiLoading from "components/vulti-loading";
 
 interface InitialState {
   loading: ChainKey | null;
@@ -25,7 +25,7 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { loading, search, visible } = state;
-  const { toggleToken, tokens, vault } = useVaultContext();
+  const { toggleToken, tokens, vault } = useOutletContext<VaultOutletContext>();
   const { hash } = useLocation();
   const { chainKey } = useParams();
   const goBack = useGoBack();
@@ -158,7 +158,7 @@ const Component: FC = () => {
           }}
         />
       ) : (
-        <Spin className="center-spin" />
+        <VultiLoading />
       )}
     </Drawer>
   );

@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .leaderboard-page {
   .warning {
     align-items: center;
@@ -5,8 +7,8 @@
     border: solid rem(1) $red-base;
     border-radius: rem(8);
     display: flex;
-
-    font-weight: 100;
+    font-size: rem(16);
+    font-weight: 500;
     gap: rem(16);
     justify-content: space-between;
     line-height: rem(24);
@@ -50,11 +52,14 @@
       .info {
         border-radius: 50%;
         cursor: pointer;
-        fill: $cyan-base;
-        height: rem(18);
         position: absolute;
         right: 0;
         top: rem(2);
+
+        svg {
+          fill: $cyan-base;
+          height: rem(18);
+        }
       }
 
       .label {
@@ -65,6 +70,7 @@
 
       .value {
         color: $cyan-base;
+        font-family: $secondary-font;
         font-size: rem(16);
         font-weight: 700;
         line-height: rem(24);
@@ -157,6 +163,7 @@
       .price {
         color: $gray-5;
         display: block;
+        font-family: $secondary-font;
         font-size: rem(20);
         font-weight: 700;
         line-height: rem(30);

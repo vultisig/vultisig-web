@@ -4,8 +4,10 @@ export default keyMirror({
   ADD_NEW_VAULT: true,
   // B
   CHOOSE_CHAIN: true,
+  CHROME_EXTENSION: true,
   CHOOSE_TOKEN: true,
   CURRENCY: true,
+  // D
   DOWNLOAD_APP: true,
   DEFAULT_CHAINS: true,
   DELETE_VAULT_WARNING: true,

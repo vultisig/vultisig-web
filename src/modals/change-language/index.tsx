@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { List, Modal } from "antd";
 
-import { useBaseContext } from "context/base";
+import { useBaseContext } from "context";
 import { Language, languageName } from "utils/constants";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";

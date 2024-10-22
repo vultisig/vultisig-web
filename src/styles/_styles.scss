@@ -1,0 +1,936 @@
+@use "_variables" as *;
+
+body {
+  background-color: $blue-dark;
+  color: $gray-1;
+  font-family: $primary-font;
+  min-width: rem(360);
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    background-color: $blue-base;
+    width: rem(8);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: $blue-base;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $blue-light;
+  }
+}
+
+.ant-btn {
+  border: none;
+  border-radius: rem(20);
+  box-shadow: none;
+  height: rem(44);
+  position: relative;
+
+  span {
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  &.ant-btn-default {
+    background-image: $linear-gradient !important;
+    border-color: $cyan-base;
+    color: $cyan-base;
+
+    span {
+      background-image: $linear-gradient;
+      background-clip: text;
+      color: transparent;
+    }
+
+    &::before {
+      background-color: $blue-base;
+      border-radius: rem(24);
+      bottom: rem(1);
+      content: "";
+      left: rem(1);
+      position: absolute;
+      right: rem(1);
+      top: rem(1);
+    }
+
+    &:hover {
+      box-shadow: 0 0 rem(8) rgba($color: $cyan-base, $alpha: 0.2);
+    }
+  }
+
+  &.ant-btn-primary {
+    background-color: $cyan-base;
+    color: $blue-dark !important;
+
+    &::before {
+      background-image: $linear-gradient;
+      border-radius: rem(24);
+      bottom: 0;
+      content: "";
+      left: 0;
+      opacity: 1;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover {
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.ant-btn-link {
+    height: auto !important;
+    padding: 0;
+  }
+
+  &:disabled {
+    background-color: $blue-dark !important;
+    background-image: none !important;
+    border: none;
+    box-shadow: none !important;
+    color: $gray-8 !important;
+    cursor: default;
+
+    span {
+      background-image: none;
+      color: $gray-8;
+    }
+
+    &::before {
+      content: none;
+    }
+  }
+}
+
+.ant-drawer {
+  .ant-drawer-header {
+    padding: rem(16) rem(8);
+  }
+
+  .ant-drawer-body {
+    padding: 0 rem(8);
+
+    &::-webkit-scrollbar {
+      background-color: $blue-base;
+      width: rem(8);
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: $blue-base;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $blue-light;
+    }
+  }
+
+  .ant-drawer-content {
+    background-color: $blue-dark;
+  }
+
+  .ant-drawer-content-wrapper {
+    min-width: rem(320);
+  }
+}
+
+.ant-dropdown {
+  width: rem(280);
+
+  .ant-dropdown-menu-item-icon {
+    fill: $gray-1;
+    height: rem(20);
+  }
+
+  .ant-dropdown-menu-title-content {
+    display: block !important;
+    font-size: rem(14);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a {
+      float: left;
+    }
+
+    span {
+      float: right;
+    }
+
+    svg {
+      float: right;
+      margin: rem(4) 0;
+    }
+  }
+
+  .ant-dropdown-menu-item-group-title {
+    color: $gray-6 !important;
+    font-weight: 500;
+  }
+
+  .ant-dropdown-menu-item {
+    color: $gray-1 !important;
+    font-size: rem(14);
+    line-height: rem(28) !important;
+    padding: rem(10) rem(12) !important;
+  }
+
+  .ant-dropdown-menu {
+    background-color: $blue-base !important;
+  }
+
+  .primary {
+    .ant-dropdown-menu-title-content {
+      a {
+        color: $cyan-base !important;
+      }
+
+      svg {
+        fill: $gray-1;
+        height: rem(20);
+        width: rem(20);
+      }
+    }
+  }
+}
+
+.ant-empty {
+  background-color: $blue-base;
+  border-radius: rem(8);
+  margin: 0;
+  padding: rem(24) rem(16);
+
+  .ant-empty-description {
+    color: $gray-1;
+  }
+
+  .ant-empty-image {
+    svg {
+      opacity: 1 !important;
+    }
+  }
+}
+
+.ant-input-affix-wrapper {
+  background-color: $blue-base !important;
+  border: none;
+  box-shadow: none !important;
+
+  .ant-input {
+    background-color: transparent;
+    line-height: rem(32);
+  }
+
+  .ant-input-prefix {
+    svg {
+      fill: $gray-1;
+      height: rem(24);
+      opacity: 0.4;
+      width: rem(24);
+    }
+  }
+
+  &.ant-input-affix-wrapper-focused {
+    background-color: $blue-light !important;
+  }
+}
+
+.ant-message {
+  .ant-message-notice-content {
+    background-color: $blue-light !important;
+  }
+}
+
+.ant-modal {
+  .ant-modal-close {
+    right: rem(30);
+    top: rem(18);
+  }
+
+  .ant-modal-title {
+    font-size: rem(20);
+    font-weight: 600;
+    line-height: rem(32);
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ant-modal-header {
+    background-color: transparent;
+    margin: 0;
+    padding: rem(18) rem(32);
+  }
+
+  .ant-modal-content {
+    padding: 0 rem(30) rem(30);
+    background-color: $blue-dark;
+
+    .ant-list-item {
+      background-color: $blue-base;
+      border: none;
+      border-radius: rem(8);
+      color: $gray-7;
+    }
+
+    .vulti-loading {
+      margin: 0 auto;
+    }
+  }
+}
+
+.ant-select {
+  height: rem(48);
+
+  .ant-select-selection-item {
+    color: $gray-1 !important;
+  }
+
+  .ant-select-selector {
+    background-color: $blue-base !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .ant-select-arrow {
+    .anticon {
+      color: $gray-1;
+    }
+  }
+}
+
+.ant-select-dropdown {
+  background-color: $blue-base;
+
+  .ant-select-item-option-selected {
+    background-color: rgba($color: $gray-1, $alpha: 0.1) !important;
+  }
+
+  .ant-select-item {
+    color: $gray-1 !important;
+    line-height: rem(28);
+  }
+}
+
+.ant-tooltip {
+  .ant-tooltip-inner {
+    background-color: $blue-light !important;
+    color: $gray-1;
+  }
+
+  .ant-tooltip-arrow {
+    &::after,
+    &::before {
+      background-color: $blue-light !important;
+    }
+  }
+}
+
+.layout {
+  &-header {
+    background-color: $blue-dark;
+    border-bottom: solid rem(1) $blue-light;
+    height: rem(100);
+    min-width: rem(360);
+    padding: rem(30) rem(16);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+
+    .logo {
+      align-items: center;
+      display: flex;
+      float: left;
+      gap: rem(8);
+      height: rem(40);
+      max-width: rem(288);
+
+      .shape {
+        height: 100%;
+      }
+
+      .name {
+        color: $gray-1;
+        font-size: rem(32);
+        line-height: rem(40);
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .airdrop {
+      float: right;
+      font-size: rem(12);
+      height: rem(32);
+      margin: rem(4) rem(8);
+      padding: 0 rem(12);
+    }
+
+    .menu {
+      float: right;
+      margin: rem(8) 0;
+
+      svg {
+        fill: $gray-1;
+        height: rem(24);
+        width: rem(24);
+      }
+    }
+
+    .navbar {
+      display: flex;
+      float: left;
+      gap: rem(32);
+      margin-left: rem(90);
+
+      a {
+        color: $gray-1;
+        display: block;
+        font-size: rem(14);
+        font-weight: 500;
+        line-height: rem(40);
+        padding: 0 rem(4);
+        position: relative;
+
+        &::before {
+          background-image: linear-gradient(
+            102deg,
+            $cyan-base 14%,
+            $blue-sharp 140%
+          );
+          bottom: 0;
+          content: "";
+          height: rem(2);
+          left: 50%;
+          position: absolute;
+          transform: translateX(-50%);
+          transition: width 0.3s;
+          width: 0;
+        }
+
+        &:hover,
+        &.active {
+          &::before {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  &-content {
+    margin: 0 auto;
+    max-width: rem(1160);
+    min-height: calc(100vh - rem(100));
+    overflow: hidden;
+    padding: rem(32) rem(16);
+    position: relative;
+    width: 100%;
+
+    > .vulti-loading {
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &-footer {
+    align-items: center;
+    background-color: $blue-dark;
+    border-top: solid rem(1) $blue-light;
+    bottom: 0;
+    display: flex;
+    height: rem(100);
+    gap: rem(4);
+    min-width: rem(360);
+    padding: rem(30) rem(16);
+    position: sticky;
+    width: 100%;
+    z-index: 2;
+
+    a {
+      color: $cyan-light;
+    }
+  }
+
+  &-shared {
+    .layout-content {
+      min-height: calc(100vh - rem(200));
+    }
+  }
+
+  &-menu {
+    .ant-menu-item-icon {
+      fill: $gray-1;
+      height: rem(20);
+    }
+
+    .ant-menu-title-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .ant-menu-item-group-title {
+      color: $gray-6;
+      font-weight: 500;
+    }
+
+    .ant-menu-item-active {
+      &:active {
+        background-color: $blue-base !important;
+      }
+    }
+
+    .ant-menu-item-selected {
+      background-color: $blue-base;
+    }
+
+    .ant-menu-item {
+      align-items: center;
+      border-radius: 0;
+      color: $gray-1;
+      display: flex;
+      font-size: rem(14);
+      line-height: rem(28);
+      margin: 0;
+      width: 100%;
+    }
+
+    .ant-menu {
+      background-color: transparent;
+      border: none !important;
+    }
+
+    .ant-divider {
+      margin: rem(16) 0;
+    }
+
+    .ant-drawer-title {
+      display: block;
+
+      .shape {
+        height: rem(40);
+      }
+
+      .name {
+        color: $gray-1;
+        flex-shrink: 100;
+        font-size: rem(32);
+        font-weight: 600;
+        line-height: rem(40);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .logo {
+        align-items: center;
+        display: flex;
+        gap: rem(8);
+      }
+    }
+
+    .ant-drawer-header-title {
+      display: block;
+    }
+
+    .ant-drawer-header {
+      height: rem(100);
+      padding: rem(30) rem(8);
+    }
+
+    .ant-drawer-body {
+      padding: rem(16) 0;
+    }
+  }
+}
+
+html[theme="dark"] {
+  body {
+    background-color: $gray-13;
+
+    &::-webkit-scrollbar {
+      background-color: $gray-12;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: $gray-12;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $gray-11;
+    }
+  }
+
+  .ant-btn {
+    &.ant-btn-default {
+      &::before {
+        background-color: $gray-12;
+      }
+    }
+
+    &:disabled {
+      background-color: $gray-11 !important;
+    }
+  }
+
+  .ant-drawer {
+    .ant-drawer-body {
+      &::-webkit-scrollbar {
+        background-color: $gray-13;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: $gray-13;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $gray-12;
+      }
+    }
+
+    .ant-drawer-content {
+      background-color: $gray-12;
+    }
+  }
+
+  .ant-dropdown {
+    .ant-dropdown-menu {
+      background-color: $gray-11 !important;
+    }
+  }
+
+  .ant-empty {
+    background-color: $gray-12;
+  }
+
+  .ant-input-affix-wrapper {
+    background-color: $gray-11 !important;
+
+    .ant-input {
+      background-color: $gray-11 !important;
+    }
+
+    &.ant-input-affix-wrapper-focused {
+      background-color: $gray-11 !important;
+    }
+  }
+
+  .ant-message {
+    .ant-message-notice-content {
+      background-color: $gray-12 !important;
+    }
+  }
+
+  .ant-modal {
+    .ant-modal-content {
+      background-color: $gray-12;
+
+      .ant-list-item {
+        background-color: $gray-11;
+      }
+    }
+  }
+
+  .ant-select {
+    .ant-select-selector {
+      background-color: $gray-13 !important;
+    }
+  }
+
+  .ant-select-dropdown {
+    background-color: $gray-13;
+  }
+
+  .ant-tooltip {
+    .ant-tooltip-inner {
+      background-color: $gray-8 !important;
+      color: $gray-5 !important;
+    }
+
+    .ant-tooltip-arrow {
+      &::after,
+      &::before {
+        background-color: $gray-8 !important;
+      }
+    }
+  }
+
+  .layout {
+    &-header {
+      background-color: $gray-13;
+      border-color: $gray-12;
+    }
+
+    &-footer {
+      background-color: $gray-13;
+      border-color: $gray-11;
+    }
+  }
+}
+
+html[theme="light"] {
+  body {
+    background-color: $gray-1;
+    color: $gray-8;
+
+    &::-webkit-scrollbar {
+      background-color: $gray-6;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: $gray-6;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $gray-5;
+    }
+  }
+
+  .ant-btn {
+    &.ant-btn-default {
+      &::before {
+        background-color: $gray-3;
+      }
+    }
+
+    &.ant-btn-primary {
+      span {
+        color: $gray-1;
+      }
+    }
+
+    &:disabled {
+      background-color: $gray-5 !important;
+      color: $gray-3 !important;
+    }
+  }
+
+  .ant-drawer {
+    .ant-drawer-body {
+      &::-webkit-scrollbar {
+        background-color: $gray-5;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: $gray-5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $gray-4;
+      }
+    }
+
+    .ant-drawer-content {
+      background-color: $gray-5;
+    }
+  }
+
+  .ant-dropdown {
+    .ant-dropdown-menu-item-icon {
+      fill: $gray-8;
+    }
+
+    .ant-dropdown-menu-item {
+      color: $gray-8 !important;
+    }
+
+    .ant-dropdown-menu {
+      background-color: $gray-4 !important;
+      color: $gray-10;
+    }
+
+    .primary {
+      .ant-dropdown-menu-title-content {
+        svg {
+          fill: $gray-8;
+        }
+      }
+    }
+  }
+
+  .ant-empty {
+    background-color: $gray-3;
+
+    .ant-empty-description {
+      color: $gray-8;
+    }
+
+    .ant-empty-image {
+      svg {
+        fill: $gray-8;
+      }
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    background-color: $gray-6 !important;
+
+    .ant-input {
+      background-color: $gray-6 !important;
+      color: $gray-8;
+    }
+
+    &.ant-input-affix-wrapper-focused {
+      background-color: $gray-6 !important;
+    }
+  }
+
+  .ant-input {
+    background-color: $gray-3 !important;
+    color: $gray-8;
+  }
+
+  .ant-message {
+    .ant-message-notice-content {
+      background-color: $gray-5 !important;
+      color: $gray-8;
+    }
+  }
+
+  .ant-modal {
+    .ant-modal-close {
+      color: $gray-8;
+    }
+
+    .ant-modal-title {
+      color: $gray-8 !important;
+    }
+
+    .ant-modal-header {
+      background-color: $gray-5;
+    }
+
+    .ant-modal-content {
+      background-color: $gray-5;
+
+      .ant-list-item {
+        background-color: $gray-4;
+        color: $gray-7;
+
+        svg {
+          fill: $gray-8;
+        }
+
+        &:hover,
+        &.active {
+          color: $gray-12;
+        }
+      }
+    }
+  }
+
+  .ant-select {
+    .ant-select-selector {
+      background-color: $gray-5 !important;
+    }
+  }
+
+  .ant-select-dropdown {
+    background-color: $gray-5;
+  }
+
+  .ant-tooltip {
+    .ant-tooltip-inner {
+      background-color: $gray-5 !important;
+      color: $gray-8;
+    }
+
+    .ant-tooltip-arrow {
+      &::after,
+      &::before {
+        background-color: $gray-5 !important;
+      }
+    }
+  }
+
+  .layout {
+    &-header {
+      background-color: $gray-1;
+      border-color: $gray-5;
+
+      .menu {
+        svg {
+          fill: $gray-8;
+        }
+      }
+
+      .logo {
+        .name {
+          color: $gray-8;
+        }
+      }
+
+      .navbar {
+        a {
+          color: $gray-8;
+        }
+      }
+    }
+
+    &-footer {
+      background-color: $gray-1;
+      border-color: $gray-5;
+      color: $gray-8;
+    }
+  }
+}
+
+@media (max-width: rem(576)) {
+  .ant-modal {
+    margin: 0 !important;
+    max-width: 100% !important;
+
+    .ant-modal-header {
+      padding: rem(18) rem(62);
+    }
+
+    .ant-modal-body {
+      overflow-x: hidden;
+      flex-shrink: rem(68);
+      padding: 0 rem(30);
+    }
+
+    .ant-modal-content {
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 0 0 rem(30);
+    }
+  }
+
+  .ant-modal-wrap {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: rem(768)) {
+  .layout {
+    &-header {
+      .airdrop {
+        font-size: rem(14);
+        height: rem(40);
+        margin: 0 rem(16);
+        padding: 0 rem(24);
+      }
+
+      .logo {
+        max-width: rem(694);
+      }
+    }
+  }
+}

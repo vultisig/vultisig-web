@@ -1,17 +1,21 @@
 import { FC, useState, useEffect } from "react";
-
+import { useOutletContext } from "react-router-dom";
 import { Button, Tooltip } from "antd";
-import { useBaseContext } from "context/base";
-import { useVaultContext } from "context/vault";
+
+import { useBaseContext } from "context";
 import {
   ChainKey,
   defTokens,
+  exploreToken,
+  LayoutKey,
   MayaChainKey,
+  PageKey,
   PositionInfo,
   TCChainKey,
 } from "utils/constants";
+import { NodeInfo, VaultOutletContext } from "utils/interfaces";
+import api from "utils/api";
 
-import api, { NodeInfo } from "utils/api";
 import { Synchronize } from "icons";
 import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
@@ -28,6 +32,7 @@ interface InitialState {
   liquidityPosition?: activePositions;
   mayaBond?: PositionInfo[];
   runeProvider?: PositionInfo[];
+  saverPosition?: PositionInfo[];
   tgtStake?: PositionInfo[];
   thorchainBond?: PositionInfo[];
 }
@@ -40,18 +45,19 @@ const Component: FC = () => {
     liquidityPosition,
     mayaBond,
     runeProvider,
+    saverPosition,
     tgtStake,
     thorchainBond,
   } = state;
-  const { currency } = useBaseContext();
-  const { changeVault, vault, vaults } = useVaultContext();
+  const { changePage, currency } = useBaseContext();
+  const { changeVault, layout, vault, vaults } =
+    useOutletContext<VaultOutletContext>();
 
   const getRuneProvider = (runePrice: number): Promise<void> => {
     return new Promise((resolve) => {
       const address = vault?.chains.find(
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
-
       const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
 
       if (address && token) {
@@ -61,7 +67,9 @@ const Component: FC = () => {
             let positionItem: PositionInfo[] = [];
             positionItem.push({
               base: {
-                baseTokenAddress: `https://thorchain.net/address/${address}`,
+                baseTokenAddress: `${
+                  exploreToken[ChainKey.THORCHAIN]
+                }${address}`,
                 baseChain: ChainKey.THORCHAIN,
                 baseTiker: token.ticker,
                 baseTokenAmount: data.value * 1e-8,
@@ -87,8 +95,9 @@ const Component: FC = () => {
 
   const getTGTStake = (tgtPrice: number): Promise<void> => {
     return new Promise((resolve) => {
-      const address = vault?.chains.find(
-        ({ name }) => name === ChainKey.ETHEREUM
+
+      let address = vault?.chains.find(
+        ({ name }) => name === ChainKey.ARBITRUM
       )?.address;
 
       const token = defTokens.find(
@@ -103,8 +112,10 @@ const Component: FC = () => {
 
             positionItem.push({
               base: {
-                baseTokenAddress: `https://etherscan.io/address/${address}`,
-                baseChain: ChainKey.ETHEREUM,
+                baseTokenAddress: `${
+                  exploreToken[ChainKey.ARBITRUM]
+                }${address}`,
+                baseChain: ChainKey.ARBITRUM,
                 baseTiker: token.ticker,
                 baseTokenAmount: data.stakedAmount,
                 basePriceUsd: tgtPrice,
@@ -145,7 +156,9 @@ const Component: FC = () => {
 
             positionItem.push({
               base: {
-                baseTokenAddress: `https://thorchain.net/address/${address}`,
+                baseTokenAddress: `${
+                  exploreToken[ChainKey.THORCHAIN]
+                }${address}`,
                 baseChain: ChainKey.THORCHAIN,
                 baseTiker: token.ticker,
                 baseTokenAmount: bond,
@@ -179,7 +192,7 @@ const Component: FC = () => {
       if (address && token) {
         positionItem.push({
           base: {
-            baseTokenAddress: `www.mayascan.org/address/${address}`,
+            baseTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${address}`,
             baseChain: ChainKey.MAYACHAIN,
             baseTiker: token.ticker,
             baseTokenAmount: 0,
@@ -203,8 +216,9 @@ const Component: FC = () => {
     return new Promise((resolve) => {
       if (vault) {
         const address = vault.chains.map((chain) => chain.address).join(",");
+
         api.activePositions
-          .get(address)
+          .getLiquidityPositions(address)
           .then(({ data }) => {
             let thorchain: PositionInfo[] = [];
             let maya: PositionInfo[] = [];
@@ -214,7 +228,7 @@ const Component: FC = () => {
               .forEach((item) => {
                 thorchain.push({
                   base: {
-                    baseTokenAddress: `https://thorchain.net/address/${
+                    baseTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                       item.runeAddress == ""
                         ? item.assetAddress
                         : item.runeAddress
@@ -225,7 +239,7 @@ const Component: FC = () => {
                     basePriceUsd: item.assetPriceUsd,
                   },
                   target: {
-                    targetTokenAddress: `https://thorchain.net/address/${
+                    targetTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                       item.runeAddress == ""
                         ? item.assetAddress
                         : item.runeAddress
@@ -243,7 +257,7 @@ const Component: FC = () => {
               .forEach((item) => {
                 maya.push({
                   base: {
-                    baseTokenAddress: `https://www.mayascan.org/address/${
+                    baseTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
                       item.runeAddress != ""
                         ? item.runeAddress
                         : item.assetAddress
@@ -254,7 +268,7 @@ const Component: FC = () => {
                     basePriceUsd: item.assetPriceUsd,
                   },
                   target: {
-                    targetTokenAddress: `https://www.mayascan.org/address/${
+                    targetTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
                       item.runeAddress != ""
                         ? item.runeAddress
                         : item.assetAddress
@@ -286,6 +300,75 @@ const Component: FC = () => {
     });
   };
 
+  const getSaverPositions = (): Promise<void> => {
+    return new Promise((resolve) => {
+      if (vault) {
+        const address = vault.chains.map((chain) => chain.address).join(",");
+
+        api.activePositions
+          .getSaverPositions(address)
+          .then(({ data }) => {
+            let saver: PositionInfo[] = [];
+            let cmcId: number[] = [];
+
+            data.pools
+              .filter((item) => getTCChain(item.pool) != "")
+              .forEach((item) => {
+                let id = getCmcId(getTCChain(item.pool), getTiker(item.pool));
+                cmcId.push(id);
+              });
+
+            api.coin
+              .values(cmcId, currency)
+              .then((prices) => {
+                data.pools
+                  .filter((item) => getTCChain(item.pool) != "")
+                  .forEach((item) => {
+                    saver.push({
+                      base: {
+                        baseTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
+                          item.assetAddress
+                        }`,
+                        baseChain: getTCChain(item.pool),
+                        baseTiker: getTiker(item.pool),
+                        baseTokenAmount: item.assetRedeem * 1e-8,
+                        basePriceUsd:
+                          prices.data.data[
+                            getCmcId(getTCChain(item.pool), getTiker(item.pool))
+                          ]?.quote?.[currency]?.price || 0,
+                      },
+                    });
+                  });
+
+                setState((prevState) => ({
+                  ...prevState,
+                  saverPosition: saver,
+                }));
+
+                resolve();
+              })
+              .catch(() => {
+                resolve();
+              });
+
+            resolve();
+          })
+          .catch(() => {
+            resolve();
+          });
+      } else {
+        resolve();
+      }
+    });
+  };
+
+  const getCmcId = (pool: string, tickerName: string): number => {
+    const CmcId = defTokens.find(
+      ({ chain, ticker }) => chain === pool && ticker === tickerName
+    )?.cmcId;
+    return CmcId ?? 0;
+  };
+
   const getTCChain = (pool: string): string => {
     const chain = pool.split(".")[0];
     return TCChainKey[chain as keyof typeof TCChainKey] ?? "";
@@ -315,12 +398,9 @@ const Component: FC = () => {
   const componentDidUpdate = (): void => {
     setState(initialState);
 
-    const runeCmcId = defTokens.find(
-      ({ chain, ticker }) => chain === ChainKey.THORCHAIN && ticker === "RUNE"
-    )?.cmcId;
-    const tgtCmcId = defTokens.find(
-      ({ chain, ticker }) => chain === ChainKey.ETHEREUM && ticker === "TGT"
-    )?.cmcId;
+    let runeCmcId = getCmcId(ChainKey.THORCHAIN, "RUNE");
+    let tgtCmcId = getCmcId(ChainKey.ETHEREUM, "TGT");
+
     if (runeCmcId && tgtCmcId) {
       api.coin.values([runeCmcId, tgtCmcId], currency).then(({ data }) => {
         const runePrice =
@@ -341,6 +421,7 @@ const Component: FC = () => {
           getLiquidityPositions(),
           getTGTStake(tgtPrice ? tgtPrice : 0),
           getRuneProvider(runePrice ? runePrice : 0),
+          getSaverPositions(),
         ]).then(() => {
           setState((prevState) => ({ ...prevState, loading: false }));
         });
@@ -350,7 +431,14 @@ const Component: FC = () => {
     }
   };
 
+  const componentDidMount = () => {
+    changePage(
+      layout === LayoutKey.VAULT ? PageKey.POSITIONS : PageKey.SHARED_POSITIONS
+    );
+  };
+
   useEffect(componentDidUpdate, [currency, vault]);
+  useEffect(componentDidMount, []);
 
   return loading ? (
     <div className="layout-content">
@@ -358,7 +446,7 @@ const Component: FC = () => {
     </div>
   ) : (
     <div className="layout-content positions-page">
-      {vault && (
+      {layout === LayoutKey.VAULT && (
         <div className="breadcrumb">
           <VaultDropdown
             vault={vault}
@@ -378,7 +466,8 @@ const Component: FC = () => {
       {(liquidityPosition?.thorchain &&
         liquidityPosition.thorchain.length > 0) ||
       thorchainBond ||
-      runeProvider ? (
+      runeProvider ||
+      saverPosition ? (
         <>
           {liquidityPosition?.thorchain.length ? (
             <PositionItem
@@ -386,10 +475,7 @@ const Component: FC = () => {
               data={liquidityPosition.thorchain}
             />
           ) : (
-            <NoData
-              title="Liquidity Position"
-              text="THORChain address not found in your vault"
-            />
+            <NoData title="Liquidity Position" text="No LP Position Found" />
           )}
 
           {runeProvider ? (
@@ -397,30 +483,31 @@ const Component: FC = () => {
           ) : (
             <NoData
               title="Rune Provider"
-              text="THORChain address not found in your vault"
+              text="No Rune Provider Position Found"
             />
+          )}
+
+          {saverPosition ? (
+            <PositionItem title="Saver" data={saverPosition} />
+          ) : (
+            <NoData title="Saver" text="No Saver Position Found" />
           )}
 
           {thorchainBond ? (
             <PositionItem title="Bond" data={thorchainBond} />
           ) : (
-            <NoData
-              title="Bond"
-              text="THORChain address not found in your vault"
-            />
+            <NoData title="Bond" text="No Bond Found" />
           )}
         </>
       ) : (
-        <NoData
-          title="Liquidity Position"
-          text="THORChain address not found in your vault"
-        />
+        <NoData text="No LP/Save/Bond Position Found" />
       )}
 
       <div className="line"></div>
       <h2 className="h-title">Maya:</h2>
 
-      {(liquidityPosition?.maya && liquidityPosition.maya.length > 0) ?( //|| mayaBond ? (
+      {(liquidityPosition?.maya && liquidityPosition.maya.length > 0) ||
+      mayaBond ? (
         <>
           {liquidityPosition?.maya.length ? (
             <PositionItem
@@ -428,23 +515,17 @@ const Component: FC = () => {
               title="Liquidity Position"
             />
           ) : (
-            <NoData
-              title="Liquidity Position"
-              text="Mayachain address not found in your vault"
-            />
+            <NoData title="Liquidity Position" text="No LP Position Found" />
           )}
 
           {mayaBond ? (
             <PositionItem title="Bond" data={mayaBond} />
           ) : (
-            <NoData
-              title="Bond"
-              text="Mayachain address not found in your vault"
-            />
+            <NoData title="Bond" text="No Bond Found" />
           )}
         </>
       ) : (
-        <NoData title="Liquidity Position" text="Mayachain address not found in your vault" />
+        <NoData text="No LP/Bond Position Found" />
       )}
 
       <div className="line"></div>
@@ -453,9 +534,10 @@ const Component: FC = () => {
       {tgtStake ? (
         <PositionItem title="Stake" data={tgtStake} />
       ) : (
-        <NoData title="Stake" text="Ethereum address not found in your vault" />
+        <NoData title="Stake" text="ETH/ARB address not found in your vault" />
       )}
     </div>
   );
 };
+
 export default Component;

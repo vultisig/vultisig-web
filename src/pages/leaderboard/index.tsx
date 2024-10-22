@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
-import { useBaseContext } from "context/base";
-import { useVaultContext } from "context/vault";
-import { VaultProps } from "utils/interfaces";
+import { useBaseContext } from "context";
+import { PageKey } from "utils/constants";
+import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
 import { Info, Warning } from "icons";
@@ -29,8 +30,8 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { data, loaded, loading, pageSize, total } = state;
-  const { currency } = useBaseContext();
-  const { changeVault, vault, vaults } = useVaultContext();
+  const { changePage, currency } = useBaseContext();
+  const { changeVault, vault, vaults } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
     if (!loading) {
@@ -61,6 +62,8 @@ const Component: FC = () => {
   };
 
   const componentDidMount = (): void => {
+    changePage(PageKey.LEADERBOARD);
+
     fetchData();
   };
 
@@ -70,7 +73,7 @@ const Component: FC = () => {
     <div className="layout-content leaderboard-page">
       <div className="warning">
         <Warning />
-        <span>Airdrop has not yet started!</span>
+        <span>Airdrop has not started yet!</span>
         <Warning />
       </div>
 
@@ -83,11 +86,10 @@ const Component: FC = () => {
 
         <div className="result">
           <div className="item point">
-            <Tooltip
-              title="Points and balances are always updated end of the day"
-              className="info"
-            >
-              <Info />
+            <Tooltip title="Points and balances are always updated end of the day">
+              <span className="info">
+                <Info />
+              </span>
             </Tooltip>
             <span className="label">FARMED</span>
             <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
@@ -176,11 +178,14 @@ const Component: FC = () => {
             <div className="item active">
               <div className="point">
                 <img src="/avatar/1.png" className="avatar" />
+                <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
                 <span className="name">{`${vault.alias}" (YOU)"`}</span>
                 <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
               </div>
-              <div className="rank">
-                <span className="value">{`#${vault.rank.toNumberFormat()}`}</span>
+              <div className="balance">
+                <span className="date">
+                  {dayjs(vault.registeredAt).format("DD MMM, YYYY")}
+                </span>
                 <span className="price">{`${vault.balance.toValueFormat(
                   currency
                 )}`}</span>

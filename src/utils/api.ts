@@ -6,6 +6,7 @@ import { ChainKey, Currency, errorKey } from "utils/constants";
 import {
   CoinParams,
   CoinProps,
+  NodeInfo,
   SharedSettings,
   TokenProps,
   VaultProps,
@@ -83,15 +84,6 @@ namespace OneInch {
   }
 }
 
-export interface NodeInfo {
-  bondProviders: {
-    providers: {
-      bondAddress: string;
-      bond: string;
-    }[];
-  };
-}
-
 export interface activePosition {
   maya: {
     assetAddress: string;
@@ -109,6 +101,14 @@ export interface activePosition {
     runeOrCacaoPricePriceUsd: number;
     assetAdded: number;
     assetPriceUsd: number;
+    pool: string;
+  }[];
+}
+
+export interface saverPositions {
+  pools: {
+    assetRedeem: number;
+    assetAddress: string;
     pool: string;
   }[];
 }
@@ -137,9 +137,14 @@ const service = {
         `https://thornode.ninerealms.com/thorchain/nodes`
       );
     },
-    get: async (address: string) => {
+    getLiquidityPositions: async (address: string) => {
       return await api.get<activePosition>(
         `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${address}`
+      );
+    },
+    getSaverPositions: async (address: string) => {
+      return await api.get<saverPositions>(
+        `https://api-v2-prod.thorwallet.org/saver/positions?addresses=${address}`
       );
     },
     getTGTstake: async (address: string) => {

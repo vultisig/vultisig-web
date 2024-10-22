@@ -7,7 +7,7 @@ import {
   useContext,
 } from "react";
 
-import { Currency, Language } from "utils/constants";
+import { Currency, Language, PageKey } from "utils/constants";
 import {
   getStoredCurrency,
   getStoredLanguage,
@@ -19,11 +19,14 @@ import i18n from "i18n/config";
 interface BaseContext {
   changeCurrency: (currency: Currency) => void;
   changeLanguage: (language: Language) => void;
+  changePage: (language: PageKey) => void;
+  activePage: PageKey;
   currency: Currency;
   language: Language;
 }
 
 interface InitialState {
+  activePage: PageKey;
   currency: Currency;
   language: Language;
 }
@@ -32,11 +35,12 @@ const BaseContext = createContext<BaseContext | undefined>(undefined);
 
 const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const initialState: InitialState = {
+    activePage: PageKey.IMPORT,
     currency: getStoredCurrency(),
     language: getStoredLanguage(),
   };
   const [state, setState] = useState(initialState);
-  const { currency, language } = state;
+  const { activePage, currency, language } = state;
 
   const changeCurrency = (currency: Currency): void => {
     setStoredCurrency(currency);
@@ -52,6 +56,10 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     setState((prevState) => ({ ...prevState, language }));
   };
 
+  const changePage = (activePage: PageKey): void => {
+    setState((prevState) => ({ ...prevState, activePage }));
+  };
+
   const componentDidMount = () => {
     i18n.changeLanguage(language);
   };
@@ -60,7 +68,14 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <BaseContext.Provider
-      value={{ changeCurrency, changeLanguage, currency, language }}
+      value={{
+        changeCurrency,
+        changeLanguage,
+        changePage,
+        activePage,
+        currency,
+        language,
+      }}
     >
       {children}
     </BaseContext.Provider>

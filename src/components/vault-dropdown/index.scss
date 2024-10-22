@@ -1,14 +1,24 @@
+@use "~variables" as *;
+
 .vault-dropdown {
   background-color: $blue-base;
   border-radius: rem(8);
   cursor: pointer;
   display: block;
+  font-size: rem(16);
+  font-weight: 500;
   height: rem(48);
   line-height: rem(48);
   overflow: hidden;
   padding: 0 rem(16);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.vault-dropdown-overlay {
+  .ant-dropdown-menu-title-content {
+    font-size: rem(16);
+  }
 }
 
 html[theme="dark"] {

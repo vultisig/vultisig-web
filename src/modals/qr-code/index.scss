@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .modal-qr-code {
   .ant-typography {
     margin-bottom: rem(16);
@@ -21,5 +23,17 @@
 
   .ant-modal-footer {
     display: none;
+  }
+}
+
+html[theme="light"] {
+  .modal-qr-code {
+    .ant-typography {
+      color: $gray-8;
+    }
+
+    .ant-qrcode {
+      background-color: $gray-7 !important;
+    }
   }
 }

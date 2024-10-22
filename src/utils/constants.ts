@@ -35,6 +35,11 @@ export enum ChainKey {
   ZKSYNC = "Zksync",
 }
 
+export enum LayoutKey {
+  SHARED,
+  VAULT,
+}
+
 export enum MayaChainKey {
   ARB = "Arbitrum",
   BTC = "Bitcoin",
@@ -44,6 +49,18 @@ export enum MayaChainKey {
   KUJI = "Kujira",
   THOR = "THORChain",
   MAYACHAIN = "MayaChain",
+}
+
+export enum PageKey {
+  ASSETS,
+  CHAINS,
+  IMPORT,
+  LEADERBOARD,
+  POSITIONS,
+  SHARED_ASSETS,
+  SHARED_CHAINS,
+  SHARED_POSITIONS,
+  UPLOAD,
 }
 
 export enum TCChainKey {

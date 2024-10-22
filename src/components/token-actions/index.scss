@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .token-actions {
   display: flex;
   gap: rem(12);

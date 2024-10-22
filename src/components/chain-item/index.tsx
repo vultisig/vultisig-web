@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Truncate } from "@re-dev/react-truncate";
 
-import { useBaseContext } from "context/base";
+import { useBaseContext } from "context";
 import { ChainKey } from "utils/constants";
 import { CoinProps } from "utils/interfaces";
 

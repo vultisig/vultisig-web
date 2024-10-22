@@ -1,9 +1,6 @@
-.assets-page {
-  margin: 0 auto;
-  max-width: rem(1160);
-  overflow: hidden;
-  padding: 0 rem(16);
+@use "~variables" as *;
 
+.assets-page {
   .breadcrumb {
     display: flex;
     gap: rem(16);
@@ -42,6 +39,8 @@
     }
 
     .key {
+      font-family: $secondary-font;
+      font-size: rem(12);
       height: rem(44);
       line-height: rem(44);
       overflow: hidden;
@@ -51,7 +50,8 @@
 
     .amount {
       display: block;
-      font-size: 1.25em;
+      font-family: $secondary-font;
+      font-size: rem(20);
       font-weight: 700;
       line-height: rem(44);
       position: absolute;
@@ -69,10 +69,13 @@
 
   .add {
     align-items: center;
-    color: $gray-1;
+    color: $gray-3;
     display: flex;
+    font-family: $secondary-font;
+    font-weight: 700;
     float: left;
     gap: rem(16);
+    line-height: rem(32);
     margin-top: rem(24);
 
     svg {
