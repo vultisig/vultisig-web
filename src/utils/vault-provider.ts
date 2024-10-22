@@ -181,40 +181,93 @@ export default class VaultProvider {
                         ChainKey.ZKSYNC,
                         address
                       );
+
                       break;
                     }
                     case ChainKey.DYDX:
                     case ChainKey.GAIACHAIN:
                     case ChainKey.KUJIRA: {
-                      setStoredAddress(
-                        vault.publicKeyEcdsa,
-                        ChainKey.DYDX,
-                        address
-                      );
-                      setStoredAddress(
-                        vault.publicKeyEcdsa,
-                        ChainKey.GAIACHAIN,
-                        address
-                      );
-                      setStoredAddress(
-                        vault.publicKeyEcdsa,
-                        ChainKey.KUJIRA,
-                        address
-                      );
+                      const dydxAddress =
+                        walletCore.AnyAddress.createWithPublicKey(
+                          publicKey,
+                          chainRef[ChainKey.DYDX]
+                        )?.description();
+
+                      const gaiaAddress =
+                        walletCore.AnyAddress.createWithPublicKey(
+                          publicKey,
+                          chainRef[ChainKey.GAIACHAIN]
+                        )?.description();
+
+                      const kujiraAddress =
+                        walletCore.AnyAddress.createWithPublicKey(
+                          publicKey,
+                          chainRef[ChainKey.KUJIRA]
+                        )?.description();
+
+                      if (dydxAddress) {
+                        setStoredAddress(
+                          vault.publicKeyEcdsa,
+                          ChainKey.DYDX,
+                          dydxAddress
+                        );
+                      }
+
+                      if (gaiaAddress) {
+                        setStoredAddress(
+                          vault.publicKeyEcdsa,
+                          ChainKey.GAIACHAIN,
+                          gaiaAddress
+                        );
+                      }
+
+                      if (kujiraAddress) {
+                        setStoredAddress(
+                          vault.publicKeyEcdsa,
+                          ChainKey.KUJIRA,
+                          kujiraAddress
+                        );
+                      }
+
                       break;
                     }
-                    case ChainKey.MAYACHAIN:
-                    case ChainKey.THORCHAIN: {
-                      setStoredAddress(
-                        vault.publicKeyEcdsa,
-                        ChainKey.MAYACHAIN,
-                        address
-                      );
-                      setStoredAddress(
-                        vault.publicKeyEcdsa,
-                        ChainKey.THORCHAIN,
-                        address
-                      );
+                    case ChainKey.MAYACHAIN: {
+                      const mayaAddress =
+                        walletCore.AnyAddress.createBech32WithPublicKey(
+                          publicKey,
+                          coin,
+                          "maya"
+                        )?.description();
+
+                      const thorAddress =
+                        walletCore.AnyAddress.createWithPublicKey(
+                          publicKey,
+                          chainRef[ChainKey.THORCHAIN]
+                        )?.description();
+
+                      if (mayaAddress) {
+                        setStoredAddress(
+                          vault.publicKeyEcdsa,
+                          ChainKey.MAYACHAIN,
+                          mayaAddress
+                        );
+                      }
+
+                      if (thorAddress) {
+                        setStoredAddress(
+                          vault.publicKeyEcdsa,
+                          ChainKey.THORCHAIN,
+                          thorAddress
+                        );
+                      }
+
+                      break;
+                    }
+                    case ChainKey.BITCOINCASH: {
+                      address = address.replace("bitcoincash:", "");
+
+                      setStoredAddress(vault.publicKeyEcdsa, chain, address);
+
                       break;
                     }
                     default: {
@@ -283,11 +336,35 @@ export default class VaultProvider {
     return new Promise((resolve) => {
       const cacao = coins.find(({ ticker }) => ticker === "CACAO");
 
-      if (cacao) {
+      if (cacao && cacao.balance) {
         api.coin
           .coingeckoValue(cacao.ticker, currency)
           .then(({ data }) => {
             resolve(data?.cacao ? data.cacao[currency.toLowerCase()] || 0 : 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      } else {
+        resolve(0);
+      }
+    });
+  };
+
+  private getMayaValue = (
+    coins: CoinProps[],
+    currency: Currency
+  ): Promise<number> => {
+    return new Promise((resolve) => {
+      const maya = coins.find(({ ticker }) => ticker === "MAYA");
+
+      if (maya && maya.balance) {
+        const usdt = defTokens.find(({ ticker }) => ticker === "USDT");
+
+        api.coin
+          .value(usdt!.cmcId, currency)
+          .then((price) => {
+            resolve(price * 40);
           })
           .catch(() => {
             resolve(0);
@@ -305,7 +382,7 @@ export default class VaultProvider {
     return new Promise((resolve) => {
       const vThor = coins.find(({ ticker }) => ticker === "vTHOR");
 
-      if (vThor) {
+      if (vThor && vThor.balance) {
         const thor = defTokens.find(({ ticker }) => ticker === "THOR");
 
         api.coin
@@ -328,30 +405,6 @@ export default class VaultProvider {
               .catch(() => {
                 resolve(0);
               });
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      } else {
-        resolve(0);
-      }
-    });
-  };
-
-  private getMayaValue = (
-    coins: CoinProps[],
-    currency: Currency
-  ): Promise<number> => {
-    return new Promise((resolve) => {
-      const maya = coins.find(({ ticker }) => ticker === "MAYA");
-
-      if (maya) {
-        const usdt = defTokens.find(({ ticker }) => ticker === "USDT");
-
-        api.coin
-          .value(usdt!.cmcId, currency)
-          .then((price) => {
-            resolve(price * 40);
           })
           .catch(() => {
             resolve(0);
@@ -425,6 +478,13 @@ export default class VaultProvider {
     });
   };
 
+  public compareVault = (first: VaultProps, second: VaultProps): boolean => {
+    return (
+      first.publicKeyEcdsa === second.publicKeyEcdsa &&
+      first.publicKeyEddsa === second.publicKeyEddsa
+    );
+  };
+
   public getAddress = (
     token: TokenProps,
     vault: VaultProps
@@ -443,22 +503,6 @@ export default class VaultProvider {
             break;
           }
           // ECDSA
-          case ChainKey.MAYACHAIN: {
-            this.getECDSAAddress(chain, vault, "maya")
-              .then(resolve)
-              .catch(reject);
-
-            break;
-          }
-          case ChainKey.BITCOINCASH: {
-            this.getECDSAAddress(chain, vault)
-              .then((address) => {
-                resolve(address.replace("bitcoincash:", ""));
-              })
-              .catch(reject);
-
-            break;
-          }
           default: {
             this.getECDSAAddress(chain, vault).then(resolve).catch(reject);
 
@@ -616,7 +660,7 @@ export default class VaultProvider {
   };
 
   public getTokens = (chain: ChainProps): Promise<TokenProps[]> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const token = defTokens.find((item) => item.chain === chain.name);
       const id = oneInchRef[chain.name];
 
@@ -686,7 +730,7 @@ export default class VaultProvider {
           resolve(defTokens.filter(({ isNative }) => !isNative));
         }
       } else {
-        reject(errorKey.INVALID_TOKEN);
+        resolve([]);
       }
     });
   };
@@ -705,6 +749,7 @@ export default class VaultProvider {
       Promise.all(promises).then(([cacao, maya, vThor]) => {
         const modifedCoins = coins.map((coin) => {
           let value: number;
+
           switch (coin.ticker) {
             case "CACAO":
               value = cacao;

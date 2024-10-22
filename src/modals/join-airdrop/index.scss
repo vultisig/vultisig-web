@@ -1,9 +1,12 @@
+@use "~variables" as *;
+
 .join-airdrop {
   .ant-list {
     margin-top: rem(16);
 
     .ant-list-item-meta-title {
       color: $gray-1 !important;
+      font-family: $secondary-font;
       font-size: rem(16) !important;
       font-weight: 400;
       margin: 0 !important;
@@ -14,11 +17,10 @@
 
     .ant-list-item {
       align-items: center;
-      background-color: $blue-base;
       border: none;
       border-radius: rem(8);
       gap: rem(8);
-      height: rem(44);
+      height: rem(48);
       padding: 0 rem(16);
 
       + .ant-list-item {
@@ -39,6 +41,9 @@
 
     .ant-collapse-header-text {
       flex: none !important;
+      font-family: $secondary-font;
+      font-size: rem(12);
+      font-weight: 400;
       margin: 0 !important;
     }
 
@@ -66,7 +71,7 @@
   }
 
   .ant-modal-body {
-    padding: rem(8) 0 0;
+    padding-top: rem(8);
 
     .heading {
       color: $gray-1;
@@ -80,8 +85,9 @@
       background-image: $linear-gradient;
       border-radius: rem(8);
       display: block;
+      font-family: $secondary-font;
       margin-top: rem(24);
-      padding: rem(16) rem(16) rem(16) rem(56);
+      padding: rem(12) rem(12) rem(12) rem(44);
       position: relative;
 
       span {
@@ -93,10 +99,9 @@
       }
 
       svg {
-        cursor: pointer;
         fill: $cyan-base;
         height: rem(24);
-        left: rem(16);
+        left: rem(12);
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -115,27 +120,18 @@
       }
     }
 
-    .value {
-      display: block;
-      font-size: rem(24);
-      font-weight: 700;
-      line-height: rem(36);
-      margin-bottom: rem(24);
-      text-align: center;
-    }
-
     .desc {
       display: block;
-      font-size: rem(12);
     }
 
     .link {
       color: $cyan-base;
-      font-size: rem(12);
     }
 
     .text {
       display: block;
+      font-family: $secondary-font;
+      font-size: rem(12);
 
       + .text {
         margin-top: rem(16);
@@ -145,9 +141,5 @@
 
   .ant-modal-footer {
     margin: 0;
-  }
-
-  .ant-modal-content {
-    padding: 0 rem(30) rem(30);
   }
 }

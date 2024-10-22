@@ -126,10 +126,19 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
 
                 <div className="text">
                   <span className="desc">
-                    Your Airdrop Share is based on how long you have kept funds
-                    in Vultisig for. Only Layer1 assets and tokens on the 1inch
-                    Token List apply.
-                  </span>
+                    Your Airdrop Share is based on the amount of assets in Vultisig multiplied by time in Vaults.
+                    <br/>
+                    The assets counted for the airdrop can be&nbsp;
+                    <a
+                    href="https://docs.vultisig.com/vultisig-token/airdrop#eligble-assets"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="link"
+                  >
+                    seen here.
+                  </a>
+                    </span>
+                    
                 </div>
 
                 <div className="text">
@@ -142,7 +151,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
                     target="_blank"
                     className="link"
                   >
-                    Read the Privacy Policy here
+                    Read the Founder Pledge on Privacy here.
                   </a>
                 </div>
 

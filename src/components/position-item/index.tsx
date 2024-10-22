@@ -3,7 +3,7 @@ import { Tooltip } from "antd";
 
 import { PositionInfo } from "utils/constants";
 import TokenImage from "components/token-image";
-import { useBaseContext } from "context/base";
+import { useBaseContext } from "context";
 import { Hyperlink } from "icons";
 
 interface ComponentProps {
@@ -16,7 +16,13 @@ const Component: FC<ComponentProps> = ({ data, title }) => {
 
   return (
     <div className="position-item-wrapper">
-      <h4 className="title">{title} :</h4>
+      <h4 className="title">
+        {title && (
+          <>
+            {title} {" :"}
+          </>
+        )}
+      </h4>
       <div className="lp">
         {data?.map((item, index) => (
           <>

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { ConfigProvider, theme } from "antd";
 
 import { changeTheme } from "utils/functions";
-import BaseContext from "context/base";
+import BaseContext from "context";
 import Routes from "routes";
 
 const App = () => {

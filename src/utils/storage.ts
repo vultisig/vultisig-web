@@ -4,7 +4,7 @@ import { ChainKey, Currency, Language, Theme } from "utils/constants";
 import { AddressesProps, Customization, VaultProps } from "utils/interfaces";
 
 export const storageKey = KeyMirror({
-  ADDRESSES: true,
+  CHAIN_ADDRESSES: true,
   CURRENCY: true,
   CUSTOMIZATION: true,
   LANGUAGE: true,
@@ -37,7 +37,7 @@ export const setStoredAddress = (
 
 export const getStoredAddresses = (): AddressesProps => {
   try {
-    const data = localStorage.getItem(storageKey.ADDRESSES);
+    const data = localStorage.getItem(storageKey.CHAIN_ADDRESSES);
     const addresses: AddressesProps = data ? JSON.parse(data) : {};
 
     return addresses;
@@ -47,7 +47,7 @@ export const getStoredAddresses = (): AddressesProps => {
 };
 
 export const setStoredAddresses = (addresses: AddressesProps): void => {
-  localStorage.setItem(storageKey.ADDRESSES, JSON.stringify(addresses));
+  localStorage.setItem(storageKey.CHAIN_ADDRESSES, JSON.stringify(addresses));
 };
 
 export const getStoredCustomization = (): Customization => {
@@ -141,12 +141,15 @@ export const setStoredVaults = (vaults: VaultProps[]): void => {
   localStorage.setItem(
     storageKey.VAULTS,
     JSON.stringify(
-      vaults.map(({ hexChainCode, publicKeyEcdsa, publicKeyEddsa, uid }) => ({
-        hexChainCode,
-        publicKeyEcdsa,
-        publicKeyEddsa,
-        uid,
-      }))
+      vaults.map(
+        ({ hexChainCode, isActive, publicKeyEcdsa, publicKeyEddsa, uid }) => ({
+          isActive,
+          hexChainCode,
+          publicKeyEcdsa,
+          publicKeyEddsa,
+          uid,
+        })
+      )
     )
   );
 };

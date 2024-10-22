@@ -4,15 +4,17 @@ import { Button, Upload, UploadProps, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { ReaderOptions, readBarcodesFromImageFile } from "zxing-wasm/reader";
 
+import { useBaseContext } from "context";
 import { toCamelCase } from "utils/functions";
-import { errorKey } from "utils/constants";
+import { errorKey, PageKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
+import { getStoredVaults, setStoredVaults } from "utils/storage";
 import api from "utils/api";
 import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 
-import { CloseLG, Vultisig, VultisigText } from "icons";
-import { getStoredVaults, setStoredVaults } from "utils/storage";
+import { CloseLG, Vultisig } from "icons";
+import DownloadVultisig from "components/download-vultisig";
 
 interface InitialState {
   file?: FileProps;
@@ -26,6 +28,7 @@ const Component: FC = () => {
   const initialState: InitialState = { loading: false, status: "default" };
   const [state, setState] = useState(initialState);
   const { file, loading, status, vault } = state;
+  const { changePage } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
@@ -37,6 +40,7 @@ const Component: FC = () => {
         .add(vault)
         .then(() => {
           const vaults = getStoredVaults();
+
           const index = vaults.findIndex(
             (old) =>
               old.publicKeyEcdsa === vault.publicKeyEcdsa &&
@@ -44,8 +48,6 @@ const Component: FC = () => {
           );
 
           if (index >= 0) {
-            setStoredVaults(vaults.splice(index, 1, vault));
-
             messageApi.open({
               type: "error",
               content: "Vault already exists",
@@ -57,7 +59,14 @@ const Component: FC = () => {
               status: "error",
             }));
           } else {
-            setStoredVaults([vault, ...vaults]);
+            setStoredVaults([
+              { ...vault, isActive: true },
+              ...vaults.map((vault) => ({
+                ...vault,
+                isActive: false,
+              })),
+            ]);
+
             navigate(constantPaths.vault.chains);
           }
         })
@@ -164,16 +173,18 @@ const Component: FC = () => {
     fileList: [],
   };
 
-  const componentDidMount = () => {};
+  const componentDidMount = () => {
+    changePage(PageKey.UPLOAD);
+  };
 
   useEffect(componentDidMount, []);
 
   return (
     <>
       <div className="upload-page">
-        <div className="logo-container">
-          <Vultisig className="shape" />
-          <VultisigText className="text" />
+        <div className="logo">
+          <Vultisig />
+          Vultisig
         </div>
         <div className="wrapper">
           <h2 className="heading">{t(translation.UPLOAD_VAULT_SHARE)}</h2>
@@ -209,63 +220,7 @@ const Component: FC = () => {
             {t(translation.START)}
           </Button>
         </div>
-        <p className="hint">{t(translation.DOWNLOAD_APP)}</p>
-        <ul className="download">
-          <li>
-            <a
-              href="https://testflight.apple.com/join/kpVufItl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/app-store.png" alt="iPhone" />
-            </a>
-            <a
-              href="https://testflight.apple.com/join/kpVufItl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              iPhone
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.vultisig.wallet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/google-play.png" alt="Android" />
-            </a>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.vultisig.wallet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              Android
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/vultisig/vultisig-ios/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/github.png" alt="Mac" />
-            </a>
-            <a
-              href="https://github.com/vultisig/vultisig-ios/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              Mac
-            </a>
-          </li>
-        </ul>
+        <DownloadVultisig />
       </div>
       {contextHolder}
     </>

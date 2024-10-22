@@ -1,21 +1,15 @@
+@use "~variables" as *;
+
 .modal-language {
   .ant-list-item {
-    background-color: $blue-base;
-    border: none;
-    border-radius: rem(8);
     cursor: pointer;
-    justify-content: center;
     padding: rem(14);
     transition: all 0.3s;
 
+    &:hover,
     &.active {
-      background-color: $cyan-base;
-      color: $gray-13;
-    }
-
-    &:hover {
-      background-color: $cyan-base;
-      color: $gray-13;
+      background-color: $blue-light;
+      color: $gray-1;
     }
 
     + .ant-list-item {
@@ -25,9 +19,5 @@
 
   .ant-modal-footer {
     display: none;
-  }
-
-  .ant-modal-content {
-    padding: 0 rem(30) rem(30);
   }
 }

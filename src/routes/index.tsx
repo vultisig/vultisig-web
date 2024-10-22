@@ -12,15 +12,13 @@ import constantPaths from "routes/constant-paths";
 import ShareLayout from "layout/shared";
 import VaultLayout from "layout/vault";
 
-import AssetPage from "pages/assets";
+import AssetsPage from "pages/assets";
 import ChainsPage from "pages/chains";
 import ImportPage from "pages/import";
 import LeaderboardPage from "pages/leaderboard";
 import PositionsPage from "pages/positions";
+import RedirectPage from "pages/redirect";
 import UploadPage from "pages/upload";
-
-import SharedAssetsPage from "pages/shared/assets";
-import SharedChainsPage from "pages/shared/chains";
 
 interface RouteConfig {
   path: string;
@@ -72,6 +70,10 @@ const Component = () => {
       element: <UploadPage />,
     },
     {
+      path: constantPaths.redirect,
+      element: <RedirectPage />,
+    },
+    {
       path: constantPaths.shared.root,
       element: <ShareLayout />,
       children: [
@@ -80,21 +82,26 @@ const Component = () => {
           redirect: constantPaths.root,
         },
         {
+          path: constantPaths.shared.positions,
+          element: <PositionsPage />,
+        },
+        {
           path: constantPaths.shared.chains,
-          element: <SharedChainsPage />,
+          element: <ChainsPage />,
         },
         {
           path: constantPaths.shared.chainsAlias,
-          element: <SharedChainsPage />,
+          element: <ChainsPage />,
         },
         {
           path: constantPaths.shared.assets,
-          element: <SharedAssetsPage />,
+          element: <AssetsPage />,
         },
         {
           path: constantPaths.shared.assetsAlias,
-          element: <SharedAssetsPage />,
+          element: <AssetsPage />,
         },
+
         {
           path: "*",
           redirect: constantPaths.root,
@@ -115,7 +122,7 @@ const Component = () => {
         },
         {
           path: constantPaths.vault.assets,
-          element: <AssetPage />,
+          element: <AssetsPage />,
         },
         {
           path: constantPaths.vault.leaderboard,

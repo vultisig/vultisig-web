@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Button,
@@ -12,15 +12,15 @@ import {
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
-import { useBaseContext } from "context/base";
-import { Language, languageName } from "utils/constants";
+import { useBaseContext } from "context";
+import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
 import useGoBack from "hooks/go-back";
 import i18n from "i18n/config";
 import translation from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
-import { Vultisig } from "icons";
+import { ChromeExtension, Vultisig } from "icons";
 
 import {
   CircleDollar,
@@ -33,32 +33,36 @@ import {
 } from "icons";
 
 interface ComponentProps {
-  uid?: string;
-  alias?: string;
-  logo?: string;
+  uid: string;
+  alias: string;
+  layout: LayoutKey;
+  logo: string;
 }
 
 interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
+const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
   const [messageApi, contextHolder] = message.useMessage();
-  const { currency } = useBaseContext();
-  const { hash, pathname } = useLocation();
+  const { activePage, currency } = useBaseContext();
+  const { hash } = useLocation();
   const goBack = useGoBack();
+
+  const handleSharePath = (path: string): string => {
+    return path
+      .replace(":alias", alias.replace(/ /g, "-"))
+      .replace(":uid", uid);
+  };
 
   const handleShare = (): void => {
     navigator.clipboard
       .writeText(
-        `${location.origin}/shared/vault/${(alias ?? "").replace(
-          / /g,
-          "-"
-        )}/${uid}`
+        `${location.origin}${handleSharePath(constantPaths.shared.chainsAlias)}`
       )
       .then(() => {
         messageApi.open({
@@ -121,11 +125,59 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
   }
 
   const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
-  const items: MenuProps["items"] = [
-    ...(uid
+
+  const navbarItems = [
+    ...[
+      <Link
+        to={
+          layout === LayoutKey.VAULT
+            ? constantPaths.vault.chains
+            : handleSharePath(constantPaths.shared.chainsAlias)
+        }
+        className={`${
+          activePage === PageKey.ASSETS ||
+          activePage === PageKey.CHAINS ||
+          activePage === PageKey.SHARED_ASSETS ||
+          activePage === PageKey.SHARED_CHAINS
+            ? "active"
+            : ""
+        }`}
+      >
+        Balances
+      </Link>,
+      <Link
+        to={
+          layout === LayoutKey.VAULT
+            ? constantPaths.vault.positions
+            : handleSharePath(constantPaths.shared.positions)
+        }
+        className={`${
+          activePage === PageKey.POSITIONS ||
+          activePage === PageKey.SHARED_POSITIONS
+            ? "active"
+            : ""
+        }`}
+      >
+        Active Positions
+      </Link>,
+    ],
+    ...(layout === LayoutKey.VAULT
+      ? [
+          <Link
+            to={constantPaths.vault.leaderboard}
+            className={`${activePage === PageKey.LEADERBOARD ? "active" : ""}`}
+          >
+            Airdrop Leaderboard
+          </Link>,
+        ]
+      : []),
+  ];
+
+  const dropdownMenu: MenuProps["items"] = [
+    ...(layout === LayoutKey.VAULT
       ? [
           {
-            key: "4",
+            key: "1",
             label: (
               <Link to={`#${constantModals.VAULT_SETTINGS}`} state={true}>
                 {t(translation.VAULT_SETTINGS)}
@@ -136,7 +188,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
         ]
       : []),
     {
-      key: "5",
+      key: "2",
       label: (
         <>
           <Link to={`#${constantModals.CHANGE_LANG}`} state={true}>
@@ -148,7 +200,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       icon: <Globe />,
     },
     {
-      key: "6",
+      key: "3",
       label: (
         <>
           <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
@@ -159,17 +211,17 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       ),
       icon: <CircleDollar />,
     },
-    // ...(uid
+    // ...(layout === LayoutKey.VAULT
     //   ? [
     //       {
-    //         key: "7",
+    //         key: "4",
     //         label: t(translation.DEFAULT_CHAINS),
     //         icon: <ChainOutlined />,
     //       },
     //     ]
     //   : []),
     {
-      key: "8",
+      key: "5",
       label: (
         <a
           href="https://vultisig.com/faq"
@@ -182,12 +234,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
       icon: <CircleHelp />,
     },
     {
-      key: "9",
+      key: "6",
       type: "group",
       label: t(translation.OTHER),
       children: [
         {
-          key: "9-1",
+          key: "6-1",
           label: (
             <a
               href="https://vultisig.com/vult"
@@ -199,10 +251,23 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           ),
           icon: <img src="/images/logo.svg" alt="logo" />,
         },
-        ...(uid
+        {
+          key: "6-2",
+          label: (
+            <a
+              href="https://chromewebstore.google.com/detail/vulticonnect/ggafhcdaplkhmmnlbfjpnnkepdfjaelb"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {t(translation.CHROME_EXTENSION)}
+            </a>
+          ),
+          icon: <ChromeExtension />,
+        },
+        ...(layout === LayoutKey.VAULT
           ? [
               {
-                key: "9-2",
+                key: "6-3",
                 label: t(translation.SHARE_VAULT),
                 icon: <ExternalLink />,
                 onClick: () => handleShare(),
@@ -213,53 +278,16 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
     },
   ];
 
-  const menu: MenuProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <Link
-          to={constantPaths.vault.chains}
-          className={`${
-            pathname.startsWith(constantPaths.vault.chains) ? "active" : ""
-          }`}
-        >
-          Balances
-        </Link>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <Link
-          to={constantPaths.vault.positions}
-          className={`${
-            pathname === constantPaths.vault.positions ? "active" : ""
-          }`}
-        >
-          Active Positions
-        </Link>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <Link
-          to={constantPaths.vault.leaderboard}
-          className={`${
-            pathname === constantPaths.vault.leaderboard ? "active" : ""
-          }`}
-        >
-          Airdrop Leaderboard
-        </Link>
-      ),
-    },
-  ];
+  const navbarMenu: MenuProps["items"] = navbarItems.map((item, ind) => ({
+    key: `${ind + 1}`,
+    label: item,
+  }));
 
   return (
     <>
       <div className="layout-header">
         {isDesktop ? (
-          <Dropdown menu={{ items }} className="menu">
+          <Dropdown menu={{ items: dropdownMenu }} className="menu">
             <Button type="link">
               <CircleUser />
             </Button>
@@ -270,14 +298,21 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           </Button>
         )}
 
-        {uid && (
+        {layout === LayoutKey.VAULT && (
           <Button href={`#${constantModals.JOIN_AIRDROP}`} className="airdrop">
             {t(translation.JOIN_AIRDROP)}
           </Button>
         )}
 
-        <Link to={constantPaths.root} className="logo">
-          {uid ? (
+        <Link
+          to={
+            layout === LayoutKey.VAULT
+              ? constantPaths.vault.chains
+              : handleSharePath(constantPaths.shared.chainsAlias)
+          }
+          className="logo"
+        >
+          {layout === LayoutKey.VAULT ? (
             <>
               <Vultisig className="shape" />
 
@@ -296,35 +331,12 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           )}
         </Link>
 
-        {isDesktop && uid && (
+        {isDesktop && (
           <>
             <div className="navbar">
-              <Link
-                to={constantPaths.vault.chains}
-                className={`${
-                  pathname.startsWith(constantPaths.vault.chains)
-                    ? "active"
-                    : ""
-                }`}
-              >
-                Balances
-              </Link>
-              <Link
-                to={constantPaths.vault.positions}
-                className={`${
-                  pathname === constantPaths.vault.positions ? "active" : ""
-                }`}
-              >
-                Active Positions
-              </Link>
-              <Link
-                to={constantPaths.vault.leaderboard}
-                className={`${
-                  pathname === constantPaths.vault.leaderboard ? "active" : ""
-                }`}
-              >
-                Airdrop Leaderboard
-              </Link>
+              {navbarItems.map((item, index) => (
+                <Fragment key={index}>{item}</Fragment>
+              ))}
             </div>
           </>
         )}
@@ -336,7 +348,7 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           onClose={() => goBack()}
           title={
             <Link to={constantPaths.root} className="logo">
-              {uid ? (
+              {layout === LayoutKey.VAULT ? (
                 <>
                   <Vultisig className="shape" />
 
@@ -361,13 +373,9 @@ const Component: FC<ComponentProps> = ({ uid, alias, logo }) => {
           placement="left"
           className="layout-menu"
         >
-          {uid && (
-            <>
-              <Menu items={menu} selectedKeys={[]} />
-              <Divider />
-            </>
-          )}
-          <Menu items={items} selectedKeys={[]} />
+          <Menu items={navbarMenu} selectedKeys={[]} />
+          <Divider />
+          <Menu items={dropdownMenu} selectedKeys={[]} />
         </Drawer>
       )}
 

@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .asset-item {
   border-top: solid 1px $blue-light;
   position: relative;
@@ -17,13 +19,16 @@
 
     .name {
       display: block;
+      font-family: $secondary-font;
       font-size: rem(20);
       line-height: rem(68);
     }
   }
 
   .balance {
-    font-size: rem(12);
+    font-family: $secondary-font;
+    font-size: rem(16);
+    font-weight: 700;
     line-height: rem(16);
     position: absolute;
     right: 0;
@@ -32,7 +37,8 @@
   }
 
   .value {
-    font-size: 1.25em;
+    font-family: $secondary-font;
+    font-size: rem(16);
     font-weight: 700;
     line-height: rem(22);
     position: absolute;

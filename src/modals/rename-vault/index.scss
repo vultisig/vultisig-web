@@ -1,17 +1,21 @@
-.modal-rename-vault {
-  .ant-input {
-    background-color: $blue-dark !important;
-    border: none;
-    box-shadow: none !important;
-    line-height: rem(48);
-  }
+@use "~variables" as *;
 
-  .ant-btn {
-    color: $blue-dark !important;
-    height: rem(44);
+.modal-rename-vault {
+  .ant-modal-body {
+    overflow: hidden;
+
+    .ant-input {
+      background-color: $blue-base;
+      border: none;
+      box-shadow: none;
+      line-height: rem(48);
+    }
   }
 
   .ant-modal-footer {
-    margin: 0;
+    .ant-btn {
+      color: $blue-dark !important;
+      height: rem(44);
+    }
   }
 }

@@ -4,8 +4,10 @@ export default {
   [translation.ADD_NEW_VAULT]: "Add new vault",
   // B
   [translation.CHOOSE_CHAIN]: "Choose Chains",
+  [translation.CHROME_EXTENSION]: "Chrome Extension",
   [translation.CHOOSE_TOKEN]: "Choose Tokens",
   [translation.CURRENCY]: "Currency",
+  // D
   [translation.DOWNLOAD_APP]: "Don’t have a vault yet? Download Vultisig now",
   [translation.DEFAULT_CHAINS]: "Default Chains",
   [translation.DELETE_VAULT_WARNING]: "You are removing Vault",

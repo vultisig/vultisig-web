@@ -40,7 +40,11 @@ const Component: FC<ComponentProps> = ({ changeVault, vault, vaults }) => {
   ];
 
   return (
-    <Dropdown menu={{ items }} className="vault-dropdown">
+    <Dropdown
+      menu={{ items }}
+      className="vault-dropdown"
+      overlayClassName="vault-dropdown-overlay"
+    >
       <span>{vault?.alias ?? ""}</span>
     </Dropdown>
   );

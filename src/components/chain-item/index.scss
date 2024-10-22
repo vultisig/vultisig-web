@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .chain-item {
   background-color: $blue-base;
   border-radius: rem(8);
@@ -20,6 +22,7 @@
 
     .name {
       display: block;
+      font-size: rem(16);
       font-weight: 700;
       line-height: rem(22);
     }
@@ -33,6 +36,8 @@
   }
 
   .key {
+    font-family: $secondary-font;
+    font-size: rem(12);
     height: rem(44);
     line-height: rem(44);
     overflow: hidden;
@@ -42,6 +47,7 @@
 
   .asset {
     display: block;
+    font-family: $secondary-font;
     font-size: rem(12);
     line-height: rem(24);
     position: absolute;
@@ -58,7 +64,8 @@
 
   .amount {
     display: block;
-    font-size: 1.25em;
+    font-family: $secondary-font;
+    font-size: rem(20);
     font-weight: 700;
     line-height: rem(22);
     position: absolute;

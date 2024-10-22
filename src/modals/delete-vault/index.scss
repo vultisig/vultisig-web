@@ -1,45 +1,60 @@
+@use "~variables" as *;
+
 .modal-delete-vault {
-  .vault-name-container {
-    text-align: center;
-  }
-
-  .ant-input {
-    background-color: $blue-dark !important;
-    border: none;
-    box-shadow: none !important;
-    line-height: rem(48);
-    width: 60%;
-  }
-
-  .ant-btn {
-    background-color: $orange-base !important;
-    &::before {
-      content: none !important;
+  .ant-modal-body {
+    .name {
+      background-color: $blue-base;
+      border-radius: rem(8);
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(16);
+      line-height: rem(48);
+      overflow: hidden;
+      padding: 0 rem(16);
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    &:hover {
-      background-color: $orange-light !important;
+
+    .icon {
+      fill: $orange-base;
+      height: rem(64);
+      margin: 0 auto;
+    }
+
+    .warning {
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(16);
+      font-weight: 700;
+      margin: rem(24) auto;
+      text-align: center;
+      width: rem(16) (64);
     }
   }
 
-  .icon {
-    fill: $orange-base;
-    height: rem(64);
-    margin: 0 auto;
-  }
+  .ant-modal-footer {
+    margin-top: rem(24);
 
-  .warning {
-    display: block;
-    font-size: rem(16);
-    font-weight: 700;
-    margin: rem(24) auto;
-    text-align: center;
-    width: rem(16) (64);
+    .ant-btn {
+      background-color: $orange-base;
+
+      &::before {
+        content: none;
+      }
+
+      &:hover {
+        background-color: $orange-light;
+      }
+    }
   }
 }
 html[theme="light"] {
   .modal-delete-vault {
-    .warning {
-      color: $gray-8 !important;
+    .ant-modal-body {
+      .warning {
+        color: $gray-8;
+      }
     }
   }
 }

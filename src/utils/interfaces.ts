@@ -1,4 +1,10 @@
-import { ChainKey, Currency, Language, Theme } from "utils/constants";
+import {
+  ChainKey,
+  Currency,
+  Language,
+  LayoutKey,
+  Theme,
+} from "utils/constants";
 
 export interface AddressesProps {
   [publicKey: string]: { [chain: string]: string };
@@ -107,6 +113,11 @@ export interface Customization {
   theme: Theme;
 }
 
+export interface FileProps {
+  data: string;
+  name: string;
+}
+
 export interface LanguageRef {
   [Language.CROATIA]: string;
   [Language.DUTCH]: string;
@@ -118,13 +129,17 @@ export interface LanguageRef {
   [Language.SPANISH]: string;
 }
 
-export interface OneInchRef {
-  [chain: string]: number;
+export interface NodeInfo {
+  bondProviders: {
+    providers: {
+      bondAddress: string;
+      bond: string;
+    }[];
+  };
 }
 
-export interface FileProps {
-  data: string;
-  name: string;
+export interface OneInchRef {
+  [chain: string]: number;
 }
 
 export interface QRCodeProps {
@@ -159,6 +174,7 @@ export interface VaultProps {
   balance: number;
   chains: ChainProps[];
   hexChainCode: string;
+  isActive: boolean;
   joinAirdrop: boolean;
   logo: string;
   name: string;
@@ -170,4 +186,16 @@ export interface VaultProps {
   totalPoints: number;
   uid: string;
   updated?: boolean;
+}
+
+export interface VaultOutletContext {
+  getTokens: (chain: ChainProps) => Promise<void>;
+  changeVault: (vault: VaultProps, prepare?: boolean) => void;
+  deleteVault: (vault: VaultProps) => void;
+  updateVault: (vault: VaultProps) => void;
+  toggleToken: (coin: TokenProps, vault: VaultProps) => Promise<void>;
+  layout: LayoutKey;
+  tokens: TokenProps[];
+  vault: VaultProps;
+  vaults: VaultProps[];
 }

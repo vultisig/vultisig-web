@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button, Modal, Input } from "antd";
+import { Button, Modal } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
@@ -83,13 +83,11 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
       onCancel={() => goBack()}
       maskClosable={false}
       open={visible}
-      width={550}
+      width={480}
     >
       <Warning className="icon" />
       <span className="warning">{t(translation.DELETE_VAULT_WARNING)}:</span>
-      <div className="vault-name-container">
-        <Input value={vault?.alias} readOnly />
-      </div>
+      <span className="name">{vault?.alias}</span>
     </Modal>
   );
 };

@@ -3,13 +3,19 @@ import { CodeSandboxOutlined } from "@ant-design/icons";
 
 interface ComponentProps {
   text: string;
-  title: string;
+  title?: string;
 }
 
 const Component: FC<ComponentProps> = ({ text, title }) => {
   return (
     <div className="no-data-wrapper">
-      <h4 className="title">{title} :</h4>
+      <h4 className="title">
+        {title && (
+          <>
+            {title} {" :"}
+          </>
+        )}
+      </h4>
       <div className="no-data">
         <CodeSandboxOutlined />
         <p>{text}</p>

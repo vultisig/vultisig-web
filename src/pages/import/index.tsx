@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, message } from "antd";
-import { useTranslation } from "react-i18next";
 
+import { useBaseContext } from "context";
 import { VaultProps } from "utils/interfaces";
+import { PageKey } from "utils/constants";
 import { getStoredVaults, setStoredVaults } from "utils/storage";
-import translation from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
-import { Vultisig, VultisigText } from "icons";
+import { Vultisig } from "icons";
+import DownloadVultisig from "components/download-vultisig";
 
 interface InitialState {
   isInstalled: boolean;
@@ -17,10 +18,10 @@ interface InitialState {
 }
 
 const Component: FC = () => {
-  const { t } = useTranslation();
   const initialState: InitialState = { isInstalled: false, loading: false };
   const [state, setState] = useState(initialState);
   const { isInstalled, loading } = state;
+  const { changePage } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
@@ -85,6 +86,8 @@ const Component: FC = () => {
   };
 
   const componentDidMount = () => {
+    changePage(PageKey.IMPORT);
+
     setState((prevState) => ({
       ...prevState,
       isInstalled: !!window.vultiConnect,
@@ -96,9 +99,9 @@ const Component: FC = () => {
   return (
     <>
       <div className="import-page">
-        <div className="logo-container">
-          <Vultisig className="shape" />
-          <VultisigText className="text" />
+        <div className="logo">
+          <Vultisig />
+          Vultisig
         </div>
         <div className="wrapper">
           <h2 className="heading">
@@ -121,63 +124,7 @@ const Component: FC = () => {
             Upload Vault QR
           </Button>
         </div>
-        <p className="hint">{t(translation.DOWNLOAD_APP)}</p>
-        <ul className="download">
-          <li>
-            <a
-              href="https://testflight.apple.com/join/kpVufItl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/app-store.png" alt="iPhone" />
-            </a>
-            <a
-              href="https://testflight.apple.com/join/kpVufItl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              iPhone
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.vultisig.wallet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/google-play.png" alt="Android" />
-            </a>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.vultisig.wallet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              Android
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/vultisig/vultisig-ios/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image"
-            >
-              <img src="/images/github.png" alt="Mac" />
-            </a>
-            <a
-              href="https://github.com/vultisig/vultisig-ios/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text"
-            >
-              Mac
-            </a>
-          </li>
-        </ul>
+        <DownloadVultisig />
       </div>
       {contextHolder}
     </>

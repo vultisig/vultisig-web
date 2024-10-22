@@ -1,3 +1,5 @@
+@use "~variables" as *;
+
 .modal-settings {
   .ant-list-item-meta-avatar {
     svg {
@@ -17,9 +19,6 @@
   }
 
   .ant-list-item {
-    background-color: $blue-base;
-    border: none;
-    border-radius: rem(8);
     cursor: pointer;
     justify-content: center;
     padding: rem(14);
@@ -56,36 +55,40 @@
   .ant-modal-footer {
     display: none;
   }
-
-  .ant-modal-content {
-    padding: 0 rem(30) rem(30);
-  }
 }
 
 html[theme="dark"] {
-  .ant-list-item-meta-description {
-    color: $gray-1 !important;
-  }
-  .ant-list-item-meta-title {
-    color: $gray-1 !important;
-  }
-  .ant-list-item-meta-avatar {
-    svg {
-      fill: $gray-1;
+  .modal-settings {
+    .ant-list-item-meta-description {
+      color: $gray-1 !important;
+    }
+
+    .ant-list-item-meta-title {
+      color: $gray-1 !important;
+    }
+
+    .ant-list-item-meta-avatar {
+      svg {
+        fill: $gray-1;
+      }
     }
   }
 }
 
 html[theme="light"] {
-  .ant-list-item-meta-description {
-    color: $gray-8 !important;
-  }
-  .ant-list-item-meta-title {
-    color: $gray-8 !important;
-  }
-  .ant-list-item-meta-avatar {
-    svg {
-      fill: $gray-8;
+  .modal-settings {
+    .ant-list-item-meta-description {
+      color: $gray-8 !important;
+    }
+
+    .ant-list-item-meta-title {
+      color: $gray-8 !important;
+    }
+
+    .ant-list-item-meta-avatar {
+      svg {
+        fill: $gray-8;
+      }
     }
   }
 }

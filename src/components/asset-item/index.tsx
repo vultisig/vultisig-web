@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { useBaseContext } from "context/base";
+import { useBaseContext } from "context";
 
 import TokenImage from "components/token-image";
 
