@@ -77,6 +77,17 @@ const Component: FC = () => {
         <Warning />
       </div>
 
+      <div className="stats">
+        <div className="item">
+          <span className="label">Total Value of Airdrop Vaults</span>
+          <span className="value">$1.000.000</span>
+        </div>
+        <div className="item">
+          <span className="label">Total Registered Wallets</span>
+          <span className="value">{total.toNumberFormat()}</span>
+        </div>
+      </div>
+
       <div className="breadcrumb">
         <VaultDropdown
           vault={vault}

@@ -479,11 +479,11 @@ const Component: FC = () => {
           )}
 
           {runeProvider ? (
-            <PositionItem title="Rune Provider" data={runeProvider} />
+            <PositionItem title="RUNEPool Provider" data={runeProvider} />
           ) : (
             <NoData
-              title="Rune Provider"
-              text="No Rune Provider Position Found"
+              title="RUNEPool Provider"
+              text="No RUNEPool Provider Position Found"
             />
           )}
 
