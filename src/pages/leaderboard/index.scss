@@ -1,6 +1,8 @@
 @use "~variables" as *;
 
 .leaderboard-page {
+  max-width: rem(992);
+
   .warning {
     align-items: center;
     background-color: rgba($color: $red-dark, $alpha: 0.3);
@@ -26,12 +28,42 @@
     }
   }
 
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(16);
+    margin-bottom: rem(16);
+
+    .label {
+      color: $opacity-50;
+      display: block;
+      font-size: rem(14);
+      font-weight: 500;
+      line-height: rem(22);
+    }
+
+    .value {
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(20);
+      font-weight: 700;
+      line-height: rem(30);
+      margin-top: rem(4);
+    }
+
+    .item {
+      background-color: $opacity-03;
+      border-radius: rem(8);
+      padding: rem(16) rem(24);
+      width: 100%;
+    }
+  }
+
   .breadcrumb {
     border-bottom: solid rem(1) $blue-light;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: rem(16);
-    justify-content: space-between;
     margin-bottom: rem(32);
     padding-bottom: rem(32);
 
@@ -95,6 +127,11 @@
     .result {
       display: flex;
       justify-content: space-between;
+      width: 100%;
+    }
+
+    .vault-dropdown {
+      width: 100%;
     }
   }
 
@@ -199,7 +236,7 @@
       }
     }
 
-    .stats {
+    .loadmore {
       .numb {
         color: $gray-5;
         display: block;
@@ -367,15 +404,17 @@
 
 @media (min-width: rem(768)) {
   .leaderboard-page {
+    .stats {
+      flex-wrap: nowrap;
+    }
+
     .breadcrumb {
-      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: rem(32);
 
       .result {
         gap: rem(24);
-      }
-
-      .vault-dropdown {
-        width: rem(328);
+        justify-content: end;
       }
     }
   }

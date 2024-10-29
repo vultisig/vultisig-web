@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Button, Tooltip } from "antd";
 
@@ -8,426 +8,486 @@ import {
   defTokens,
   exploreToken,
   LayoutKey,
-  MayaChainKey,
   PageKey,
-  PositionInfo,
-  TCChainKey,
+  TickerKey,
 } from "utils/constants";
-import { NodeInfo, VaultOutletContext } from "utils/interfaces";
+import {
+  PositionProps,
+  VaultOutletContext,
+  VaultProps,
+} from "utils/interfaces";
 import api from "utils/api";
+import WeweProvider from "utils/wewe-provider";
 
 import { Synchronize } from "icons";
 import VaultDropdown from "components/vault-dropdown";
-import VultiLoading from "components/vulti-loading";
 import PositionItem from "components/position-item";
-import NoData from "components/no-data";
-
-interface activePositions {
-  maya: PositionInfo[];
-  thorchain: PositionInfo[];
-}
-
-interface InitialState {
-  loading?: boolean;
-  liquidityPosition?: activePositions;
-  mayaBond?: PositionInfo[];
-  runeProvider?: PositionInfo[];
-  saverPosition?: PositionInfo[];
-  tgtStake?: PositionInfo[];
-  thorchainBond?: PositionInfo[];
-}
 
 const Component: FC = () => {
-  const initialState: InitialState = { loading: true };
-  const [state, setState] = useState(initialState);
+  const { changePage, currency } = useBaseContext();
   const {
-    loading,
-    liquidityPosition,
+    changeVault,
+    layout,
+    vault,
+    vaults,
+    updateVault,
+    updateVaultPositions,
+  } = useOutletContext<VaultOutletContext>();
+  const {
     mayaBond,
+    mayaLiquidity,
     runeProvider,
     saverPosition,
     tgtStake,
-    thorchainBond,
-  } = state;
-  const { changePage, currency } = useBaseContext();
-  const { changeVault, layout, vault, vaults } =
-    useOutletContext<VaultOutletContext>();
+    thorBond,
+    thorLiquidity,
+    wewePositions,
+  } = vault.positions;
+  const weweProvider = new WeweProvider();
 
-  const getRuneProvider = (runePrice: number): Promise<void> => {
+  const getChain = (
+    pool: string
+  ): { name: ChainKey; ticker: string } | false => {
+    const [chain, str] = pool.split(".");
+    const [ticker] = str.split("-");
+    let name: ChainKey;
+
+    switch (chain) {
+      case "ARB":
+        name = ChainKey.ARBITRUM;
+        break;
+      case "AVAX":
+        name = ChainKey.AVALANCHE;
+        break;
+      case "BCH":
+        name = ChainKey.BITCOINCASH;
+        break;
+      case "BSC":
+        name = ChainKey.BSCCHAIN;
+        break;
+      case "BTC":
+        name = ChainKey.BITCOIN;
+        break;
+      case "DASH":
+        name = ChainKey.DASH;
+        break;
+      case "DOGE":
+        name = ChainKey.DOGECOIN;
+        break;
+      case "ETH":
+        name = ChainKey.ETHEREUM;
+        break;
+      case "GAIA":
+        name = ChainKey.GAIACHAIN;
+        break;
+      case "KUJI":
+        name = ChainKey.KUJIRA;
+        break;
+      case "LTC":
+        name = ChainKey.LITECOIN;
+        break;
+      case "MAYA":
+        name = ChainKey.MAYACHAIN;
+        break;
+      case "THOR":
+        name = ChainKey.THORCHAIN;
+        break;
+      default:
+        return false;
+    }
+
+    return { name, ticker };
+  };
+
+  const getCMC = (chain: ChainKey, ticker: string): number => {
+    return (
+      defTokens.find(
+        (token) => token.chain === chain && token.ticker === ticker
+      )?.cmcId ?? 0
+    );
+  };
+
+  const getLiquidityPositions = (vault: VaultProps): Promise<void> => {
     return new Promise((resolve) => {
-      const address = vault?.chains.find(
+      const addresses = vault.chains.map((chain) => chain.address).join(",");
+      const mayaLiquidity: PositionProps[] = [];
+      const thorLiquidity: PositionProps[] = [];
+
+      api.activePositions
+        .getLiquidityPositions(addresses)
+        .then(({ data }) => {
+          data.maya.forEach((item) => {
+            const chain = getChain(item.pool);
+            const assetAdded = Number(item.assetAdded) ?? 0;
+            const runeAdded = Number(item.runeAdded) ?? 0;
+
+            if (chain) {
+              mayaLiquidity.push({
+                base: {
+                  chain: chain.name,
+                  price: item.assetPriceUsd * item.assetAdded,
+                  tiker: chain.ticker,
+                  tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
+                    item.runeAddress || item.assetAddress
+                  }`,
+                  tokenAmount: assetAdded.toBalanceFormat(),
+                },
+                target: {
+                  chain: ChainKey.MAYACHAIN,
+                  price: item.runeOrCacaoPricePriceUsd * runeAdded,
+                  tiker: TickerKey.CACAO,
+                  tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
+                    item.runeAddress || item.assetAddress
+                  }`,
+                  tokenAmount: runeAdded.toBalanceFormat(),
+                },
+              });
+            }
+          });
+
+          data.thorchain.forEach((item) => {
+            const chain = getChain(item.pool);
+            const assetAdded = Number(item.assetAdded) ?? 0;
+            const runeAdded = Number(item.runeAdded) ?? 0;
+
+            if (chain) {
+              thorLiquidity.push({
+                base: {
+                  chain: chain.name,
+                  price: item.assetPriceUsd * assetAdded,
+                  tiker: chain.ticker,
+                  tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
+                    item.runeAddress || item.assetAddress
+                  }`,
+                  tokenAmount: assetAdded.toBalanceFormat(),
+                },
+                target: {
+                  chain: ChainKey.THORCHAIN,
+                  price: item.runeOrCacaoPricePriceUsd * runeAdded,
+                  tiker: TickerKey.RUNE,
+                  tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
+                    item.runeAddress || item.assetAddress
+                  }`,
+                  tokenAmount: runeAdded.toBalanceFormat(),
+                },
+              });
+            }
+          });
+        })
+        .finally(() => {
+          updateVaultPositions({
+            ...vault,
+            positions: { mayaLiquidity, thorLiquidity },
+          });
+
+          resolve();
+        });
+    });
+  };
+
+  const getMayaBond = (vault: VaultProps): Promise<void> => {
+    return new Promise((resolve) => {
+      const address = vault.chains.find(
+        ({ name }) => name === ChainKey.MAYACHAIN
+      )?.address;
+      const mayaBond: PositionProps[] = [];
+
+      if (address) {
+        mayaBond.push({
+          base: {
+            chain: ChainKey.MAYACHAIN,
+            price: 0,
+            tiker: TickerKey.MAYA,
+            tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${address}`,
+            tokenAmount: "0",
+          },
+        });
+      }
+
+      updateVaultPositions({ ...vault, positions: { mayaBond } });
+
+      resolve();
+    });
+  };
+
+  const getRuneProvider = (vault: VaultProps, price: number): Promise<void> => {
+    return new Promise((resolve) => {
+      const address = vault.chains.find(
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
-      const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
+      const runeProvider: PositionProps[] = [];
 
-      if (address && token) {
+      if (address) {
         api.activePositions
           .getRuneProvider(address)
           .then(({ data }) => {
-            let positionItem: PositionInfo[] = [];
-            positionItem.push({
+            const tokenAmount = (Number(data.value) ?? 0) * 1e-8;
+
+            runeProvider.push({
               base: {
-                baseTokenAddress: `${
-                  exploreToken[ChainKey.THORCHAIN]
-                }${address}`,
-                baseChain: ChainKey.THORCHAIN,
-                baseTiker: token.ticker,
-                baseTokenAmount: data.value * 1e-8,
-                basePriceUsd: runePrice,
+                chain: ChainKey.THORCHAIN,
+                price: price * tokenAmount,
+                tiker: TickerKey.RUNE,
+                tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
+                tokenAmount: tokenAmount.toBalanceFormat(),
               },
             });
-
-            setState((prevState) => ({
-              ...prevState,
-              runeProvider: positionItem,
-            }));
-
-            resolve();
           })
-          .catch(() => {
+          .finally(() => {
+            updateVaultPositions({
+              ...vault,
+              positions: { runeProvider },
+            });
+
             resolve();
           });
       } else {
+        updateVaultPositions({
+          ...vault,
+          positions: { runeProvider },
+        });
+
         resolve();
       }
     });
   };
 
-  const getTGTStake = (tgtPrice: number): Promise<void> => {
+  const getSaverPositions = (vault: VaultProps): Promise<void> => {
     return new Promise((resolve) => {
+      const addresses = vault.chains.map((chain) => chain.address).join(",");
+      const saverPosition: PositionProps[] = [];
 
-      let address = vault?.chains.find(
-        ({ name }) => name === ChainKey.ARBITRUM
-      )?.address;
+      api.activePositions
+        .getSaverPositions(addresses)
+        .then(({ data }) => {
+          const cmcIds: number[] = [];
 
-      const token = defTokens.find(
-        (chain) => chain.chain === ChainKey.ETHEREUM && chain.ticker === "TGT"
-      );
+          data.pools.forEach((item) => {
+            const chain = getChain(item.pool);
 
-      if (address && token) {
-        api.activePositions
-          .getTGTstake(address)
-          .then(({ data }) => {
-            let positionItem: PositionInfo[] = [];
+            if (chain) {
+              const id = getCMC(chain.name, chain.ticker);
 
-            positionItem.push({
-              base: {
-                baseTokenAddress: `${
-                  exploreToken[ChainKey.ARBITRUM]
-                }${address}`,
-                baseChain: ChainKey.ARBITRUM,
-                baseTiker: token.ticker,
-                baseTokenAmount: data.stakedAmount,
-                basePriceUsd: tgtPrice,
-                reward: data.reward,
-              },
+              if (id) cmcIds.push(id);
+            }
+          });
+          if (cmcIds.length) {
+            api.coin
+              .values(cmcIds, currency)
+              .then((values) => {
+                data.pools.forEach((item) => {
+                  const chain = getChain(item.pool);
+
+                  if (chain) {
+                    const cmcId = getCMC(chain.name, chain.ticker);
+                    const tokenAmount = (Number(item.assetRedeem) ?? 0) * 1e-8;
+
+                    saverPosition.push({
+                      base: {
+                        chain: chain.name,
+                        price: (values[cmcId] ?? 0) * tokenAmount,
+                        tiker: chain.ticker,
+                        tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
+                          item.assetAddress
+                        }`,
+                        tokenAmount: tokenAmount.toBalanceFormat(),
+                      },
+                    });
+                  }
+                });
+              })
+              .finally(() => {
+                updateVaultPositions({
+                  ...vault,
+                  positions: { saverPosition },
+                });
+
+                resolve();
+              });
+          } else {
+            updateVaultPositions({
+              ...vault,
+              positions: { saverPosition },
             });
 
-            setState((prevState) => ({
-              ...prevState,
-              tgtStake: positionItem,
-            }));
-
             resolve();
-          })
-          .catch(() => {
-            resolve();
+          }
+        })
+        .catch(() => {
+          updateVaultPositions({
+            ...vault,
+            positions: { saverPosition },
           });
-      } else {
-        resolve();
-      }
+
+          resolve();
+        });
     });
   };
 
-  const getThorchainBond = (runePrice: number): Promise<void> => {
+  const getThorBond = (vault: VaultProps, price: number): Promise<void> => {
     return new Promise((resolve) => {
-      const address = vault?.chains.find(
+      const address = vault.chains.find(
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
+      const thorBond: PositionProps[] = [];
 
-      const token = defTokens.find(({ chain }) => chain === ChainKey.THORCHAIN);
-
-      if (address && token) {
+      if (address) {
         api.activePositions
           .nodeInfo()
           .then(({ data }) => {
-            const bond = sumBonds(data, address) * 1e-8;
-            let positionItem: PositionInfo[] = [];
+            const tokenAmount =
+              data.reduce((acc, node) => {
+                const nodeSum = node?.bondProviders?.providers?.reduce(
+                  (sum, provider) => {
+                    return provider?.bondAddress === address
+                      ? sum + parseInt(provider.bond)
+                      : sum;
+                  },
+                  0
+                );
 
-            positionItem.push({
+                return acc + nodeSum;
+              }, 0) * 1e-8;
+
+            thorBond.push({
               base: {
-                baseTokenAddress: `${
-                  exploreToken[ChainKey.THORCHAIN]
-                }${address}`,
-                baseChain: ChainKey.THORCHAIN,
-                baseTiker: token.ticker,
-                baseTokenAmount: bond,
-                basePriceUsd: runePrice,
+                chain: ChainKey.THORCHAIN,
+                price: price * tokenAmount,
+                tiker: TickerKey.RUNE,
+                tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
+                tokenAmount: tokenAmount.toBalanceFormat(),
               },
             });
-
-            setState((prevState) => ({
-              ...prevState,
-              thorchainBond: positionItem,
-            }));
-            resolve();
           })
-          .catch(() => {
+          .finally(() => {
+            updateVaultPositions({
+              ...vault,
+              positions: { thorBond },
+            });
+
             resolve();
           });
       } else {
-        resolve();
-      }
-    });
-  };
-
-  const getMayaBond = (): Promise<void> => {
-    return new Promise((resolve) => {
-      const address = vault?.chains.find(
-        ({ name }) => name === ChainKey.MAYACHAIN
-      )?.address;
-      const token = defTokens.find(({ chain }) => chain === ChainKey.MAYACHAIN);
-      let positionItem: PositionInfo[] = [];
-
-      if (address && token) {
-        positionItem.push({
-          base: {
-            baseTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${address}`,
-            baseChain: ChainKey.MAYACHAIN,
-            baseTiker: token.ticker,
-            baseTokenAmount: 0,
-            basePriceUsd: 0,
-          },
+        updateVaultPositions({
+          ...vault,
+          positions: { thorBond },
         });
 
-        setState((prevState) => ({
-          ...prevState,
-          mayaBond: positionItem,
-        }));
-
-        resolve();
-      } else {
         resolve();
       }
     });
   };
 
-  const getLiquidityPositions = (): Promise<void> => {
+  const getTGTStake = (vault: VaultProps, price: number): Promise<void> => {
     return new Promise((resolve) => {
-      if (vault) {
-        const address = vault.chains.map((chain) => chain.address).join(",");
+      const address = vault.chains.find(
+        ({ name }) => name === ChainKey.ARBITRUM
+      )?.address;
+      const tgtStake: PositionProps[] = [];
 
+      if (address) {
         api.activePositions
-          .getLiquidityPositions(address)
+          .getTGTstake(address)
           .then(({ data }) => {
-            let thorchain: PositionInfo[] = [];
-            let maya: PositionInfo[] = [];
-
-            data.thorchain
-              .filter((item) => getTCChain(item.pool) != "")
-              .forEach((item) => {
-                thorchain.push({
-                  base: {
-                    baseTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
-                      item.runeAddress == ""
-                        ? item.assetAddress
-                        : item.runeAddress
-                    }`,
-                    baseChain: getTCChain(item.pool),
-                    baseTiker: getTiker(item.pool),
-                    baseTokenAmount: item.assetAdded,
-                    basePriceUsd: item.assetPriceUsd,
-                  },
-                  target: {
-                    targetTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
-                      item.runeAddress == ""
-                        ? item.assetAddress
-                        : item.runeAddress
-                    }`,
-                    targetChain: ChainKey.THORCHAIN,
-                    targetTiker: "RUNE",
-                    targetTokenAmount: item.runeAdded,
-                    targetPriceUsd: item.runeOrCacaoPricePriceUsd,
-                  },
-                });
-              });
-
-            data.maya
-              .filter((item) => getMayaChain(item.pool) != "")
-              .forEach((item) => {
-                maya.push({
-                  base: {
-                    baseTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
-                      item.runeAddress != ""
-                        ? item.runeAddress
-                        : item.assetAddress
-                    }`,
-                    baseChain: getMayaChain(item.pool),
-                    baseTiker: getTiker(item.pool),
-                    baseTokenAmount: item.assetAdded,
-                    basePriceUsd: item.assetPriceUsd,
-                  },
-                  target: {
-                    targetTokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
-                      item.runeAddress != ""
-                        ? item.runeAddress
-                        : item.assetAddress
-                    }`,
-                    targetChain: ChainKey.MAYACHAIN,
-                    targetTiker: "CACAO",
-                    targetTokenAmount: item.runeAdded,
-                    targetPriceUsd: item.runeOrCacaoPricePriceUsd,
-                  },
-                });
-              });
-
-            setState((prevState) => ({
-              ...prevState,
-              liquidityPosition: {
-                thorchain: thorchain,
-                maya: maya,
+            tgtStake.push({
+              base: {
+                chain: ChainKey.ARBITRUM,
+                price: price * data.reward,
+                tiker: TickerKey.TGT,
+                tokenAddress: `${exploreToken[ChainKey.ARBITRUM]}${address}`,
+                tokenAmount: (Number(data.stakedAmount) ?? 0).toBalanceFormat(),
+                reward: data.reward,
               },
-            }));
-
-            resolve();
+            });
           })
-          .catch(() => {
+          .finally(() => {
+            updateVaultPositions({
+              ...vault,
+              positions: { tgtStake },
+            });
+
             resolve();
           });
       } else {
+        updateVaultPositions({
+          ...vault,
+          positions: { tgtStake },
+        });
+
         resolve();
       }
     });
   };
 
-  const getSaverPositions = (): Promise<void> => {
+  const getWewePositions = (
+    vault: VaultProps,
+    price: number
+  ): Promise<void> => {
     return new Promise((resolve) => {
-      if (vault) {
-        const address = vault.chains.map((chain) => chain.address).join(",");
+      const address = vault.chains.find(
+        ({ name }) => name === ChainKey.BASE
+      )?.address;
 
-        api.activePositions
-          .getSaverPositions(address)
-          .then(({ data }) => {
-            let saver: PositionInfo[] = [];
-            let cmcId: number[] = [];
+      const wewePositions: PositionProps[] = [];
 
-            data.pools
-              .filter((item) => getTCChain(item.pool) != "")
-              .forEach((item) => {
-                let id = getCmcId(getTCChain(item.pool), getTiker(item.pool));
-                cmcId.push(id);
+      if (address) {
+        weweProvider
+          .getPositions(address, price)
+          .then((positions) => {
+            positions.forEach((position) => {
+              wewePositions.push({
+                base: {
+                  chain: ChainKey.BASE,
+                  price: position.value,
+                  tiker: TickerKey.WEWE,
+                  tokenAddress: `${exploreToken[ChainKey.BASE]}${address}`,
+                  tokenAmount: position.shares,
+                },
               });
-
-            api.coin
-              .values(cmcId, currency)
-              .then((prices) => {
-                data.pools
-                  .filter((item) => getTCChain(item.pool) != "")
-                  .forEach((item) => {
-                    saver.push({
-                      base: {
-                        baseTokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
-                          item.assetAddress
-                        }`,
-                        baseChain: getTCChain(item.pool),
-                        baseTiker: getTiker(item.pool),
-                        baseTokenAmount: item.assetRedeem * 1e-8,
-                        basePriceUsd:
-                          prices.data.data[
-                            getCmcId(getTCChain(item.pool), getTiker(item.pool))
-                          ]?.quote?.[currency]?.price || 0,
-                      },
-                    });
-                  });
-
-                setState((prevState) => ({
-                  ...prevState,
-                  saverPosition: saver,
-                }));
-
-                resolve();
-              })
-              .catch(() => {
-                resolve();
-              });
-
-            resolve();
+            });
           })
-          .catch(() => {
+          .finally(() => {
+            updateVaultPositions({
+              ...vault,
+              positions: { wewePositions },
+            });
+
             resolve();
           });
       } else {
+        updateVaultPositions({
+          ...vault,
+          positions: { wewePositions },
+        });
+
         resolve();
       }
     });
   };
 
-  const getCmcId = (pool: string, tickerName: string): number => {
-    const CmcId = defTokens.find(
-      ({ chain, ticker }) => chain === pool && ticker === tickerName
-    )?.cmcId;
-    return CmcId ?? 0;
-  };
-
-  const getTCChain = (pool: string): string => {
-    const chain = pool.split(".")[0];
-    return TCChainKey[chain as keyof typeof TCChainKey] ?? "";
-  };
-
-  const getMayaChain = (pool: string): string => {
-    const chain = pool.split(".")[0];
-    return MayaChainKey[chain as keyof typeof MayaChainKey] ?? "";
-  };
-
-  const getTiker = (pool: string): string => {
-    return pool.split(".")[1].split("-")[0];
-  };
-
-  const sumBonds = (data: NodeInfo[], address: string): number => {
-    let sum = 0;
-    data?.forEach((node) => {
-      node?.bondProviders?.providers?.forEach((provider) => {
-        if (provider?.bondAddress === address) {
-          sum += parseInt(provider.bond);
-        }
-      });
-    });
-    return sum;
+  const handleRefresh = (): void => {
+    updateVault({ ...vault, positions: {} });
   };
 
   const componentDidUpdate = (): void => {
-    setState(initialState);
+    if (!vault.positions.updated) {
+      const runeCMCId = getCMC(ChainKey.THORCHAIN, TickerKey.RUNE);
+      const tgtCMCId = getCMC(ChainKey.ARBITRUM, TickerKey.TGT);
+      const usdtCMCId = getCMC(ChainKey.ETHEREUM, TickerKey.USDT);
 
-    let runeCmcId = getCmcId(ChainKey.THORCHAIN, "RUNE");
-    let tgtCmcId = getCmcId(ChainKey.ETHEREUM, "TGT");
+      updateVaultPositions({ ...vault, positions: { updated: true } });
 
-    if (runeCmcId && tgtCmcId) {
-      api.coin.values([runeCmcId, tgtCmcId], currency).then(({ data }) => {
-        const runePrice =
-          (data?.data &&
-            data.data[runeCmcId]?.quote &&
-            data.data[runeCmcId].quote[currency]?.price) ||
-          0;
-
-        const tgtPrice =
-          (data?.data &&
-            data.data[tgtCmcId]?.quote &&
-            data.data[tgtCmcId].quote[currency]?.price) ||
-          0;
-
-        Promise.all([
-          getThorchainBond(runePrice ? runePrice : 0),
-          getMayaBond(),
-          getLiquidityPositions(),
-          getTGTStake(tgtPrice ? tgtPrice : 0),
-          getRuneProvider(runePrice ? runePrice : 0),
-          getSaverPositions(),
-        ]).then(() => {
-          setState((prevState) => ({ ...prevState, loading: false }));
+      api.coin
+        .values([runeCMCId, tgtCMCId, usdtCMCId], currency)
+        .then((data) => {
+          getLiquidityPositions(vault);
+          getMayaBond(vault);
+          getRuneProvider(vault, data[runeCMCId] ?? 0);
+          getSaverPositions(vault);
+          getThorBond(vault, data[runeCMCId] ?? 0);
+          getTGTStake(vault, data[tgtCMCId] ?? 0);
+          getWewePositions(vault, data[usdtCMCId] ?? 0);
         });
-      });
-    } else {
-      setState((prevState) => ({ ...prevState, loading: false }));
     }
   };
 
@@ -437,14 +497,10 @@ const Component: FC = () => {
     );
   };
 
-  useEffect(componentDidUpdate, [currency, vault]);
+  useEffect(componentDidUpdate, [vault]);
   useEffect(componentDidMount, []);
 
-  return loading ? (
-    <div className="layout-content">
-      <VultiLoading />
-    </div>
-  ) : (
+  return (
     <div className="layout-content positions-page">
       {layout === LayoutKey.VAULT && (
         <div className="breadcrumb">
@@ -454,88 +510,68 @@ const Component: FC = () => {
             changeVault={changeVault}
           />
           <Tooltip title="Refresh">
-            <Button type="link" onClick={() => componentDidUpdate()}>
+            <Button type="link" onClick={() => handleRefresh()}>
               <Synchronize />
             </Button>
           </Tooltip>
         </div>
       )}
 
-      <h2 className="h-title">Thorchain:</h2>
+      <div className="section">
+        <span className="heading">Thorchain</span>
 
-      {(liquidityPosition?.thorchain &&
-        liquidityPosition.thorchain.length > 0) ||
-      thorchainBond ||
-      runeProvider ||
-      saverPosition ? (
-        <>
-          {liquidityPosition?.thorchain.length ? (
-            <PositionItem
-              title="Liquidity Position"
-              data={liquidityPosition.thorchain}
-            />
-          ) : (
-            <NoData title="Liquidity Position" text="No LP Position Found" />
-          )}
+        <PositionItem
+          data={thorLiquidity}
+          text="No Liquidity Position Found"
+          title="Liquidity Position"
+        />
 
-          {runeProvider ? (
-            <PositionItem title="Rune Provider" data={runeProvider} />
-          ) : (
-            <NoData
-              title="Rune Provider"
-              text="No Rune Provider Position Found"
-            />
-          )}
+        <PositionItem
+          data={runeProvider}
+          text="No Provider Position Found"
+          title="Rune Provider"
+        />
 
-          {saverPosition ? (
-            <PositionItem title="Saver" data={saverPosition} />
-          ) : (
-            <NoData title="Saver" text="No Saver Position Found" />
-          )}
+        <PositionItem
+          data={saverPosition}
+          text="No Saver Position Found"
+          title="Saver"
+        />
 
-          {thorchainBond ? (
-            <PositionItem title="Bond" data={thorchainBond} />
-          ) : (
-            <NoData title="Bond" text="No Bond Found" />
-          )}
-        </>
-      ) : (
-        <NoData text="No LP/Save/Bond Position Found" />
-      )}
+        <PositionItem data={thorBond} text="No Bond Found" title="Bond" />
+      </div>
 
-      <div className="line"></div>
-      <h2 className="h-title">Maya:</h2>
+      <div className="section">
+        <h2 className="heading">Maya</h2>
 
-      {(liquidityPosition?.maya && liquidityPosition.maya.length > 0) ||
-      mayaBond ? (
-        <>
-          {liquidityPosition?.maya.length ? (
-            <PositionItem
-              data={liquidityPosition.maya}
-              title="Liquidity Position"
-            />
-          ) : (
-            <NoData title="Liquidity Position" text="No LP Position Found" />
-          )}
+        <PositionItem
+          data={mayaLiquidity}
+          text="No LP Position Found"
+          title="Liquidity Position"
+        />
 
-          {mayaBond ? (
-            <PositionItem title="Bond" data={mayaBond} />
-          ) : (
-            <NoData title="Bond" text="No Bond Found" />
-          )}
-        </>
-      ) : (
-        <NoData text="No LP/Bond Position Found" />
-      )}
+        <PositionItem data={mayaBond} text="No Bond Found" title="Bond" />
+      </div>
 
-      <div className="line"></div>
-      <h2 className="h-title">TGT:</h2>
+      <div className="section">
+        <h2 className="heading">TGT</h2>
 
-      {tgtStake ? (
-        <PositionItem title="Stake" data={tgtStake} />
-      ) : (
-        <NoData title="Stake" text="ETH/ARB address not found in your vault" />
-      )}
+        <PositionItem
+          data={tgtStake}
+          text="ETH/ARB address not found in your vault"
+          title="Stake"
+        />
+      </div>
+
+      <div className="section">
+        <h2 className="heading">WEWE</h2>
+
+        <PositionItem
+          data={wewePositions}
+          text="WEWE/USDT address not found in your vault"
+          title="Positions"
+        />
+      </div>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const Component: FC = () => {
     if (isInstalled && !loading) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      window.vultiConnect.getVaults().then((vaults) => {
+      (window.vultiConnect||window.vultisig).getVaults().then((vaults) => {
         if (vaults.length) {
           const promises = vaults.map((vault) => handelVault(vault));
 
@@ -90,7 +90,7 @@ const Component: FC = () => {
 
     setState((prevState) => ({
       ...prevState,
-      isInstalled: !!window.vultiConnect,
+      isInstalled: !!(window.vultiConnect||window.vultisig),
     }));
   };
 

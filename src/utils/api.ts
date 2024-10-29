@@ -36,14 +36,14 @@ api.interceptors.response.use(
 );
 
 namespace CMC {
-  export interface ID {
-    data: { [cmcId: string]: { id: number } };
-  }
-
-  export interface Value {
+  export interface Result {
     data: {
       [id: string]: { quote: { [currency: string]: { price: number } } };
     };
+  }
+
+  export interface Props {
+    [id: string]: number;
   }
 }
 
@@ -68,6 +68,7 @@ namespace Leaderboard {
   export interface Props {
     vaults: VaultProps[];
     totalVaultCount: number;
+    totalBalance: number;
   }
 }
 
@@ -84,7 +85,7 @@ namespace OneInch {
   }
 }
 
-export interface activePosition {
+interface ActivePositions {
   maya: {
     assetAddress: string;
     runeAddress: string;
@@ -105,21 +106,12 @@ export interface activePosition {
   }[];
 }
 
-export interface saverPositions {
+interface SaverPositions {
   pools: {
     assetRedeem: number;
     assetAddress: string;
     pool: string;
   }[];
-}
-
-export interface TGT {
-  stakedAmount: number;
-  reward: number;
-}
-
-export interface RuneProvider {
-  value: number;
 }
 
 const service = {
@@ -137,23 +129,23 @@ const service = {
         `https://thornode.ninerealms.com/thorchain/nodes`
       );
     },
-    getLiquidityPositions: async (address: string) => {
-      return await api.get<activePosition>(
-        `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${address}`
+    getLiquidityPositions: async (addresses: string) => {
+      return await api.get<ActivePositions>(
+        `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${addresses}`
       );
     },
-    getSaverPositions: async (address: string) => {
-      return await api.get<saverPositions>(
-        `https://api-v2-prod.thorwallet.org/saver/positions?addresses=${address}`
+    getSaverPositions: async (addresses: string) => {
+      return await api.get<SaverPositions>(
+        `https://api-v2-prod.thorwallet.org/saver/positions?addresses=${addresses}`
       );
     },
     getTGTstake: async (address: string) => {
-      return await api.get<TGT>(
+      return await api.get<{ stakedAmount: number; reward: number }>(
         `https://api-v2-prod.thorwallet.org/stake/${address}`
       );
     },
     getRuneProvider: async (address: string) => {
-      return await api.get<RuneProvider>(
+      return await api.get<{ value: number }>(
         `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
       );
     },
@@ -329,10 +321,23 @@ const service = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    cmc: async (address: string) => {
-      return await api.get<CMC.ID>(
-        `https://api.vultisig.com/cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
-      );
+    cmc: (address: string): Promise<number> => {
+      return new Promise((resolve) => {
+        api
+          .get<{
+            data: { [cmcId: string]: { id: number } };
+          }>(
+            `https://api.vultisig.com/cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
+          )
+          .then(({ data }) => {
+            const [key] = Object.keys(data.data);
+
+            key ? resolve(parseInt(key)) : resolve(0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
     },
     del: async (vault: VaultProps, coin: CoinProps) => {
       return await api.delete(
@@ -343,7 +348,7 @@ const service = {
     value: (id: number, currency: Currency): Promise<number> => {
       return new Promise((resolve) => {
         api
-          .get<CMC.Value>(
+          .get<CMC.Result>(
             `https://api.vultisig.com/cmc/v2/cryptocurrency/quotes/latest?id=${id}&skip_invalid=true&aux=is_active&convert=${currency}`
           )
           .then(({ data }) => {
@@ -362,12 +367,28 @@ const service = {
           });
       });
     },
-    values: async (ids: number[], currency: Currency) => {
-      return await api.get<CMC.Value>(
-        `https://api.vultisig.com/cmc/v2/cryptocurrency/quotes/latest?id=${ids
-          .filter((id) => id > 0)
-          .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
-      );
+    values: async (ids: number[], currency: Currency): Promise<CMC.Props> => {
+      return new Promise((resolve) => {
+        const modifedData: CMC.Props = {};
+
+        api
+          .get<CMC.Result>(
+            `https://api.vultisig.com/cmc/v2/cryptocurrency/quotes/latest?id=${ids
+              .filter((id) => id > 0)
+              .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
+          )
+          .then(({ data }) => {
+            Object.entries(data.data).forEach(([key, value]) => {
+              modifedData[key] =
+                (value.quote[currency] && value.quote[currency].price) ?? 0;
+            });
+
+            resolve(modifedData);
+          })
+          .catch(() => {
+            resolve(modifedData);
+          });
+      });
     },
     coingeckoValue: async (priceProviderId: string, currency: Currency) => {
       return await api.get<{ cacao: { [language: string]: number } }>(

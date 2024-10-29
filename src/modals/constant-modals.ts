@@ -7,6 +7,7 @@ export default keyMirror({
   CHOOSE_TOKEN: true,
   DELETE_VAULT: true,
   JOIN_AIRDROP: true,
+  LOGOUT_VAULT: true,
   MENU: true,
   QR_CODE: true,
   RENAME_VAULT: true,

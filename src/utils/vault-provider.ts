@@ -645,16 +645,7 @@ export default class VaultProvider {
       if (coin.isLocally) {
         resolve(coin.cmcId);
       } else {
-        api.coin
-          .cmc(coin.contractAddress)
-          .then(({ data }) => {
-            const [key] = Object.keys(data.data);
-
-            key ? resolve(parseInt(key)) : resolve(0);
-          })
-          .catch(() => {
-            resolve(0);
-          });
+        api.coin.cmc(coin.contractAddress).then(resolve);
       }
     });
   };
@@ -674,7 +665,8 @@ export default class VaultProvider {
               Object.entries(data.tokens).forEach(([key, value]) => {
                 const notFound =
                   defTokens.findIndex(
-                    (token) => token.contractAddress === key
+                    (token) =>
+                      token.contractAddress.toLowerCase() === key.toLowerCase()
                   ) < 0;
 
                 if (notFound) {
@@ -775,14 +767,11 @@ export default class VaultProvider {
         if (cmcIds.length) {
           api.coin
             .values(cmcIds, currency)
-            .then(({ data }) => {
+            .then((values) => {
               resolve(
                 modifedCoins.map((coin) => ({
                   ...coin,
-                  value:
-                    data?.data && data.data[coin.cmcId]?.quote
-                      ? data.data[coin.cmcId].quote[currency]?.price || 0
-                      : coin.value,
+                  value: values[coin.cmcId] ?? coin.value,
                 }))
               );
             })
@@ -811,7 +800,7 @@ export default class VaultProvider {
 
       vault.chains = vault.chains.slice().sort((a, b) => b.balance - a.balance);
 
-      vault.balance = vault.chains.reduce(
+      vault.currentBalance = vault.chains.reduce(
         (acc, chain) => acc + chain.balance,
         0
       );

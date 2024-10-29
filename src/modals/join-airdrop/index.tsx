@@ -74,7 +74,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
       open={visible}
       width={550}
     >
-      <span className="heading">Registred Vaults:</span>
+      <span className="heading">Registered Vaults:</span>
 
       <List
         dataSource={vaults}

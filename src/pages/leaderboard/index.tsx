@@ -13,6 +13,7 @@ import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
 
 interface InitialState {
+  balance: number;
   data: VaultProps[];
   loaded: boolean;
   loading: boolean;
@@ -22,6 +23,7 @@ interface InitialState {
 
 const Component: FC = () => {
   const initialState: InitialState = {
+    balance: 0,
     data: [],
     loaded: false,
     loading: false,
@@ -29,7 +31,7 @@ const Component: FC = () => {
     total: 0,
   };
   const [state, setState] = useState(initialState);
-  const { data, loaded, loading, pageSize, total } = state;
+  const { balance, data, loaded, loading, pageSize, total } = state;
   const { changePage, currency } = useBaseContext();
   const { changeVault, vault, vaults } = useOutletContext<VaultOutletContext>();
 
@@ -47,6 +49,7 @@ const Component: FC = () => {
             ...prevState,
             loaded: true,
             loading: false,
+            balance: data.totalBalance,
             data: [...prevState.data, ...data.vaults],
             total: data.totalVaultCount,
           }));
@@ -77,6 +80,17 @@ const Component: FC = () => {
         <Warning />
       </div>
 
+      <div className="stats">
+        <div className="item">
+          <span className="label">Total Value of Airdrop Vaults</span>
+          <span className="value">{`$${balance.toNumberFormat()}`}</span>
+        </div>
+        <div className="item">
+          <span className="label">Total Registered Wallets</span>
+          <span className="value">{total.toNumberFormat()}</span>
+        </div>
+      </div>
+
       <div className="breadcrumb">
         <VaultDropdown
           vault={vault}
@@ -86,7 +100,7 @@ const Component: FC = () => {
 
         <div className="result">
           <div className="item point">
-            <Tooltip title="Points and balances are always updated end of the day">
+            <Tooltip title="Points and balances are always updated at the end of the day">
               <span className="info">
                 <Info />
               </span>
@@ -100,7 +114,7 @@ const Component: FC = () => {
           <div className="item rank">
             <img src="/ranks/basic.svg" className="icon" />
             <span className="label">YOUR POSITION</span>
-            <span className="value">{`${vault.rank.toNumberFormat()} / ${total.toNumberFormat()}`}</span>
+            <span className="value">{`${vault.rank.toNumberFormat()}`}</span>
           </div>
         </div>
       </div>
@@ -141,9 +155,9 @@ const Component: FC = () => {
                 </div>
                 <div className="balance">
                   <span className="date">
-                    {dayjs(registeredAt).format("DD MMM, YYYY")}
+                    {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
-                  <span className="price">{`${balance.toValueFormat(
+                  <span className="price">{`${(rank===vault.rank?vault.balance||vault.currentBalance||0:balance).toValueFormat(
                     currency
                   )}`}</span>
                 </div>
@@ -163,7 +177,7 @@ const Component: FC = () => {
                 <img src="/avatar/2.png" className="bottom" />
                 <img src="/avatar/3.png" className="top" />
               </div>
-              <div className="stats">
+              <div className="loadmore">
                 <span className="numb">{`+ ${(
                   (vault.rank > data.length ? vault.rank - 1 : total) -
                   data.length
@@ -184,9 +198,9 @@ const Component: FC = () => {
               </div>
               <div className="balance">
                 <span className="date">
-                  {dayjs(vault.registeredAt).format("DD MMM, YYYY")}
+                  {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
-                <span className="price">{`${vault.balance.toValueFormat(
+                <span className="price">{`${(vault.balance||vault.currentBalance||0).toValueFormat(
                   currency
                 )}`}</span>
               </div>

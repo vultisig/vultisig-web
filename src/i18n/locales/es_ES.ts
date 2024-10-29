@@ -42,8 +42,10 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SECURE_CRYPTO_VAULT]: "BÓVEDA CRIPTO SEGURA",
   [translation.SHARE_VAULT]: "Comparte la Vault",
-  [translation.SHARE_SETTINGS_TITLE]: "Personaliza tus páginas de bóveda compartida",
-  [translation.SHARE_SETTINGS]: "Personalizar la apariencia de la bóveda compartida",
+  [translation.SHARE_SETTINGS_TITLE]:
+    "Personaliza tus páginas de bóveda compartida",
+  [translation.SHARE_SETTINGS]:
+    "Personalizar la apariencia de la bóveda compartida",
   [translation.SHARE_VAULT_THEME]: "Tema de la bóveda compartida",
   [translation.SHARE_VAULT_LOGO]: "Logotipo de la bóveda compartida",
   [translation.SHARE_CURRENT_LOGO]: "Tu logotipo actual",

@@ -25,6 +25,10 @@ export default {
   // L
   [translation.LANGUAGE]: "Language",
   [translation.LOGO]: "Logo",
+  [translation.LOGOUT]: "Logout",
+  [translation.LOGOUT_VAULT]: "Logout your vault from web",
+  [translation.LOGOUT_VAULT_TITLE]: "Logout Vault",
+  [translation.LOGOUT_VAULT_WARNING]: "You are login out Vault",
   // M
   // N
   // O

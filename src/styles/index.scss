@@ -12,7 +12,6 @@
 @use "../components/download-vultisig";
 @use "../components/preloader";
 @use "../components/position-item";
-@use "../components/no-data";
 @use "../components/splash-screen";
 @use "../components/token-actions";
 @use "../components/token-image";
@@ -23,6 +22,7 @@
 @use "../modals/change-language";
 @use "../modals/delete-vault";
 @use "../modals/join-airdrop";
+@use "../modals/logout-vault";
 @use "../modals/qr-code";
 @use "../modals/rename-vault";
 @use "../modals/shared-settings";

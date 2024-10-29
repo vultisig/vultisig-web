@@ -24,6 +24,10 @@ export default keyMirror({
   // L
   LANGUAGE: true,
   LOGO: true,
+  LOGOUT: true,
+  LOGOUT_VAULT: true,
+  LOGOUT_VAULT_TITLE: true,
+  LOGOUT_VAULT_WARNING: true,
   // M
   // N
   // O

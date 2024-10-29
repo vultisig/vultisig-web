@@ -1,168 +1,194 @@
 @use "~variables" as *;
 
-.position-item-wrapper {
+.position-item {
+  background-color: $blue-base;
+  border-radius: rem(8);
+  padding: rem(12);
+
   .title {
-    margin-bottom: rem(8);
-    margin-top: rem(24);
+    display: block;
+    font-size: rem(16);
+    font-weight: 500;
+    line-height: rem(22);
   }
 
-  .type {
-    height: rem(44);
-    padding-left: rem(48);
-    position: relative;
-    justify-content: center;
-    min-width: rem(150);
-
-    .name {
-      display: block;
-      font-weight: 700;
-      line-height: rem(22);
-      width: 100%;
-    }
-    .name-center {
-      display: block;
-      line-height: rem(41.2);
-    }
-    .text {
-      display: block;
-      font-size: rem(12);
-      font-weight: 600;
-      line-height: rem(22);
-    }
-  }
-  .token-image {
-    height: rem(32);
-    left: 0;
-    position: absolute;
-    top: rem(6);
-    width: rem(32);
-  }
-
-  .link-to-address {
+  .empty {
+    align-items: center;
+    background-image: linear-gradient(
+      90deg,
+      $blue-light,
+      rgba($blue-light, 0.3)
+    );
+    border-radius: rem(8);
+    display: flex;
     gap: rem(12);
-    justify-content: center;
-    padding: rem(12) 0;
+    margin-top: rem(12);
+    padding: rem(22) rem(20);
 
-    a {
+    span {
+      color: $gray-7;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    svg {
+      fill: $gray-7;
+      height: rem(32);
+      width: rem(32);
+    }
+  }
+
+  .loading {
+    align-items: center;
+    background-image: linear-gradient(
+      90deg,
+      $blue-light,
+      rgba($blue-light, 0.3)
+    );
+    border-radius: rem(8);
+    display: flex;
+    justify-content: center;
+    margin-top: rem(12);
+    padding: rem(28) 0;
+  }
+
+  .list {
+    margin-top: rem(12);
+
+    .type {
+      .token-image {
+        height: rem(32);
+        margin: 0 auto;
+        width: rem(32);
+      }
+
+      .name {
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+        margin-top: rem(8);
+        text-align: center;
+      }
+
+      .text {
+        display: block;
+        font-size: rem(12);
+        font-weight: 600;
+        line-height: rem(22);
+        text-align: center;
+      }
+    }
+
+    .amount {
       align-items: center;
       display: flex;
-      position: relative;
-      z-index: 1;
-      svg {
-        fill: $cyan-base;
-        height: rem(20);
-        width: rem(20);
+      justify-content: center;
+      gap: rem(24);
+
+      span {
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(22);
+      }
+
+      a {
+        display: block;
+
+        svg {
+          fill: $cyan-base;
+          height: rem(22);
+          width: rem(22);
+        }
       }
     }
-  }
-  .lp-amount {
-    display: flex;
-    justify-content: flex-end !important;
 
-    .lp-item {
-      padding: rem(12) rem(8);
-    }
-  }
-
-  .lp-row {
-    margin-top: rem(8);
-    background-color: $blue-base;
-    border-radius: rem(8);
-    overflow: hidden;
-    justify-content: space-between;
-    padding: rem(16) rem(20);
-    position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-
-    .lp-pool {
+    .pool {
       display: flex;
-      width: 100%;
+      justify-content: space-between;
+      gap: rem(12);
+    }
 
-      .convert {
-        padding: rem(12) rem(24);
+    .item {
+      background-image: linear-gradient(
+        90deg,
+        $blue-light,
+        rgba($blue-light, 0.3)
+      );
+      border-radius: rem(8);
+      display: flex;
+      gap: rem(12);
+      justify-content: space-between;
+      padding: rem(12) rem(20);
+      overflow: hidden;
+      position: relative;
+
+      + .item {
+        margin-top: rem(12);
+      }
+
+      &.full {
+        flex-direction: column;
       }
     }
+  }
+
+  + .position-item {
+    margin-top: rem(24);
   }
 }
 
 html[theme="dark"] {
-  .position-item-wrapper {
-    .lp-row {
-      background-color: $gray-12;
-    }
+  .position-item {
+    background-color: $gray-12;
   }
 }
 
 html[theme="light"] {
-  .position-item-wrapper {
-    .lp-row {
-      background-color: $gray-3;
-    }
+  .position-item {
+    background-color: $gray-3;
   }
 }
 
-@media (max-width: rem(650)) {
-  .position-item-wrapper {
-    .lp-row {
-      flex-wrap: wrap;
-      .lp-amount {
-        justify-content: left !important;
-        padding: 0;
-        margin-top: rem(16);
-        width: 100%;
-      }
-    }
-  }
-  .type {
-    min-width: rem(160);
-  }
-}
+@media (min-width: rem(567)) {
+  .position-item {
+    padding: rem(20);
 
-@media (max-width: rem(532)) {
-  .position-item-wrapper {
-    .lp-row {
-      padding: rem(8);
-      display: flex;
-      flex-wrap: wrap;
-      height: rem(144);
-      .lp-pool {
-        display: flex;
-        justify-content: space-between;
-        gap: rem(8);
-        .lp-item {
-          padding-left: rem(0);
-          width: 100%;
-          .token-image {
-            position: relative;
-            margin: auto;
-          }
-          .name {
-            margin-top: rem(16);
-            text-align: center;
-          }
-          .text {
-            text-align: center;
-          }
+    .list {
+      .type {
+        padding-left: rem(44);
+        position: relative;
+
+        .token-image {
+          left: 0;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
         }
-        .convert {
-          padding: rem(16);
-          max-width: rem(50);
-          img {
-            margin: rem(16) auto;
-          }
+
+        .name {
+          margin-top: 0;
+          text-align: left;
+        }
+
+        .text {
+          text-align: left;
         }
       }
-      .lp-amount {
-        justify-content: center !important;
-        padding: 0;
-        align-items: end;
-        margin-top: 0;
-        width: 100%;
+
+      .pool {
+        gap: rem(20);
       }
-    }
-    .type {
-      min-width: 0;
+
+      .item {
+        padding: rem(16) rem(20);
+
+        &.full {
+          flex-direction: row;
+        }
+      }
     }
   }
 }

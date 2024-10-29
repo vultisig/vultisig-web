@@ -124,7 +124,7 @@ const Component: FC = () => {
             ).length <= 0
           }
           dataSource={modifiedTokens.filter(({ isLocally, ticker }) =>
-            search.length < 3
+            search.length < 2
               ? isLocally
               : ticker.toLowerCase().indexOf(search) >= 0
           )}

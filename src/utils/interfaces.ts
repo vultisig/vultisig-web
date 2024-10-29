@@ -142,6 +142,24 @@ export interface OneInchRef {
   [chain: string]: number;
 }
 
+export interface PositionProps {
+  base?: {
+    chain: ChainKey;
+    price: number;
+    tiker: string;
+    tokenAddress: string;
+    tokenAmount: string;
+    reward?: number;
+  };
+  target?: {
+    chain: ChainKey;
+    price: number;
+    tiker: string;
+    tokenAddress: string;
+    tokenAmount: string;
+  };
+}
+
 export interface QRCodeProps {
   file: FileProps;
   vault: VaultProps;
@@ -173,11 +191,23 @@ export interface VaultProps {
   alias: string;
   balance: number;
   chains: ChainProps[];
+  currentBalance: number;
   hexChainCode: string;
   isActive: boolean;
   joinAirdrop: boolean;
   logo: string;
   name: string;
+  positions: {
+    mayaBond?: PositionProps[];
+    mayaLiquidity?: PositionProps[];
+    runeProvider?: PositionProps[];
+    saverPosition?: PositionProps[];
+    tgtStake?: PositionProps[];
+    thorBond?: PositionProps[];
+    thorLiquidity?: PositionProps[];
+    wewePositions?: PositionProps[];
+    updated?: boolean;
+  };
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   rank: number;
@@ -193,6 +223,7 @@ export interface VaultOutletContext {
   changeVault: (vault: VaultProps, prepare?: boolean) => void;
   deleteVault: (vault: VaultProps) => void;
   updateVault: (vault: VaultProps) => void;
+  updateVaultPositions: (vault: VaultProps) => void;
   toggleToken: (coin: TokenProps, vault: VaultProps) => Promise<void>;
   layout: LayoutKey;
   tokens: TokenProps[];

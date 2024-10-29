@@ -67,6 +67,23 @@ const Component: FC = () => {
     }
   };
 
+  const updateVault = (vault: VaultProps): void => {
+    setState((prevState) => ({ ...prevState, vault }));
+  };
+
+  const updateVaultPositions = (vault: VaultProps): void => {
+    setState((prevState) => {
+      const modifiedVault = prevState.vault
+        ? {
+            ...prevState.vault,
+            positions: { ...prevState.vault.positions, ...vault.positions },
+          }
+        : vault;
+
+      return { ...prevState, vault: modifiedVault };
+    });
+  };
+
   const componentDidMount = (): void => {
     if (uid && /^[a-fA-F0-9]{64}$/.test(uid)) {
       api.vault
@@ -103,7 +120,14 @@ const Component: FC = () => {
           logo={vault.logo}
           uid={vault.uid}
         />
-        <Outlet context={{ layout: LayoutKey.SHARED, vault }} />
+        <Outlet
+          context={{
+            layout: LayoutKey.SHARED,
+            vault,
+            updateVault,
+            updateVaultPositions,
+          }}
+        />
         <div className="layout-footer">
           <span className="powered_by">{t(constantKeys.POWERED_BY)} </span>
           <Link to="https://vultisig.com/">Vultisig</Link>
