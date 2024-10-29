@@ -25,14 +25,8 @@ import PositionItem from "components/position-item";
 
 const Component: FC = () => {
   const { changePage, currency } = useBaseContext();
-  const {
-    changeVault,
-    layout,
-    vault,
-    vaults,
-    updateVault,
-    updateVaultPositions,
-  } = useOutletContext<VaultOutletContext>();
+  const { layout, vault, updateVault, updatePositions } =
+    useOutletContext<VaultOutletContext>();
   const {
     mayaBond,
     mayaLiquidity,
@@ -175,7 +169,7 @@ const Component: FC = () => {
           });
         })
         .finally(() => {
-          updateVaultPositions({
+          updatePositions({
             ...vault,
             positions: { mayaLiquidity, thorLiquidity },
           });
@@ -204,7 +198,7 @@ const Component: FC = () => {
         });
       }
 
-      updateVaultPositions({ ...vault, positions: { mayaBond } });
+      updatePositions({ ...vault, positions: { mayaBond } });
 
       resolve();
     });
@@ -234,7 +228,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { runeProvider },
             });
@@ -242,7 +236,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { runeProvider },
         });
@@ -271,6 +265,7 @@ const Component: FC = () => {
               if (id) cmcIds.push(id);
             }
           });
+
           if (cmcIds.length) {
             api.coin
               .values(cmcIds, currency)
@@ -297,7 +292,7 @@ const Component: FC = () => {
                 });
               })
               .finally(() => {
-                updateVaultPositions({
+                updatePositions({
                   ...vault,
                   positions: { saverPosition },
                 });
@@ -305,7 +300,7 @@ const Component: FC = () => {
                 resolve();
               });
           } else {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { saverPosition },
             });
@@ -314,7 +309,7 @@ const Component: FC = () => {
           }
         })
         .catch(() => {
-          updateVaultPositions({
+          updatePositions({
             ...vault,
             positions: { saverPosition },
           });
@@ -360,7 +355,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { thorBond },
             });
@@ -368,7 +363,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { thorBond },
         });
@@ -401,7 +396,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { tgtStake },
             });
@@ -409,7 +404,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { tgtStake },
         });
@@ -447,7 +442,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { wewePositions },
             });
@@ -455,7 +450,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { wewePositions },
         });
@@ -475,7 +470,7 @@ const Component: FC = () => {
       const tgtCMCId = getCMC(ChainKey.ARBITRUM, TickerKey.TGT);
       const usdtCMCId = getCMC(ChainKey.ETHEREUM, TickerKey.USDT);
 
-      updateVaultPositions({ ...vault, positions: { updated: true } });
+      updatePositions({ ...vault, positions: { updated: true } });
 
       api.coin
         .values([runeCMCId, tgtCMCId, usdtCMCId], currency)
@@ -504,11 +499,7 @@ const Component: FC = () => {
     <div className="layout-content positions-page">
       {layout === LayoutKey.VAULT && (
         <div className="breadcrumb">
-          <VaultDropdown
-            vault={vault}
-            vaults={vaults}
-            changeVault={changeVault}
-          />
+          <VaultDropdown />
           <Tooltip title="Refresh">
             <Button type="link" onClick={() => handleRefresh()}>
               <Synchronize />
@@ -528,8 +519,8 @@ const Component: FC = () => {
 
         <PositionItem
           data={runeProvider}
-          text="No Rune Pool Position Found"
-          title="Rune Pool"
+          text="No Provider Position Found"
+          title="Rune Provider"
         />
 
         <PositionItem

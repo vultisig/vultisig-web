@@ -4,6 +4,7 @@ import { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
 import {
   ChainKey,
   Currency,
+  TickerKey,
   balanceAPI,
   defTokens,
   errorKey,
@@ -72,6 +73,89 @@ export default class VaultProvider {
           .catch(() => {
             reject(errorKey.FAIL_TO_INIT_WASM);
           });
+      }
+    });
+  };
+
+  private getBalance = (
+    address: string,
+    chain: ChainKey,
+    contractAddress: string,
+    decimals: number,
+    isNative: boolean,
+    ticker: string
+  ): Promise<number> => {
+    return new Promise((resolve) => {
+      const path = balanceAPI[chain];
+
+      switch (chain) {
+        // Cosmos
+        case ChainKey.DYDX: {
+          api.balance.cosmos(path, address, decimals, "adydx").then(resolve);
+
+          break;
+        }
+        case ChainKey.GAIACHAIN: {
+          api.balance.cosmos(path, address, decimals, "uatom").then(resolve);
+          break;
+        }
+        case ChainKey.KUJIRA: {
+          api.balance.cosmos(path, address, decimals, "ukuji").then(resolve);
+          break;
+        }
+        case ChainKey.MAYACHAIN: {
+          api.balance
+            .cosmos(path, address, decimals, ticker.toLowerCase())
+            .then(resolve);
+          break;
+        }
+        case ChainKey.THORCHAIN: {
+          api.balance
+            .cosmos(path, address, decimals, ticker.toLowerCase())
+            .then(resolve);
+          break;
+        }
+        // EVM
+        case ChainKey.ARBITRUM:
+        case ChainKey.AVALANCHE:
+        case ChainKey.BASE:
+        case ChainKey.BLAST:
+        case ChainKey.BSCCHAIN:
+        case ChainKey.CRONOSCHAIN:
+        case ChainKey.ETHEREUM:
+        case ChainKey.OPTIMISM:
+        case ChainKey.POLYGON: {
+          api.balance
+            .evm(path, address, decimals, contractAddress, isNative)
+            .then(resolve);
+
+          break;
+        }
+        case ChainKey.POLKADOT: {
+          api.balance.polkadot(path, address).then(resolve);
+
+          break;
+        }
+        case ChainKey.SOLANA: {
+          api.balance
+            .solana(path, address, decimals, contractAddress, isNative)
+            .then(resolve);
+
+          break;
+        }
+        // UTXO
+        case ChainKey.BITCOIN:
+        case ChainKey.BITCOINCASH:
+        case ChainKey.DASH:
+        case ChainKey.DOGECOIN:
+        case ChainKey.LITECOIN: {
+          api.balance.utxo(path, address, decimals).then(resolve);
+
+          break;
+        }
+        default:
+          resolve(0);
+          break;
       }
     });
   };
@@ -329,92 +413,6 @@ export default class VaultProvider {
     });
   };
 
-  private getCacaoValue = (
-    coins: CoinProps[],
-    currency: Currency
-  ): Promise<number> => {
-    return new Promise((resolve) => {
-      const cacao = coins.find(({ ticker }) => ticker === "CACAO");
-
-      if (cacao && cacao.balance) {
-        api.coin
-          .coingeckoValue(cacao.ticker, currency)
-          .then(({ data }) => {
-            resolve(data?.cacao ? data.cacao[currency.toLowerCase()] || 0 : 0);
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      } else {
-        resolve(0);
-      }
-    });
-  };
-
-  private getMayaValue = (
-    coins: CoinProps[],
-    currency: Currency
-  ): Promise<number> => {
-    return new Promise((resolve) => {
-      const maya = coins.find(({ ticker }) => ticker === "MAYA");
-
-      if (maya && maya.balance) {
-        const usdt = defTokens.find(({ ticker }) => ticker === "USDT");
-
-        api.coin
-          .value(usdt!.cmcId, currency)
-          .then((price) => {
-            resolve(price * 40);
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      } else {
-        resolve(0);
-      }
-    });
-  };
-
-  private getVThorValue = (
-    coins: CoinProps[],
-    currency: Currency
-  ): Promise<number> => {
-    return new Promise((resolve) => {
-      const vThor = coins.find(({ ticker }) => ticker === "vTHOR");
-
-      if (vThor && vThor.balance) {
-        const thor = defTokens.find(({ ticker }) => ticker === "THOR");
-
-        api.coin
-          .value(thor!.cmcId, currency)
-          .then((thorPriceCurrency) => {
-            api.coin
-              .value(thor!.cmcId, Currency.USD)
-              .then((thorPriceUSD) => {
-                api.coin
-                  .lifiValue(vThor.contractAddress)
-                  .then((vTHORUPriceUSD) => {
-                    resolve(
-                      (vTHORUPriceUSD * thorPriceCurrency) / thorPriceUSD
-                    );
-                  })
-                  .catch(() => {
-                    resolve(0);
-                  });
-              })
-              .catch(() => {
-                resolve(0);
-              });
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      } else {
-        resolve(0);
-      }
-    });
-  };
-
   public addToken = (
     token: TokenProps,
     vault: VaultProps,
@@ -449,31 +447,32 @@ export default class VaultProvider {
                   value: 0,
                 };
 
-                this.getBalance(newCoin, newCoin.chain, newCoin.address).then(
-                  ({ balance }) => {
-                    if (balance) {
-                      newCoin.balance = balance;
+                this.getBalance(
+                  newCoin.address,
+                  newCoin.chain,
+                  newCoin.contractAddress,
+                  newCoin.decimals,
+                  newCoin.isNative,
+                  newCoin.ticker
+                ).then((balance) => {
+                  if (balance) {
+                    newCoin.balance = balance;
 
-                      this.getValues([newCoin], currency).then(
-                        ([{ value }]) => {
-                          newCoin.value = value;
+                    this.getValues([newCoin], currency).then(([{ value }]) => {
+                      newCoin.value = value;
 
-                          resolve(newCoin);
-                        }
-                      );
-                    } else {
                       resolve(newCoin);
-                    }
+                    });
+                  } else {
+                    resolve(newCoin);
                   }
-                );
+                });
               })
               .catch((error) => {
                 reject(error);
               });
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch(reject);
       });
     });
   };
@@ -515,127 +514,6 @@ export default class VaultProvider {
         )?.address;
 
         address ? resolve(address) : reject(errorKey.INVALID_TOKEN);
-      }
-    });
-  };
-
-  public getBalance = (
-    coin: CoinProps,
-    chain: ChainKey,
-    address: string
-  ): Promise<CoinProps> => {
-    return new Promise((resolve) => {
-      const path = balanceAPI[chain];
-
-      switch (chain) {
-        // Cosmos
-        case ChainKey.DYDX: {
-          api.balance
-            .cosmos(path, address, coin.decimals, "adydx")
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-
-          break;
-        }
-        case ChainKey.GAIACHAIN: {
-          api.balance
-            .cosmos(path, address, coin.decimals, "uatom")
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-          break;
-        }
-        case ChainKey.KUJIRA: {
-          api.balance
-            .cosmos(path, address, coin.decimals, "ukuji")
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-          break;
-        }
-        case ChainKey.MAYACHAIN: {
-          api.balance
-            .cosmos(path, address, coin.decimals, coin.ticker.toLowerCase())
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-          break;
-        }
-        case ChainKey.THORCHAIN: {
-          api.balance
-            .cosmos(path, address, coin.decimals, "rune")
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-          break;
-        }
-        // EVM
-        case ChainKey.ARBITRUM:
-        case ChainKey.AVALANCHE:
-        case ChainKey.BASE:
-        case ChainKey.BLAST:
-        case ChainKey.BSCCHAIN:
-        case ChainKey.CRONOSCHAIN:
-        case ChainKey.ETHEREUM:
-        case ChainKey.OPTIMISM:
-        case ChainKey.POLYGON: {
-          api.balance
-            .evm(
-              path,
-              address,
-              coin.decimals,
-              coin.contractAddress,
-              coin.isNative
-            )
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-
-          break;
-        }
-        case ChainKey.POLKADOT: {
-          api.balance
-            .polkadot(path, address)
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            })
-            .catch(() => {
-              resolve({ ...coin, balance: 0 });
-            });
-
-          break;
-        }
-        case ChainKey.SOLANA: {
-          api.balance
-            .solana(
-              path,
-              address,
-              coin.decimals,
-              coin.contractAddress,
-              coin.isNative
-            )
-            .then((balance) => {
-              resolve({ ...coin, balance });
-            });
-
-          break;
-        }
-        // UTXO
-        case ChainKey.BITCOIN:
-        case ChainKey.BITCOINCASH:
-        case ChainKey.DASH:
-        case ChainKey.DOGECOIN:
-        case ChainKey.LITECOIN: {
-          api.balance.utxo(path, address, coin.decimals).then((balance) => {
-            resolve({ ...coin, balance });
-          });
-
-          break;
-        }
-        default:
-          resolve({ ...coin, balance: 0 });
-          break;
       }
     });
   };
@@ -696,19 +574,27 @@ export default class VaultProvider {
               api.discovery.info
                 .spl(tokens.map(({ contractAddress }) => contractAddress))
                 .then(({ data }) => {
-                  const promises = tokens.map((token) => this.getCMC(token));
+                  const modifiedTokens = tokens.filter(
+                    ({ contractAddress }) => !!data[contractAddress]
+                  );
+                  const promises = modifiedTokens.map((token) =>
+                    this.getCMC(token)
+                  );
 
                   Promise.all(promises).then((numbers) => {
-                    tokens.forEach((token, index) => {
-                      const item = data[token.contractAddress];
+                    resolve(
+                      modifiedTokens.map((token, index) => {
+                        const item = data[token.contractAddress];
 
-                      token.cmcId = numbers[index];
-                      token.isLocally = true;
-                      token.logo = item.tokenList.image;
-                      token.ticker = item.tokenList.symbol;
-                    });
-
-                    resolve(tokens);
+                        return {
+                          ...token,
+                          cmcId: numbers[index],
+                          isLocally: true,
+                          logo: item.tokenList.image,
+                          ticker: item.tokenList.symbol,
+                        };
+                      })
+                    );
                   });
                 })
                 .catch(() => {
@@ -732,146 +618,108 @@ export default class VaultProvider {
     currency: Currency
   ): Promise<CoinProps[]> => {
     return new Promise((resolve) => {
-      const promises = [
-        this.getCacaoValue(coins, currency),
-        this.getMayaValue(coins, currency),
-        this.getVThorValue(coins, currency),
-      ];
-
-      Promise.all(promises).then(([cacao, maya, vThor]) => {
-        const modifedCoins = coins.map((coin) => {
-          let value: number;
-
+      const promises = coins.map((coin) => {
+        if (coin.balance) {
           switch (coin.ticker) {
-            case "CACAO":
-              value = cacao;
-              break;
-            case "MAYA":
-              value = maya;
-              break;
-            case "vTHOR":
-              value = vThor;
-              break;
+            case TickerKey.CACAO:
+              return api.coin
+                .coingeckoValue(coin.ticker, currency)
+                .then((value) => {
+                  coin.value = value;
+                });
+            case TickerKey.MAYA:
+              const usdt = defTokens.find(
+                ({ chain, ticker }) =>
+                  chain === ChainKey.ETHEREUM && ticker === TickerKey.USDT
+              );
+
+              return api.coin.value(usdt!.cmcId, currency).then((value) => {
+                coin.value = value * 40;
+              });
+            case TickerKey.VTHOR:
+              const thor = defTokens.find(
+                ({ chain, ticker }) =>
+                  chain === ChainKey.ETHEREUM && ticker === TickerKey.THOR
+              );
+
+              return Promise.all([
+                api.coin.value(thor!.cmcId, currency),
+                api.coin.value(thor!.cmcId, Currency.USD),
+                api.coin.lifiValue(coin.contractAddress),
+              ]).then(([thorPriceCurrency, thorPriceUSD, vTHORUPriceUSD]) => {
+                coin.value =
+                  (vTHORUPriceUSD * thorPriceCurrency) / thorPriceUSD;
+              });
             default:
-              value = 0;
-              break;
+              coin.value = 0;
+
+              return false;
           }
+        } else {
+          coin.value = 0;
 
-          return { ...coin, value };
-        });
+          return false;
+        }
+      });
 
+      Promise.all(promises).then(() => {
         const cmcIds = coins
           .filter(({ balance, cmcId }) => balance > 0 && cmcId > 0)
           .map(({ cmcId }) => cmcId);
 
         if (cmcIds.length) {
-          api.coin
-            .values(cmcIds, currency)
-            .then((values) => {
-              resolve(
-                modifedCoins.map((coin) => ({
-                  ...coin,
-                  value: values[coin.cmcId] ?? coin.value,
-                }))
-              );
-            })
-            .catch(() => {
-              resolve(modifedCoins);
-            });
+          api.coin.values(cmcIds, currency).then((values) => {
+            resolve(
+              coins.map((coin) => ({
+                ...coin,
+                value: values[coin.cmcId] ?? coin.value,
+              }))
+            );
+          });
         } else {
-          resolve(modifedCoins);
+          resolve(coins);
         }
       });
     });
   };
 
-  public prepareVault = (vault: VaultProps): VaultProps => {
-    if (vault.updated) {
-      vault.chains = vault.chains.map((chain) => ({
-        ...chain,
-        balance: chain.coins.reduce(
-          (acc, coin) => acc + coin.balance * coin.value,
-          0
-        ),
-        coins: chain.coins
-          .slice()
-          .sort((a, b) => b.balance * b.value - a.balance * a.value),
-      }));
-
-      vault.chains = vault.chains.slice().sort((a, b) => b.balance - a.balance);
-
-      vault.currentBalance = vault.chains.reduce(
-        (acc, chain) => acc + chain.balance,
-        0
+  public prepareChain = (
+    chain: ChainProps,
+    currency: Currency
+  ): Promise<ChainProps> => {
+    return new Promise((resolve) => {
+      const promises = chain.coins.map((coin) =>
+        this.getBalance(
+          chain.address,
+          chain.name,
+          coin.contractAddress,
+          coin.decimals,
+          coin.isNative,
+          coin.ticker
+        ).then((balance) => {
+          coin.balance = balance;
+        })
       );
-    }
 
-    return vault;
+      Promise.all(promises).then(() => {
+        this.getValues(chain.coins, currency).then((coins) => {
+          resolve({ ...chain, coins });
+        });
+      });
+    });
   };
 
-  public toggleToken = (
-    token: TokenProps,
-    vault: VaultProps,
-    currency: Currency
-  ): Promise<VaultProps> => {
-    return new Promise((resolve, reject) => {
-      const selectedChain = vault.chains.find(
-        ({ name }) => name === token.chain
-      );
-
-      const selectedCoin = selectedChain?.coins.find(
-        ({ ticker }) => ticker === token.ticker
-      );
-
-      if (selectedCoin) {
-        api.coin
-          .del(vault, selectedCoin)
-          .then(() => {
-            resolve({
-              ...vault,
-              chains: vault.chains
-                .map((chain) => ({
-                  ...chain,
-                  coins:
-                    token.isNative && token.chain === chain.name
-                      ? []
-                      : chain.coins.filter(
-                          ({ ticker }) =>
-                            token.chain !== chain.name ||
-                            token.ticker !== ticker
-                        ),
-                }))
-                .filter(({ coins }) => !!coins.length),
-            });
-          })
-          .catch(reject);
-      } else {
-        this.addToken(token, vault, currency)
-          .then((newToken) => {
-            resolve({
-              ...vault,
-              chains: selectedChain
-                ? vault.chains.map((chain) => ({
-                    ...chain,
-                    coins:
-                      chain.name === selectedChain.name
-                        ? [...chain.coins, newToken]
-                        : chain.coins,
-                  }))
-                : [
-                    ...vault.chains,
-                    {
-                      address: newToken.address,
-                      balance: 0,
-                      coins: [newToken],
-                      hexPublicKey: newToken.hexPublicKey,
-                      name: newToken.chain,
-                    },
-                  ],
-            });
-          })
-          .catch(reject);
-      }
-    });
+  public sortChain = (chain: ChainProps): ChainProps => {
+    return {
+      ...chain,
+      balance: chain.coins.reduce(
+        (acc, coin) => acc + coin.balance * coin.value,
+        0
+      ),
+      coins: chain.coins
+        .slice()
+        .sort((a, b) => b.balance * b.value - a.balance * a.value),
+      updated: true,
+    };
   };
 }

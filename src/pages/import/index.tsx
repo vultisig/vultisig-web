@@ -31,9 +31,8 @@ const Component: FC = () => {
 
   const handelVault = (vault: VaultProps): Promise<void> => {
     return new Promise((resolve) => {
-      api.vault
-        .add(vault)
-        .then((newVault) => {
+      api.vault.add(vault).then((newVault) => {
+        if (newVault) {
           const vaults = getStoredVaults();
           const index = vaults.findIndex(
             (old) =>
@@ -52,12 +51,10 @@ const Component: FC = () => {
               ...vaults,
             ]);
           }
+        }
 
-          resolve();
-        })
-        .catch(() => {
-          resolve();
-        });
+        resolve();
+      });
     });
   };
 

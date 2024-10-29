@@ -33,7 +33,7 @@ const Component: FC = () => {
   const [state, setState] = useState(initialState);
   const { balance, data, loaded, loading, pageSize, total } = state;
   const { changePage, currency } = useBaseContext();
-  const { changeVault, vault, vaults } = useOutletContext<VaultOutletContext>();
+  const { vault } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
     if (!loading) {
@@ -71,6 +71,9 @@ const Component: FC = () => {
   };
 
   useEffect(componentDidMount, []);
+  
+  const currentBalance =
+    vault?.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0) ?? 0;
 
   return loaded && vault ? (
     <div className="layout-content leaderboard-page">
@@ -92,11 +95,7 @@ const Component: FC = () => {
       </div>
 
       <div className="breadcrumb">
-        <VaultDropdown
-          vault={vault}
-          vaults={vaults}
-          changeVault={changeVault}
-        />
+        <VaultDropdown />
 
         <div className="result">
           <div className="item point">
@@ -157,9 +156,10 @@ const Component: FC = () => {
                   <span className="date">
                     {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
-                  <span className="price">{`${(rank===vault.rank?vault.balance||vault.currentBalance||0:balance).toValueFormat(
-                    currency
-                  )}`}</span>
+                  <span className="price">{`${(rank === vault.rank
+                    ? vault.balance || currentBalance || 0
+                    : balance
+                  ).toValueFormat(currency)}`}</span>
                 </div>
                 {medal && <img src={`/ranks/${medal}.svg`} className="icon" />}
               </div>
@@ -200,9 +200,11 @@ const Component: FC = () => {
                 <span className="date">
                   {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
-                <span className="price">{`${(vault.balance||vault.currentBalance||0).toValueFormat(
-                  currency
-                )}`}</span>
+                <span className="price">{`${(
+                  vault.balance ||
+                  currentBalance ||
+                  0
+                ).toValueFormat(currency)}`}</span>
               </div>
             </div>
           )}
