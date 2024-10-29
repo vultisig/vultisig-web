@@ -45,6 +45,7 @@ const Component: FC = () => {
         loading: false,
         vault: vaultProvider.prepareVault({
           ...vault,
+          positions: vault.positions??{},
           chains: vault.chains.map((chain) => ({
             ...chain,
             coins: chain.coins.map(
