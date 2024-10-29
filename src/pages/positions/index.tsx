@@ -528,8 +528,8 @@ const Component: FC = () => {
 
         <PositionItem
           data={runeProvider}
-          text="No Provider Position Found"
-          title="Rune Provider"
+          text="No Rune Pool Position Found"
+          title="Rune Pool"
         />
 
         <PositionItem
