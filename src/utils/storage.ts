@@ -130,7 +130,7 @@ export const getStoredVaults = (): VaultProps[] => {
     const vaults: VaultProps[] = data ? JSON.parse(data) : [];
 
     return Array.isArray(vaults)
-      ? vaults.map((vault) => ({ ...vault, chains: [] }))
+      ? vaults.map((vault) => ({ ...vault, chains: [], positions: {} }))
       : [];
   } catch {
     return [];

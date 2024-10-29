@@ -1,6 +1,45 @@
 @use "~variables" as *;
 
 .chains-page {
+  .information {
+    background-image: $linear-gradient;
+    border-radius: rem(8);
+    display: block;
+    font-family: $secondary-font;
+    margin-bottom: rem(24);
+    padding: rem(12) rem(12) rem(12) rem(44);
+    position: relative;
+
+    span {
+      display: block;
+      font-size: rem(12);
+      line-height: rem(18);
+      position: relative;
+      text-align: center;
+    }
+
+    svg {
+      fill: $cyan-base;
+      height: rem(24);
+      left: rem(12);
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: rem(24);
+    }
+
+    &::before {
+      background-color: $blue-base;
+      border-radius: rem(8);
+      bottom: rem(1);
+      content: "";
+      left: rem(1);
+      position: absolute;
+      right: rem(1);
+      top: rem(1);
+    }
+  }
+
   .breadcrumb {
     align-items: center;
     display: flex;

@@ -40,17 +40,6 @@ export enum LayoutKey {
   VAULT,
 }
 
-export enum MayaChainKey {
-  ARB = "Arbitrum",
-  BTC = "Bitcoin",
-  BSC = "BSC",
-  DASH = "Dash",
-  ETH = "Ethereum",
-  KUJI = "Kujira",
-  THOR = "THORChain",
-  MAYACHAIN = "MayaChain",
-}
-
 export enum PageKey {
   ASSETS,
   CHAINS,
@@ -63,34 +52,15 @@ export enum PageKey {
   UPLOAD,
 }
 
-export enum TCChainKey {
-  AVAX = "Avalanche",
-  BTC = "Bitcoin",
-  BCH = "BitcoinCash",
-  BSC = "BSC",
-  DOGE = "Dogecoin",
-  ETH = "Ethereum",
-  GAIA = "Cosmos",
-  LTC = "Litecoin",
-  THOR = "THORChain",
-}
-
-export interface PositionInfo {
-  base?: {
-    baseTokenAddress: string;
-    baseChain: string;
-    baseTiker: string;
-    basePriceUsd: number;
-    baseTokenAmount: number;
-    reward?: number;
-  };
-  target?: {
-    targetTokenAddress: string;
-    targetChain: string;
-    targetTiker: string;
-    targetPriceUsd: number;
-    targetTokenAmount: number;
-  };
+export enum TickerKey {
+  CACAO = "CACAO",
+  ETH = "ETH",
+  MAYA = "MAYA",
+  RUNE = "RUNE",
+  TGT = "TGT",
+  USDC = "USDC",
+  USDT = "USDT",
+  WEWE = "WEWE",
 }
 
 export enum Currency {

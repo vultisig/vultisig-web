@@ -1,89 +1,84 @@
 import type { FC } from "react";
 import { Tooltip } from "antd";
+import { CodeSandboxOutlined } from "@ant-design/icons";
 
-import { PositionInfo } from "utils/constants";
-import TokenImage from "components/token-image";
+import { PositionProps } from "utils/interfaces";
 import { useBaseContext } from "context";
+import { TickerKey } from "utils/constants";
+
 import { Hyperlink } from "icons";
+import TokenImage from "components/token-image";
+import VultiLoading from "components/vulti-loading";
 
 interface ComponentProps {
-  data?: PositionInfo[];
-  title?: string;
+  data?: PositionProps[];
+  text: string;
+  title: string;
 }
 
-const Component: FC<ComponentProps> = ({ data, title }) => {
+const Component: FC<ComponentProps> = ({ data, text, title }) => {
   const { currency } = useBaseContext();
 
   return (
-    <div className="position-item-wrapper">
-      <h4 className="title">
-        {title && (
-          <>
-            {title} {" :"}
-          </>
-        )}
-      </h4>
-      <div className="lp">
-        {data?.map((item, index) => (
-          <>
-            <div className="lp-row" key={index}>
-              <div className="lp-pool">
-                {item.base && (
-                  <div className="type lp-item">
-                    <TokenImage alt={item.base.baseTiker} />
-                    <span className="name">{item.base.baseChain}</span>
+    <div className="position-item">
+      <span className="title">{`${title}:`}</span>
 
-                    <span className="text">
-                      {item.base.baseTokenAmount
-                        ? Number(item.base.baseTokenAmount).toLocaleString()
-                        : 0}{" "}
-                      {item.base.baseTiker}
-                    </span>
-                  </div>
-                )}
+      {data ? (
+        data.length ? (
+          <div className="list">
+            {data.map((item, index) => (
+              <div
+                className={`item${item.base && item.target ? " full" : ""}`}
+                key={index}
+              >
+                <div className="pool">
+                  {item.base && (
+                    <div className="type">
+                      <TokenImage alt={item.base.tiker} />
 
-                {item.base && item.target && (
-                  <div className="convert lp-item">
-                    <img src="/images/convert.svg" />
-                  </div>
-                )}
+                      <span className="name">{item.base.chain}</span>
 
-                {item.target && (
-                  <div className="type lp-item">
-                    <TokenImage alt={item.target.targetChain} />
-                    <span className="name">{item.target.targetChain}</span>
-                    <span className="text">
-                      {item.target.targetTokenAmount
-                        ? Number(item.target.targetTokenAmount).toLocaleString()
-                        : 0}{" "}
-                      {item.target.targetTiker}
-                    </span>
-                  </div>
-                )}
-              </div>
+                      <span className="text">
+                        {item.base.tiker === TickerKey.WEWE
+                          ? `${item.base.tokenAmount}% ${TickerKey.WEWE}/${TickerKey.USDC}`
+                          : `${item.base.tokenAmount} ${item.base.tiker}`}
+                      </span>
+                    </div>
+                  )}
 
-              <div className="lp-amount">
-                <div className="lp-item">
-                  {(item.base || item.target) &&
-                    (
-                      (Number(item.base?.reward) || 0) +
-                      (item.base
-                        ? item.base.baseTokenAmount * item.base.basePriceUsd
-                        : 0) +
-                      (item.target
-                        ? item.target.targetTokenAmount *
-                          item.target.targetPriceUsd
-                        : 0)
-                    ).toValueFormat(currency)}
+                  {item.base && item.target && (
+                    <img src="/images/convert.svg" className="convert" />
+                  )}
+
+                  {item.target && (
+                    <div className="type">
+                      <TokenImage alt={item.target.chain} />
+
+                      <span className="name">{item.target.chain}</span>
+
+                      <span className="text">
+                        {`${item.target.tokenAmount} ${item.target.tiker}`}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="lp-item link-to-address">
+
+                <div className="amount">
+                  <span>
+                    {(item.base || item.target) &&
+                      (
+                        (Number(item.base?.reward) || 0) +
+                        (item.base ? item.base.price : 0) +
+                        (item.target ? item.target.price : 0)
+                      ).toValueFormat(currency)}
+                  </span>
                   <Tooltip title="Link to Address">
                     <a
                       href={
                         item.target
-                          ? item.target.targetTokenAddress
-                          : "" + item.base
-                          ? item.base?.baseTokenAddress
+                          ? item.target.tokenAddress
+                          : item.base
+                          ? item.base.tokenAddress
                           : ""
                       }
                       rel="noopener noreferrer"
@@ -94,10 +89,19 @@ const Component: FC<ComponentProps> = ({ data, title }) => {
                   </Tooltip>
                 </div>
               </div>
-            </div>
-          </>
-        ))}
-      </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty">
+            <CodeSandboxOutlined />
+            <span>{text}</span>
+          </div>
+        )
+      ) : (
+        <div className="loading">
+          <VultiLoading />
+        </div>
+      )}
     </div>
   );
 };

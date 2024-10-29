@@ -39,7 +39,20 @@
     width: rem(16);
   }
 
-  .delete {
+  .error {
+    svg {
+      fill: $red-base !important;
+    }
+
+    .ant-list-item-meta-title {
+      color: $red-base !important;
+    }
+    .ant-list-item-meta-description {
+      color: $red-base !important;
+    }
+  }
+
+  .warning {
     svg {
       fill: $orange-base !important;
     }

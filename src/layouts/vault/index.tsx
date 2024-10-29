@@ -19,6 +19,7 @@ import SplashScreen from "components/splash-screen";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
 import DeleteVault from "modals/delete-vault";
+import LogoutVault from "modals/logout-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
 import SharedSettings from "modals/shared-settings";
@@ -115,14 +116,26 @@ const Component: FC = () => {
     delete addresses[vault.publicKeyEddsa];
 
     setStoredAddresses(addresses);
-    setStoredVaults(modifiedVaults);
 
     if (modifiedVaults.length) {
-      const activeVault = vaults.find(({ isActive }) => isActive);
-      const [vault] = activeVault ? [activeVault] : vaults;
+      const activeVault = modifiedVaults.find(({ isActive }) => isActive);
+      const [vault] = activeVault ? [activeVault] : modifiedVaults;
 
-      updateVault({ ...vault, isActive: true });
+      vault.isActive = true;
+
+      setState((prevState) => ({
+        ...prevState,
+        vault,
+        vaults: modifiedVaults,
+      }));
+
+      setStoredVaults([
+        vault,
+        ...modifiedVaults.filter(({ uid }) => uid !== vault.uid),
+      ]);
     } else {
+      setStoredVaults([]);
+
       navigate(constantPaths.import, { replace: true });
     }
   };
@@ -237,6 +250,25 @@ const Component: FC = () => {
     });
   };
 
+  const updateVaultPositions = (vault: VaultProps): void => {
+    setState((prevState) => {
+      const modifiedVault = prevState.vault
+        ? {
+            ...prevState.vault,
+            positions: { ...prevState.vault.positions, ...vault.positions },
+          }
+        : vault;
+
+      const vaults = prevState.vaults.map((vault) =>
+        vaultProvider.compareVault(vault, modifiedVault) ? modifiedVault : vault
+      );
+
+      setStoredVaults(vaults);
+
+      return { ...prevState, vault: modifiedVault, vaults };
+    });
+  };
+
   const componentDidMount = (): void => {
     const vaults = getStoredVaults();
 
@@ -287,6 +319,7 @@ const Component: FC = () => {
             getTokens,
             toggleToken,
             updateVault,
+            updateVaultPositions,
             layout: LayoutKey.VAULT,
             tokens,
             vault,
@@ -299,6 +332,7 @@ const Component: FC = () => {
       <JoinAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
+      <LogoutVault deleteVault={deleteVault} vault={vault} />
       <VaultSettings vault={vault} />
       <SharedSettings vault={vault} />
       <Preloader visible={loading} />

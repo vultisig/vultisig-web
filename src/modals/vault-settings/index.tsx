@@ -7,7 +7,7 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 
-import { ArrowRight, Delete, EditNote, ExternalLink } from "icons";
+import { ArrowRight, Delete, EditNote, ExternalLink, Warning } from "icons";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -77,8 +77,19 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         </List.Item>
         <List.Item
           extra={<ArrowRight className="arrow" />}
+          onClick={() => navigate(`#${constantModals.LOGOUT_VAULT}`)}
+          className="warning"
+        >
+          <List.Item.Meta
+            avatar={<Warning />}
+            description={t(translation.LOGOUT_VAULT)}
+            title={t(translation.LOGOUT)}
+          />
+        </List.Item>
+        <List.Item
+          extra={<ArrowRight className="arrow" />}
           onClick={() => navigate(`#${constantModals.DELETE_VAULT}`)}
-          className="delete"
+          className="error"
         >
           <List.Item.Meta
             avatar={<Delete />}

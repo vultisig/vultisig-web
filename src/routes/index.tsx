@@ -9,8 +9,8 @@ import React from "react";
 import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 
-import ShareLayout from "layout/shared";
-import VaultLayout from "layout/vault";
+import ShareLayout from "layouts/shared";
+import VaultLayout from "layouts/vault";
 
 import AssetsPage from "pages/assets";
 import ChainsPage from "pages/chains";

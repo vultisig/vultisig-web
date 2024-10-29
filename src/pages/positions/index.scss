@@ -23,18 +23,22 @@
       }
     }
   }
-  .h-title {
-    margin-bottom: rem(24);
-    margin-top: rem(24);
-    font-weight: 200;
-  }
 
-  .line {
-    width: 100%;
-    height: rem(3);
-    margin-top: rem(16);
-    background-image: $linear-gradient;
-    border-radius: rem(2);
+  .section {
+    > .heading {
+      display: block;
+      font-size: rem(24);
+      font-weight: 700;
+      line-height: rem(36);
+    }
+
+    .position-item {
+      margin-top: rem(12);
+    }
+
+    + .section {
+      margin-top: rem(36);
+    }
   }
 }
 

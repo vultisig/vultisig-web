@@ -1,6 +1,6 @@
 @use "~variables" as *;
 
-.modal-delete-vault {
+.modal-logout-vault {
   .ant-modal-body {
     .name {
       background-color: $blue-base;
@@ -17,7 +17,7 @@
     }
 
     .icon {
-      fill: $red-base;
+      fill: $orange-base;
       height: rem(64);
       margin: 0 auto;
     }
@@ -37,14 +37,14 @@
     margin-top: rem(24);
 
     .ant-btn {
-      background-color: $red-base;
+      background-color: $orange-base;
 
       &::before {
         content: none;
       }
 
       &:hover {
-        background-color: $red-light;
+        background-color: $orange-light;
       }
     }
   }
