@@ -10,7 +10,7 @@ export default {
   // D
   [translation.DOWNLOAD_APP]: "Don’t have a vault yet? Download Vultisig now",
   [translation.DEFAULT_CHAINS]: "Default Chains",
-  [translation.DELETE_VAULT_WARNING]: "You are deleting the Vault. This action will permanently remove all your data, including balances and points, from airdrop.",
+  [translation.DELETE_VAULT_WARNING]: "You are about to delete the vault. This action will permanently remove all your data, including balances and points, from the airdrop.",
   [translation.DROP_FILE_HERE]: "Drop your file here or",
   // E
   [translation.EDIT_VAULT]: "Edit your vault name",
@@ -28,7 +28,7 @@ export default {
   [translation.LOGOUT]: "Logout",
   [translation.LOGOUT_VAULT]: "Log out of your vault from the web",
   [translation.LOGOUT_VAULT_TITLE]: "Logout Vault",
-  [translation.LOGOUT_VAULT_WARNING]: "You are logging out of Vault. This will only remove your vault data from the browser.",
+  [translation.LOGOUT_VAULT_WARNING]: "You are logging out of your vault. This will only remove your vault's data from the browser.",
   // M
   // N
   // O
