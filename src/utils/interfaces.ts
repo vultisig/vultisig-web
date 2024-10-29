@@ -43,6 +43,7 @@ export interface ChainBoolRef {
   [ChainKey.SUI]: boolean;
   [ChainKey.THORCHAIN]: boolean;
   [ChainKey.ZKSYNC]: boolean;
+  [ChainKey.TON]: boolean;
 }
 
 export interface ChainStrRef {
@@ -69,6 +70,7 @@ export interface ChainStrRef {
   [ChainKey.SUI]: string;
   [ChainKey.THORCHAIN]: string;
   [ChainKey.ZKSYNC]: string;
+  [ChainKey.TON]: string
 }
 
 export interface CoinParams {

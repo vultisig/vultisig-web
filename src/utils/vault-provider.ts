@@ -27,7 +27,7 @@ export default class VaultProvider {
   private chainRef?: ChainRef;
   private walletCore?: WalletCore;
 
-  constructor() {}
+  constructor() { }
 
   private getWalletCore = (): Promise<{
     chainRef: ChainRef;
@@ -65,6 +65,7 @@ export default class VaultProvider {
               [ChainKey.SUI]: walletCore.CoinType.sui,
               [ChainKey.THORCHAIN]: walletCore.CoinType.thorchain,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
+              [ChainKey.TON]: walletCore.CoinType.ton,
             };
 
             resolve({ chainRef: this.chainRef, walletCore: this.walletCore });
@@ -497,6 +498,7 @@ export default class VaultProvider {
           // EDDSA
           case ChainKey.POLKADOT:
           case ChainKey.SOLANA:
+          case ChainKey.TON:
           case ChainKey.SUI: {
             this.getEDDSAAddress(chain, vault).then(resolve).catch(reject);
 
@@ -631,6 +633,13 @@ export default class VaultProvider {
             resolve({ ...coin, balance });
           });
 
+          break;
+        }
+        // TON
+        case ChainKey.TON: {
+          api.balance.ton(path, address, coin.decimals).then((balance) => {
+            resolve({ ...coin, balance });
+          })
           break;
         }
         default:
@@ -847,10 +856,10 @@ export default class VaultProvider {
                     token.isNative && token.chain === chain.name
                       ? []
                       : chain.coins.filter(
-                          ({ ticker }) =>
-                            token.chain !== chain.name ||
-                            token.ticker !== ticker
-                        ),
+                        ({ ticker }) =>
+                          token.chain !== chain.name ||
+                          token.ticker !== ticker
+                      ),
                 }))
                 .filter(({ coins }) => !!coins.length),
             });
@@ -863,22 +872,22 @@ export default class VaultProvider {
               ...vault,
               chains: selectedChain
                 ? vault.chains.map((chain) => ({
-                    ...chain,
-                    coins:
-                      chain.name === selectedChain.name
-                        ? [...chain.coins, newToken]
-                        : chain.coins,
-                  }))
+                  ...chain,
+                  coins:
+                    chain.name === selectedChain.name
+                      ? [...chain.coins, newToken]
+                      : chain.coins,
+                }))
                 : [
-                    ...vault.chains,
-                    {
-                      address: newToken.address,
-                      balance: 0,
-                      coins: [newToken],
-                      hexPublicKey: newToken.hexPublicKey,
-                      name: newToken.chain,
-                    },
-                  ],
+                  ...vault.chains,
+                  {
+                    address: newToken.address,
+                    balance: 0,
+                    coins: [newToken],
+                    hexPublicKey: newToken.hexPublicKey,
+                    name: newToken.chain,
+                  },
+                ],
             });
           })
           .catch(reject);

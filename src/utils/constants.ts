@@ -33,6 +33,7 @@ export enum ChainKey {
   SUI = "Sui",
   THORCHAIN = "THORChain",
   ZKSYNC = "Zksync",
+  TON = "Ton"
 }
 
 export enum LayoutKey {
@@ -183,6 +184,7 @@ export const balanceAPI: ChainStrRef = {
   [ChainKey.THORCHAIN]:
     "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances", //$address
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address", //$address
+  [ChainKey.TON]: "https://api.vultisig.com/ton/v3/addressInformation", //$address&use_v2=false
 };
 
 export const chooseToken: ChainBoolRef = {
@@ -209,6 +211,7 @@ export const chooseToken: ChainBoolRef = {
   [ChainKey.SUI]: false,
   [ChainKey.THORCHAIN]: false,
   [ChainKey.ZKSYNC]: false,
+  [ChainKey.TON]: false
 };
 
 export const exploreToken: ChainStrRef = {
@@ -235,6 +238,7 @@ export const exploreToken: ChainStrRef = {
   [ChainKey.SUI]: "https://suiscan.xyz/mainnet/address/",
   [ChainKey.THORCHAIN]: "https://thorchain.net/address/",
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address/",
+  [ChainKey.TON]: "https://tonscan.org/address/",
 };
 
 export const currencyName: CurrencyRef = {
@@ -538,6 +542,18 @@ export const defTokens: TokenProps[] = [
     isNative: true,
     logo: "",
     ticker: "RUNE",
+  },
+  {
+    chain: ChainKey.TON,
+    cmcId: 11419,
+    contractAddress: "",
+    decimals: 9,
+    hexPublicKey: "EDDSA",
+    isDefault: true,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: "TON",
   },
   {
     chain: ChainKey.ARBITRUM,

@@ -204,12 +204,12 @@ const service = {
               isNative
                 ? address
                 : {
-                    data: `0x70a08231000000000000000000000000${address.replace(
-                      "0x",
-                      ""
-                    )}`,
-                    to: contract,
-                  },
+                  data: `0x70a08231000000000000000000000000${address.replace(
+                    "0x",
+                    ""
+                  )}`,
+                  to: contract,
+                },
               "latest",
             ],
             id: uuidv4(),
@@ -252,14 +252,14 @@ const service = {
           .post<{
             result: {
               value:
-                | number
-                | {
-                    account: {
-                      data: {
-                        parsed: { info: { tokenAmount: { amount: number } } };
-                      };
-                    };
-                  }[];
+              | number
+              | {
+                account: {
+                  data: {
+                    parsed: { info: { tokenAmount: { amount: number } } };
+                  };
+                };
+              }[];
             };
           }>(path, {
             jsonrpc: "2.0",
@@ -318,6 +318,18 @@ const service = {
           });
       });
     },
+    ton: (path: string, address: string, decimals: number): Promise<number> => {
+      return new Promise((resolve) => {
+        api
+          .get(path, { params: { address, "use_v2": false } })
+          .then(({ data }) => {
+            resolve(parseFloat(data?.balance ?? "0") / Math.pow(10, decimals));
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    }
   },
   coin: {
     add: async (vault: VaultProps, coin: CoinParams) => {
