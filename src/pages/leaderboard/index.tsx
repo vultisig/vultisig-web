@@ -8,7 +8,7 @@ import { PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
-import { Info, Warning } from "icons";
+import { Info } from "icons";
 import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
 
@@ -74,7 +74,7 @@ const Component: FC = () => {
 
   return loaded && vault ? (
     <div className="layout-content leaderboard-page">
-      
+
       <div className="stats">
         <div className="item">
           <span className="label">Total Value of Airdrop Vaults</span>
