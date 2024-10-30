@@ -74,12 +74,7 @@ const Component: FC = () => {
 
   return loaded && vault ? (
     <div className="layout-content leaderboard-page">
-      <div className="warning">
-        <Warning />
-        <span>Airdrop has not started yet!</span>
-        <Warning />
-      </div>
-
+      
       <div className="stats">
         <div className="item">
           <span className="label">Total Value of Airdrop Vaults</span>
