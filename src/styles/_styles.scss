@@ -110,6 +110,12 @@ body {
 }
 
 .ant-drawer {
+  .ant-spin-container {
+    &::after {
+      content: none;
+    }
+  }
+
   .ant-drawer-header {
     padding: rem(16) rem(8);
   }

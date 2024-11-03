@@ -1,0 +1,235 @@
+@use "~variables" as *;
+
+.layout-account {
+  .layout-content {
+    .ant-btn {
+      + .ant-btn {
+        margin-top: rem(28);
+      }
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload-btn {
+        display: block !important;
+        padding: rem(48) rem(16) !important;
+      }
+
+      .ant-upload-drag-container {
+        display: block !important;
+      }
+
+      .ant-upload-drag {
+        background-color: rgba($color: $cyan-base, $alpha: 0.1);
+        border-color: $cyan-base;
+        color: $gray-1;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: rgba($color: $cyan-base, $alpha: 0.2);
+        }
+      }
+
+      &.error {
+        .ant-upload-drag {
+          background-color: rgba($color: $red-dark, $alpha: 0.1);
+          border-color: $red-base;
+          border-style: solid;
+        }
+      }
+
+      &.success {
+        .ant-upload-drag {
+          border-style: solid;
+        }
+      }
+    }
+
+    .logo {
+      display: flex;
+      font-size: rem(40);
+      font-weight: 600;
+      gap: rem(12);
+      justify-content: center;
+      line-height: rem(48);
+      margin: 0 auto rem(48);
+
+      svg {
+        height: rem(48);
+      }
+    }
+
+    .heading {
+      font-size: rem(24);
+      font-weight: 700;
+      margin-bottom: rem(32);
+      line-height: rem(36);
+      text-align: center;
+    }
+
+    .hint {
+      font-size: rem(14);
+      margin: rem(32) 0;
+      text-align: center;
+    }
+
+    .wrapper {
+      background-color: $blue-base;
+      border-radius: rem(12);
+      margin: 0 auto;
+      max-width: rem(672);
+      padding: rem(36) rem(48);
+
+      .icon {
+        height: rem(48);
+        margin: 0 auto rem(24);
+      }
+
+      .title {
+        font-size: rem(20);
+        font-weight: 600;
+      }
+
+      .text {
+        font-size: rem(14);
+        margin-top: rem(8);
+
+        u {
+          margin-left: rem(4);
+        }
+      }
+
+      .close {
+        height: rem(14);
+        position: absolute;
+        right: rem(16);
+        top: rem(16);
+        width: rem(14);
+
+        svg {
+          fill: $gray-1;
+        }
+      }
+
+      .image {
+        height: rem(128);
+        margin: 0 auto rem(24);
+        max-width: 100%;
+      }
+
+      .name {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .error {
+        color: $red-base;
+        font-size: rem(14);
+        margin-top: rem(8);
+      }
+    }
+
+    .download {
+      margin-top: rem(32);
+      text-align: center;
+
+      .description {
+        font-size: rem(14);
+        margin: rem(32) 0;
+      }
+
+      .list {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: rem(24);
+        justify-content: center;
+
+        img {
+          background-color: $blue-base;
+          border: solid 1px rgba($color: $gray-1, $alpha: 0.15);
+          border-radius: rem(8);
+          height: rem(48);
+          margin-bottom: rem(14);
+        }
+
+        .image {
+          position: relative;
+          top: 0;
+          transition: all 0.3s;
+
+          &:hover {
+            top: rem(-4);
+          }
+        }
+
+        .text {
+          color: $gray-1;
+          font-size: rem(14);
+          font-weight: 500;
+          opacity: 1;
+          transition: opacity 0.3s;
+
+          &:hover {
+            opacity: 0.6;
+          }
+        }
+      }
+    }
+  }
+}
+
+html[theme="dark"] {
+  .layout-account {
+    .wrapper {
+      background-color: $gray-12;
+    }
+
+    .download {
+      .download {
+        img {
+          background-color: $gray-12;
+        }
+      }
+    }
+  }
+}
+
+html[theme="light"] {
+  .layout-account {
+    .wrapper {
+      background-color: $gray-3;
+
+      .close {
+        svg {
+          fill: $gray-8;
+        }
+      }
+
+      .title,
+      .text {
+        color: $gray-8;
+      }
+    }
+
+    .download {
+      img {
+        background-color: $gray-6;
+      }
+    }
+  }
+}
+
+@media (max-width: rem(576)) {
+}
+
+@media (min-width: rem(768)) {
+  .layout-account {
+    .layout-content {
+      .download {
+        flex-wrap: nowrap;
+      }
+    }
+  }
+}

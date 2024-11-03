@@ -3,7 +3,6 @@
 .vault-dropdown {
   background-color: $blue-base;
   border-radius: rem(8);
-  cursor: pointer;
   display: block;
   font-size: rem(16);
   font-weight: 500;
@@ -13,6 +12,10 @@
   padding: 0 rem(16);
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.ant-dropdown-trigger {
+    cursor: pointer;
+  }
 }
 
 .vault-dropdown-overlay {

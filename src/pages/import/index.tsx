@@ -26,14 +26,12 @@ const Component: FC = () => {
   const navigate = useNavigate();
 
   const handleUpload = (): void => {
-    navigate(constantPaths.upload, { state: true });
+    navigate(constantPaths.default.upload, { state: true });
   };
-
   const handelVault = (vault: VaultProps): Promise<void> => {
     return new Promise((resolve) => {
-      api.vault
-        .add(vault)
-        .then((newVault) => {
+      api.vault.add(vault).then((newVault) => {
+        if (newVault) {
           const vaults = getStoredVaults();
           const index = vaults.findIndex(
             (old) =>
@@ -52,12 +50,10 @@ const Component: FC = () => {
               ...vaults,
             ]);
           }
+        }
 
-          resolve();
-        })
-        .catch(() => {
-          resolve();
-        });
+        resolve();
+      });
     });
   };
 
@@ -65,7 +61,7 @@ const Component: FC = () => {
     if (isInstalled && !loading) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      (window.vultiConnect||window.vultisig).getVaults().then((vaults) => {
+      (window.vultiConnect || window.vultisig).getVaults().then((vaults) => {
         if (vaults.length) {
           const promises = vaults.map((vault) => handelVault(vault));
 
@@ -90,7 +86,7 @@ const Component: FC = () => {
 
     setState((prevState) => ({
       ...prevState,
-      isInstalled: !!(window.vultiConnect||window.vultisig),
+      isInstalled: !!(window.vultiConnect || window.vultisig),
     }));
   };
 
@@ -98,7 +94,7 @@ const Component: FC = () => {
 
   return (
     <>
-      <div className="import-page">
+      <div className="layout-content import-page">
         <div className="logo">
           <Vultisig />
           Vultisig

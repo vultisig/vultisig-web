@@ -1,9 +1,6 @@
 @use "~variables" as *;
 
 .upload-page {
-  margin: 0 auto;
-  max-width: rem(672);
-  min-height: 100vh;
   padding: rem(48) rem(16);
   text-align: center;
 
@@ -24,6 +21,8 @@
   .wrapper {
     background-color: $blue-base;
     border-radius: rem(12);
+    margin: 0 auto;
+    max-width: rem(672);
     padding: rem(32);
 
     .ant-upload-btn {

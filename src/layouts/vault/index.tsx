@@ -63,7 +63,6 @@ const Component: FC = () => {
             ),
           })),
           isActive: true,
-          updated: true,
         });
 
         setState((prevState) => ({ ...prevState, currency, loading: false }));
@@ -73,14 +72,153 @@ const Component: FC = () => {
 
   const toggleToken = (token: TokenProps, vault: VaultProps): Promise<void> => {
     return new Promise((resolve, reject) => {
-      vaultProvider
-        .toggleToken(token, vault, currency)
-        .then((vault) => {
-          updateVault(vault);
+      const selectedChain = vault.chains.find(
+        ({ name }) => name === token.chain
+      );
 
-          resolve();
-        })
-        .catch(reject);
+      const selectedCoin = selectedChain?.coins.find(
+        ({ ticker }) => ticker === token.ticker
+      );
+
+      if (selectedCoin) {
+        api.coin
+          .del(vault, selectedCoin)
+          .then(() => {
+            setState((prevState) => {
+              const vaults = prevState.vaults.map((item) =>
+                vaultProvider.compareVault(item, vault)
+                  ? {
+                      ...item,
+                      chains: token.isNative
+                        ? vault.chains.filter(
+                            ({ name }) => name !== token.chain
+                          )
+                        : vault.chains.map((chain) =>
+                            chain.name === token.chain
+                              ? vaultProvider.sortChain({
+                                  ...chain,
+                                  coins: chain.coins.filter(
+                                    ({ ticker }) => token.ticker !== ticker
+                                  ),
+                                })
+                              : chain
+                          ),
+                    }
+                  : item
+              );
+
+              setStoredVaults(vaults);
+
+              return {
+                ...prevState,
+                vault: vaults.find(({ isActive }) => isActive),
+                vaults,
+              };
+            });
+
+            resolve();
+          })
+          .catch(reject);
+      } else {
+        vaultProvider
+          .addToken(token, vault)
+          .then((newToken) => {
+            setState((prevState) => {
+              const vaults = prevState.vaults.map((item) =>
+                vaultProvider.compareVault(item, vault)
+                  ? {
+                      ...item,
+                      chains: selectedChain
+                        ? vault.chains.map((chain) =>
+                            chain.name === selectedChain.name
+                              ? {
+                                  ...chain,
+                                  coins: [...chain.coins, newToken],
+                                }
+                              : chain
+                          )
+                        : [
+                            ...vault.chains,
+                            {
+                              address: newToken.address,
+                              balance: 0,
+                              coins: [newToken],
+                              hexPublicKey: newToken.hexPublicKey,
+                              name: newToken.chain,
+                            },
+                          ],
+                    }
+                  : item
+              );
+
+              setStoredVaults(vaults);
+
+              return {
+                ...prevState,
+                vault: vaults.find(({ isActive }) => isActive),
+                vaults,
+              };
+            });
+
+            if (selectedChain) {
+              vaultProvider
+                .getBalance(
+                  newToken.address,
+                  newToken.chain,
+                  newToken.contractAddress,
+                  newToken.decimals,
+                  newToken.isNative,
+                  newToken.ticker
+                )
+                .then((balance) => {
+                  if (balance) {
+                    vaultProvider
+                      .getValues([newToken], currency)
+                      .then(([{ value }]) => {
+                        newToken.value = value;
+
+                        setState((prevState) => {
+                          const vaults = prevState.vaults.map((item) =>
+                            vaultProvider.compareVault(item, vault)
+                              ? {
+                                  ...item,
+                                  chains: vault.chains.map((chain) =>
+                                    chain.name === selectedChain.name
+                                      ? vaultProvider.sortChain({
+                                          ...chain,
+                                          coins: chain.coins.map((coin) =>
+                                            coin.ticker === newToken.ticker
+                                              ? {
+                                                  ...coin,
+                                                  balance,
+                                                  value,
+                                                }
+                                              : coin
+                                          ),
+                                        })
+                                      : chain
+                                  ),
+                                }
+                              : item
+                          );
+
+                          setStoredVaults(vaults);
+
+                          return {
+                            ...prevState,
+                            vault: vaults.find(({ isActive }) => isActive),
+                            vaults,
+                          };
+                        });
+                      });
+                  }
+                });
+            }
+
+            resolve();
+          })
+          .catch(reject);
+      }
     });
   };
 
@@ -94,101 +232,126 @@ const Component: FC = () => {
     });
   };
 
-  const changeVault = (vault: VaultProps, prepare?: boolean): void => {
-    vault.isActive = true;
-
-    updateVault(vault);
-
-    if (prepare && !vault.updated) {
-      prepareVault(vault)
-        .then((vault) => {
-          updateVault(vault);
-        })
-        .catch(() => {});
-    }
-  };
-
   const deleteVault = (vault: VaultProps): void => {
-    const modifiedVaults = vaults.filter(({ uid }) => uid !== vault.uid);
-    const addresses = getStoredAddresses();
+    setState((prevState) => {
+      const vaults = prevState.vaults.filter(({ uid }) => uid !== vault.uid);
+      const addresses = getStoredAddresses();
 
-    delete addresses[vault.publicKeyEcdsa];
-    delete addresses[vault.publicKeyEddsa];
+      delete addresses[vault.publicKeyEcdsa];
+      delete addresses[vault.publicKeyEddsa];
 
-    setStoredAddresses(addresses);
+      setStoredAddresses(addresses);
 
-    if (modifiedVaults.length) {
-      const activeVault = modifiedVaults.find(({ isActive }) => isActive);
-      const [vault] = activeVault ? [activeVault] : modifiedVaults;
+      if (vaults.length) {
+        const vault = vaults.find(({ isActive }) => isActive);
 
-      vault.isActive = true;
+        if (vault) {
+          setStoredVaults(vaults);
 
-      setState((prevState) => ({
-        ...prevState,
-        vault,
-        vaults: modifiedVaults,
-      }));
+          return { ...prevState, vault, vaults };
+        } else {
+          const modifiedVaults = vaults.map((vault, index) => ({
+            ...vault,
+            isActive: !index,
+          }));
+          const [activeVault] = modifiedVaults;
 
-      setStoredVaults([
-        vault,
-        ...modifiedVaults.filter(({ uid }) => uid !== vault.uid),
-      ]);
-    } else {
-      setStoredVaults([]);
+          setStoredVaults(modifiedVaults);
 
-      navigate(constantPaths.import, { replace: true });
-    }
-  };
+          return { ...prevState, vault: activeVault, vaults: modifiedVaults };
+        }
+      } else {
+        setStoredVaults([]);
 
-  const fetchVault = (vault: VaultProps): Promise<VaultProps | undefined> => {
-    return new Promise((resolve) => {
-      api.vault
-        .get(vault)
-        .then(({ data }) => {
-          resolve({ ...vault, ...data, updated: false });
-        })
-        .catch(() => resolve(undefined));
+        navigate(constantPaths.default.import, { replace: true });
+
+        return { ...prevState };
+      }
     });
   };
 
-  const prepareVault = (vault: VaultProps): Promise<VaultProps> => {
-    return new Promise((resolve, reject) => {
-      if (vault.chains.length) {
-        const promises = vault.chains.flatMap(({ address, coins, name }) =>
-          coins.map((coin) => vaultProvider.getBalance(coin, name, address))
+  const prepareChain = (chain: ChainProps, vault: VaultProps): void => {
+    vaultProvider.prepareChain(chain, currency).then((chain) => {
+      setState((prevState) => {
+        const vaults = prevState.vaults.map((item) =>
+          vaultProvider.compareVault(item, vault)
+            ? {
+                ...item,
+                chains: item.chains.map((item) =>
+                  item.name === chain.name
+                    ? vaultProvider.sortChain(chain)
+                    : item
+                ),
+              }
+            : item
         );
 
-        Promise.all(promises).then((coins) => {
-          vaultProvider.getValues(coins, currency).then((coins) => {
-            resolve({
-              ...vault,
-              chains: vault.chains.map((chain) => ({
-                ...chain,
-                coins: chain.coins.map(
-                  (coin) => coins.find(({ id }) => id === coin.id) || coin
-                ),
-              })),
-              hexChainCode: vault.hexChainCode,
-              updated: true,
-            });
-          });
-        });
-      } else {
-        const promises = tokens
-          .filter((coin) => coin.isDefault)
-          .map((coin) =>
-            vaultProvider.addToken(
-              coin,
-              { ...vault, hexChainCode: vault.hexChainCode },
-              currency
-            )
-          );
+        setStoredVaults(vaults);
 
-        Promise.all(promises)
-          .then((chains) => {
-            prepareVault({
-              ...vault,
-              chains: chains.map(
+        return {
+          ...prevState,
+          vault: vaults.find(({ isActive }) => isActive),
+          vaults,
+        };
+      });
+    });
+  };
+
+  const updatePositions = (vault: VaultProps): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? {
+              ...item,
+              positions: { ...item.positions, ...vault.positions },
+            }
+          : item
+      );
+
+      setStoredVaults(vaults);
+
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
+    });
+  };
+
+  const updateVault = (vault: VaultProps): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? vault
+          : {
+              ...item,
+              isActive: vault.isActive ? false : item.isActive,
+            }
+      );
+
+      setStoredVaults(vaults);
+
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
+    });
+  };
+
+  const componentDidMount = (): void => {
+    const vaults = getStoredVaults();
+
+    if (vaults.length) {
+      const promises = vaults.map((vault) =>
+        api.vault.get(vault).then((vault) => {
+          if (vault && !vault.chains.length) {
+            const promises = defTokens
+              .filter((coin) => coin.isDefault)
+              .map((coin) => vaultProvider.addToken(coin, vault));
+
+            return Promise.all(promises).then((chains) => {
+              vault.chains = chains.map(
                 ({
                   address,
                   balance,
@@ -221,83 +384,47 @@ const Component: FC = () => {
                   name: chain,
                   hexPublicKey,
                 })
-              ),
-            })
-              .then(resolve)
-              .catch(reject);
-          })
-          .catch(reject);
-      }
-    });
-  };
+              );
 
-  const updateVault = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const modifiedVault = vaultProvider.prepareVault(vault);
-
-      const vaults = prevState.vaults.map((vault) =>
-        vaultProvider.compareVault(vault, modifiedVault)
-          ? modifiedVault
-          : {
-              ...vault,
-              isActive: modifiedVault.isActive ? false : vault.isActive,
-            }
-      );
-
-      setStoredVaults(vaults);
-
-      return { ...prevState, vault, vaults };
-    });
-  };
-
-  const updateVaultPositions = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const modifiedVault = prevState.vault
-        ? {
-            ...prevState.vault,
-            positions: { ...prevState.vault.positions, ...vault.positions },
+              return vault;
+            });
+          } else {
+            return vault;
           }
-        : vault;
-
-      const vaults = prevState.vaults.map((vault) =>
-        vaultProvider.compareVault(vault, modifiedVault) ? modifiedVault : vault
+        })
       );
-
-      setStoredVaults(vaults);
-
-      return { ...prevState, vault: modifiedVault, vaults };
-    });
-  };
-
-  const componentDidMount = (): void => {
-    const vaults = getStoredVaults();
-
-    if (vaults.length) {
-      const promises = vaults.map((vault) => fetchVault(vault));
 
       Promise.all(promises).then((updatedVaults) => {
         const vaults = updatedVaults.filter((vault) => vault !== undefined);
 
         if (vaults.length) {
-          const activeVault = vaults.find(({ isActive }) => isActive);
-          const [vault] = activeVault ? [activeVault] : vaults;
+          const vault = vaults.find(({ isActive }) => isActive);
 
-          setState((prevState) => ({
-            ...prevState,
-            vault: { ...vault, isActive: true },
-            vaults: vaults.map((item) => ({
-              ...item,
-              isActive: vaultProvider.compareVault(item, vault),
-            })),
-          }));
+          if (vault) {
+            setState((prevState) => ({ ...prevState, vault, vaults }));
 
-          setStoredVaults(vaults);
+            setStoredVaults(vaults);
+          } else {
+            const modifiedVaults = vaults.map((vault, index) => ({
+              ...vault,
+              isActive: !index,
+            }));
+            const [activeVault] = modifiedVaults;
+
+            setState((prevState) => ({
+              ...prevState,
+              vault: activeVault,
+              vaults: modifiedVaults,
+            }));
+
+            setStoredVaults(modifiedVaults);
+          }
         } else {
-          navigate(constantPaths.import, { replace: true });
+          navigate(constantPaths.default.import, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.import, { replace: true });
+      navigate(constantPaths.default.import, { replace: true });
     }
   };
 
@@ -314,12 +441,12 @@ const Component: FC = () => {
         />
         <Outlet
           context={{
-            changeVault,
             deleteVault,
             getTokens,
+            prepareChain,
             toggleToken,
+            updatePositions,
             updateVault,
-            updateVaultPositions,
             layout: LayoutKey.VAULT,
             tokens,
             vault,

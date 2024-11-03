@@ -7,6 +7,13 @@
   padding: rem(16) rem(20);
   position: relative;
 
+  .vulti-loading {
+    flex: none;
+    position: absolute;
+    right: rem(20);
+    top: rem(28);
+  }
+
   .token-image {
     height: rem(32);
     left: 0;
@@ -67,7 +74,7 @@
     font-family: $secondary-font;
     font-size: rem(20);
     font-weight: 700;
-    line-height: rem(22);
+    line-height: rem(24);
     position: absolute;
     right: rem(20);
     top: rem(16);
@@ -139,6 +146,13 @@ html[theme="light"] {
     gap: rem(24);
     padding-right: rem(64);
 
+    .vulti-loading {
+      position: relative;
+      margin: rem(12) 0;
+      right: auto;
+      top: auto;
+    }
+
     .type {
       min-width: rem(160);
     }
@@ -148,12 +162,12 @@ html[theme="light"] {
     }
 
     .asset {
-      margin: rem(12) 0;
+      margin: rem(10) 0;
       position: static;
     }
 
     .amount {
-      line-height: rem(48);
+      margin: rem(10) 0;
       position: static;
     }
 

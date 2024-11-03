@@ -36,20 +36,23 @@ export enum ChainKey {
 }
 
 export enum LayoutKey {
+  DEFAULT,
   SHARED,
   VAULT,
 }
 
 export enum PageKey {
-  ASSETS,
-  CHAINS,
   IMPORT,
   LEADERBOARD,
-  POSITIONS,
+  UPLOAD,
   SHARED_ASSETS,
   SHARED_CHAINS,
+  SHARED_LEADERBOARD,
   SHARED_POSITIONS,
-  UPLOAD,
+  VAULT_ASSETS,
+  VAULT_CHAINS,
+  VAULT_LEADERBOARD,
+  VAULT_POSITIONS,
 }
 
 export enum TickerKey {
@@ -58,8 +61,10 @@ export enum TickerKey {
   MAYA = "MAYA",
   RUNE = "RUNE",
   TGT = "TGT",
+  THOR = "THOR",
   USDC = "USDC",
   USDT = "USDT",
+  VTHOR = "vTHOR",
   WEWE = "WEWE",
 }
 
