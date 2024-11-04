@@ -13,28 +13,21 @@ import { CirclePlus, Info, Synchronize } from "icons";
 import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
 import VaultDropdown from "components/vault-dropdown";
-import VultiLoading from "components/vulti-loading";
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const { changePage, currency } = useBaseContext();
-  const { changeVault, layout, vault, vaults } =
-    useOutletContext<VaultOutletContext>();
-
-  const componentDidUpdate = () => {
-    if (layout === LayoutKey.VAULT && !vault.updated) changeVault(vault, true);
-  };
+  const { updateVault, layout, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidMount = () => {
     changePage(
-      layout === LayoutKey.VAULT ? PageKey.ASSETS : PageKey.SHARED_CHAINS
+      layout === LayoutKey.VAULT ? PageKey.VAULT_ASSETS : PageKey.SHARED_CHAINS
     );
   };
 
-  useEffect(componentDidUpdate, [vault]);
   useEffect(componentDidMount, []);
 
-  return layout === LayoutKey.SHARED || vault.updated ? (
+  return (
     <>
       <div className="layout-content chains-page">
         {layout === LayoutKey.VAULT && (
@@ -49,16 +42,19 @@ const Component: FC = () => {
             </div>
 
             <div className="breadcrumb">
-              <VaultDropdown
-                vault={vault}
-                vaults={vaults}
-                changeVault={(vault) => changeVault(vault, true)}
-              />
+              <VaultDropdown />
               <Tooltip title="Refresh">
                 <Button
                   type="link"
                   onClick={() =>
-                    changeVault({ ...vault, updated: false }, true)
+                    updateVault({
+                      ...vault,
+                      chains: vault.chains.map((chain) => ({
+                        ...chain,
+                        updated: false,
+                      })),
+                      isActive: true,
+                    })
                   }
                 >
                   <Synchronize />
@@ -70,13 +66,18 @@ const Component: FC = () => {
         <div className="total-balance">
           <span className="title">{t(translation.TOTAL_BALANCE)}</span>
           <span className="value">
-            {vault.currentBalance.toValueFormat(currency)}
+            {vault.chains
+              .reduce((acc, chain) => acc + (chain.balance ?? 0), 0)
+              .toValueFormat(currency)}
           </span>
         </div>
         {vault.chains.length ? (
-          vault.chains.map(({ name, ...res }) => (
-            <ChainItem key={name} {...{ ...res, name }} />
-          ))
+          vault.chains
+            .slice()
+            .sort((a, b) => (b.balance ?? 0) - (a.balance ?? 0))
+            .map(({ name, ...res }) => (
+              <ChainItem key={name} {...{ ...res, name }} />
+            ))
         ) : (
           <Empty
             description={
@@ -99,10 +100,6 @@ const Component: FC = () => {
 
       {layout === LayoutKey.VAULT && <ChooseChain />}
     </>
-  ) : (
-    <div className="layout-content">
-      <VultiLoading />
-    </div>
   );
 };
 

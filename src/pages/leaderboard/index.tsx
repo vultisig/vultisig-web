@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
-import { PageKey } from "utils/constants";
+import { LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
@@ -33,15 +33,17 @@ const Component: FC = () => {
   const [state, setState] = useState(initialState);
   const { balance, data, loaded, loading, pageSize, total } = state;
   const { changePage, currency } = useBaseContext();
-  const { changeVault, vault, vaults } = useOutletContext<VaultOutletContext>();
+  const { layout, vault } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
     if (!loading) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
+      const from = data.length ? data[data.length - 1].rank : 0;
+
       api
         .leaderboard({
-          from: data.length ? data.length + 1 : 0,
+          from,
           limit: pageSize,
         })
         .then(({ data }) => {
@@ -72,7 +74,12 @@ const Component: FC = () => {
 
   useEffect(componentDidMount, []);
 
-  return loaded && vault ? (
+  const currentBalance = vault?.chains.reduce(
+    (acc, chain) => acc + (chain.balance ?? 0),
+    0
+  );
+
+  return loaded ? (
     <div className="layout-content leaderboard-page">
 
       <div className="stats">
@@ -86,33 +93,40 @@ const Component: FC = () => {
         </div>
       </div>
 
-      <div className="breadcrumb">
-        <VaultDropdown
-          vault={vault}
-          vaults={vaults}
-          changeVault={changeVault}
-        />
+      {layout !== LayoutKey.DEFAULT && (
+        <div className="breadcrumb">
+          {layout === LayoutKey.VAULT ? (
+            <VaultDropdown />
+          ) : (
+            <span className="vault-dropdown">{vault.alias}</span>
+          )}
 
-        <div className="result">
-          <div className="item point">
-            <Tooltip title="Points and balances are always updated at the end of the day">
-              <span className="info">
-                <Info />
+          <div className="result">
+            <div className="item point">
+              <Tooltip title="Points and balances are always updated at the end of the day">
+                <span className="info">
+                  <Info />
+                </span>
+              </Tooltip>
+              <span className="label">FARMED</span>
+              <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
+            </div>
+
+            <div className="item divider" />
+
+            <div className="item rank">
+              <img src="/ranks/basic.svg" className="icon" />
+              <span className="label">
+                {layout === LayoutKey.VAULT
+                  ? "YOUR POSITION"
+                  : "VAULT POSITION"}
               </span>
-            </Tooltip>
-            <span className="label">FARMED</span>
-            <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
-          </div>
-
-          <div className="item divider" />
-
-          <div className="item rank">
-            <img src="/ranks/basic.svg" className="icon" />
-            <span className="label">YOUR POSITION</span>
-            <span className="value">{`${vault.rank.toNumberFormat()}`}</span>
+              <span className="value">{`${vault.rank.toNumberFormat()}`}</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
       <div className="board">
         <div className="list">
           {data.map(({ alias, balance, rank, registeredAt, totalPoints }) => {
@@ -136,7 +150,9 @@ const Component: FC = () => {
             return (
               <div
                 className={`item${medal ? ` top ${medal}` : ""}${
-                  rank === vault.rank ? " active" : ""
+                  layout !== LayoutKey.DEFAULT && rank === vault.rank
+                    ? " active"
+                    : ""
                 }`}
                 key={rank}
               >
@@ -144,7 +160,11 @@ const Component: FC = () => {
                   <img src="/avatar/1.png" className="avatar" />
                   <span className="rank">{`#${rank.toNumberFormat()}`}</span>
                   <span className="name">{`${alias}${
-                    rank === vault.rank ? " (YOU)" : ""
+                    layout !== LayoutKey.DEFAULT && rank === vault.rank
+                      ? layout === LayoutKey.VAULT
+                        ? " (YOU)"
+                        : " (VAULT)"
+                      : ""
                   }`}</span>
                   <span className="value">{`${totalPoints.toNumberFormat()} points`}</span>
                 </div>
@@ -152,9 +172,11 @@ const Component: FC = () => {
                   <span className="date">
                     {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
-                  <span className="price">{`${(rank===vault.rank?vault.balance||vault.currentBalance||0:balance).toValueFormat(
-                    currency
-                  )}`}</span>
+                  <span className="price">{`${(layout !== LayoutKey.DEFAULT &&
+                  rank === vault.rank
+                    ? vault.balance || currentBalance || 0
+                    : balance
+                  ).toValueFormat(currency)}`}</span>
                 </div>
                 {medal && <img src={`/ranks/${medal}.svg`} className="icon" />}
               </div>
@@ -174,8 +196,9 @@ const Component: FC = () => {
               </div>
               <div className="loadmore">
                 <span className="numb">{`+ ${(
-                  (vault.rank > data.length ? vault.rank - 1 : total) -
-                  data.length
+                  (layout !== LayoutKey.DEFAULT && vault.rank > data.length
+                    ? vault.rank - 1
+                    : total) - data.length
                 ).toNumberFormat()} others`}</span>
                 <span className="more" onClick={fetchData}>
                   load more
@@ -183,21 +206,25 @@ const Component: FC = () => {
               </div>
             </div>
           ) : null}
-          {vault.rank > data.length && (
+          {layout !== LayoutKey.DEFAULT && vault.rank > data.length && (
             <div className="item active">
               <div className="point">
                 <img src="/avatar/1.png" className="avatar" />
                 <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
-                <span className="name">{`${vault.alias}" (YOU)"`}</span>
+                <span className="name">{`${vault.alias}${
+                  layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"
+                }`}</span>
                 <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
               </div>
               <div className="balance">
                 <span className="date">
                   {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
-                <span className="price">{`${(vault.balance||vault.currentBalance||0).toValueFormat(
-                  currency
-                )}`}</span>
+                <span className="price">{`${(
+                  vault.balance ||
+                  currentBalance ||
+                  0
+                ).toValueFormat(currency)}`}</span>
               </div>
             </div>
           )}

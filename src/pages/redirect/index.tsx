@@ -24,10 +24,10 @@ const Component: FC = () => {
 
         navigate(constantPaths.vault.chains, { replace: true });
       } else {
-        navigate(constantPaths.import, { replace: true });
+        navigate(constantPaths.default.import, { replace: true });
       }
     } else {
-      navigate(constantPaths.import, { replace: true });
+      navigate(constantPaths.default.import, { replace: true });
     }
   };
 

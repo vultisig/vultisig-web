@@ -35,9 +35,8 @@ const Component: FC = () => {
     if (!loading && vault && status === "success") {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      api.vault
-        .add(vault)
-        .then(() => {
+      api.vault.add(vault).then((newVault) => {
+        if (newVault) {
           const vaults = getStoredVaults();
 
           const index = vaults.findIndex(
@@ -64,14 +63,14 @@ const Component: FC = () => {
           }
 
           navigate(constantPaths.vault.chains);
-        })
-        .catch(() => {
+        } else {
           setState((prevState) => ({
             ...prevState,
             loading: false,
             status: "error",
           }));
-        });
+        }
+      });
     }
   };
 
@@ -175,7 +174,7 @@ const Component: FC = () => {
   useEffect(componentDidMount, []);
 
   return (
-    <div className="upload-page">
+    <div className="layout-content upload-page">
       <div className="logo">
         <Vultisig />
         Vultisig

@@ -25,14 +25,8 @@ import PositionItem from "components/position-item";
 
 const Component: FC = () => {
   const { changePage, currency } = useBaseContext();
-  const {
-    changeVault,
-    layout,
-    vault,
-    vaults,
-    updateVault,
-    updateVaultPositions,
-  } = useOutletContext<VaultOutletContext>();
+  const { layout, vault, updateVault, updatePositions } =
+    useOutletContext<VaultOutletContext>();
   const {
     mayaBond,
     mayaLiquidity,
@@ -59,7 +53,7 @@ const Component: FC = () => {
       case "AVAX":
         name = ChainKey.AVALANCHE;
         break;
-      case "BCH":
+      case "BCH": 
         name = ChainKey.BITCOINCASH;
         break;
       case "BSC":
@@ -175,7 +169,7 @@ const Component: FC = () => {
           });
         })
         .finally(() => {
-          updateVaultPositions({
+          updatePositions({
             ...vault,
             positions: { mayaLiquidity, thorLiquidity },
           });
@@ -204,7 +198,7 @@ const Component: FC = () => {
         });
       }
 
-      updateVaultPositions({ ...vault, positions: { mayaBond } });
+      updatePositions({ ...vault, positions: { mayaBond } });
 
       resolve();
     });
@@ -234,7 +228,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { runeProvider },
             });
@@ -242,7 +236,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { runeProvider },
         });
@@ -297,7 +291,7 @@ const Component: FC = () => {
                 });
               })
               .finally(() => {
-                updateVaultPositions({
+                updatePositions({
                   ...vault,
                   positions: { saverPosition },
                 });
@@ -305,7 +299,7 @@ const Component: FC = () => {
                 resolve();
               });
           } else {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { saverPosition },
             });
@@ -314,7 +308,7 @@ const Component: FC = () => {
           }
         })
         .catch(() => {
-          updateVaultPositions({
+          updatePositions({
             ...vault,
             positions: { saverPosition },
           });
@@ -360,7 +354,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { thorBond },
             });
@@ -368,7 +362,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { thorBond },
         });
@@ -378,7 +372,11 @@ const Component: FC = () => {
     });
   };
 
-  const getTGTStake = (vault: VaultProps, price: number): Promise<void> => {
+  const getTGTStake = (
+    vault: VaultProps,
+    price: number,
+    usdtPrice: number
+  ): Promise<void> => {
     return new Promise((resolve) => {
       const address = vault.chains.find(
         ({ name }) => name === ChainKey.ARBITRUM
@@ -392,7 +390,7 @@ const Component: FC = () => {
             tgtStake.push({
               base: {
                 chain: ChainKey.ARBITRUM,
-                price: price * data.reward,
+                price: price * data.stakedAmount + data.reward * usdtPrice,
                 tiker: TickerKey.TGT,
                 tokenAddress: `${exploreToken[ChainKey.ARBITRUM]}${address}`,
                 tokenAmount: (Number(data.stakedAmount) ?? 0).toBalanceFormat(),
@@ -401,7 +399,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { tgtStake },
             });
@@ -409,7 +407,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { tgtStake },
         });
@@ -447,7 +445,7 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updateVaultPositions({
+            updatePositions({
               ...vault,
               positions: { wewePositions },
             });
@@ -455,7 +453,7 @@ const Component: FC = () => {
             resolve();
           });
       } else {
-        updateVaultPositions({
+        updatePositions({
           ...vault,
           positions: { wewePositions },
         });
@@ -475,7 +473,7 @@ const Component: FC = () => {
       const tgtCMCId = getCMC(ChainKey.ARBITRUM, TickerKey.TGT);
       const usdtCMCId = getCMC(ChainKey.ETHEREUM, TickerKey.USDT);
 
-      updateVaultPositions({ ...vault, positions: { updated: true } });
+      updatePositions({ ...vault, positions: { updated: true } });
 
       api.coin
         .values([runeCMCId, tgtCMCId, usdtCMCId], currency)
@@ -485,7 +483,7 @@ const Component: FC = () => {
           getRuneProvider(vault, data[runeCMCId] ?? 0);
           getSaverPositions(vault);
           getThorBond(vault, data[runeCMCId] ?? 0);
-          getTGTStake(vault, data[tgtCMCId] ?? 0);
+          getTGTStake(vault, data[tgtCMCId] ?? 0, data[usdtCMCId] ?? 0);
           getWewePositions(vault, data[usdtCMCId] ?? 0);
         });
     }
@@ -493,7 +491,9 @@ const Component: FC = () => {
 
   const componentDidMount = () => {
     changePage(
-      layout === LayoutKey.VAULT ? PageKey.POSITIONS : PageKey.SHARED_POSITIONS
+      layout === LayoutKey.VAULT
+        ? PageKey.VAULT_POSITIONS
+        : PageKey.SHARED_POSITIONS
     );
   };
 
@@ -504,11 +504,7 @@ const Component: FC = () => {
     <div className="layout-content positions-page">
       {layout === LayoutKey.VAULT && (
         <div className="breadcrumb">
-          <VaultDropdown
-            vault={vault}
-            vaults={vaults}
-            changeVault={changeVault}
-          />
+          <VaultDropdown />
           <Tooltip title="Refresh">
             <Button type="link" onClick={() => handleRefresh()}>
               <Synchronize />

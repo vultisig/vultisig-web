@@ -3,6 +3,7 @@ import { FC } from "react";
 import { useBaseContext } from "context";
 
 import TokenImage from "components/token-image";
+import VultiLoading from "components/vulti-loading";
 
 interface ComponentProps {
   balance: number;
@@ -20,8 +21,16 @@ const Component: FC<ComponentProps> = ({ balance, logo, ticker, value }) => {
         <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>
       </div>
-      <span className="balance">{balance.toBalanceFormat()}</span>
-      <span className="value">{(balance * value).toValueFormat(currency)}</span>
+      {isNaN(balance) && isNaN(value) ? (
+        <VultiLoading />
+      ) : (
+        <>
+          <span className="balance">{balance.toBalanceFormat()}</span>
+          <span className="value">
+            {(balance * value).toValueFormat(currency)}
+          </span>
+        </>
+      )}
     </div>
   );
 };

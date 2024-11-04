@@ -191,7 +191,6 @@ export interface VaultProps {
   alias: string;
   balance: number;
   chains: ChainProps[];
-  currentBalance: number;
   hexChainCode: string;
   isActive: boolean;
   joinAirdrop: boolean;
@@ -215,15 +214,14 @@ export interface VaultProps {
   theme: Theme;
   totalPoints: number;
   uid: string;
-  updated?: boolean;
 }
 
 export interface VaultOutletContext {
   getTokens: (chain: ChainProps) => Promise<void>;
-  changeVault: (vault: VaultProps, prepare?: boolean) => void;
   deleteVault: (vault: VaultProps) => void;
+  prepareChain: (chain: ChainProps, vault?: VaultProps) => void;
   updateVault: (vault: VaultProps) => void;
-  updateVaultPositions: (vault: VaultProps) => void;
+  updatePositions: (vault: VaultProps) => void;
   toggleToken: (coin: TokenProps, vault: VaultProps) => Promise<void>;
   layout: LayoutKey;
   tokens: TokenProps[];

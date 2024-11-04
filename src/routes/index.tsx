@@ -1,28 +1,29 @@
+import { ReactNode, Suspense, lazy } from "react";
 import {
   RouteObject,
   RouterProvider,
   Navigate,
   createBrowserRouter,
 } from "react-router-dom";
-import React from "react";
 
 import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 
-import ShareLayout from "layouts/shared";
-import VaultLayout from "layouts/vault";
+const DefaultLayout = lazy(() => import("layouts/default"));
+const ShareLayout = lazy(() => import("layouts/shared"));
+const VaultLayout = lazy(() => import("layouts/vault"));
 
-import AssetsPage from "pages/assets";
-import ChainsPage from "pages/chains";
-import ImportPage from "pages/import";
-import LeaderboardPage from "pages/leaderboard";
-import PositionsPage from "pages/positions";
-import RedirectPage from "pages/redirect";
-import UploadPage from "pages/upload";
+const AssetsPage = lazy(() => import("pages/assets"));
+const ChainsPage = lazy(() => import("pages/chains"));
+const ImportPage = lazy(() => import("pages/import"));
+const LeaderboardPage = lazy(() => import("pages/leaderboard"));
+const PositionsPage = lazy(() => import("pages/positions"));
+const RedirectPage = lazy(() => import("pages/redirect"));
+const UploadPage = lazy(() => import("pages/upload"));
 
 interface RouteConfig {
   path: string;
-  element?: React.ReactNode;
+  element?: ReactNode;
   children?: RouteConfig[];
   redirect?: string;
 }
@@ -59,49 +60,114 @@ const Component = () => {
       path: constantPaths.root,
       redirect: vaults.length
         ? constantPaths.vault.chains
-        : constantPaths.import,
-    },
-    {
-      path: constantPaths.import,
-      element: <ImportPage />,
-    },
-    {
-      path: constantPaths.upload,
-      element: <UploadPage />,
+        : constantPaths.default.import,
     },
     {
       path: constantPaths.redirect,
       element: <RedirectPage />,
     },
     {
+      path: constantPaths.default.root,
+      element: (
+        <Suspense>
+          <DefaultLayout />
+        </Suspense>
+      ),
+      children: [
+        {
+          path: constantPaths.default.root,
+          redirect: constantPaths.default.import,
+        },
+        {
+          path: constantPaths.default.import,
+          element: (
+            <Suspense>
+              <ImportPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.default.leaderboard,
+          element: (
+            <Suspense>
+              <LeaderboardPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.default.upload,
+          element: (
+            <Suspense>
+              <UploadPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: "*",
+          redirect: constantPaths.root,
+        },
+      ],
+    },
+    {
       path: constantPaths.shared.root,
-      element: <ShareLayout />,
+      element: (
+        <Suspense>
+          <ShareLayout />
+        </Suspense>
+      ),
       children: [
         {
           path: constantPaths.shared.root,
           redirect: constantPaths.root,
         },
         {
+          path: constantPaths.shared.leaderboard,
+          element: (
+            <Suspense>
+              <LeaderboardPage />
+            </Suspense>
+          ),
+        },
+        {
           path: constantPaths.shared.positions,
-          element: <PositionsPage />,
+          element: (
+            <Suspense>
+              <PositionsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.shared.chains,
-          element: <ChainsPage />,
+          element: (
+            <Suspense>
+              <ChainsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.shared.chainsAlias,
-          element: <ChainsPage />,
+          element: (
+            <Suspense>
+              <ChainsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.shared.assets,
-          element: <AssetsPage />,
+          element: (
+            <Suspense>
+              <AssetsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.shared.assetsAlias,
-          element: <AssetsPage />,
+          element: (
+            <Suspense>
+              <AssetsPage />
+            </Suspense>
+          ),
         },
-
         {
           path: "*",
           redirect: constantPaths.root,
@@ -110,7 +176,11 @@ const Component = () => {
     },
     {
       path: constantPaths.vault.root,
-      element: <VaultLayout />,
+      element: (
+        <Suspense>
+          <VaultLayout />
+        </Suspense>
+      ),
       children: [
         {
           path: constantPaths.vault.root,
@@ -118,19 +188,35 @@ const Component = () => {
         },
         {
           path: constantPaths.vault.chains,
-          element: <ChainsPage />,
+          element: (
+            <Suspense>
+              <ChainsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.vault.assets,
-          element: <AssetsPage />,
+          element: (
+            <Suspense>
+              <AssetsPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.vault.leaderboard,
-          element: <LeaderboardPage />,
+          element: (
+            <Suspense>
+              <LeaderboardPage />
+            </Suspense>
+          ),
         },
         {
           path: constantPaths.vault.positions,
-          element: <PositionsPage />,
+          element: (
+            <Suspense>
+              <PositionsPage />
+            </Suspense>
+          ),
         },
         {
           path: "*",

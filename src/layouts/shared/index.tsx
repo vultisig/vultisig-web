@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useBaseContext } from "context";
 import { Currency, LayoutKey } from "utils/constants";
 import { changeTheme } from "utils/functions";
-import { CoinProps, VaultProps } from "utils/interfaces";
+import { ChainProps, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
@@ -24,55 +24,68 @@ interface InitialState {
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const initialState: InitialState = { loading: true };
+  const initialState: InitialState = { loading: false };
   const [state, setState] = useState(initialState);
   const { loading, vault } = state;
-  const { uid } = useParams();
+  const { alias, chainKey, uid } = useParams<{
+    alias?: string;
+    chainKey?: string;
+    uid: string;
+  }>();
   const { changeCurrency, currency } = useBaseContext();
   const vaultProvider = new VaultProvider();
   const navigate = useNavigate();
 
-  const changeValue = (
-    coins: CoinProps[],
-    currency: Currency,
-    vault: VaultProps
-  ) => {
-    vaultProvider.getValues(coins, currency).then((coins) => {
-      changeCurrency(currency);
+  const handleCurrency = (currency: Currency) => {
+    if (!loading && vault) {
+      setState((prevState) => ({ ...prevState, loading: true }));
 
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        vault: vaultProvider.prepareVault({
+      const coins = vault.chains.flatMap(({ coins }) => coins);
+
+      vaultProvider.getValues(coins, currency).then((coins) => {
+        changeCurrency(currency);
+
+        updateVault({
           ...vault,
-          positions: vault.positions??{},
           chains: vault.chains.map((chain) => ({
             ...chain,
             coins: chain.coins.map(
               (coin) => coins.find(({ id }) => id === coin.id) || coin
             ),
           })),
-          updated: true,
-        }),
-      }));
-    });
+          isActive: true,
+        });
+
+        setState((prevState) => ({ ...prevState, currency, loading: false }));
+      });
+    }
   };
 
-  const handleCurrency = (currency: Currency) => {
-    if (vault) {
-      setState((prevState) => ({ ...prevState, loading: true }));
-
-      const coins = vault.chains.flatMap(({ coins }) => coins);
-
-      changeValue(coins, currency, vault);
-    }
+  const prepareChain = (chain: ChainProps): void => {
+    vaultProvider.prepareChain(chain, currency).then((chain) => {
+      setState((prevState) =>
+        prevState.vault
+          ? {
+              ...prevState,
+              vault: {
+                ...prevState.vault,
+                chains: prevState.vault.chains.map((item) =>
+                  item.name === chain.name
+                    ? vaultProvider.sortChain(chain)
+                    : item
+                ),
+              },
+            }
+          : prevState
+      );
+    });
   };
 
   const updateVault = (vault: VaultProps): void => {
     setState((prevState) => ({ ...prevState, vault }));
   };
 
-  const updateVaultPositions = (vault: VaultProps): void => {
+  const updatePositions = (vault: VaultProps): void => {
     setState((prevState) => {
       const modifiedVault = prevState.vault
         ? {
@@ -91,22 +104,36 @@ const Component: FC = () => {
         .getById(uid)
         .then(({ data }) => {
           api.sharedSettings.get(uid).then(({ data: { logo, theme } }) => {
-            const promises = data.chains.flatMap(({ address, coins, name }) =>
-              coins.map((coin) => vaultProvider.getBalance(coin, name, address))
-            );
-
-            Promise.all(promises).then((coins) =>
-              changeValue(coins, currency, { ...data, logo, theme })
-            );
-
             changeTheme(theme);
+
+            setState((prevState) => ({
+              ...prevState,
+              vault: { ...data, logo, positions: {}, theme },
+            }));
+
+            if (!alias) {
+              navigate(
+                (chainKey
+                  ? constantPaths.shared.assetsAlias.replace(
+                      ":chainKey",
+                      chainKey
+                    )
+                  : constantPaths.shared.chainsAlias
+                )
+                  .replace(":alias", data.alias.replace(/ /g, "-"))
+                  .replace(":uid", data.uid),
+                {
+                  replace: true,
+                }
+              );
+            }
           });
         })
         .catch(() => {
-          navigate(constantPaths.root);
+          navigate(constantPaths.root, { replace: true });
         });
     } else {
-      navigate(constantPaths.root);
+      navigate(constantPaths.root, { replace: true });
     }
   };
 
@@ -125,8 +152,9 @@ const Component: FC = () => {
           context={{
             layout: LayoutKey.SHARED,
             vault,
+            prepareChain,
             updateVault,
-            updateVaultPositions,
+            updatePositions,
           }}
         />
         <div className="layout-footer">

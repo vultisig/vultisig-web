@@ -390,10 +390,19 @@ const service = {
           });
       });
     },
-    coingeckoValue: async (priceProviderId: string, currency: Currency) => {
-      return await api.get<{ cacao: { [language: string]: number } }>(
-        `https://api.vultisig.com/coingeicko/api/v3/simple/price?ids=${priceProviderId}&vs_currencies=${currency}`
-      );
+    coingeckoValue: (ticker: string, currency: Currency): Promise<number> => {
+      return new Promise((resolve) => {
+        api
+          .get<{ cacao: { [language: string]: number } }>(
+            `https://api.vultisig.com/coingeicko/api/v3/simple/price?ids=${ticker}&vs_currencies=${currency}`
+          )
+          .then(({ data }) => {
+            resolve(data?.cacao?.[currency.toLowerCase()] ?? 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
     },
     lifiValue: (contractAddress: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -489,22 +498,16 @@ const service = {
     },
   },
   vault: {
-    add: (params: VaultProps): Promise<VaultProps> => {
+    add: (params: VaultProps): Promise<VaultProps | undefined> => {
       return new Promise((resolve, reject) => {
         api
           .post<VaultProps>("vault", toSnakeCase(params))
           .then(() => {
-            service.vault
-              .get(params)
-              .then(({ data }) => resolve(data))
-              .catch(reject);
+            service.vault.get(params).then(resolve);
           })
           .catch((error) => {
             if (error === errorKey.VAULT_ALREADY_REGISTERED) {
-              service.vault
-                .get(params)
-                .then(({ data }) => resolve(data))
-                .catch(reject);
+              service.vault.get(params).then(resolve);
             } else {
               reject();
             }
@@ -517,10 +520,17 @@ const service = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    get: async (params: VaultProps) => {
-      return await api.get<VaultProps>(
-        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}`
-      );
+    get: (vault: VaultProps): Promise<VaultProps | undefined> => {
+      return new Promise((resolve) => {
+        api
+          .get<VaultProps>(
+            `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`
+          )
+          .then(({ data }) => {
+            resolve({ ...vault, ...data });
+          })
+          .catch(() => resolve(undefined));
+      });
     },
     getById: async (id: string) => {
       return await api.get<VaultProps>(`vault/shared/${id}`);

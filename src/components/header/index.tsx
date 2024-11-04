@@ -31,19 +31,25 @@ import {
   HamburgerLG,
   Settings,
 } from "icons";
+import { getStoredVaults } from "utils/storage";
 
 interface ComponentProps {
-  uid: string;
-  alias: string;
+  uid?: string;
+  alias?: string;
   layout: LayoutKey;
-  logo: string;
+  logo?: string;
 }
 
 interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
+const Component: FC<ComponentProps> = ({
+  alias = "",
+  layout,
+  logo = "",
+  uid = "",
+}) => {
   const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
@@ -52,6 +58,7 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
   const { activePage, currency } = useBaseContext();
   const { hash } = useLocation();
   const goBack = useGoBack();
+  const vaults = getStoredVaults();
 
   const handleSharePath = (path: string): string => {
     return path
@@ -128,49 +135,61 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
 
   const navbarItems = [
     ...[
+      ...(vaults.length
+        ? [
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.chainsAlias)
+                  : constantPaths.vault.chains
+              }
+              className={`${
+                activePage === PageKey.SHARED_ASSETS ||
+                activePage === PageKey.SHARED_CHAINS ||
+                activePage === PageKey.VAULT_ASSETS ||
+                activePage === PageKey.VAULT_CHAINS
+                  ? "active"
+                  : ""
+              }`}
+            >
+              Balances
+            </Link>,
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.positions)
+                  : constantPaths.vault.positions
+              }
+              className={`${
+                activePage === PageKey.SHARED_POSITIONS ||
+                activePage === PageKey.VAULT_POSITIONS
+                  ? "active"
+                  : ""
+              }`}
+            >
+              Active Positions
+            </Link>,
+          ]
+        : []),
       <Link
         to={
-          layout === LayoutKey.VAULT
-            ? constantPaths.vault.chains
-            : handleSharePath(constantPaths.shared.chainsAlias)
+          layout === LayoutKey.SHARED
+            ? handleSharePath(constantPaths.shared.leaderboard)
+            : vaults.length
+            ? constantPaths.vault.leaderboard
+            : constantPaths.default.leaderboard
         }
         className={`${
-          activePage === PageKey.ASSETS ||
-          activePage === PageKey.CHAINS ||
-          activePage === PageKey.SHARED_ASSETS ||
-          activePage === PageKey.SHARED_CHAINS
+          activePage === PageKey.LEADERBOARD ||
+          activePage === PageKey.SHARED_LEADERBOARD ||
+          activePage === PageKey.VAULT_LEADERBOARD
             ? "active"
             : ""
         }`}
       >
-        Balances
-      </Link>,
-      <Link
-        to={
-          layout === LayoutKey.VAULT
-            ? constantPaths.vault.positions
-            : handleSharePath(constantPaths.shared.positions)
-        }
-        className={`${
-          activePage === PageKey.POSITIONS ||
-          activePage === PageKey.SHARED_POSITIONS
-            ? "active"
-            : ""
-        }`}
-      >
-        Active Positions
+        Airdrop Leaderboard
       </Link>,
     ],
-    ...(layout === LayoutKey.VAULT
-      ? [
-          <Link
-            to={constantPaths.vault.leaderboard}
-            className={`${activePage === PageKey.LEADERBOARD ? "active" : ""}`}
-          >
-            Airdrop Leaderboard
-          </Link>,
-        ]
-      : []),
   ];
 
   const dropdownMenu: MenuProps["items"] = [
@@ -199,27 +218,31 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
       ),
       icon: <Globe />,
     },
-    {
-      key: "3",
-      label: (
-        <>
-          <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
-            {t(translation.CURRENCY)}
-          </Link>
-          <span>{currency}</span>
-        </>
-      ),
-      icon: <CircleDollar />,
-    },
-    // ...(layout === LayoutKey.VAULT
-    //   ? [
-    //       {
-    //         key: "4",
-    //         label: t(translation.DEFAULT_CHAINS),
-    //         icon: <ChainOutlined />,
-    //       },
-    //     ]
-    //   : []),
+    ...(layout !== LayoutKey.DEFAULT
+      ? [
+          {
+            key: "3",
+            label: (
+              <>
+                <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
+                  {t(translation.CURRENCY)}
+                </Link>
+                <span>{currency}</span>
+              </>
+            ),
+            icon: <CircleDollar />,
+          },
+          // ...(layout === LayoutKey.VAULT
+          //   ? [
+          //       {
+          //         key: "4",
+          //         label: t(translation.DEFAULT_CHAINS),
+          //         icon: <ChainOutlined />,
+          //       },
+          //     ]
+          //   : []),
+        ]
+      : []),
     {
       key: "5",
       label: (
@@ -289,7 +312,7 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
         {isDesktop ? (
           <Dropdown menu={{ items: dropdownMenu }} className="menu">
             <Button type="link">
-              <CircleUser />
+              {layout === LayoutKey.DEFAULT ? <HamburgerLG /> : <CircleUser />}
             </Button>
           </Dropdown>
         ) : (
@@ -306,19 +329,15 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
 
         <Link
           to={
-            layout === LayoutKey.VAULT
+            layout === LayoutKey.SHARED
+              ? handleSharePath(constantPaths.shared.chainsAlias)
+              : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : handleSharePath(constantPaths.shared.chainsAlias)
+              : constantPaths.default.import
           }
           className="logo"
         >
-          {layout === LayoutKey.VAULT ? (
-            <>
-              <Vultisig className="shape" />
-
-              <span className="name">Vultisig</span>
-            </>
-          ) : (
+          {layout === LayoutKey.SHARED ? (
             <>
               {logo ? (
                 <img className="shape" src={logo} />
@@ -327,6 +346,12 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
               )}
 
               <span className="name">{alias}</span>
+            </>
+          ) : (
+            <>
+              <Vultisig className="shape" />
+
+              <span className="name">Vultisig</span>
             </>
           )}
         </Link>
@@ -347,14 +372,17 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
           footer={false}
           onClose={() => goBack()}
           title={
-            <Link to={constantPaths.root} className="logo">
-              {layout === LayoutKey.VAULT ? (
-                <>
-                  <Vultisig className="shape" />
-
-                  <span className="name">Vultisig</span>
-                </>
-              ) : (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.chainsAlias)
+                  : layout === LayoutKey.VAULT
+                  ? constantPaths.vault.chains
+                  : constantPaths.default.import
+              }
+              className="logo"
+            >
+              {layout === LayoutKey.SHARED ? (
                 <>
                   {logo ? (
                     <img className="shape" src={logo} />
@@ -363,6 +391,12 @@ const Component: FC<ComponentProps> = ({ alias, layout, logo, uid }) => {
                   )}
 
                   <span className="name">{alias}</span>
+                </>
+              ) : (
+                <>
+                  <Vultisig className="shape" />
+
+                  <span className="name">Vultisig</span>
                 </>
               )}
             </Link>

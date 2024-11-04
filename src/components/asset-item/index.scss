@@ -4,6 +4,12 @@
   border-top: solid 1px $blue-light;
   position: relative;
 
+  .vulti-loading {
+    position: absolute;
+    right: 0;
+    top: rem(24);
+  }
+
   .token {
     padding-left: rem(48);
     position: relative;
