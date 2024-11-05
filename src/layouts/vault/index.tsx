@@ -47,26 +47,32 @@ const Component: FC = () => {
 
   const updateCurrency = (currency: Currency): void => {
     if (!loading && vault) {
-      setState((prevState) => ({ ...prevState, loading: true }));
+      const coins = vault.chains.flatMap(({ coins, updated }) =>
+        updated ? coins : []
+      );
 
-      const coins = vault.chains.flatMap(({ coins }) => coins);
+      if (coins.length) {
+        setState((prevState) => ({ ...prevState, loading: true }));
 
-      vaultProvider.getValues(coins, currency).then((coins) => {
-        changeCurrency(currency);
+        vaultProvider.getValues(coins, currency).then((coins) => {
+          changeCurrency(currency);
 
-        updateVault({
-          ...vault,
-          chains: vault.chains.map((chain) => ({
-            ...chain,
-            coins: chain.coins.map(
-              (coin) => coins.find(({ id }) => id === coin.id) || coin
-            ),
-          })),
-          isActive: true,
+          updateVault({
+            ...vault,
+            chains: vault.chains.map((chain) => ({
+              ...chain,
+              coins: chain.coins.map(
+                (coin) => coins.find(({ id }) => id === coin.id) || coin
+              ),
+            })),
+            isActive: true,
+          });
+
+          setState((prevState) => ({ ...prevState, currency, loading: false }));
         });
-
-        setState((prevState) => ({ ...prevState, currency, loading: false }));
-      });
+      } else {
+        changeCurrency(currency);
+      }
     }
   };
 

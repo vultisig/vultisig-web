@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
-import { LayoutKey, PageKey } from "utils/constants";
+import { Currency, LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
@@ -32,7 +32,7 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { balance, data, loaded, loading, pageSize, total } = state;
-  const { changePage, currency } = useBaseContext();
+  const { changePage } = useBaseContext();
   const { layout, vault } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
@@ -176,7 +176,7 @@ const Component: FC = () => {
                   rank === vault.rank
                     ? vault.balance || currentBalance || 0
                     : balance
-                  ).toValueFormat(currency)}`}</span>
+                  ).toValueFormat(Currency.USD)}`}</span>
                 </div>
                 {medal && <img src={`/ranks/${medal}.svg`} className="icon" />}
               </div>
@@ -224,7 +224,7 @@ const Component: FC = () => {
                   vault.balance ||
                   currentBalance ||
                   0
-                ).toValueFormat(currency)}`}</span>
+                ).toValueFormat(Currency.USD)}`}</span>
               </div>
             </div>
           )}
