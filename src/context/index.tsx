@@ -15,20 +15,26 @@ import {
   setStoredLanguage,
 } from "utils/storage";
 import i18n from "i18n/config";
+import api from "utils/api";
+
+import Preloader from "components/preloader";
 
 interface BaseContext {
   changeCurrency: (currency: Currency) => void;
   changeLanguage: (language: Language) => void;
   changePage: (language: PageKey) => void;
   activePage: PageKey;
+  baseValue: number;
   currency: Currency;
   language: Language;
 }
 
 interface InitialState {
   activePage: PageKey;
+  baseValue: number;
   currency: Currency;
   language: Language;
+  loading: boolean;
 }
 
 const BaseContext = createContext<BaseContext | undefined>(undefined);
@@ -36,16 +42,29 @@ const BaseContext = createContext<BaseContext | undefined>(undefined);
 const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const initialState: InitialState = {
     activePage: PageKey.IMPORT,
+    baseValue: 0,
     currency: getStoredCurrency(),
     language: getStoredLanguage(),
+    loading: false,
   };
   const [state, setState] = useState(initialState);
-  const { activePage, currency, language } = state;
+  const { activePage, baseValue, currency, language, loading } = state;
 
   const changeCurrency = (currency: Currency): void => {
-    setStoredCurrency(currency);
+    if (!loading) {
+      setState((prevState) => ({ ...prevState, loading: true }));
 
-    setState((prevState) => ({ ...prevState, currency }));
+      api.coin.value(825, currency).then((baseValue) => {
+        setState((prevState) => ({
+          ...prevState,
+          baseValue,
+          currency,
+          loading: false,
+        }));
+
+        setStoredCurrency(currency);
+      });
+    }
   };
 
   const changeLanguage = (language: Language): void => {
@@ -62,6 +81,10 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
 
   const componentDidMount = () => {
     i18n.changeLanguage(language);
+
+    api.coin.value(825, currency).then((baseValue) => {
+      setState((prevState) => ({ ...prevState, baseValue }));
+    });
   };
 
   useEffect(componentDidMount, []);
@@ -73,11 +96,13 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         changeLanguage,
         changePage,
         activePage,
+        baseValue,
         currency,
         language,
       }}
     >
       {children}
+      <Preloader visible={loading} />
     </BaseContext.Provider>
   );
 };

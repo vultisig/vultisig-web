@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
-import { Currency, LayoutKey, PageKey } from "utils/constants";
+import { LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
@@ -32,7 +32,7 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { balance, data, loaded, loading, pageSize, total } = state;
-  const { changePage } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { layout, vault } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
@@ -74,10 +74,9 @@ const Component: FC = () => {
 
   useEffect(componentDidMount, []);
 
-  const currentBalance = vault?.chains.reduce(
-    (acc, chain) => acc + (chain.balance ?? 0),
-    0
-  );
+  const currentBalance =
+    vault?.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0) *
+    baseValue;
 
   return loaded ? (
     <div className="layout-content leaderboard-page">
@@ -85,7 +84,9 @@ const Component: FC = () => {
       <div className="stats">
         <div className="item">
           <span className="label">Total Value of Airdrop Vaults</span>
-          <span className="value">{`$${balance.toNumberFormat()}`}</span>
+          <span className="value">
+            {(balance * baseValue).toValueFormat(currency)}
+          </span>
         </div>
         <div className="item">
           <span className="label">Total Registered Wallets</span>
@@ -172,11 +173,11 @@ const Component: FC = () => {
                   <span className="date">
                     {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
-                  <span className="price">{`${(layout !== LayoutKey.DEFAULT &&
-                  rank === vault.rank
-                    ? vault.balance || currentBalance || 0
-                    : balance
-                  ).toValueFormat(Currency.USD)}`}</span>
+                  <span className="price">{`${(
+                    (layout !== LayoutKey.DEFAULT && rank === vault.rank
+                      ? vault.balance || currentBalance || 0
+                      : balance) * baseValue
+                  ).toValueFormat(currency)}`}</span>
                 </div>
                 {medal && <img src={`/ranks/${medal}.svg`} className="icon" />}
               </div>
@@ -221,10 +222,8 @@ const Component: FC = () => {
                   {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
                 <span className="price">{`${(
-                  vault.balance ||
-                  currentBalance ||
-                  0
-                ).toValueFormat(Currency.USD)}`}</span>
+                  (vault.balance || currentBalance || 0) * baseValue
+                ).toValueFormat(currency)}`}</span>
               </div>
             </div>
           )}

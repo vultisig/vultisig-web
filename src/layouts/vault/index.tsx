@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { useBaseContext } from "context";
 import { Currency, defTokens, LayoutKey } from "utils/constants";
 import { ChainProps, TokenProps, VaultProps } from "utils/interfaces";
 import {
@@ -14,7 +13,6 @@ import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
 import Header from "components/header";
-import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
 import ChangeCurrency from "modals/change-currency";
 import ChangeLanguage from "modals/change-language";
@@ -28,7 +26,6 @@ import VaultProvider from "utils/vault-provider";
 
 interface InitialState {
   tokens: TokenProps[];
-  loading: boolean;
   vaults: VaultProps[];
   vault?: VaultProps;
 }
@@ -36,45 +33,12 @@ interface InitialState {
 const Component: FC = () => {
   const initialState: InitialState = {
     tokens: defTokens,
-    loading: false,
     vaults: [],
   };
   const [state, setState] = useState(initialState);
-  const { loading, tokens, vault, vaults } = state;
-  const { changeCurrency, currency } = useBaseContext();
+  const { tokens, vault, vaults } = state;
   const navigate = useNavigate();
   const vaultProvider = new VaultProvider();
-
-  const updateCurrency = (currency: Currency): void => {
-    if (!loading && vault) {
-      const coins = vault.chains.flatMap(({ coins, updated }) =>
-        updated ? coins : []
-      );
-
-      if (coins.length) {
-        setState((prevState) => ({ ...prevState, loading: true }));
-
-        vaultProvider.getValues(coins, currency).then((coins) => {
-          changeCurrency(currency);
-
-          updateVault({
-            ...vault,
-            chains: vault.chains.map((chain) => ({
-              ...chain,
-              coins: chain.coins.map(
-                (coin) => coins.find(({ id }) => id === coin.id) || coin
-              ),
-            })),
-            isActive: true,
-          });
-
-          setState((prevState) => ({ ...prevState, currency, loading: false }));
-        });
-      } else {
-        changeCurrency(currency);
-      }
-    }
-  };
 
   const toggleToken = (token: TokenProps, vault: VaultProps): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -179,7 +143,7 @@ const Component: FC = () => {
                 .then((balance) => {
                   if (balance) {
                     vaultProvider
-                      .getValues([newToken], currency)
+                      .getValues([newToken], Currency.USD)
                       .then(([{ value }]) => {
                         newToken.value = value;
 
@@ -277,7 +241,7 @@ const Component: FC = () => {
   };
 
   const prepareChain = (chain: ChainProps, vault: VaultProps): void => {
-    vaultProvider.prepareChain(chain, currency).then((chain) => {
+    vaultProvider.prepareChain(chain, Currency.USD).then((chain) => {
       setState((prevState) => {
         const vaults = prevState.vaults.map((item) =>
           vaultProvider.compareVault(item, vault)
@@ -460,7 +424,7 @@ const Component: FC = () => {
           }}
         />
       </div>
-      <ChangeCurrency onChange={updateCurrency} />
+      <ChangeCurrency />
       <ChangeLanguage />
       <JoinAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
@@ -468,7 +432,6 @@ const Component: FC = () => {
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <VaultSettings vault={vault} />
       <SharedSettings vault={vault} />
-      <Preloader visible={loading} />
     </>
   ) : (
     <SplashScreen />

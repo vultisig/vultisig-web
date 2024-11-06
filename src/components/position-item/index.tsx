@@ -17,7 +17,7 @@ interface ComponentProps {
 }
 
 const Component: FC<ComponentProps> = ({ data, text, title }) => {
-  const { currency } = useBaseContext();
+  const { baseValue, currency } = useBaseContext();
 
   return (
     <div className="position-item">
@@ -67,9 +67,10 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                   <span>
                     {(item.base || item.target) &&
                       (
-                        (Number(item.base?.reward) || 0) +
-                        (item.base ? item.base.price : 0) +
-                        (item.target ? item.target.price : 0)
+                        ((Number(item.base?.reward) || 0) +
+                          (item.base ? item.base.price : 0) +
+                          (item.target ? item.target.price : 0)) *
+                        baseValue
                       ).toValueFormat(currency)}
                   </span>
                   <Tooltip title="Link to Address">

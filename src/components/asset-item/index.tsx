@@ -13,7 +13,7 @@ interface ComponentProps {
 }
 
 const Component: FC<ComponentProps> = ({ balance, logo, ticker, value }) => {
-  const { currency } = useBaseContext();
+  const { baseValue, currency } = useBaseContext();
 
   return (
     <div className="asset-item">
@@ -27,7 +27,7 @@ const Component: FC<ComponentProps> = ({ balance, logo, ticker, value }) => {
         <>
           <span className="balance">{balance.toBalanceFormat()}</span>
           <span className="value">
-            {(balance * value).toValueFormat(currency)}
+            {(balance * value * baseValue).toValueFormat(currency)}
           </span>
         </>
       )}

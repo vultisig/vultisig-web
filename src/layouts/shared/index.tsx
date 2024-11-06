@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { useBaseContext } from "context";
 import { Currency, LayoutKey } from "utils/constants";
 import { changeTheme } from "utils/functions";
 import { ChainProps, VaultProps } from "utils/interfaces";
@@ -12,10 +11,10 @@ import constantPaths from "routes/constant-paths";
 import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
-import ChangeCurrency from "modals/change-currency";
-import ChangeLanguage from "modals/change-language";
 import Preloader from "components/preloader";
 import SplashScreen from "components/splash-screen";
+import ChangeCurrency from "modals/change-currency";
+import ChangeLanguage from "modals/change-language";
 
 interface InitialState {
   loading: boolean;
@@ -32,43 +31,11 @@ const Component: FC = () => {
     chainKey?: string;
     uid: string;
   }>();
-  const { changeCurrency, currency } = useBaseContext();
   const vaultProvider = new VaultProvider();
   const navigate = useNavigate();
 
-  const handleCurrency = (currency: Currency) => {
-    if (!loading && vault) {
-      const coins = vault.chains.flatMap(({ coins, updated }) =>
-        updated ? coins : []
-      );
-
-      if (coins.length) {
-        setState((prevState) => ({ ...prevState, loading: true }));
-
-        vaultProvider.getValues(coins, currency).then((coins) => {
-          changeCurrency(currency);
-
-          updateVault({
-            ...vault,
-            chains: vault.chains.map((chain) => ({
-              ...chain,
-              coins: chain.coins.map(
-                (coin) => coins.find(({ id }) => id === coin.id) || coin
-              ),
-            })),
-            isActive: true,
-          });
-
-          setState((prevState) => ({ ...prevState, currency, loading: false }));
-        });
-      } else {
-        changeCurrency(currency);
-      }
-    }
-  };
-
   const prepareChain = (chain: ChainProps): void => {
-    vaultProvider.prepareChain(chain, currency).then((chain) => {
+    vaultProvider.prepareChain(chain, Currency.USD).then((chain) => {
       setState((prevState) =>
         prevState.vault
           ? {
@@ -168,7 +135,8 @@ const Component: FC = () => {
           <Link to="https://vultisig.com/">Vultisig</Link>
         </div>
       </div>
-      <ChangeCurrency onChange={handleCurrency} />
+
+      <ChangeCurrency />
       <ChangeLanguage />
       <Preloader visible={loading} />
     </>
