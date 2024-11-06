@@ -5,6 +5,7 @@ import { Button, Tooltip } from "antd";
 import { useBaseContext } from "context";
 import {
   ChainKey,
+  Currency,
   defTokens,
   exploreToken,
   LayoutKey,
@@ -24,7 +25,7 @@ import VaultDropdown from "components/vault-dropdown";
 import PositionItem from "components/position-item";
 
 const Component: FC = () => {
-  const { changePage, currency } = useBaseContext();
+  const { changePage } = useBaseContext();
   const { layout, vault, updateVault, updatePositions } =
     useOutletContext<VaultOutletContext>();
   const {
@@ -53,7 +54,7 @@ const Component: FC = () => {
       case "AVAX":
         name = ChainKey.AVALANCHE;
         break;
-      case "BCH": 
+      case "BCH":
         name = ChainKey.BITCOINCASH;
         break;
       case "BSC":
@@ -267,7 +268,7 @@ const Component: FC = () => {
           });
           if (cmcIds.length) {
             api.coin
-              .values(cmcIds, currency)
+              .values(cmcIds, Currency.USD)
               .then((values) => {
                 data.pools.forEach((item) => {
                   const chain = getChain(item.pool);
@@ -476,7 +477,7 @@ const Component: FC = () => {
       updatePositions({ ...vault, positions: { updated: true } });
 
       api.coin
-        .values([runeCMCId, tgtCMCId, usdtCMCId], currency)
+        .values([runeCMCId, tgtCMCId, usdtCMCId], Currency.USD)
         .then((data) => {
           getLiquidityPositions(vault);
           getMayaBond(vault);

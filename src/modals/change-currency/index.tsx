@@ -7,24 +7,20 @@ import { Currency, currencyName } from "utils/constants";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 
-interface ComponentProps {
-  onChange: (currency: Currency) => void;
-}
-
 interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ onChange }) => {
+const Component: FC = () => {
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
-  const { currency } = useBaseContext();
+  const { changeCurrency, currency } = useBaseContext();
   const { hash } = useLocation();
   const goBack = useGoBack();
 
   const handleSelect = (key: Currency): void => {
-    onChange(key);
+    changeCurrency(key);
 
     goBack();
   };

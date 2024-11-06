@@ -12,19 +12,19 @@ import {
   VaultProps,
 } from "utils/interfaces";
 
-const api = axios.create({
+const fetch = axios.create({
   baseURL: import.meta.env.VITE_SERVER_ADDRESS,
   headers: { accept: "application/json" },
 });
 
-api.interceptors.request.use(
+fetch.interceptors.request.use(
   (config) => config,
   (error) => {
     return Promise.reject(error.response);
   }
 );
 
-api.interceptors.response.use(
+fetch.interceptors.response.use(
   (response) => {
     response.data = toCamelCase(response.data);
 
@@ -114,38 +114,38 @@ interface SaverPositions {
   }[];
 }
 
-const service = {
+const api = {
   airdrop: {
     join: async (params: VaultProps) => {
-      return await api.post("vault/join-airdrop", toSnakeCase(params));
+      return await fetch.post("vault/join-airdrop", toSnakeCase(params));
     },
     exit: async (params: VaultProps) => {
-      return await api.post("vault/exit-airdrop", toSnakeCase(params));
+      return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
   },
   activePositions: {
     nodeInfo: async () => {
-      return await api.get<NodeInfo[]>(
+      return await fetch.get<NodeInfo[]>(
         `https://thornode.ninerealms.com/thorchain/nodes`
       );
     },
     getLiquidityPositions: async (addresses: string) => {
-      return await api.get<ActivePositions>(
+      return await fetch.get<ActivePositions>(
         `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${addresses}`
       );
     },
     getSaverPositions: async (addresses: string) => {
-      return await api.get<SaverPositions>(
+      return await fetch.get<SaverPositions>(
         `https://api-v2-prod.thorwallet.org/saver/positions?addresses=${addresses}`
       );
     },
     getTGTstake: async (address: string) => {
-      return await api.get<{ stakedAmount: number; reward: number }>(
+      return await fetch.get<{ stakedAmount: number; reward: number }>(
         `https://api-v2-prod.thorwallet.org/stake/${address}`
       );
     },
     getRuneProvider: async (address: string) => {
-      return await api.get<{ value: number }>(
+      return await fetch.get<{ value: number }>(
         `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
       );
     },
@@ -158,7 +158,7 @@ const service = {
       denom: string
     ): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<{
             balances: { denom: string; amount: string }[];
           }>(`${path}/${address}`)
@@ -188,7 +188,7 @@ const service = {
       isNative: boolean
     ): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .post<{ id: number; jsonrpc: string; result: string }>(path, {
             jsonrpc: "2.0",
             method: isNative ? "eth_getBalance" : "eth_call",
@@ -220,7 +220,7 @@ const service = {
     },
     polkadot: (path: string, address: string): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .post<{
             data: { account: { balance: string } };
           }>(path, { key: address })
@@ -240,7 +240,7 @@ const service = {
       isNative: boolean
     ): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .post<{
             result: {
               value:
@@ -288,7 +288,7 @@ const service = {
       decimals: number
     ): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<{
             data: { [address: string]: { address: { balance: number } } };
           }>(`${path}/${address}?state=latest`)
@@ -313,7 +313,7 @@ const service = {
   },
   coin: {
     add: async (vault: VaultProps, coin: CoinParams) => {
-      return await api.post<{
+      return await fetch.post<{
         coinId: number;
       }>(
         `coin/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`,
@@ -323,11 +323,13 @@ const service = {
     },
     cmc: (address: string): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<{
             data: { [cmcId: string]: { id: number } };
           }>(
-            `https://api.vultisig.com/cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
+            `${
+              import.meta.env.VITE_VULTISIG_SERVER
+            }cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
           )
           .then(({ data }) => {
             const [key] = Object.keys(data.data);
@@ -340,16 +342,18 @@ const service = {
       });
     },
     del: async (vault: VaultProps, coin: CoinProps) => {
-      return await api.delete(
+      return await fetch.delete(
         `coin/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}/${coin.id}`,
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
     value: (id: number, currency: Currency): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<CMC.Result>(
-            `https://api.vultisig.com/cmc/v2/cryptocurrency/quotes/latest?id=${id}&skip_invalid=true&aux=is_active&convert=${currency}`
+            `${
+              import.meta.env.VITE_VULTISIG_SERVER
+            }cmc/v2/cryptocurrency/quotes/latest?id=${id}&skip_invalid=true&aux=is_active&convert=${currency}`
           )
           .then(({ data }) => {
             if (
@@ -371,9 +375,11 @@ const service = {
       return new Promise((resolve) => {
         const modifedData: CMC.Props = {};
 
-        api
+        fetch
           .get<CMC.Result>(
-            `https://api.vultisig.com/cmc/v2/cryptocurrency/quotes/latest?id=${ids
+            `${
+              import.meta.env.VITE_VULTISIG_SERVER
+            }cmc/v2/cryptocurrency/quotes/latest?id=${ids
               .filter((id) => id > 0)
               .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
           )
@@ -392,9 +398,11 @@ const service = {
     },
     coingeckoValue: (ticker: string, currency: Currency): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<{ cacao: { [language: string]: number } }>(
-            `https://api.vultisig.com/coingeicko/api/v3/simple/price?ids=${ticker}&vs_currencies=${currency}`
+            `${
+              import.meta.env.VITE_VULTISIG_SERVER
+            }coingeicko/api/v3/simple/price?ids=${ticker}&vs_currencies=${currency}`
           )
           .then(({ data }) => {
             resolve(data?.cacao?.[currency.toLowerCase()] ?? 0);
@@ -406,7 +414,7 @@ const service = {
     },
     lifiValue: (contractAddress: string): Promise<number> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<{ priceUSD: string }>(
             `https://li.quest/v1/token?chain=eth&token=${contractAddress}`
           )
@@ -422,7 +430,7 @@ const service = {
   discovery: {
     info: {
       spl: async (tokens: string[]) => {
-        return await api.post<{
+        return await fetch.post<{
           [address: string]: {
             mint: string;
             tokenList: {
@@ -432,12 +440,12 @@ const service = {
               symbol: string;
             };
           };
-        }>("https://api.solana.fm/v1/tokens", { tokens });
+        }>("https://fetch.solana.fm/v1/tokens", { tokens });
       },
     },
     spl: async (address: string): Promise<TokenProps[]> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .post<{
             result: {
               value: {
@@ -500,14 +508,14 @@ const service = {
   vault: {
     add: (params: VaultProps): Promise<VaultProps | undefined> => {
       return new Promise((resolve, reject) => {
-        api
+        fetch
           .post<VaultProps>("vault", toSnakeCase(params))
           .then(() => {
-            service.vault.get(params).then(resolve);
+            api.vault.get(params).then(resolve);
           })
           .catch((error) => {
             if (error === errorKey.VAULT_ALREADY_REGISTERED) {
-              service.vault.get(params).then(resolve);
+              api.vault.get(params).then(resolve);
             } else {
               reject();
             }
@@ -515,14 +523,14 @@ const service = {
       });
     },
     del: async (vault: VaultProps) => {
-      return await api.delete(
+      return await fetch.delete(
         `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`,
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
     get: (vault: VaultProps): Promise<VaultProps | undefined> => {
       return new Promise((resolve) => {
-        api
+        fetch
           .get<VaultProps>(
             `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`
           )
@@ -533,10 +541,10 @@ const service = {
       });
     },
     getById: async (id: string) => {
-      return await api.get<VaultProps>(`vault/shared/${id}`);
+      return await fetch.get<VaultProps>(`vault/shared/${id}`);
     },
     rename: async (params: VaultProps) => {
-      return await api.post(
+      return await fetch.post(
         `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
         toSnakeCase(params)
       );
@@ -544,28 +552,28 @@ const service = {
   },
   sharedSettings: {
     set: async (params: SharedSettings) => {
-      return await api.post("vault/theme", toSnakeCase(params));
+      return await fetch.post("vault/theme", toSnakeCase(params));
     },
     get: async (uid: string) => {
-      return await api.get<SharedSettings>(`vault/theme/${uid}`);
+      return await fetch.get<SharedSettings>(`vault/theme/${uid}`);
     },
   },
   derivePublicKey: async (params: Derivation.Params) => {
-    return await api.post<Derivation.Props>(
+    return await fetch.post<Derivation.Props>(
       "derive-public-key",
       toSnakeCase(params)
     );
   },
   leaderboard: async (params: Leaderboard.Params) => {
-    return await api.get<Leaderboard.Props>(
+    return await fetch.get<Leaderboard.Props>(
       `leaderboard/vaults?from=${params.from}&limit=${params.limit}`
     );
   },
   oneInch: async (id: number) => {
-    return await api.get<OneInch.Props>(
-      `https://api.vultisig.com/1inch/swap/v6.0/${id}/tokens`
+    return await fetch.get<OneInch.Props>(
+      `${import.meta.env.VITE_VULTISIG_SERVER}1inch/swap/v6.0/${id}/tokens`
     );
   },
 };
 
-export default service;
+export default api;

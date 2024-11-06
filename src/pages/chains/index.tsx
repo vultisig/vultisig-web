@@ -16,7 +16,7 @@ import VaultDropdown from "components/vault-dropdown";
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const { changePage, currency } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { updateVault, layout, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidMount = () => {
@@ -66,9 +66,12 @@ const Component: FC = () => {
         <div className="total-balance">
           <span className="title">{t(translation.TOTAL_BALANCE)}</span>
           <span className="value">
-            {vault.chains
-              .reduce((acc, chain) => acc + (chain.balance ?? 0), 0)
-              .toValueFormat(currency)}
+            {(
+              vault.chains.reduce(
+                (acc, chain) => acc + (chain.balance ?? 0),
+                0
+              ) * baseValue
+            ).toValueFormat(currency)}
           </span>
         </div>
         {vault.chains.length ? (

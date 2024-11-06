@@ -26,7 +26,7 @@ import TokenImage from "components/token-image";
 const Component: FC = () => {
   const { t } = useTranslation();
   const { chainKey } = useParams();
-  const { changePage, currency } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { getTokens, prepareChain, layout, vault } =
     useOutletContext<VaultOutletContext>();
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const Component: FC = () => {
                 </Truncate>
               </div>
               <span className="amount">
-                {(chain.balance ?? 0).toValueFormat(currency)}
+                {((chain.balance ?? 0) * baseValue).toValueFormat(currency)}
               </span>
               <TokenActions address={chain.address} name={chain.name} />
             </div>
