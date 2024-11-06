@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
-import { Currency, LayoutKey, PageKey } from "utils/constants";
+import { LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 
