@@ -250,10 +250,10 @@ export const languageName: LanguageRef = {
 };
 
 export const oneInchRef: OneInchRef = {
-  [ChainKey.ARBITRUM]: 1,
+  [ChainKey.ARBITRUM]: 42161,
   [ChainKey.AVALANCHE]: 43114,
   [ChainKey.BASE]: 8453,
-  [ChainKey.BLAST]: 81457,
+  [ChainKey.BLAST]: 238,
   [ChainKey.BSCCHAIN]: 56,
   [ChainKey.CRONOSCHAIN]: 25,
   [ChainKey.ETHEREUM]: 1,
