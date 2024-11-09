@@ -51,7 +51,7 @@ const Component: FC = () => {
             ...prevState,
             loaded: true,
             loading: false,
-            balance: data.totalBalance,
+            balance: data.totalBalance + data.totalLp,
             data: [...prevState.data, ...data.vaults],
             total: data.totalVaultCount,
           }));
@@ -74,13 +74,14 @@ const Component: FC = () => {
 
   useEffect(componentDidMount, []);
 
-  const currentBalance =
-    vault?.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0) *
-    baseValue;
+  const vaultBalance = vault
+    ? (vault.balance ??
+        vault.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0)) +
+      (vault.lpValue ?? 0)
+    : 0;
 
   return loaded ? (
     <div className="layout-content leaderboard-page">
-
       <div className="stats">
         <div className="item">
           <span className="label">Total Value of Airdrop Vaults</span>
@@ -130,59 +131,63 @@ const Component: FC = () => {
 
       <div className="board">
         <div className="list">
-          {data.map(({ alias, balance, rank, registeredAt, totalPoints }) => {
-            let medal: string;
+          {data.map(
+            ({ alias, balance, lpValue, rank, registeredAt, totalPoints }) => {
+              let medal: string;
 
-            switch (rank) {
-              case 1:
-                medal = "gold";
-                break;
-              case 2:
-                medal = "silver";
-                break;
-              case 3:
-                medal = "bronze";
-                break;
-              default:
-                medal = "";
-                break;
-            }
+              switch (rank) {
+                case 1:
+                  medal = "gold";
+                  break;
+                case 2:
+                  medal = "silver";
+                  break;
+                case 3:
+                  medal = "bronze";
+                  break;
+                default:
+                  medal = "";
+                  break;
+              }
 
-            return (
-              <div
-                className={`item${medal ? ` top ${medal}` : ""}${
-                  layout !== LayoutKey.DEFAULT && rank === vault.rank
-                    ? " active"
-                    : ""
-                }`}
-                key={rank}
-              >
-                <div className="point">
-                  <img src="/avatar/1.png" className="avatar" />
-                  <span className="rank">{`#${rank.toNumberFormat()}`}</span>
-                  <span className="name">{`${alias}${
+              return (
+                <div
+                  className={`item${medal ? ` top ${medal}` : ""}${
                     layout !== LayoutKey.DEFAULT && rank === vault.rank
-                      ? layout === LayoutKey.VAULT
-                        ? " (YOU)"
-                        : " (VAULT)"
+                      ? " active"
                       : ""
-                  }`}</span>
-                  <span className="value">{`${totalPoints.toNumberFormat()} points`}</span>
+                  }`}
+                  key={rank}
+                >
+                  <div className="point">
+                    <img src="/avatar/1.png" className="avatar" />
+                    <span className="rank">{`#${rank.toNumberFormat()}`}</span>
+                    <span className="name">{`${alias}${
+                      layout !== LayoutKey.DEFAULT && rank === vault.rank
+                        ? layout === LayoutKey.VAULT
+                          ? " (YOU)"
+                          : " (VAULT)"
+                        : ""
+                    }`}</span>
+                    <span className="value">{`${totalPoints.toNumberFormat()} points`}</span>
+                  </div>
+                  <div className="balance">
+                    <span className="date">
+                      {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
+                    </span>
+                    <span className="price">{`${(
+                      (layout !== LayoutKey.DEFAULT && rank === vault.rank
+                        ? vaultBalance 
+                        : balance + lpValue) * baseValue
+                    ).toValueFormat(currency)}`}</span>
+                  </div>
+                  {medal && (
+                    <img src={`/ranks/${medal}.svg`} className="icon" />
+                  )}
                 </div>
-                <div className="balance">
-                  <span className="date">
-                    {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
-                  </span>
-                  <span className="price">{`${(
-                    (layout !== LayoutKey.DEFAULT && rank === vault.rank
-                      ? vault.balance || currentBalance || 0
-                      : balance) * baseValue
-                  ).toValueFormat(currency)}`}</span>
-                </div>
-                {medal && <img src={`/ranks/${medal}.svg`} className="icon" />}
-              </div>
-            );
-          })}
+              );
+            }
+          )}
 
           {loading ? (
             <div className="item loading">
@@ -222,7 +227,7 @@ const Component: FC = () => {
                   {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
                 <span className="price">{`${(
-                  (vault.balance || currentBalance || 0) * baseValue
+                  vaultBalance * baseValue
                 ).toValueFormat(currency)}`}</span>
               </div>
             </div>

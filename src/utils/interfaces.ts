@@ -195,6 +195,7 @@ export interface VaultProps {
   isActive: boolean;
   joinAirdrop: boolean;
   logo: string;
+  lpValue: number;
   name: string;
   positions: {
     mayaBond?: PositionProps[];
