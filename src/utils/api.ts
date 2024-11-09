@@ -69,6 +69,7 @@ namespace Leaderboard {
     vaults: VaultProps[];
     totalVaultCount: number;
     totalBalance: number;
+    totalLp: number;
   }
 }
 
