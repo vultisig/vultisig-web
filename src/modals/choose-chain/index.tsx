@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Drawer, Input, List, Switch } from "antd";
 
 import { ChainKey, defTokens } from "utils/constants";
 import { TokenProps, VaultOutletContext } from "utils/interfaces";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 
@@ -18,6 +20,7 @@ interface InitialState {
 }
 
 const Component: FC = () => {
+  const { t } = useTranslation();
   const initialState: InitialState = {
     loading: null,
     search: "",
@@ -99,7 +102,7 @@ const Component: FC = () => {
       title={
         <Input
           onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Search..."
+          placeholder={`${t(constantKeys.SEARCH)}...`}
           prefix={<Search />}
           value={search}
           allowClear

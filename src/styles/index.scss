@@ -5,7 +5,7 @@
 
 @use "_variables";
 @use "_normalize";
-@use "_styles";
+@use "_global";
 
 @use "../components/asset-item";
 @use "../components/chain-item";
@@ -23,6 +23,7 @@
 @use "../modals/delete-vault";
 @use "../modals/join-airdrop";
 @use "../modals/logout-vault";
+@use "../modals/manage-airdrop";
 @use "../modals/qr-code";
 @use "../modals/rename-vault";
 @use "../modals/shared-settings";

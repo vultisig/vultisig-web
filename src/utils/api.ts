@@ -13,7 +13,7 @@ import {
 } from "utils/interfaces";
 
 const fetch = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_ADDRESS,
+  baseURL: `${import.meta.env.VITE_SERVER_ADDRESS}`,
   headers: { accept: "application/json" },
 });
 
@@ -441,7 +441,7 @@ const api = {
               symbol: string;
             };
           };
-        }>("https://fetch.solana.fm/v1/tokens", { tokens });
+        }>("https://api.solana.fm/v1/tokens", { tokens });
       },
     },
     spl: async (address: string): Promise<TokenProps[]> => {

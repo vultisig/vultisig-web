@@ -446,18 +446,12 @@ const Component: FC = () => {
             });
           })
           .finally(() => {
-            updatePositions({
-              ...vault,
-              positions: { wewePositions },
-            });
+            updatePositions({ ...vault, positions: { wewePositions } });
 
             resolve();
           });
       } else {
-        updatePositions({
-          ...vault,
-          positions: { wewePositions },
-        });
+        updatePositions({ ...vault, positions: { wewePositions } });
 
         resolve();
       }

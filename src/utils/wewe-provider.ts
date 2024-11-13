@@ -116,12 +116,14 @@ export default class WeweProvider {
           vaultContract.totalSupply(),
           this.calculateTlvForTokens(vaultAddress, token0, token1),
         ]).then(([userBalance, totalSupply, tlv]) => {
+          const parsedUserBalance = Number(formatUnits(userBalance.toString()));
+          const parsedTotalSupply = Number(formatUnits(totalSupply.toString()));
+
           resolve({
             balance,
-            balanceInUsdc:
-              (Number(formatUnits(userBalance.toString())) /
-                Number(formatUnits(totalSupply.toString()))) *
-              tlv,
+            balanceInUsdc: parsedUserBalance
+              ? (parsedUserBalance / parsedTotalSupply) * tlv
+              : 0,
           });
         });
       });

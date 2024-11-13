@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 
 const Component: FC = () => {
   const { t } = useTranslation();
 
   return (
     <div className="download-vultisig">
-      <p className="description">{t(translation.DOWNLOAD_APP)}</p>
+      <p className="description">{t(constantKeys.DOWNLOAD_APP)}</p>
       <ul className="download">
         <li>
           <a

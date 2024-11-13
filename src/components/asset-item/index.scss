@@ -11,6 +11,9 @@
   }
 
   .token {
+    align-items: center;
+    display: flex;
+    gap: rem(8);
     padding-left: rem(48);
     position: relative;
 
@@ -28,6 +31,23 @@
       font-family: $secondary-font;
       font-size: rem(20);
       line-height: rem(68);
+    }
+
+    .counted {
+      background-color: rgba($color: $cyan-base, $alpha: 0.2);
+      border-radius: rem(12);
+      display: flex;
+      font-size: rem(12);
+      font-weight: 600;
+      gap: rem(4);
+      line-height: rem(22);
+      padding: 0 rem(8) 0 rem(4);
+
+      svg {
+        fill: $cyan-base;
+        height: rem(22);
+        width: rem(22);
+      }
     }
   }
 
@@ -83,6 +103,7 @@ html[theme="light"] {
     justify-content: space-between;
 
     .token {
+      gap: rem(16);
       width: 30%;
     }
 

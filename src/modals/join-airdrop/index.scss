@@ -1,145 +1,27 @@
 @use "~variables" as *;
 
 .join-airdrop {
-  .ant-list {
-    margin-top: rem(16);
-
-    .ant-list-item-meta-title {
-      color: $gray-1 !important;
-      font-family: $secondary-font;
-      font-size: rem(16) !important;
-      font-weight: 400;
-      margin: 0 !important;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .ant-list-item {
-      align-items: center;
-      border: none;
-      border-radius: rem(8);
-      gap: rem(8);
-      height: rem(48);
-      padding: 0 rem(16);
-
-      + .ant-list-item {
-        margin-top: rem(16);
-      }
-    }
+  .image {
+    margin: 0 auto rem(24);
+    width: rem(108);
   }
 
-  .ant-collapse {
-    background-color: transparent;
-    border: none;
-    margin-top: rem(24);
-    padding: 0;
-
-    .ant-collapse-expand-icon {
-      padding: 0 0 0 rem(8) !important;
-    }
-
-    .ant-collapse-header-text {
-      flex: none !important;
-      font-family: $secondary-font;
-      font-size: rem(12);
-      font-weight: 400;
-      margin: 0 !important;
-    }
-
-    .ant-collapse-content-box {
-      padding: rem(16) 0 0;
-    }
-
-    .ant-collapse-content {
-      background-color: transparent;
-      border: none;
-    }
-
-    .ant-collapse-header {
-      flex-direction: row-reverse;
-      justify-content: flex-end;
-      padding: 0;
-    }
-  }
-
-  .ant-modal-title {
-    color: $gray-1;
-    font-size: rem(20);
+  .heading {
+    display: block;
+    font-size: rem(16);
     font-weight: 600;
-    line-height: rem(30);
+    text-align: center;
+  }
+
+  .text {
+    display: block;
+    font-size: rem(14);
+    font-weight: 500;
+    margin-top: rem(8);
+    text-align: center;
   }
 
   .ant-modal-body {
-    padding-top: rem(8);
-
-    .heading {
-      color: $gray-1;
-      display: block;
-      font-size: rem(16);
-      font-weight: 700;
-      line-height: rem(22);
-    }
-
-    .hint {
-      background-image: $linear-gradient;
-      border-radius: rem(8);
-      display: block;
-      font-family: $secondary-font;
-      margin-top: rem(24);
-      padding: rem(12) rem(12) rem(12) rem(44);
-      position: relative;
-
-      span {
-        display: block;
-        font-size: rem(12);
-        line-height: rem(18);
-        position: relative;
-        text-align: center;
-      }
-
-      svg {
-        fill: $cyan-base;
-        height: rem(24);
-        left: rem(12);
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: rem(24);
-      }
-
-      &::before {
-        background-color: $blue-base;
-        border-radius: rem(8);
-        bottom: rem(1);
-        content: "";
-        left: rem(1);
-        position: absolute;
-        right: rem(1);
-        top: rem(1);
-      }
-    }
-
-    .desc {
-      display: block;
-    }
-
-    .link {
-      color: $cyan-base;
-    }
-
-    .text {
-      display: block;
-      font-family: $secondary-font;
-      font-size: rem(12);
-
-      + .text {
-        margin-top: rem(16);
-      }
-    }
-  }
-
-  .ant-modal-footer {
-    margin: 0;
+    margin: rem(24) 0;
   }
 }

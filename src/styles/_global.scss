@@ -23,7 +23,7 @@ body {
 
 .ant-btn {
   border: none;
-  border-radius: rem(20);
+  border-radius: rem(24);
   box-shadow: none;
   height: rem(44);
   position: relative;
@@ -43,6 +43,10 @@ body {
       background-image: $linear-gradient;
       background-clip: text;
       color: transparent;
+    }
+
+    svg {
+      fill: $cyan-base;
     }
 
     &::before {

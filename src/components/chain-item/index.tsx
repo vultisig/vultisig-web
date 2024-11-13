@@ -1,16 +1,19 @@
 import { FC, useEffect } from "react";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Truncate } from "@re-dev/react-truncate";
 
 import { useBaseContext } from "context";
 import { ChainProps, VaultOutletContext } from "utils/interfaces";
+import constantKeys from "i18n/constant-keys";
 
-import { ArrowRight } from "icons";
+import { ArrowRight, Check } from "icons";
 import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
 import VultiLoading from "components/vulti-loading";
 
 const Component: FC<ChainProps> = (chain) => {
+  const { t } = useTranslation();
   const { address, balance, coins, name, updated } = chain;
   const { pathname } = useLocation();
   const { baseValue, currency } = useBaseContext();
@@ -31,6 +34,9 @@ const Component: FC<ChainProps> = (chain) => {
           <TokenImage alt={name} />
           <span className="name">{name}</span>
           <span className="text">{coin?.ticker}</span>
+          <span className="counted">
+            <Check /> {t(constantKeys.COUNTED)}
+          </span>
         </div>
         <div className="key">
           <Truncate end={10} middle>
