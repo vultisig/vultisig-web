@@ -85,17 +85,35 @@
     .amount {
       align-items: center;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      gap: rem(24);
+      gap: rem(8);
 
-      span {
+      .balance {
         font-size: rem(16);
         font-weight: 700;
         line-height: rem(22);
       }
 
-      a {
+      .link {
         display: block;
+
+        svg {
+          fill: $cyan-base;
+          height: rem(22);
+          width: rem(22);
+        }
+      }
+
+      .counted {
+        background-color: rgba($color: $cyan-base, $alpha: 0.2);
+        border-radius: rem(12);
+        display: flex;
+        font-size: rem(12);
+        font-weight: 600;
+        gap: rem(4);
+        line-height: rem(22);
+        padding: 0 rem(8) 0 rem(4);
 
         svg {
           fill: $cyan-base;
@@ -131,6 +149,11 @@
 
       &.full {
         flex-direction: column;
+
+        .amount {
+          flex-direction: row;
+          gap: rem(24);
+        }
       }
     }
   }
@@ -152,7 +175,7 @@ html[theme="light"] {
   }
 }
 
-@media (min-width: rem(567)) {
+@media (min-width: rem(768)) {
   .position-item {
     padding: rem(20);
 
@@ -176,6 +199,11 @@ html[theme="light"] {
         .text {
           text-align: left;
         }
+      }
+
+      .amount {
+        flex-direction: row;
+        gap: rem(24);
       }
 
       .pool {

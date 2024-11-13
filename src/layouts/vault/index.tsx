@@ -22,6 +22,7 @@ import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
+import ManageAirDrop from "modals/manage-airdrop";
 import VaultProvider from "utils/vault-provider";
 
 interface InitialState {
@@ -404,10 +405,9 @@ const Component: FC = () => {
     <>
       <div className="layout">
         <Header
-          alias={vault.alias}
           layout={LayoutKey.VAULT}
-          logo={vault.logo}
-          uid={vault.uid}
+          vault={vault}
+          updateVault={updateVault}
         />
         <Outlet
           context={{
@@ -426,10 +426,11 @@ const Component: FC = () => {
       </div>
       <ChangeCurrency />
       <ChangeLanguage />
-      <JoinAirDrop updateVault={updateVault} vaults={vaults} />
+      <ManageAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
       <LogoutVault deleteVault={deleteVault} vault={vault} />
+      <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
       <SharedSettings vault={vault} />
     </>

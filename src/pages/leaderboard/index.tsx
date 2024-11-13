@@ -111,7 +111,7 @@ const Component: FC = () => {
                 </span>
               </Tooltip>
               <span className="label">FARMED</span>
-              <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
+              <span className="value">{`${vault.totalPoints.toNumberFormat()} VULTIES`}</span>
             </div>
 
             <div className="item divider" />

@@ -36,8 +36,8 @@ const Component: FC = () => {
               <Info />
 
               <span>
-                On this page, please enable all of the assets that you would
-                like to be counted for the airdrop.
+                On this page, please choose all chains and tokens to enable that
+                you would like to be counted for the airdrop.
               </span>
             </div>
 

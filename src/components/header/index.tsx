@@ -1,5 +1,7 @@
 import { FC, Fragment, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 import {
   Button,
   Divider,
@@ -9,61 +11,79 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { useTranslation } from "react-i18next";
-import { useMediaQuery } from "react-responsive";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
+import api from "utils/api";
 import useGoBack from "hooks/go-back";
 import i18n from "i18n/config";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
-
-import { ChromeExtension, Vultisig } from "icons";
 
 import {
   CircleDollar,
   CircleHelp,
   CircleUser,
+  ChromeExtension,
   ExternalLink,
   Globe,
   HamburgerLG,
   Settings,
+  Vultisig,
+  RadioWave,
 } from "icons";
 import { getStoredVaults } from "utils/storage";
+import { VaultProps } from "utils/interfaces";
 
 interface ComponentProps {
-  uid?: string;
-  alias?: string;
+  updateVault: (vault: VaultProps) => void;
   layout: LayoutKey;
-  logo?: string;
+  vault: VaultProps;
 }
 
 interface InitialState {
+  loading: boolean;
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({
-  alias = "",
-  layout,
-  logo = "",
-  uid = "",
-}) => {
+const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const { t } = useTranslation();
-  const initialState: InitialState = { visible: false };
+  const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
-  const { visible } = state;
-  const [messageApi, contextHolder] = message.useMessage();
+  const { loading, visible } = state;
   const { activePage, currency } = useBaseContext();
-  const { hash } = useLocation();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
   const goBack = useGoBack();
   const vaults = getStoredVaults();
 
+  const handleJoinAirdrop = () => {
+    if (!loading) {
+      setState((prevState) => ({ ...prevState, loading: true }));
+
+      api.airdrop
+        .join(vault)
+        .then(() => {
+          updateVault({ ...vault, joinAirdrop: true });
+
+          setState((prevState) => ({ ...prevState, loading: false }));
+
+          navigate(`${pathname}#${constantModals.JOIN_AIRDROP}`, {
+            replace: true,
+          });
+        })
+        .catch(() => {
+          setState((prevState) => ({ ...prevState, loading: false }));
+        });
+    }
+  };
+
   const handleSharePath = (path: string): string => {
     return path
-      .replace(":alias", alias.replace(/ /g, "-"))
-      .replace(":uid", uid);
+      .replace(":alias", vault.alias.replace(/ /g, "-"))
+      .replace(":uid", vault.uid);
   };
 
   const handleShare = (): void => {
@@ -74,13 +94,13 @@ const Component: FC<ComponentProps> = ({
       .then(() => {
         messageApi.open({
           type: "success",
-          content: t(translation.SUCCESSFUL_COPY_LINK),
+          content: t(constantKeys.SUCCESSFUL_COPY_LINK),
         });
       })
       .catch(() => {
         messageApi.open({
           type: "error",
-          content: t(translation.UNSUCCESSFUL_COPY_LINK),
+          content: t(constantKeys.UNSUCCESSFUL_COPY_LINK),
         });
       });
   };
@@ -152,7 +172,7 @@ const Component: FC<ComponentProps> = ({
                   : ""
               }`}
             >
-              Balances
+              {t(constantKeys.BALANCES)}
             </Link>,
             <Link
               to={
@@ -167,7 +187,7 @@ const Component: FC<ComponentProps> = ({
                   : ""
               }`}
             >
-              Active Positions
+              {t(constantKeys.ACTIVE_POSITIONS)}
             </Link>,
           ]
         : []),
@@ -187,7 +207,7 @@ const Component: FC<ComponentProps> = ({
             : ""
         }`}
       >
-        Airdrop Leaderboard
+        {t(constantKeys.AIRDROP_LEADERBOARD)}
       </Link>,
     ],
   ];
@@ -199,7 +219,7 @@ const Component: FC<ComponentProps> = ({
             key: "1",
             label: (
               <Link to={`#${constantModals.VAULT_SETTINGS}`} state={true}>
-                {t(translation.VAULT_SETTINGS)}
+                {t(constantKeys.VAULT_SETTINGS)}
               </Link>
             ),
             icon: <Settings />,
@@ -211,7 +231,7 @@ const Component: FC<ComponentProps> = ({
       label: (
         <>
           <Link to={`#${constantModals.CHANGE_LANG}`} state={true}>
-            {t(translation.LANGUAGE)}
+            {t(constantKeys.LANGUAGE)}
           </Link>
           <span>{languageName[language]}</span>
         </>
@@ -225,7 +245,7 @@ const Component: FC<ComponentProps> = ({
             label: (
               <>
                 <Link to={`#${constantModals.CHANGE_CURRENCY}`} state={true}>
-                  {t(translation.CURRENCY)}
+                  {t(constantKeys.CURRENCY)}
                 </Link>
                 <span>{currency}</span>
               </>
@@ -236,7 +256,7 @@ const Component: FC<ComponentProps> = ({
           //   ? [
           //       {
           //         key: "4",
-          //         label: t(translation.DEFAULT_CHAINS),
+          //         label: t(constantKeys.DEFAULT_CHAINS),
           //         icon: <ChainOutlined />,
           //       },
           //     ]
@@ -251,7 +271,7 @@ const Component: FC<ComponentProps> = ({
           rel="noopener noreferrer"
           target="_blank"
         >
-          {t(translation.FAQ)}
+          {t(constantKeys.FAQ)}
         </a>
       ),
       icon: <CircleHelp />,
@@ -259,30 +279,39 @@ const Component: FC<ComponentProps> = ({
     {
       key: "6",
       type: "group",
-      label: t(translation.OTHER),
+      label: t(constantKeys.OTHER),
       children: [
         {
           key: "6-1",
+          label: (
+            <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
+              {t(constantKeys.MANAGE_AIRDROP)}
+            </Link>
+          ),
+          icon: <RadioWave />,
+        },
+        {
+          key: "6-2",
           label: (
             <a
               href="https://vultisig.com/vult"
               rel="noopener noreferrer"
               target="_blank"
             >
-              {t(translation.VULT_TOKEN)}
+              {t(constantKeys.VULT_TOKEN)}
             </a>
           ),
-          icon: <img src="/images/logo.svg" alt="logo" />,
+          icon: <Vultisig />,
         },
         {
-          key: "6-2",
+          key: "6-3",
           label: (
             <a
               href="https://chromewebstore.google.com/detail/vulticonnect/ggafhcdaplkhmmnlbfjpnnkepdfjaelb"
               rel="noopener noreferrer"
               target="_blank"
             >
-              {t(translation.CHROME_EXTENSION)}
+              {t(constantKeys.CHROME_EXTENSION)}
             </a>
           ),
           icon: <ChromeExtension />,
@@ -290,8 +319,8 @@ const Component: FC<ComponentProps> = ({
         ...(layout === LayoutKey.VAULT
           ? [
               {
-                key: "6-3",
-                label: t(translation.SHARE_VAULT),
+                key: "6-4",
+                label: t(constantKeys.SHARE_VAULT),
                 icon: <ExternalLink />,
                 onClick: () => handleShare(),
               },
@@ -321,9 +350,13 @@ const Component: FC<ComponentProps> = ({
           </Button>
         )}
 
-        {layout === LayoutKey.VAULT && (
-          <Button href={`#${constantModals.JOIN_AIRDROP}`} className="airdrop">
-            {t(translation.JOIN_AIRDROP)}
+        {layout === LayoutKey.VAULT && !vault.joinAirdrop && (
+          <Button
+            onClick={handleJoinAirdrop}
+            loading={isDesktop && loading}
+            className="airdrop"
+          >
+            {t(constantKeys.JOIN_AIRDROP)}
           </Button>
         )}
 
@@ -339,13 +372,13 @@ const Component: FC<ComponentProps> = ({
         >
           {layout === LayoutKey.SHARED ? (
             <>
-              {logo ? (
-                <img className="shape" src={logo} />
+              {vault.logo ? (
+                <img className="shape" src={vault.logo} />
               ) : (
                 <Vultisig className="shape" />
               )}
 
-              <span className="name">{alias}</span>
+              <span className="name">{vault.alias}</span>
             </>
           ) : (
             <>
@@ -384,13 +417,13 @@ const Component: FC<ComponentProps> = ({
             >
               {layout === LayoutKey.SHARED ? (
                 <>
-                  {logo ? (
-                    <img className="shape" src={logo} />
+                  {vault.logo ? (
+                    <img className="shape" src={vault.logo} />
                   ) : (
                     <Vultisig className="shape" />
                   )}
 
-                  <span className="name">{alias}</span>
+                  <span className="name">{vault.alias}</span>
                 </>
               ) : (
                 <>

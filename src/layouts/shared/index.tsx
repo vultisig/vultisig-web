@@ -116,10 +116,9 @@ const Component: FC = () => {
     <>
       <div className="layout layout-shared">
         <Header
-          alias={vault.alias}
           layout={LayoutKey.SHARED}
-          logo={vault.logo}
-          uid={vault.uid}
+          vault={vault}
+          updateVault={updateVault}
         />
         <Outlet
           context={{

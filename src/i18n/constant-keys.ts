@@ -1,11 +1,17 @@
 import keyMirror from "keymirror";
 
 export default keyMirror({
+  // A
+  ACTIVE_POSITIONS: true,
   ADD_NEW_VAULT: true,
+  AIRDROP_LEADERBOARD: true,
   // B
+  BALANCES: true,
+  // C
   CHOOSE_CHAIN: true,
   CHROME_EXTENSION: true,
   CHOOSE_TOKEN: true,
+  COUNTED: true,
   CURRENCY: true,
   // D
   DOWNLOAD_APP: true,
@@ -23,12 +29,14 @@ export default keyMirror({
   // K
   // L
   LANGUAGE: true,
+  LOADING: true,
   LOGO: true,
   LOGOUT: true,
   LOGOUT_VAULT: true,
   LOGOUT_VAULT_TITLE: true,
   LOGOUT_VAULT_WARNING: true,
   // M
+  MANAGE_AIRDROP: true,
   // N
   // O
   OTHER: true,
@@ -41,8 +49,8 @@ export default keyMirror({
   RENAME_VAULT: true,
   RENAME: true,
   //S
-  START: true,
   SAVE: true,
+  SEARCH: true,
   SECURE_CRYPTO_VAULT: true,
   SHARE_VAULT: true,
   SHARE_SETTINGS: true,
@@ -51,6 +59,7 @@ export default keyMirror({
   SHARE_VAULT_LOGO: true,
   SHARE_CURRENT_LOGO: true,
   SHARE_UPLOAD_LOGO: true,
+  START: true,
   SUCCESSFUL_COPY_LINK: true,
   SUCCESSFUL_COPY_TEXT: true,
   //T

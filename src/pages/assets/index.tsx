@@ -99,8 +99,16 @@ const Component: FC = () => {
               </span>
               <TokenActions address={chain.address} name={chain.name} />
             </div>
-            {chain.coins.map(({ ticker, ...res }) => (
-              <AssetItem key={ticker} {...{ ...res, ticker }} />
+            {chain.coins.map(({ balance, isNative, logo, ticker, value }) => (
+              <AssetItem
+                key={ticker}
+                chain={chain.name}
+                balance={balance}
+                isNative={isNative}
+                logo={logo}
+                ticker={ticker}
+                value={value}
+              />
             ))}
           </div>
           {layout === LayoutKey.VAULT && chooseToken[chain.name] && (

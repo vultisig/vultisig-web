@@ -14,11 +14,16 @@
     top: rem(28);
   }
 
+  .token-actions {
+    justify-content: end;
+  }
+
   .token-image {
     height: rem(32);
     left: 0;
     position: absolute;
-    top: rem(6);
+    top: 50%;
+    transform: translateY(-50%);
     width: rem(32);
   }
 
@@ -39,6 +44,26 @@
       font-size: rem(12);
       font-weight: 600;
       line-height: rem(22);
+    }
+
+    .counted {
+      background-color: rgba($color: $cyan-base, $alpha: 0.2);
+      border-radius: rem(12);
+      bottom: rem(-77);
+      display: inline-flex;
+      font-size: rem(12);
+      font-weight: 600;
+      gap: rem(4);
+      left: 0;
+      line-height: rem(22);
+      padding: 0 rem(8) 0 rem(4);
+      position: absolute;
+
+      svg {
+        fill: $cyan-base;
+        height: rem(22);
+        width: rem(22);
+      }
     }
   }
 
@@ -142,6 +167,7 @@ html[theme="light"] {
 
 @media (min-width: rem(768)) {
   .chain-item {
+    align-items: center;
     display: flex;
     gap: rem(24);
     padding-right: rem(64);
@@ -154,7 +180,13 @@ html[theme="light"] {
     }
 
     .type {
+      height: rem(68);
       min-width: rem(160);
+
+      .counted {
+        margin-top: rem(2);
+        position: static;
+      }
     }
 
     .key {
@@ -162,12 +194,10 @@ html[theme="light"] {
     }
 
     .asset {
-      margin: rem(10) 0;
       position: static;
     }
 
     .amount {
-      margin: rem(10) 0;
       position: static;
     }
 

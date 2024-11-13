@@ -1,12 +1,14 @@
-import type { FC } from "react";
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import { CodeSandboxOutlined } from "@ant-design/icons";
 
 import { PositionProps } from "utils/interfaces";
 import { useBaseContext } from "context";
 import { TickerKey } from "utils/constants";
+import constantKeys from "i18n/constant-keys";
 
-import { Hyperlink } from "icons";
+import { Check, Hyperlink } from "icons";
 import TokenImage from "components/token-image";
 import VultiLoading from "components/vulti-loading";
 
@@ -17,6 +19,7 @@ interface ComponentProps {
 }
 
 const Component: FC<ComponentProps> = ({ data, text, title }) => {
+  const { t } = useTranslation();
   const { baseValue, currency } = useBaseContext();
 
   return (
@@ -64,12 +67,16 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                 </div>
 
                 <div className="amount">
-                  <span>
+                  <span className="counted">
+                    <Check />
+                    {t(constantKeys.COUNTED)}
+                  </span>
+                  <span className="balance">
                     {(item.base || item.target) &&
                       (
                         ((Number(item.base?.reward) || 0) +
-                          (item.base ? item.base.price : 0) +
-                          (item.target ? item.target.price : 0)) *
+                          (Number(item.base?.price) || 0) +
+                          (Number(item.target?.price) || 0)) *
                         baseValue
                       ).toValueFormat(currency)}
                   </span>
@@ -84,6 +91,7 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                       }
                       rel="noopener noreferrer"
                       target="_blank"
+                      className="link"
                     >
                       <Hyperlink />
                     </a>

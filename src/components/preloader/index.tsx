@@ -1,5 +1,8 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
+
+import constantKeys from "i18n/constant-keys";
 
 import VultiLoading from "components/vulti-loading";
 
@@ -8,6 +11,8 @@ interface ComponentProps {
 }
 
 const Component: FC<ComponentProps> = ({ visible }) => {
+  const { t } = useTranslation();
+
   return (
     <Modal
       className="modal-preloader"
@@ -15,7 +20,7 @@ const Component: FC<ComponentProps> = ({ visible }) => {
       footer={false}
       maskClosable={false}
       open={visible}
-      title="Loading..."
+      title={`${t(constantKeys.LOADING)}...`}
       centered
     >
       <VultiLoading />

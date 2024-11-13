@@ -7,7 +7,7 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import translation from "i18n/constant-keys";
 
-import { ArrowRight, Delete, EditNote, ExternalLink, Warning } from "icons";
+import { ArrowRight, CirclePower, Delete, EditNote, ExternalLink } from "icons";
 
 interface ComponentProps {
   vault?: VaultProps;
@@ -81,7 +81,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
           className="warning"
         >
           <List.Item.Meta
-            avatar={<Warning />}
+            avatar={<CirclePower />}
             description={t(translation.LOGOUT_VAULT)}
             title={t(translation.LOGOUT)}
           />
