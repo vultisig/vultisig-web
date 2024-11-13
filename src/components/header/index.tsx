@@ -37,9 +37,9 @@ import { getStoredVaults } from "utils/storage";
 import { VaultProps } from "utils/interfaces";
 
 interface ComponentProps {
-  updateVault: (vault: VaultProps) => void;
+  updateVault?: (vault: VaultProps) => void;
   layout: LayoutKey;
-  vault: VaultProps;
+  vault?: VaultProps;
 }
 
 interface InitialState {
@@ -60,13 +60,13 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const vaults = getStoredVaults();
 
   const handleJoinAirdrop = () => {
-    if (!loading) {
+    if (vault && !loading) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
       api.airdrop
         .join(vault)
         .then(() => {
-          updateVault({ ...vault, joinAirdrop: true });
+          if (updateVault) updateVault({ ...vault, joinAirdrop: true });
 
           setState((prevState) => ({ ...prevState, loading: false }));
 
@@ -82,8 +82,8 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   const handleSharePath = (path: string): string => {
     return path
-      .replace(":alias", vault.alias.replace(/ /g, "-"))
-      .replace(":uid", vault.uid);
+      .replace(":alias", (vault?.alias ?? "").replace(/ /g, "-"))
+      .replace(":uid", vault?.uid ?? "");
   };
 
   const handleShare = (): void => {
@@ -350,7 +350,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           </Button>
         )}
 
-        {layout === LayoutKey.VAULT && !vault.joinAirdrop && (
+        {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
           <Button
             onClick={handleJoinAirdrop}
             loading={isDesktop && loading}
@@ -372,13 +372,13 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         >
           {layout === LayoutKey.SHARED ? (
             <>
-              {vault.logo ? (
+              {vault?.logo ? (
                 <img className="shape" src={vault.logo} />
               ) : (
                 <Vultisig className="shape" />
               )}
 
-              <span className="name">{vault.alias}</span>
+              <span className="name">{vault?.alias}</span>
             </>
           ) : (
             <>
@@ -417,13 +417,13 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             >
               {layout === LayoutKey.SHARED ? (
                 <>
-                  {vault.logo ? (
+                  {vault?.logo ? (
                     <img className="shape" src={vault.logo} />
                   ) : (
                     <Vultisig className="shape" />
                   )}
 
-                  <span className="name">{vault.alias}</span>
+                  <span className="name">{vault?.alias}</span>
                 </>
               ) : (
                 <>
