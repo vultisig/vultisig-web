@@ -65,6 +65,7 @@ export default class VaultProvider {
               [ChainKey.SOLANA]: walletCore.CoinType.solana,
               [ChainKey.SUI]: walletCore.CoinType.sui,
               [ChainKey.THORCHAIN]: walletCore.CoinType.thorchain,
+              [ChainKey.TON]: walletCore.CoinType.ton,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
             };
 
@@ -393,7 +394,8 @@ export default class VaultProvider {
           // EDDSA
           case ChainKey.POLKADOT:
           case ChainKey.SOLANA:
-          case ChainKey.SUI: {
+          case ChainKey.SUI:
+          case ChainKey.TON: {
             this.getEDDSAAddress(chain, vault).then(resolve).catch(reject);
 
             break;
@@ -454,10 +456,18 @@ export default class VaultProvider {
             .then(resolve);
           break;
         }
+        case ChainKey.SUI: {
+          api.balance.sui(path, address, decimals).then(resolve);
+          break;
+        }
         case ChainKey.THORCHAIN: {
           api.balance
             .cosmos(path, address, decimals, ticker.toLowerCase())
             .then(resolve);
+          break;
+        }
+        case ChainKey.TON: {
+          api.balance.ton(path, address, decimals).then(resolve);
           break;
         }
         // EVM
@@ -469,7 +479,8 @@ export default class VaultProvider {
         case ChainKey.CRONOSCHAIN:
         case ChainKey.ETHEREUM:
         case ChainKey.OPTIMISM:
-        case ChainKey.POLYGON: {
+        case ChainKey.POLYGON:
+        case ChainKey.ZKSYNC: {
           api.balance
             .evm(path, address, decimals, contractAddress, isNative)
             .then(resolve);

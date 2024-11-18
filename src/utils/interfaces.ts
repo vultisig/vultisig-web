@@ -42,6 +42,7 @@ export interface ChainBoolRef {
   [ChainKey.SOLANA]: boolean;
   [ChainKey.SUI]: boolean;
   [ChainKey.THORCHAIN]: boolean;
+  [ChainKey.TON]: boolean;
   [ChainKey.ZKSYNC]: boolean;
 }
 
@@ -68,6 +69,7 @@ export interface ChainStrRef {
   [ChainKey.SOLANA]: string;
   [ChainKey.SUI]: string;
   [ChainKey.THORCHAIN]: string;
+  [ChainKey.TON]: string;
   [ChainKey.ZKSYNC]: string;
 }
 

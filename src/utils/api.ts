@@ -191,6 +191,7 @@ const api = {
       return new Promise((resolve) => {
         fetch
           .post<{ id: number; jsonrpc: string; result: string }>(path, {
+            id: uuidv4(),
             jsonrpc: "2.0",
             method: isNative ? "eth_getBalance" : "eth_call",
             params: [
@@ -205,7 +206,6 @@ const api = {
                   },
               "latest",
             ],
-            id: uuidv4(),
           })
           .then(({ data }) => {
             resolve(
@@ -277,6 +277,53 @@ const api = {
             if (balance) balance = balance / Math.pow(10, decimals);
 
             resolve(balance);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
+    sui: (path: string, address: string, decimals: number): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .post<{
+            id: number;
+            jsonrpc: string;
+            result: [{ coinType: string; totalBalance: string }];
+          }>(path, {
+            id: uuidv4(),
+            jsonrpc: "2.0",
+            method: "suix_getAllBalances",
+            params: [address],
+          })
+          .then(({ data }) => {
+            if (data?.result && Array.isArray(data.result)) {
+              const amount = data.result.find(
+                ({ coinType }) => coinType === "0x2::sui::SUI"
+              )?.totalBalance;
+
+              amount
+                ? resolve(parseInt(amount) / Math.pow(10, decimals))
+                : resolve(0);
+            } else {
+              resolve(0);
+            }
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
+    ton: (path: string, address: string, decimals: number): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<{ balance: string }>(path, {
+            params: { address, use_v2: false },
+          })
+          .then(({ data }) => {
+            const balance = parseFloat(data?.balance ?? "0");
+
+            resolve(balance >= 0 ? balance / Math.pow(10, decimals) : 0);
           })
           .catch(() => {
             resolve(0);

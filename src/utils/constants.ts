@@ -32,6 +32,7 @@ export enum ChainKey {
   SOLANA = "Solana",
   SUI = "Sui",
   THORCHAIN = "THORChain",
+  TON = "TON",
   ZKSYNC = "Zksync",
 }
 
@@ -56,12 +57,28 @@ export enum PageKey {
 }
 
 export enum TickerKey {
+  AVAX = "AVAX",
+  ATOM = "ATOM",
+  BCH = "BCH",
+  BNB = "BNB",
+  BTC = "BTC",
   CACAO = "CACAO",
+  CRO = "CRO",
+  DASH = "DASH",
+  DOGE = "DOGE",
+  DOT = "DOT",
+  DYDX = "DYDX",
   ETH = "ETH",
+  KUJI = "KUJI",
+  LTC = "LTC",
+  MATIC = "MATIC",
   MAYA = "MAYA",
   RUNE = "RUNE",
+  SOL = "SOL",
+  SUI = "SUI",
   TGT = "TGT",
   THOR = "THOR",
+  TON = "TON",
   USDC = "USDC",
   USDT = "USDT",
   VTHOR = "vTHOR",
@@ -129,35 +146,36 @@ export const balanceAPI: ChainStrRef = {
   [ChainKey.AVALANCHE]: "https://avalanche-c-chain-rpc.publicnode.com",
   [ChainKey.BASE]: "https://base-rpc.publicnode.com",
   [ChainKey.BITCOIN]:
-    "https://api.vultisig.com/blockchair/bitcoin/dashboards/address", //$address?state=latest
+    "https://api.vultisig.com/blockchair/bitcoin/dashboards/address",
   [ChainKey.BITCOINCASH]:
-    "https://api.vultisig.com/blockchair/bitcoin-cash/dashboards/address", //$address?state=latest
+    "https://api.vultisig.com/blockchair/bitcoin-cash/dashboards/address",
   [ChainKey.BLAST]: "https://rpc.ankr.com/blast",
   [ChainKey.BSCCHAIN]: "https://bsc-rpc.publicnode.com",
   [ChainKey.CRONOSCHAIN]: "https://cronos-evm-rpc.publicnode.com",
   [ChainKey.DASH]:
-    "https://api.vultisig.com/blockchair/dash/dashboards/address", //$address?state=latest
+    "https://api.vultisig.com/blockchair/dash/dashboards/address",
   [ChainKey.DOGECOIN]:
-    "https://api.vultisig.com/blockchair/dogecoin/dashboards/address", //$address?state=latest
+    "https://api.vultisig.com/blockchair/dogecoin/dashboards/address",
   [ChainKey.DYDX]:
-    "https://dydx-rest.publicnode.com/cosmos/bank/v1beta1/balances", //$address
+    "https://dydx-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.ETHEREUM]: "https://ethereum-rpc.publicnode.com",
   [ChainKey.GAIACHAIN]:
-    "https://cosmos-rest.publicnode.com/cosmos/bank/v1beta1/balances", //$address
+    "https://cosmos-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.KUJIRA]:
-    "https://kujira-rest.publicnode.com/cosmos/bank/v1beta1/balances", //$address
+    "https://kujira-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.LITECOIN]:
-    "https://api.vultisig.com/blockchair/litecoin/dashboards/address", //$address?state=latest
+    "https://api.vultisig.com/blockchair/litecoin/dashboards/address",
   [ChainKey.MAYACHAIN]:
-    "https://mayanode.mayachain.info/cosmos/bank/v1beta1/balances", //$address
+    "https://mayanode.mayachain.info/cosmos/bank/v1beta1/balances",
   [ChainKey.OPTIMISM]: "https://optimism-rpc.publicnode.com",
   [ChainKey.POLKADOT]: "https://polkadot.api.subscan.io/api/v2/scan/search",
   [ChainKey.POLYGON]: "https://polygon-bor-rpc.publicnode.com",
   [ChainKey.SOLANA]: "https://solana-rpc.publicnode.com",
-  [ChainKey.SUI]: "https://suiscan.xyz/mainnet/address", //$address
+  [ChainKey.SUI]: "https://sui-rpc.publicnode.com",
   [ChainKey.THORCHAIN]:
-    "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances", //$address
-  [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address", //$address
+    "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances",
+  [ChainKey.TON]: "https://api.vultisig.com/ton/v3/addressInformation",
+  [ChainKey.ZKSYNC]: "https://mainnet.era.zksync.io",
 };
 
 export const chooseToken: ChainBoolRef = {
@@ -168,7 +186,7 @@ export const chooseToken: ChainBoolRef = {
   [ChainKey.BITCOINCASH]: false,
   [ChainKey.BLAST]: true,
   [ChainKey.BSCCHAIN]: true,
-  [ChainKey.CRONOSCHAIN]: true,
+  [ChainKey.CRONOSCHAIN]: false,
   [ChainKey.DASH]: false,
   [ChainKey.DOGECOIN]: false,
   [ChainKey.DYDX]: false,
@@ -183,6 +201,7 @@ export const chooseToken: ChainBoolRef = {
   [ChainKey.SOLANA]: true,
   [ChainKey.SUI]: false,
   [ChainKey.THORCHAIN]: false,
+  [ChainKey.TON]: false,
   [ChainKey.ZKSYNC]: false,
 };
 
@@ -209,6 +228,7 @@ export const exploreToken: ChainStrRef = {
   [ChainKey.SOLANA]: "https://explorer.solana.com/address/",
   [ChainKey.SUI]: "https://suiscan.xyz/mainnet/address/",
   [ChainKey.THORCHAIN]: "https://thorchain.net/address/",
+  [ChainKey.TON]: "https://tonscan.org/address/",
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address/",
 };
 
@@ -272,7 +292,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ETH",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.AVALANCHE,
@@ -284,7 +304,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "AVAX",
+    ticker: TickerKey.AVAX,
   },
   {
     chain: ChainKey.BASE,
@@ -296,7 +316,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ETH",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.BITCOIN,
@@ -308,7 +328,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "BTC",
+    ticker: TickerKey.BTC,
   },
   {
     chain: ChainKey.BITCOINCASH,
@@ -320,7 +340,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "BCH",
+    ticker: TickerKey.BCH,
   },
   {
     chain: ChainKey.BLAST,
@@ -332,7 +352,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ETH",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.BSCCHAIN,
@@ -344,7 +364,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "BNB",
+    ticker: TickerKey.BNB,
   },
   {
     chain: ChainKey.CRONOSCHAIN,
@@ -356,7 +376,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "CRO",
+    ticker: TickerKey.CRO,
   },
   {
     chain: ChainKey.DOGECOIN,
@@ -368,7 +388,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "DOGE",
+    ticker: TickerKey.DOGE,
   },
   {
     chain: ChainKey.DYDX,
@@ -380,7 +400,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "DYDX",
+    ticker: TickerKey.DYDX,
   },
   {
     chain: ChainKey.DASH,
@@ -392,7 +412,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "DASH",
+    ticker: TickerKey.DASH,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -404,7 +424,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ETH",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.GAIACHAIN,
@@ -416,7 +436,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ATOM",
+    ticker: TickerKey.ATOM,
   },
   {
     chain: ChainKey.KUJIRA,
@@ -428,7 +448,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "KUJI",
+    ticker: TickerKey.KUJI,
   },
   {
     chain: ChainKey.LITECOIN,
@@ -440,7 +460,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "LTC",
+    ticker: TickerKey.LTC,
   },
   {
     chain: ChainKey.MAYACHAIN,
@@ -452,7 +472,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "CACAO",
+    ticker: TickerKey.CACAO,
   },
   {
     chain: ChainKey.OPTIMISM,
@@ -464,7 +484,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "ETH",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.POLKADOT,
@@ -476,7 +496,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "DOT",
+    ticker: TickerKey.DOT,
   },
   {
     chain: ChainKey.POLYGON,
@@ -488,7 +508,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "MATIC",
+    ticker: TickerKey.MATIC,
   },
   {
     chain: ChainKey.SOLANA,
@@ -500,7 +520,19 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "SOL",
+    ticker: TickerKey.SOL,
+  },
+  {
+    chain: ChainKey.SUI,
+    cmcId: 20947,
+    contractAddress: "",
+    decimals: 9,
+    hexPublicKey: "EDDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.SUI,
   },
   {
     chain: ChainKey.THORCHAIN,
@@ -512,7 +544,31 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: "RUNE",
+    ticker: TickerKey.RUNE,
+  },
+  {
+    chain: ChainKey.TON,
+    cmcId: 11419,
+    contractAddress: "",
+    decimals: 9,
+    hexPublicKey: "EDDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.TON,
+  },
+  {
+    chain: ChainKey.ZKSYNC,
+    cmcId: 24091,
+    contractAddress: "",
+    decimals: 18,
+    hexPublicKey: "ECDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.ETH,
   },
   {
     chain: ChainKey.ARBITRUM,
@@ -536,7 +592,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "TGT",
+    ticker: TickerKey.TGT,
   },
   {
     chain: ChainKey.ARBITRUM,
@@ -560,7 +616,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.ARBITRUM,
@@ -584,7 +640,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.ARBITRUM,
@@ -680,7 +736,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.AVALANCHE,
@@ -692,7 +748,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.AVALANCHE,
@@ -776,7 +832,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "WEWE",
+    ticker: TickerKey.WEWE,
   },
   {
     chain: ChainKey.BASE,
@@ -788,7 +844,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.BASE,
@@ -932,7 +988,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.BSCCHAIN,
@@ -944,7 +1000,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.BSCCHAIN,
@@ -1040,7 +1096,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -1052,7 +1108,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -1076,7 +1132,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "MATIC",
+    ticker: TickerKey.MATIC,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -1124,7 +1180,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "TGT",
+    ticker: TickerKey.TGT,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -1304,7 +1360,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "vTHOR",
+    ticker: TickerKey.VTHOR,
   },
   {
     chain: ChainKey.ETHEREUM,
@@ -1316,7 +1372,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "THOR",
+    ticker: TickerKey.THOR,
   },
   {
     chain: ChainKey.MAYACHAIN,
@@ -1328,7 +1384,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "MAYA",
+    ticker: TickerKey.MAYA,
   },
   {
     chain: ChainKey.OPTIMISM,
@@ -1364,7 +1420,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.OPTIMISM,
@@ -1376,7 +1432,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.OPTIMISM,
@@ -1484,7 +1540,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDT",
+    ticker: TickerKey.USDT,
   },
   {
     chain: ChainKey.POLYGON,
@@ -1496,7 +1552,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "BNB",
+    ticker: TickerKey.BNB,
   },
   {
     chain: ChainKey.POLYGON,
@@ -1508,7 +1564,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "SOL",
+    ticker: TickerKey.SOL,
   },
   {
     chain: ChainKey.POLYGON,
@@ -1520,7 +1576,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "USDC",
+    ticker: TickerKey.USDC,
   },
   {
     chain: ChainKey.POLYGON,
@@ -1556,7 +1612,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: "AVAX",
+    ticker: TickerKey.AVAX,
   },
   {
     chain: ChainKey.POLYGON,
