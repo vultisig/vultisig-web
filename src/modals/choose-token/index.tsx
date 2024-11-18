@@ -11,7 +11,6 @@ import useGoBack from "hooks/go-back";
 
 import { Search } from "icons";
 import TokenImage from "components/token-image";
-import VultiLoading from "components/vulti-loading";
 
 interface InitialState {
   loading: ChainKey | null;
@@ -118,51 +117,48 @@ const Component: FC = () => {
       open={visible}
       width={320}
     >
-      {visible ? (
-        <List
-          loading={
-            modifiedTokens.filter(
-              ({ chain, isNative }) =>
-                !isNative && chain.toLowerCase() === chainKey
-            ).length <= 0
-          }
-          dataSource={modifiedTokens.filter(({ isLocally, ticker }) =>
-            search.length < 2
-              ? isLocally
-              : ticker.toLowerCase().indexOf(search) >= 0
-          )}
-          renderItem={(item) => {
-            const checked = vault
-              ? vault?.chains.findIndex(
-                  ({ coins, name }) =>
-                    name === item.chain &&
-                    coins.findIndex(({ ticker }) => ticker === item.ticker) >= 0
-                ) >= 0
-              : false;
+      <List
+        loading={
+          modifiedTokens.length > 0 &&
+          modifiedTokens.filter(
+            ({ chain, isNative }) =>
+              !isNative && chain.toLowerCase() === chainKey
+          ).length <= 0
+        }
+        dataSource={modifiedTokens.filter(({ isLocally, ticker }) =>
+          search.length < 2
+            ? isLocally
+            : ticker.toLowerCase().indexOf(search) >= 0
+        )}
+        renderItem={(item) => {
+          const checked = vault
+            ? vault?.chains.findIndex(
+                ({ coins, name }) =>
+                  name === item.chain &&
+                  coins.findIndex(({ ticker }) => ticker === item.ticker) >= 0
+              ) >= 0
+            : false;
 
-            return (
-              <List.Item
-                key={item.chain}
-                extra={
-                  <Switch
-                    checked={checked}
-                    loading={item.chain === loading}
-                    onClick={() => handleToggle(item)}
-                  />
-                }
-              >
-                <List.Item.Meta
-                  avatar={<TokenImage alt={item.ticker} url={item.logo} />}
-                  title={item.ticker}
-                  description={item.chain}
+          return (
+            <List.Item
+              key={item.chain}
+              extra={
+                <Switch
+                  checked={checked}
+                  loading={item.chain === loading}
+                  onClick={() => handleToggle(item)}
                 />
-              </List.Item>
-            );
-          }}
-        />
-      ) : (
-        <VultiLoading />
-      )}
+              }
+            >
+              <List.Item.Meta
+                avatar={<TokenImage alt={item.ticker} url={item.logo} />}
+                title={item.ticker}
+                description={item.chain}
+              />
+            </List.Item>
+          );
+        }}
+      />
     </Drawer>
   );
 };
