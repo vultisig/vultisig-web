@@ -209,6 +209,26 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       >
         {t(constantKeys.AIRDROP_LEADERBOARD)}
       </Link>,
+      ...(!vaults.length
+        ? [
+            <Link
+              to={constantPaths.default.onboarding}
+              className={`${activePage === PageKey.ONBOARDING ? "active" : ""}`}
+            >
+              {t(constantKeys.HOW_TO_PARTICIPATE)}
+            </Link>,
+            <Link
+              to={constantPaths.default.import}
+              className={`${
+                activePage === PageKey.IMPORT || activePage === PageKey.UPLOAD
+                  ? "active"
+                  : ""
+              }`}
+            >
+              {t(constantKeys.CONNECT_YOUR_WALLET)}
+            </Link>,
+          ]
+        : []),
     ],
   ];
 
@@ -366,7 +386,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               ? handleSharePath(constantPaths.shared.chainsAlias)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.import
+              : constantPaths.default.leaderboard
           }
           className="logo"
         >
@@ -411,7 +431,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
                   ? handleSharePath(constantPaths.shared.chainsAlias)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.import
+                  : constantPaths.default.leaderboard
               }
               className="logo"
             >

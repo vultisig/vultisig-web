@@ -11,6 +11,7 @@ export default {
   [translation.CHOOSE_CHAIN]: "Choose Chains",
   [translation.CHROME_EXTENSION]: "Chrome Extension",
   [translation.CHOOSE_TOKEN]: "Choose Tokens",
+  [translation.CONNECT_YOUR_WALLET]: "Connect your Wallet",
   [translation.COUNTED]: "counted",
   [translation.CURRENCY]: "Currency",
   // D
@@ -25,6 +26,7 @@ export default {
   // G
   [translation.HINT]:
     "If you didn't save the QR code yet, you can find it in the app in the top right on the main screen",
+  [translation.HOW_TO_PARTICIPATE]: "How to Participate",
   // I
   [translation.JOIN_AIRDROP]: "Join Airdrop",
   // K

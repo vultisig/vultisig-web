@@ -1,0 +1,146 @@
+@use "~variables" as *;
+
+.onboarding-page {
+  padding: rem(48) rem(16);
+
+  .steps {
+    .heading {
+      display: block;
+      font-size: rem(48);
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+
+      span {
+        background-image: $linear-gradient;
+        background-clip: text;
+        color: transparent;
+      }
+    }
+
+    .index {
+      background-image: linear-gradient(
+        180deg,
+        rgba(72, 121, 253, 0.4) 0%,
+        rgba(43, 72, 151, 0.1) 100%
+      );
+
+      background-clip: text;
+      color: transparent;
+      font-family: $number-font;
+      font-size: rem(240);
+      line-height: rem(180);
+      position: absolute;
+      right: rem(16);
+      top: rem(16);
+    }
+
+    .title {
+      display: block;
+      font-size: rem(24);
+      font-weight: 700;
+    }
+
+    .desc {
+      display: block;
+      margin-top: rem(12);
+    }
+
+    .item {
+      background-color: rgba($color: $gray-1, $alpha: 0.05);
+      border: solid rem(1) rgba($color: $gray-1, $alpha: 0.1);
+      border-radius: rem(16);
+      padding: rem(160) rem(16) rem(16);
+      position: relative;
+      width: 100%;
+    }
+
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(24);
+      justify-content: center;
+      margin-top: rem(48);
+    }
+  }
+
+  .faq {
+    margin-top: rem(80);
+
+    .ant-collapse-content-box {
+      padding: rem(16) rem(16) 0;
+
+      a {
+        color: $cyan-base;
+      }
+
+      span {
+        display: block;
+
+        + span {
+          margin-top: rem(16);
+        }
+      }
+    }
+
+    .ant-collapse-header {
+      background-color: rgba($color: $gray-1, $alpha: 0.05);
+      border: solid rem(1) rgba($color: $gray-1, $alpha: 0.1);
+      border-radius: rem(16);
+    }
+
+    .ant-collapse-content {
+      background-color: transparent;
+      border: none;
+    }
+
+    .ant-collapse-item {
+      border: none;
+
+      + .ant-collapse-item {
+        margin-top: rem(24);
+      }
+    }
+
+    .ant-collapse {
+      background-color: transparent;
+      border: none;
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .onboarding-page {
+    .steps {
+      .heading {
+        font-size: rem(64);
+      }
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .onboarding-page {
+    .steps {
+      .item {
+        width: calc(100% / 2 - rem(calc(24 * 1 / 2)));
+      }
+    }
+  }
+}
+
+@media (min-width: rem(992)) {
+  .onboarding-page {
+    .steps {
+      .item {
+        width: calc(100% / 3 - rem(calc(24 * 2 / 3)));
+      }
+    }
+  }
+}
+
+html[theme="dark"] {
+}
+
+html[theme="light"] {
+}

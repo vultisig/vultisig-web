@@ -11,6 +11,7 @@ export default keyMirror({
   CHOOSE_CHAIN: true,
   CHROME_EXTENSION: true,
   CHOOSE_TOKEN: true,
+  CONNECT_YOUR_WALLET: true,
   COUNTED: true,
   CURRENCY: true,
   // D
@@ -23,7 +24,9 @@ export default keyMirror({
   // F
   FAQ: true,
   // G
+  // H
   HINT: true,
+  HOW_TO_PARTICIPATE: true,
   // I
   JOIN_AIRDROP: true,
   // K
