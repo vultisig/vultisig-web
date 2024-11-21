@@ -234,7 +234,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.import, { replace: true });
+        navigate(constantPaths.root, { replace: true });
 
         return { ...prevState };
       }
@@ -391,11 +391,11 @@ const Component: FC = () => {
             setStoredVaults(modifiedVaults);
           }
         } else {
-          navigate(constantPaths.default.import, { replace: true });
+          navigate(constantPaths.root, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.import, { replace: true });
+      navigate(constantPaths.root, { replace: true });
     }
   };
 

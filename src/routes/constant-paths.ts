@@ -6,6 +6,7 @@ export default {
     root: "/",
     import: "/import",
     leaderboard: "/leaderboard",
+    onboarding: "/onboarding",
     upload: "/upload",
   },
   shared: {

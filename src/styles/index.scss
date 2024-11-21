@@ -1,6 +1,7 @@
 @use "sass:math";
 
 @use "@fontsource/montserrat/latin.css" as montserrat;
+@use "@fontsource/righteous/latin.css" as righteous;
 @use "@fontsource/roboto-mono/latin.css" as roboto;
 
 @use "_variables";
@@ -34,4 +35,5 @@
 @use "../pages/import";
 @use "../pages/positions";
 @use "../pages/leaderboard";
+@use "../pages/onboarding";
 @use "../pages/upload";

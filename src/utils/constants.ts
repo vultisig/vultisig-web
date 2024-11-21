@@ -45,6 +45,7 @@ export enum LayoutKey {
 export enum PageKey {
   IMPORT,
   LEADERBOARD,
+  ONBOARDING,
   UPLOAD,
   SHARED_ASSETS,
   SHARED_CHAINS,

@@ -17,6 +17,7 @@ const AssetsPage = lazy(() => import("pages/assets"));
 const ChainsPage = lazy(() => import("pages/chains"));
 const ImportPage = lazy(() => import("pages/import"));
 const LeaderboardPage = lazy(() => import("pages/leaderboard"));
+const OnboardingPage = lazy(() => import("pages/onboarding"));
 const PositionsPage = lazy(() => import("pages/positions"));
 const RedirectPage = lazy(() => import("pages/redirect"));
 const UploadPage = lazy(() => import("pages/upload"));
@@ -60,7 +61,7 @@ const Component = () => {
       path: constantPaths.root,
       redirect: vaults.length
         ? constantPaths.vault.chains
-        : constantPaths.default.import,
+        : constantPaths.default.leaderboard,
     },
     {
       path: constantPaths.redirect,
@@ -76,7 +77,7 @@ const Component = () => {
       children: [
         {
           path: constantPaths.default.root,
-          redirect: constantPaths.default.import,
+          redirect: constantPaths.default.leaderboard,
         },
         {
           path: constantPaths.default.import,
@@ -91,6 +92,14 @@ const Component = () => {
           element: (
             <Suspense>
               <LeaderboardPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.default.onboarding,
+          element: (
+            <Suspense>
+              <OnboardingPage />
             </Suspense>
           ),
         },

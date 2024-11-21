@@ -1,5 +1,9 @@
 ﻿@use "sass:math";
 
+@function rem($px, $base: 16) {
+  @return #{math.div($px, $base)}rem;
+}
+
 $opacity-03: #0a1932;
 $opacity-05: #0f1e36;
 $opacity-10: #0f1e36;
@@ -42,7 +46,4 @@ $linear-gradient: linear-gradient(102deg, $cyan-base 14%, $blue-sharp 140%);
 
 $primary-font: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
 $secondary-font: "Roboto Mono", Tahoma, Geneva, Verdana, sans-serif;
-
-@function rem($px, $base: 16) {
-  @return #{math.div($px, $base)}rem;
-}
+$number-font: "Righteous", Tahoma, Geneva, Verdana, sans-serif;
