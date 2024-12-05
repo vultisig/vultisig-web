@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@fontsource/montserrat": "^5.1.0",
+    "@fontsource/righteous": "^5.1.0",
     "@fontsource/roboto-mono": "^5.1.0",
     "@types/keymirror": "^0.1.4",
     "@types/react": "^18.3.3",
