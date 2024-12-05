@@ -295,6 +295,18 @@ export const defTokens: TokenProps[] = [
     ticker: TickerKey.ETH,
   },
   {
+    chain: ChainKey.ARBITRUM,
+    cmcId: 29814,
+    contractAddress: "0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27",
+    decimals: 18,
+    hexPublicKey: "EDDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: false,
+    logo: "",
+    ticker: "ETHFI",
+  },
+  {
     chain: ChainKey.AVALANCHE,
     cmcId: 5805,
     contractAddress: "",
@@ -596,7 +608,7 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.ARBITRUM,
-    cmcId: 32121,
+    cmcId: 8200,
     contractAddress: "0xf929de51D91C77E42f5090069E0AD7A09e513c73",
     decimals: 18,
     hexPublicKey: "EDDSA",
@@ -1184,7 +1196,7 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.ETHEREUM,
-    cmcId: 32121,
+    cmcId: 8200,
     contractAddress: "0xc770eefad204b5180df6a14ee197d99d808ee52d",
     decimals: 18,
     hexPublicKey: "EDDSA",
@@ -1400,7 +1412,7 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.OPTIMISM,
-    cmcId: 32121,
+    cmcId: 8200,
     contractAddress: "0xf1a0da3367bc7aa04f8d94ba57b862ff37ced174",
     decimals: 18,
     hexPublicKey: "EDDSA",
@@ -1520,7 +1532,7 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.POLYGON,
-    cmcId: 32121,
+    cmcId: 8200,
     contractAddress: "0x65a05db8322701724c197af82c9cae41195b0aa8",
     decimals: 18,
     hexPublicKey: "EDDSA",
