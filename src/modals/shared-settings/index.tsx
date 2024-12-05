@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Modal, Upload, UploadProps } from "antd";
 import { useTranslation } from "react-i18next";
+import { Button, Modal, Upload, UploadProps } from "antd";
 
 import { Theme, errorKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 
@@ -83,16 +83,16 @@ const Component: FC<ComponentProps> = ({ vault }) => {
 
     switch (error) {
       case errorKey.INVALID_EXTENSION:
-        errorMessage = "Invalid file extension";
+        errorMessage = t(constantKeys.ERROR_FILE_EXTENSION);
         break;
       case errorKey.INVALID_FILE:
-        errorMessage = "Invalid file";
+        errorMessage = t(constantKeys.ERROR_INVALID_FILE);
         break;
       case errorKey.LOGO_TOO_LARGE:
-        errorMessage = "The maximum allowed logo size is 100KB";
+        errorMessage = t(constantKeys.LOGO_SIZE);
         break;
       default:
-        errorMessage = "Someting is wrong";
+        errorMessage = t(constantKeys.SOMETHING_WRONG);
         break;
     }
 
@@ -186,7 +186,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
   return (
     <Modal
       className="modal-share-settings"
-      title={t(translation.SHARE_SETTINGS_TITLE)}
+      title={t(constantKeys.SHARE_SETTINGS_TITLE)}
       centered={true}
       footer={
         loaded ? (
@@ -198,7 +198,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
             shape="round"
             block
           >
-            {t(translation.SAVE)}
+            {t(constantKeys.SAVE)}
           </Button>
         ) : (
           <VultiLoading />
@@ -211,7 +211,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
     >
       {loaded && (
         <>
-          <span className="title">{t(translation.SHARE_VAULT_THEME)}:</span>
+          <span className="title">{t(constantKeys.SHARE_VAULT_THEME)}:</span>
 
           <div className="themes">
             <span
@@ -236,7 +236,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
             </span>
           </div>
 
-          <span className="title">{t(translation.SHARE_VAULT_LOGO)}:</span>
+          <span className="title">{t(constantKeys.SHARE_VAULT_LOGO)}:</span>
 
           <Upload.Dragger {...props} className={status}>
             {file?.data ? (
@@ -245,21 +245,25 @@ const Component: FC<ComponentProps> = ({ vault }) => {
                 <span className="name">
                   {status === "default"
                     ? `${file.name} Uploaded`
-                    : t(translation.SHARE_CURRENT_LOGO)}
+                    : t(constantKeys.SHARE_CURRENT_LOGO)}
                 </span>
                 {error ? (
                   <span className="text error">{error}</span>
                 ) : (
-                  <span className="text">File successfully selected</span>
+                  <span className="text">
+                    {t(constantKeys.FILE_SELECTED_SUCCESS)}
+                  </span>
                 )}
               </>
             ) : (
               <>
                 <Vultisig className="icon" />
-                <span className="name">{t(translation.SHARE_UPLOAD_LOGO)}</span>
+                <span className="name">
+                  {t(constantKeys.SHARE_UPLOAD_LOGO)}
+                </span>
                 <span className="text">
-                  {t(translation.DROP_FILE_HERE)}
-                  <u>{t(translation.UPLOAD_IT)}</u>
+                  {t(constantKeys.DROP_FILE_HERE)}
+                  <u>{t(constantKeys.UPLOAD_IT)}</u>
                 </span>
               </>
             )}

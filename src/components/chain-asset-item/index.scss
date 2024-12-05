@@ -1,7 +1,7 @@
 @use "~variables" as *;
 
-.asset-item {
-  border-top: solid 1px $blue-light;
+.chain-asset-item {
+  border-top: solid rem(1) $blue-light;
   position: relative;
 
   .vulti-loading {
@@ -75,30 +75,19 @@
 }
 
 html[theme="dark"] {
-  .assets-page {
-    .content {
-      background-color: $gray-12;
-    }
-    .asset-item {
-      border-top: solid 1px $gray-11;
-    }
+  .chain-asset-item {
+    border-top-color: $gray-11;
   }
 }
 
 html[theme="light"] {
-  .assets-page {
-    .content {
-      background-color: $gray-3;
-      color: $gray-8;
-    }
-    .asset-item {
-      border-top: solid 1px $gray-5;
-    }
+  .chain-asset-item {
+    border-top-color: $gray-5;
   }
 }
 
 @media (min-width: rem(768)) {
-  .asset-item {
+  .chain-asset-item {
     display: flex;
     justify-content: space-between;
 

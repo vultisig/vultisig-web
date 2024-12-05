@@ -1,6 +1,6 @@
 @use "~variables" as *;
 
-.chains-page {
+.nfts-page {
   .information {
     background-image: $linear-gradient;
     border-radius: rem(8);
@@ -62,40 +62,10 @@
       }
     }
   }
-
-  .add {
-    align-items: center;
-    color: $gray-1;
-    display: flex;
-    font-family: $secondary-font;
-    font-weight: 700;
-    float: left;
-    gap: rem(16);
-    line-height: rem(32);
-    margin-top: rem(24);
-
-    svg {
-      fill: $cyan-base;
-      height: rem(32);
-      width: rem(32);
-    }
-  }
-}
-
-html[theme="dark"] {
-  .chains-page {
-    .add {
-      color: $gray-1;
-    }
-  }
 }
 
 html[theme="light"] {
-  .chains-page {
-    .add {
-      color: $gray-8;
-    }
-
+  .nfts-page {
     .breadcrumb {
       .ant-btn {
         svg {

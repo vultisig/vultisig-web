@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Dropdown, MenuProps } from "antd";
 
 import { VaultOutletContext } from "utils/interfaces";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 
 import { ArrowRight } from "icons";
@@ -27,7 +27,7 @@ const Component: FC = () => {
       label: (
         <>
           <Link to={constantPaths.default.import}>
-            {t(translation.ADD_NEW_VAULT)}
+            {t(constantKeys.ADD_NEW_VAULT)}
           </Link>
           <ArrowRight />
         </>

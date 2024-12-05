@@ -54,6 +54,26 @@ const Component: FC = () => {
     });
   };
 
+  const prepareNFT = (chain: ChainProps): void => {
+    api.nft.thorguard.discover(chain.address).then((nfts) => {
+      setState((prevState) =>
+        prevState.vault
+          ? {
+              ...prevState,
+              vault: {
+                ...prevState.vault,
+                chains: prevState.vault.chains.map((item) =>
+                  item.name === chain.name
+                    ? { ...item, nfts, nftsUpdated: true }
+                    : item
+                ),
+              },
+            }
+          : prevState
+      );
+    });
+  };
+
   const updateVault = (vault: VaultProps): void => {
     setState((prevState) => ({ ...prevState, vault }));
   };
@@ -87,11 +107,11 @@ const Component: FC = () => {
             if (!alias) {
               navigate(
                 (chainKey
-                  ? constantPaths.shared.assetsAlias.replace(
+                  ? constantPaths.shared.chainAssets.replace(
                       ":chainKey",
                       chainKey
                     )
-                  : constantPaths.shared.chainsAlias
+                  : constantPaths.shared.chains
                 )
                   .replace(":alias", data.alias.replace(/ /g, "-"))
                   .replace(":uid", data.uid),
@@ -125,6 +145,7 @@ const Component: FC = () => {
             layout: LayoutKey.SHARED,
             vault,
             prepareChain,
+            prepareNFT,
             updateVault,
             updatePositions,
           }}

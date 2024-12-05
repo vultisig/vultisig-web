@@ -1,20 +1,24 @@
 @use "sass:math";
 
 @use "@fontsource/montserrat/latin.css" as montserrat;
+@use "@fontsource/righteous/latin.css" as righteous;
 @use "@fontsource/roboto-mono/latin.css" as roboto;
 
 @use "_variables";
 @use "_normalize";
 @use "_global";
 
-@use "../components/asset-item";
+@use "../components/chain-asset-item";
 @use "../components/chain-item";
 @use "../components/download-vultisig";
+@use "../components/nft-asset-item";
+@use "../components/nft-item";
 @use "../components/preloader";
 @use "../components/position-item";
 @use "../components/splash-screen";
 @use "../components/token-actions";
 @use "../components/token-image";
+@use "../components/total-balance";
 @use "../components/vault-dropdown";
 @use "../components/vulti-loading";
 
@@ -29,9 +33,12 @@
 @use "../modals/shared-settings";
 @use "../modals/vault-settings";
 
-@use "../pages/assets";
+@use "../pages/chain-assets";
 @use "../pages/chains";
 @use "../pages/import";
-@use "../pages/positions";
+@use "../pages/nft-assets";
+@use "../pages/nfts";
 @use "../pages/leaderboard";
+@use "../pages/onboarding";
+@use "../pages/positions";
 @use "../pages/upload";

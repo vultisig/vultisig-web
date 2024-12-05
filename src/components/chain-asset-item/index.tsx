@@ -30,7 +30,7 @@ const Component: FC<ComponentProps> = ({
   const { baseValue, currency } = useBaseContext();
 
   return (
-    <div className="asset-item">
+    <div className="chain-asset-item">
       <div className="token">
         <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>

@@ -9,9 +9,9 @@ import { toCamelCase } from "utils/functions";
 import { errorKey, PageKey } from "utils/constants";
 import { FileProps, VaultProps } from "utils/interfaces";
 import { getStoredVaults, setStoredVaults } from "utils/storage";
-import api from "utils/api";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
+import api from "utils/api";
 
 import { CloseLG, Vultisig } from "icons";
 import DownloadVultisig from "components/download-vultisig";
@@ -180,7 +180,7 @@ const Component: FC = () => {
         Vultisig
       </div>
       <div className="wrapper">
-        <h2 className="heading">{t(translation.UPLOAD_VAULT_SHARE)}</h2>
+        <h2 className="heading">{t(constantKeys.UPLOAD_VAULT_SHARE)}</h2>
         <Upload.Dragger {...props} className={status}>
           {file ? (
             <>
@@ -193,15 +193,15 @@ const Component: FC = () => {
           ) : (
             <>
               <img src="/images/qr-code.svg" className="icon" alt="qr" />
-              <h3 className="title">{t(translation.UPLOAD_QR_CODE)}</h3>
+              <h3 className="title">{t(constantKeys.UPLOAD_QR_CODE)}</h3>
               <span className="text">
-                {t(translation.DROP_FILE_HERE)}
-                <u>{t(translation.UPLOAD_IT)}</u>
+                {t(constantKeys.DROP_FILE_HERE)}
+                <u>{t(constantKeys.UPLOAD_IT)}</u>
               </span>
             </>
           )}
         </Upload.Dragger>
-        <p className="hint">{t(translation.HINT)}</p>
+        <p className="hint">{t(constantKeys.HINT)}</p>
         <Button
           disabled={status !== "success"}
           loading={loading}
@@ -210,7 +210,7 @@ const Component: FC = () => {
           shape="round"
           block
         >
-          {t(translation.START)}
+          {t(constantKeys.START)}
         </Button>
       </div>
       <DownloadVultisig />

@@ -1,0 +1,44 @@
+@use "~variables" as *;
+
+.nft-asset-item {
+  align-items: center;
+  border-top: solid rem(1) $blue-light;
+  display: flex;
+  gap: rem(16);
+  padding: rem(16) 0;
+
+  .image {
+    border-radius: rem(4);
+    height: rem(72);
+    width: rem(72);
+  }
+
+  .name {
+    font-family: $secondary-font;
+    font-weight: 700;
+    flex-grow: 1;
+  }
+
+  .action {
+    height: rem(24);
+    width: rem(24);
+
+    svg {
+      fill: $cyan-base;
+      height: inherit;
+      width: inherit;
+    }
+  }
+}
+
+html[theme="dark"] {
+  .nft-asset-item {
+    border-top-color: $gray-11;
+  }
+}
+
+html[theme="light"] {
+  .nft-asset-item {
+    border-top-color: $gray-5;
+  }
+}

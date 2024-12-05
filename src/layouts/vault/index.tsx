@@ -116,6 +116,7 @@ const Component: FC = () => {
                               coins: [newToken],
                               hexPublicKey: newToken.hexPublicKey,
                               name: newToken.chain,
+                              nfts: [],
                             },
                           ],
                     }
@@ -153,7 +154,7 @@ const Component: FC = () => {
                             vaultProvider.compareVault(item, vault)
                               ? {
                                   ...item,
-                                  chains: vault.chains.map((chain) =>
+                                  chains: item.chains.map((chain) =>
                                     chain.name === selectedChain.name
                                       ? vaultProvider.sortChain({
                                           ...chain,
@@ -234,7 +235,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.import, { replace: true });
+        navigate(constantPaths.root, { replace: true });
 
         return { ...prevState };
       }
@@ -251,6 +252,33 @@ const Component: FC = () => {
                 chains: item.chains.map((item) =>
                   item.name === chain.name
                     ? vaultProvider.sortChain(chain)
+                    : item
+                ),
+              }
+            : item
+        );
+
+        setStoredVaults(vaults);
+
+        return {
+          ...prevState,
+          vault: vaults.find(({ isActive }) => isActive),
+          vaults,
+        };
+      });
+    });
+  };
+
+  const prepareNFT = (chain: ChainProps, vault: VaultProps): void => {
+    api.nft.thorguard.discover(chain.address).then((nfts) => {
+      setState((prevState) => {
+        const vaults = prevState.vaults.map((item) =>
+          vaultProvider.compareVault(item, vault)
+            ? {
+                ...item,
+                chains: item.chains.map((item) =>
+                  item.name === chain.name
+                    ? { ...item, nfts, nftsUpdated: true }
                     : item
                 ),
               }
@@ -316,49 +344,57 @@ const Component: FC = () => {
     if (vaults.length) {
       const promises = vaults.map((vault) =>
         api.vault.get(vault).then((vault) => {
-          if (vault && !vault.chains.length) {
-            const promises = defTokens
-              .filter((coin) => coin.isDefault)
-              .map((coin) => vaultProvider.addToken(coin, vault));
+          if (vault) {
+            if (vault.chains.length) {
+              return {
+                ...vault,
+                chains: vault.chains.map((chain) => ({ ...chain, nfts: [] })),
+              };
+            } else {
+              const promises = defTokens
+                .filter((coin) => coin.isDefault)
+                .map((coin) => vaultProvider.addToken(coin, vault));
 
-            return Promise.all(promises).then((chains) => {
-              vault.chains = chains.map(
-                ({
-                  address,
-                  balance,
-                  chain,
-                  cmcId,
-                  contractAddress,
-                  decimals,
-                  hexPublicKey,
-                  id,
-                  isNative,
-                  logo,
-                  ticker,
-                  value,
-                }) => ({
-                  address,
-                  balance: 0,
-                  coins: [
-                    {
-                      balance,
-                      cmcId,
-                      contractAddress,
-                      decimals,
-                      id,
-                      isNative,
-                      logo,
-                      ticker,
-                      value,
-                    },
-                  ],
-                  name: chain,
-                  hexPublicKey,
-                })
-              );
+              return Promise.all(promises).then((chains) => {
+                vault.chains = chains.map(
+                  ({
+                    address,
+                    balance,
+                    chain,
+                    cmcId,
+                    contractAddress,
+                    decimals,
+                    hexPublicKey,
+                    id,
+                    isNative,
+                    logo,
+                    ticker,
+                    value,
+                  }) => ({
+                    address,
+                    balance: 0,
+                    coins: [
+                      {
+                        balance,
+                        cmcId,
+                        contractAddress,
+                        decimals,
+                        id,
+                        isNative,
+                        logo,
+                        ticker,
+                        value,
+                      },
+                    ],
+                    name: chain,
+                    nfts: [],
+                    hexPublicKey,
+                  })
+                );
 
-              return vault;
-            });
+                return vault;
+              });
+            }
           } else {
             return vault;
           }
@@ -391,11 +427,11 @@ const Component: FC = () => {
             setStoredVaults(modifiedVaults);
           }
         } else {
-          navigate(constantPaths.default.import, { replace: true });
+          navigate(constantPaths.root, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.import, { replace: true });
+      navigate(constantPaths.root, { replace: true });
     }
   };
 
@@ -414,6 +450,7 @@ const Component: FC = () => {
             deleteVault,
             getTokens,
             prepareChain,
+            prepareNFT,
             toggleToken,
             updatePositions,
             updateVault,

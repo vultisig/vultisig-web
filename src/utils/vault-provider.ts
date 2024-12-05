@@ -717,7 +717,7 @@ export default class VaultProvider {
       coins: chain.coins
         .slice()
         .sort((a, b) => b.balance * b.value - a.balance * a.value),
-      updated: true,
+      coinsUpdated: true,
     };
   };
 }

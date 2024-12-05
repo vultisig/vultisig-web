@@ -13,10 +13,13 @@ const DefaultLayout = lazy(() => import("layouts/default"));
 const ShareLayout = lazy(() => import("layouts/shared"));
 const VaultLayout = lazy(() => import("layouts/vault"));
 
-const AssetsPage = lazy(() => import("pages/assets"));
+const ChainAssetsPage = lazy(() => import("pages/chain-assets"));
 const ChainsPage = lazy(() => import("pages/chains"));
 const ImportPage = lazy(() => import("pages/import"));
 const LeaderboardPage = lazy(() => import("pages/leaderboard"));
+const NFTAssetsPage = lazy(() => import("pages/nft-assets"));
+const NFTsPage = lazy(() => import("pages/nfts"));
+const OnboardingPage = lazy(() => import("pages/onboarding"));
 const PositionsPage = lazy(() => import("pages/positions"));
 const RedirectPage = lazy(() => import("pages/redirect"));
 const UploadPage = lazy(() => import("pages/upload"));
@@ -60,7 +63,7 @@ const Component = () => {
       path: constantPaths.root,
       redirect: vaults.length
         ? constantPaths.vault.chains
-        : constantPaths.default.import,
+        : constantPaths.default.leaderboard,
     },
     {
       path: constantPaths.redirect,
@@ -76,7 +79,7 @@ const Component = () => {
       children: [
         {
           path: constantPaths.default.root,
-          redirect: constantPaths.default.import,
+          redirect: constantPaths.default.leaderboard,
         },
         {
           path: constantPaths.default.import,
@@ -91,6 +94,14 @@ const Component = () => {
           element: (
             <Suspense>
               <LeaderboardPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.default.onboarding,
+          element: (
+            <Suspense>
+              <OnboardingPage />
             </Suspense>
           ),
         },
@@ -137,6 +148,38 @@ const Component = () => {
           ),
         },
         {
+          path: constantPaths.shared.nfts,
+          element: (
+            <Suspense>
+              <NFTsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.shared.nftAssets,
+          element: (
+            <Suspense>
+              <NFTAssetsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.shared.chainAssets,
+          element: (
+            <Suspense>
+              <ChainAssetsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.shared.chainAssetsRedirect,
+          element: (
+            <Suspense>
+              <ChainAssetsPage />
+            </Suspense>
+          ),
+        },
+        {
           path: constantPaths.shared.chains,
           element: (
             <Suspense>
@@ -145,26 +188,10 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.shared.chainsAlias,
+          path: constantPaths.shared.chainsRedirect,
           element: (
             <Suspense>
               <ChainsPage />
-            </Suspense>
-          ),
-        },
-        {
-          path: constantPaths.shared.assets,
-          element: (
-            <Suspense>
-              <AssetsPage />
-            </Suspense>
-          ),
-        },
-        {
-          path: constantPaths.shared.assetsAlias,
-          element: (
-            <Suspense>
-              <AssetsPage />
             </Suspense>
           ),
         },
@@ -187,22 +214,6 @@ const Component = () => {
           redirect: constantPaths.vault.chains,
         },
         {
-          path: constantPaths.vault.chains,
-          element: (
-            <Suspense>
-              <ChainsPage />
-            </Suspense>
-          ),
-        },
-        {
-          path: constantPaths.vault.assets,
-          element: (
-            <Suspense>
-              <AssetsPage />
-            </Suspense>
-          ),
-        },
-        {
           path: constantPaths.vault.leaderboard,
           element: (
             <Suspense>
@@ -215,6 +226,38 @@ const Component = () => {
           element: (
             <Suspense>
               <PositionsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.vault.nfts,
+          element: (
+            <Suspense>
+              <NFTsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.vault.nftAssets,
+          element: (
+            <Suspense>
+              <NFTAssetsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.vault.chains,
+          element: (
+            <Suspense>
+              <ChainsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.vault.chainAssets,
+          element: (
+            <Suspense>
+              <ChainAssetsPage />
             </Suspense>
           ),
         },

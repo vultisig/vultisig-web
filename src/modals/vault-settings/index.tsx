@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { List, Modal } from "antd";
 import { useTranslation } from "react-i18next";
+import { List, Modal } from "antd";
+
 import { VaultProps } from "utils/interfaces";
-import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
+import constantModals from "modals/constant-modals";
 
 import { ArrowRight, CirclePower, Delete, EditNote, ExternalLink } from "icons";
 
@@ -61,8 +62,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<EditNote />}
-            description={t(translation.EDIT_VAULT)}
-            title={t(translation.RENAME)}
+            description={t(constantKeys.EDIT_VAULT)}
+            title={t(constantKeys.RENAME)}
           />
         </List.Item>
         <List.Item
@@ -71,8 +72,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<ExternalLink />}
-            description={t(translation.SHARE_SETTINGS)}
-            title={t(translation.SHARE_SETTINGS_TITLE)}
+            description={t(constantKeys.SHARE_SETTINGS)}
+            title={t(constantKeys.SHARE_SETTINGS_TITLE)}
           />
         </List.Item>
         <List.Item
@@ -82,8 +83,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<CirclePower />}
-            description={t(translation.LOGOUT_VAULT)}
-            title={t(translation.LOGOUT)}
+            description={t(constantKeys.LOGOUT_VAULT)}
+            title={t(constantKeys.LOGOUT)}
           />
         </List.Item>
         <List.Item
@@ -93,8 +94,8 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         >
           <List.Item.Meta
             avatar={<Delete />}
-            description={t(translation.REMOVE_VAULT)}
-            title={t(translation.REMOVE)}
+            description={t(constantKeys.REMOVE_VAULT)}
+            title={t(constantKeys.REMOVE)}
           />
         </List.Item>
       </List>

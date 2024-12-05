@@ -1,5 +1,6 @@
 import {
   ChainKey,
+  CollectionKey,
   Currency,
   Language,
   LayoutKey,
@@ -14,9 +15,11 @@ export interface ChainProps {
   address: string;
   balance: number;
   coins: CoinProps[];
+  coinsUpdated?: boolean;
   name: ChainKey;
+  nfts: NFTProps[];
+  nftsUpdated?: boolean;
   hexPublicKey: string;
-  updated?: boolean;
 }
 
 export interface ChainBoolRef {
@@ -97,6 +100,10 @@ export interface CoinProps {
   value: number;
 }
 
+export interface CollectionRef {
+  [CollectionKey.THORGUARD]: string;
+}
+
 export interface CurrencyRef {
   [Currency.AUD]: string;
   [Currency.CAD]: string;
@@ -129,6 +136,15 @@ export interface LanguageRef {
   [Language.PORTUGUESE]: string;
   [Language.RUSSIAN]: string;
   [Language.SPANISH]: string;
+}
+
+export interface NFTProps {
+  collection: CollectionKey;
+  identifier: number;
+}
+
+export interface NFTRef {
+  [collection: string]: { [id: string]: string };
 }
 
 export interface NodeInfo {
@@ -222,7 +238,8 @@ export interface VaultProps {
 export interface VaultOutletContext {
   getTokens: (chain: ChainProps) => Promise<void>;
   deleteVault: (vault: VaultProps) => void;
-  prepareChain: (chain: ChainProps, vault?: VaultProps) => void;
+  prepareChain: (chain: ChainProps, vault: VaultProps) => void;
+  prepareNFT: (chain: ChainProps, vault: VaultProps) => void;
   updateVault: (vault: VaultProps) => void;
   updatePositions: (vault: VaultProps) => void;
   toggleToken: (coin: TokenProps, vault: VaultProps) => Promise<void>;

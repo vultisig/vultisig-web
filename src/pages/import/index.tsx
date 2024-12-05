@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button, message } from "antd";
 
 import { useBaseContext } from "context";
 import { VaultProps } from "utils/interfaces";
 import { PageKey } from "utils/constants";
 import { getStoredVaults, setStoredVaults } from "utils/storage";
+import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 
@@ -18,6 +20,7 @@ interface InitialState {
 }
 
 const Component: FC = () => {
+  const { t } = useTranslation();
   const initialState: InitialState = { isInstalled: false, loading: false };
   const [state, setState] = useState(initialState);
   const { isInstalled, loading } = state;
@@ -28,6 +31,7 @@ const Component: FC = () => {
   const handleUpload = (): void => {
     navigate(constantPaths.default.upload, { state: true });
   };
+
   const handelVault = (vault: VaultProps): Promise<void> => {
     return new Promise((resolve) => {
       api.vault.add(vault).then((newVault) => {
@@ -42,7 +46,7 @@ const Component: FC = () => {
           if (index >= 0) {
             messageApi.open({
               type: "error",
-              content: "Vault already exists",
+              content: t(constantKeys.ERROR_EXISTS_IMPORT),
             });
           } else {
             setStoredVaults([
@@ -73,7 +77,7 @@ const Component: FC = () => {
         } else {
           messageApi.open({
             type: "error",
-            content: "No vaults found",
+            content: t(constantKeys.ERROR_NOT_FOUND_IMPORT),
           });
           setState((prevState) => ({ ...prevState, loading: false }));
         }
@@ -100,10 +104,7 @@ const Component: FC = () => {
           Vultisig
         </div>
         <div className="wrapper">
-          <h2 className="heading">
-            Connect with VultiConnect<br></br>
-            or upload your vault QR to start
-          </h2>
+          <h2 className="heading">{t(constantKeys.CONNECT_OR_UPLOAD)}</h2>
 
           <Button
             disabled={!isInstalled}
@@ -113,11 +114,11 @@ const Component: FC = () => {
             type="primary"
             block
           >
-            VultiConnect
+            {t(constantKeys.VULTICONNECT)}
           </Button>
 
           <Button onClick={handleUpload} shape="round" type="default" block>
-            Upload Vault QR
+            {t(constantKeys.UPLOAD_VAULT_QR)}
           </Button>
         </div>
         <DownloadVultisig />
