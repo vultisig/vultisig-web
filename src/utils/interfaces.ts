@@ -44,6 +44,8 @@ export interface ChainBoolRef {
   [ChainKey.POLYGON]: boolean;
   [ChainKey.SOLANA]: boolean;
   [ChainKey.SUI]: boolean;
+  [ChainKey.TERRA]: boolean;
+  [ChainKey.TERRACLASSIC]: boolean;
   [ChainKey.THORCHAIN]: boolean;
   [ChainKey.TON]: boolean;
   [ChainKey.ZKSYNC]: boolean;
@@ -71,6 +73,8 @@ export interface ChainStrRef {
   [ChainKey.POLYGON]: string;
   [ChainKey.SOLANA]: string;
   [ChainKey.SUI]: string;
+  [ChainKey.TERRA]: string;
+  [ChainKey.TERRACLASSIC]: string;
   [ChainKey.THORCHAIN]: string;
   [ChainKey.TON]: string;
   [ChainKey.ZKSYNC]: string;

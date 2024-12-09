@@ -6,6 +6,7 @@ import {
   Currency,
   TickerKey,
   balanceAPI,
+  balanceDenom,
   defTokens,
   errorKey,
   oneInchRef,
@@ -64,6 +65,8 @@ export default class VaultProvider {
               [ChainKey.POLYGON]: walletCore.CoinType.polygon,
               [ChainKey.SOLANA]: walletCore.CoinType.solana,
               [ChainKey.SUI]: walletCore.CoinType.sui,
+              [ChainKey.TERRA]: walletCore.CoinType.terra,
+              [ChainKey.TERRACLASSIC]: walletCore.CoinType.terra,
               [ChainKey.THORCHAIN]: walletCore.CoinType.thorchain,
               [ChainKey.TON]: walletCore.CoinType.ton,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
@@ -233,7 +236,8 @@ export default class VaultProvider {
 
                       break;
                     }
-                    case ChainKey.MAYACHAIN: {
+                    case ChainKey.MAYACHAIN:
+                    case ChainKey.THORCHAIN: {
                       const mayaAddress =
                         walletCore.AnyAddress.createBech32WithPublicKey(
                           publicKey,
@@ -262,6 +266,22 @@ export default class VaultProvider {
                           thorAddress
                         );
                       }
+
+                      break;
+                    }
+                    case ChainKey.TERRA:
+                    case ChainKey.TERRACLASSIC: {
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.TERRA,
+                        address
+                      );
+
+                      setStoredAddress(
+                        vault.publicKeyEcdsa,
+                        ChainKey.TERRACLASSIC,
+                        address
+                      );
 
                       break;
                     }
@@ -429,45 +449,23 @@ export default class VaultProvider {
     chain: ChainKey,
     contractAddress: string,
     decimals: number,
-    isNative: boolean,
-    ticker: string
+    isNative: boolean
   ): Promise<number> => {
     return new Promise((resolve) => {
+      const denom = balanceDenom[chain];
       const path = balanceAPI[chain];
 
       switch (chain) {
         // Cosmos
-        case ChainKey.DYDX: {
-          api.balance.cosmos(path, address, decimals, "adydx").then(resolve);
-
-          break;
-        }
-        case ChainKey.GAIACHAIN: {
-          api.balance.cosmos(path, address, decimals, "uatom").then(resolve);
-          break;
-        }
-        case ChainKey.KUJIRA: {
-          api.balance.cosmos(path, address, decimals, "ukuji").then(resolve);
-          break;
-        }
-        case ChainKey.MAYACHAIN: {
-          api.balance
-            .cosmos(path, address, decimals, ticker.toLowerCase())
-            .then(resolve);
-          break;
-        }
-        case ChainKey.SUI: {
-          api.balance.sui(path, address, decimals).then(resolve);
-          break;
-        }
+        case ChainKey.DYDX:
+        case ChainKey.GAIACHAIN:
+        case ChainKey.KUJIRA:
+        case ChainKey.MAYACHAIN:
+        case ChainKey.TERRA:
+        case ChainKey.TERRACLASSIC:
         case ChainKey.THORCHAIN: {
-          api.balance
-            .cosmos(path, address, decimals, ticker.toLowerCase())
-            .then(resolve);
-          break;
-        }
-        case ChainKey.TON: {
-          api.balance.ton(path, address, decimals).then(resolve);
+          api.balance.cosmos(path, address, decimals, denom).then(resolve);
+
           break;
         }
         // EVM
@@ -487,6 +485,17 @@ export default class VaultProvider {
 
           break;
         }
+        // UTXO
+        case ChainKey.BITCOIN:
+        case ChainKey.BITCOINCASH:
+        case ChainKey.DASH:
+        case ChainKey.DOGECOIN:
+        case ChainKey.LITECOIN: {
+          api.balance.utxo(path, address, decimals).then(resolve);
+
+          break;
+        }
+        // CUSTOM
         case ChainKey.POLKADOT: {
           api.balance.polkadot(path, address).then(resolve);
 
@@ -499,18 +508,19 @@ export default class VaultProvider {
 
           break;
         }
-        // UTXO
-        case ChainKey.BITCOIN:
-        case ChainKey.BITCOINCASH:
-        case ChainKey.DASH:
-        case ChainKey.DOGECOIN:
-        case ChainKey.LITECOIN: {
-          api.balance.utxo(path, address, decimals).then(resolve);
+        case ChainKey.SUI: {
+          api.balance.sui(path, address, decimals).then(resolve);
+
+          break;
+        }
+        case ChainKey.TON: {
+          api.balance.ton(path, address, decimals).then(resolve);
 
           break;
         }
         default:
           resolve(0);
+
           break;
       }
     });
@@ -692,8 +702,7 @@ export default class VaultProvider {
           chain.name,
           coin.contractAddress,
           coin.decimals,
-          coin.isNative,
-          coin.ticker
+          coin.isNative
         ).then((balance) => {
           coin.balance = balance;
         })

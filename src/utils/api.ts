@@ -492,7 +492,7 @@ const api = {
         }>("https://api.solana.fm/v1/tokens", { tokens });
       },
     },
-    spl: async (address: string): Promise<TokenProps[]> => {
+    spl: (address: string): Promise<TokenProps[]> => {
       return new Promise((resolve) => {
         fetch
           .post<{
