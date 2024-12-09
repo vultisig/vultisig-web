@@ -139,8 +139,7 @@ const Component: FC = () => {
                   newToken.chain,
                   newToken.contractAddress,
                   newToken.decimals,
-                  newToken.isNative,
-                  newToken.ticker
+                  newToken.isNative
                 )
                 .then((balance) => {
                   if (balance) {
