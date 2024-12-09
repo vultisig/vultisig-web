@@ -1,0 +1,131 @@
+@use "~variables" as *;
+
+.nft-assets-page {
+  .breadcrumb {
+    align-items: center;
+    display: flex;
+    gap: rem(16);
+    height: rem(36);
+
+    svg {
+      fill: $gray-1;
+      height: inherit;
+      transform: rotate(180deg);
+      width: inherit;
+    }
+
+    .back {
+      cursor: pointer;
+      height: rem(24);
+      width: rem(24);
+    }
+
+    .name {
+      font-size: rem(24);
+      font-weight: 700;
+    }
+  }
+
+  .nft {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    font-weight: 700;
+    gap: rem(16);
+    padding: rem(16) 0;
+    position: relative;
+
+    .token-image {
+      height: rem(48);
+      width: rem(48);
+    }
+
+    .name {
+      flex-grow: 1;
+      font-weight: 700;
+    }
+
+    .amount {
+      font-family: $secondary-font;
+      font-size: rem(20);
+      font-weight: 700;
+    }
+
+    .action {
+      height: rem(24);
+      width: rem(24);
+
+      svg {
+        fill: $cyan-base;
+        height: inherit;
+        width: inherit;
+      }
+    }
+  }
+
+  .content {
+    background-color: $blue-base;
+    border-radius: rem(8);
+    margin-top: rem(34);
+    padding: 0 rem(20);
+  }
+
+  .add {
+    align-items: center;
+    color: $gray-3;
+    display: flex;
+    font-family: $secondary-font;
+    font-weight: 700;
+    float: left;
+    gap: rem(16);
+    line-height: rem(32);
+    margin-top: rem(24);
+
+    svg {
+      fill: $cyan-base;
+      height: rem(32);
+      width: rem(32);
+    }
+  }
+}
+
+html[theme="dark"] {
+  .nft-assets-page {
+    .breadcrumb {
+      svg {
+        fill: $gray-5;
+      }
+    }
+
+    .content {
+      background-color: $gray-12;
+    }
+  }
+}
+
+html[theme="light"] {
+  .nft-assets-page {
+    .breadcrumb {
+      svg {
+        fill: $gray-5;
+      }
+    }
+
+    .content {
+      background-color: $gray-3;
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .nft-assets-page {
+    .chain {
+      display: flex;
+      gap: rem(24);
+
+      .amount {
+        position: static;
+      }
+    }
+  }
+}

@@ -12,18 +12,20 @@ import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
 import VultiLoading from "components/vulti-loading";
 
-const Component: FC<ChainProps> = (chain) => {
+interface ComponentProps extends ChainProps {}
+
+const Component: FC<ComponentProps> = (chain) => {
   const { t } = useTranslation();
-  const { address, balance, coins, name, updated } = chain;
+  const { address, balance, coins, coinsUpdated, name } = chain;
   const { pathname } = useLocation();
   const { baseValue, currency } = useBaseContext();
   const { prepareChain, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidUpdate = () => {
-    if (!updated) prepareChain(chain, vault);
+    if (!coinsUpdated) prepareChain(chain, vault);
   };
 
-  useEffect(componentDidUpdate, [updated]);
+  useEffect(componentDidUpdate, [coinsUpdated]);
 
   const coin = coins.find(({ isNative }) => isNative);
 
@@ -43,7 +45,7 @@ const Component: FC<ChainProps> = (chain) => {
             {address}
           </Truncate>
         </div>
-        {updated ? (
+        {coinsUpdated ? (
           <>
             <span className={`asset${coins.length > 1 ? " multi" : ""}`}>
               {coins.length > 1

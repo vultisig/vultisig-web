@@ -89,7 +89,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const handleShare = (): void => {
     navigator.clipboard
       .writeText(
-        `${location.origin}${handleSharePath(constantPaths.shared.chainsAlias)}`
+        `${location.origin}${handleSharePath(constantPaths.shared.chains)}`
       )
       .then(() => {
         messageApi.open({
@@ -160,19 +160,36 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <Link
               to={
                 layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.chainsAlias)
+                  ? handleSharePath(constantPaths.shared.chains)
                   : constantPaths.vault.chains
               }
               className={`${
-                activePage === PageKey.SHARED_ASSETS ||
                 activePage === PageKey.SHARED_CHAINS ||
-                activePage === PageKey.VAULT_ASSETS ||
-                activePage === PageKey.VAULT_CHAINS
+                activePage === PageKey.SHARED_CHAIN_ASSETS ||
+                activePage === PageKey.VAULT_CHAINS ||
+                activePage === PageKey.VAULT_CHAIN_ASSETS
                   ? "active"
                   : ""
               }`}
             >
               {t(constantKeys.BALANCES)}
+            </Link>,
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.nfts)
+                  : constantPaths.vault.nfts
+              }
+              className={`${
+                activePage === PageKey.SHARED_NFTS ||
+                activePage === PageKey.SHARED_NFT_ASSETS ||
+                activePage === PageKey.VAULT_NFTS ||
+                activePage === PageKey.VAULT_NFT_ASSETS
+                  ? "active"
+                  : ""
+              }`}
+            >
+              {t(constantKeys.NFTS)}
             </Link>,
             <Link
               to={
@@ -209,6 +226,26 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       >
         {t(constantKeys.AIRDROP_LEADERBOARD)}
       </Link>,
+      ...(!vaults.length
+        ? [
+            <Link
+              to={constantPaths.default.onboarding}
+              className={`${activePage === PageKey.ONBOARDING ? "active" : ""}`}
+            >
+              {t(constantKeys.HOW_TO_PARTICIPATE)}
+            </Link>,
+            <Link
+              to={constantPaths.default.import}
+              className={`${
+                activePage === PageKey.IMPORT || activePage === PageKey.UPLOAD
+                  ? "active"
+                  : ""
+              }`}
+            >
+              {t(constantKeys.CONNECT_YOUR_WALLET)}
+            </Link>,
+          ]
+        : []),
     ],
   ];
 
@@ -363,10 +400,10 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         <Link
           to={
             layout === LayoutKey.SHARED
-              ? handleSharePath(constantPaths.shared.chainsAlias)
+              ? handleSharePath(constantPaths.shared.chains)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.import
+              : constantPaths.default.leaderboard
           }
           className="logo"
         >
@@ -408,10 +445,10 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <Link
               to={
                 layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.chainsAlias)
+                  ? handleSharePath(constantPaths.shared.chains)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.import
+                  : constantPaths.default.leaderboard
               }
               className="logo"
             >

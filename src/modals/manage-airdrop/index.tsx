@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Collapse, List, Modal, Switch } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
 
@@ -20,6 +22,7 @@ interface InitialState {
 }
 
 const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
+  const { t } = useTranslation();
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { visible, loading } = state;
@@ -74,7 +77,9 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
       open={visible}
       width={550}
     >
-      <span className="heading">Registered Vaults:</span>
+      <span className="heading">
+        {t(constantKeys.REGISTEREDـVAULTS_AIRDROP)}
+      </span>
 
       <List
         dataSource={vaults}
@@ -97,10 +102,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
       <span className="hint">
         <Info />
 
-        <span>
-          Unregistering a vault removes it from the leaderboard. It may take up
-          to a day for the balance to be reflected again.
-        </span>
+        <span>{t(constantKeys.UNREGISTER_VAULT_INFO)}</span>
       </span>
 
       <Collapse
@@ -112,7 +114,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
               <>
                 <div className="text">
                   <span className="desc">
-                    You are registering your Public Keys and vault addresses.
+                    {t(constantKeys.REGISTER_PUBLIC_KEYS_VAULTS)}
                   </span>
                   <a
                     href="https://github.com/vultisig/airdrop-registry"
@@ -120,44 +122,41 @@ const Component: FC<ComponentProps> = ({ updateVault, vaults }) => {
                     target="_blank"
                     className="link"
                   >
-                    Inspect the code here.
+                    {t(constantKeys.INSPECT_CODE_MANAGE)}
                   </a>
                 </div>
 
                 <div className="text">
                   <span className="desc">
-                    Your Airdrop Share is based on the amount of assets in
-                    Vultisig multiplied by time in Vaults.
+                    {t(constantKeys.AIRDROP_SHARE_CALCULATION)}
                     <br />
-                    The assets counted for the airdrop can be&nbsp;
+                    {t(constantKeys.ASSENT_COUNT_MANAGE)}&nbsp;
                     <a
                       href="https://docs.vultisig.com/vultisig-token/airdrop#eligble-assets"
                       rel="noopener noreferrer"
                       target="_blank"
                       className="link"
                     >
-                      seen here.
+                      {t(constantKeys.LINK_SEE_HERE)}
                     </a>
                   </span>
                 </div>
 
                 <div className="text">
-                  <span className="desc">
-                    No other information is collected.
-                  </span>
+                  <span className="desc">{t(constantKeys.NOT_COLLECTED)}</span>
                   <a
                     href="https://github.com/vultisig/docs/blob/main/other/privacy.md"
                     rel="noopener noreferrer"
                     target="_blank"
                     className="link"
                   >
-                    Read the Founder Pledge on Privacy here.
+                    {t(constantKeys.PRIVACY)}
                   </a>
                 </div>
 
                 <div className="text">
                   <span className="desc">
-                    You can register as many times as you like.
+                    {t(constantKeys.REPEAT_REGISTRATION)}
                   </span>
                 </div>
               </>

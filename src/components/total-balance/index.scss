@@ -1,0 +1,18 @@
+@use "~variables" as *;
+
+.total-balance {
+  margin-bottom: rem(32);
+
+  .title {
+    display: block;
+    font-family: $secondary-font;
+    font-size: rem(16);
+  }
+
+  .value {
+    display: block;
+    font-size: rem(40);
+    font-weight: 700;
+    margin-top: rem(16);
+  }
+}

@@ -5,7 +5,7 @@ import { Button, Modal } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
-import translation from "i18n/constant-keys";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 
 import { Warning } from "icons";
@@ -60,7 +60,7 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
   return (
     <Modal
       className="modal-logout-vault"
-      title={t(translation.LOGOUT_VAULT_TITLE)}
+      title={t(constantKeys.LOGOUT_VAULT_TITLE)}
       centered={true}
       footer={
         <Button
@@ -71,7 +71,7 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
           type="primary"
           block
         >
-          {t(translation.LOGOUT_VAULT_TITLE)}
+          {t(constantKeys.LOGOUT_VAULT_TITLE)}
         </Button>
       }
       onCancel={() => goBack()}
@@ -80,7 +80,7 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
       width={480}
     >
       <Warning className="icon" />
-      <span className="warning">{t(translation.LOGOUT_VAULT_WARNING)}:</span>
+      <span className="warning">{t(constantKeys.LOGOUT_VAULT_WARNING)}:</span>
       <span className="name">{vault?.alias}</span>
     </Modal>
   );

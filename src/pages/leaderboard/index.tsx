@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
 import { LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
+import constantKeys from "i18n/constant-keys";
 import api from "utils/api";
 
 import { Info } from "icons";
@@ -22,6 +24,7 @@ interface InitialState {
 }
 
 const Component: FC = () => {
+  const { t } = useTranslation();
   const initialState: InitialState = {
     balance: 0,
     data: [],
@@ -84,13 +87,17 @@ const Component: FC = () => {
     <div className="layout-content leaderboard-page">
       <div className="stats">
         <div className="item">
-          <span className="label">Total Value of Airdrop Vaults</span>
+          <span className="label">
+            {t(constantKeys.TOTAL_AIRDROP_VAULT_VALUE)}
+          </span>
           <span className="value">
             {(balance * baseValue).toValueFormat(currency)}
           </span>
         </div>
         <div className="item">
-          <span className="label">Total Registered Wallets</span>
+          <span className="label">
+            {t(constantKeys.TOTAL_REGISTERED_WALLETS)}
+          </span>
           <span className="value">{total.toNumberFormat()}</span>
         </div>
       </div>
@@ -105,7 +112,7 @@ const Component: FC = () => {
 
           <div className="result">
             <div className="item point">
-              <Tooltip title="Points and balances are always updated at the end of the day">
+              <Tooltip title={t(constantKeys.DAILY_UPDATE_POINTS)}>
                 <span className="info">
                   <Info />
                 </span>

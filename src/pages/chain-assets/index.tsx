@@ -12,13 +12,13 @@ import { Truncate } from "@re-dev/react-truncate";
 import { useBaseContext } from "context";
 import { chooseToken, LayoutKey, PageKey } from "utils/constants";
 import { VaultOutletContext } from "utils/interfaces";
-import translation from "i18n/constant-keys";
+import useGoBack from "hooks/go-back";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
-import useGoBack from "hooks/go-back";
 
 import { ArrowRight, CirclePlus } from "icons";
-import AssetItem from "components/asset-item";
+import AssetItem from "components/chain-asset-item";
 import ChooseToken from "modals/choose-token";
 import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
@@ -37,13 +37,13 @@ const Component: FC = () => {
   );
 
   const componentDidUpdate = () => {
-    if (chain && !chain.updated) prepareChain(chain, vault);
+    if (chain && !chain.coinsUpdated) prepareChain(chain, vault);
   };
 
   const componentDidMount = () => {
     if (chain) {
       if (layout === LayoutKey.VAULT) {
-        changePage(PageKey.VAULT_ASSETS);
+        changePage(PageKey.VAULT_CHAIN_ASSETS);
 
         if (chooseToken[chain.name]) {
           getTokens(chain)
@@ -51,14 +51,14 @@ const Component: FC = () => {
             .catch(() => {});
         }
       } else {
-        changePage(PageKey.SHARED_ASSETS);
+        changePage(PageKey.SHARED_CHAIN_ASSETS);
       }
     } else {
       navigate(constantPaths.vault.chains);
     }
   };
 
-  useEffect(componentDidUpdate, [chain?.updated]);
+  useEffect(componentDidUpdate, [chain?.coinsUpdated]);
   useEffect(componentDidMount, []);
 
   return (
@@ -73,7 +73,7 @@ const Component: FC = () => {
                 goBack(
                   layout === LayoutKey.VAULT
                     ? constantPaths.vault.chains
-                    : constantPaths.shared.chainsAlias
+                    : constantPaths.shared.chains
                         .replace(":alias", vault.alias.replace(/ /g, "-"))
                         .replace(":uid", vault.uid)
                 )
@@ -117,7 +117,7 @@ const Component: FC = () => {
               state={true}
               className="add"
             >
-              <CirclePlus /> {t(translation.CHOOSE_TOKEN)}
+              <CirclePlus /> {t(constantKeys.CHOOSE_TOKEN)}
             </Link>
           )}
         </div>

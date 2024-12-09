@@ -2,10 +2,11 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 import { toCamelCase, toSnakeCase } from "utils/functions";
-import { ChainKey, Currency, errorKey } from "utils/constants";
+import { ChainKey, CollectionKey, Currency, errorKey } from "utils/constants";
 import {
   CoinParams,
   CoinProps,
+  NFTProps,
   NodeInfo,
   SharedSettings,
   TokenProps,
@@ -551,6 +552,74 @@ const api = {
             resolve([]);
           });
       });
+    },
+  },
+  nft: {
+    thorguard: {
+      identifier: (address: string, data: number): Promise<number> => {
+        return new Promise((resolve) => {
+          fetch
+            .post<{ result: string }>("https://ethereum.publicnode.com", {
+              jsonrpc: "2.0",
+              method: "eth_call",
+              params: [
+                {
+                  to: "0xa98b29a8f5a247802149c268ecf860b8308b7291",
+                  data: `0x2f745c59000000000000000000000000${address.replace(
+                    "0x",
+                    ""
+                  )}${data.toHexFormat(64)}`,
+                },
+                "latest",
+              ],
+              id: uuidv4(),
+            })
+            .then(({ data }) => {
+              resolve(parseInt(data.result));
+            })
+            .catch(() => resolve(0));
+        });
+      },
+      discover: (address: string): Promise<NFTProps[]> => {
+        return new Promise((resolve) => {
+          fetch
+            .post<{ result: string }>("https://ethereum.publicnode.com", {
+              jsonrpc: "2.0",
+              method: "eth_call",
+              params: [
+                {
+                  to: "0xa98b29a8f5a247802149c268ecf860b8308b7291",
+                  data: `0x70a08231000000000000000000000000${address.replace(
+                    "0x",
+                    ""
+                  )}`,
+                },
+                "latest",
+              ],
+              id: uuidv4(),
+            })
+            .then(({ data }) => {
+              const nfts = Array.from(
+                { length: parseInt(data.result) },
+                (_, index) => index
+              );
+
+              const promises = nfts.map((data) =>
+                api.nft.thorguard.identifier(address, data)
+              );
+
+              Promise.all(promises).then((identifiers) => {
+                resolve(
+                  identifiers.map((identifier) => ({
+                    collection: CollectionKey.THORGUARD,
+                    identifier,
+                  }))
+                );
+              });
+            })
+            .catch(() => resolve([]));
+        });
+      },
     },
   },
   vault: {

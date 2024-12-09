@@ -133,13 +133,11 @@ html[theme="dark"] {
   .chain-item {
     background-color: $gray-12;
     color: $gray-1;
-  }
-  .chains-page .breadcrumb .ant-input {
-    background-color: $gray-12;
-  }
-  .asset {
-    &.multi {
-      background-color: $gray-10;
+
+    .asset {
+      &.multi {
+        background-color: $gray-10;
+      }
     }
   }
 }
@@ -148,19 +146,22 @@ html[theme="light"] {
   .chain-item {
     background-color: $gray-3;
     color: $gray-8;
+
     .token-image {
-      border: 1px solid #dedede;
+      border: solid rem(1) $gray-5;
       border-radius: 50%;
     }
+
+    .asset {
+      &.multi {
+        background-color: $gray-5;
+      }
+    }
+
     .arrow {
       svg {
         fill: $gray-6;
       }
-    }
-  }
-  .asset {
-    &.multi {
-      background-color: $gray-5;
     }
   }
 }

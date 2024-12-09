@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button, Modal } from "antd";
 
 import { VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
+import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
@@ -16,6 +18,7 @@ interface ComponentProps {
 }
 
 const Component: FC<ComponentProps> = ({ vault }) => {
+  const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
   const { visible } = state;
@@ -51,7 +54,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
       centered={true}
       footer={
         <Button type="primary" onClick={handleLeaderboard} block>
-          Check Leaderboard
+          {t(constantKeys.CHECK_LEANDER_BOARD)}
         </Button>
       }
       onCancel={() => goBack()}
@@ -64,8 +67,10 @@ const Component: FC<ComponentProps> = ({ vault }) => {
         alt="Vultisig Robot"
         className="image"
       />
-      <span className="heading">Congratulations!</span>
-      <span className="text">{`Your Vault ${vault.alias} has joined the Vultisig Airdrop. You will now begin to accumulate VULTIES on a daily basis. Check back tomorrow to see your first VULTIES on the Leaderboard and check out your competitors.`}</span>
+      <span className="heading">{t(constantKeys.CONGRATULATIONS)}</span>
+      <span className="text">
+        {t(constantKeys.VAULT_AIRDROP_JOINED).replaceArgs([vault.alias])}
+      </span>
     </Modal>
   );
 };
