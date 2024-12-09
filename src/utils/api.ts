@@ -380,7 +380,7 @@ const api = {
               import.meta.env.VITE_VULTISIG_SERVER
             }cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
           )
-          .then(({ data  }) => {
+          .then(({ data }) => {
             const [key] = Object.keys(data.data);
 
             key ? resolve(parseInt(key)) : resolve(0);
