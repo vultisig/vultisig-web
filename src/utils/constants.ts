@@ -213,7 +213,7 @@ export const balanceDenom: ChainStrRef = {
   [ChainKey.GAIACHAIN]: "uatom",
   [ChainKey.KUJIRA]: "ukuji",
   [ChainKey.LITECOIN]: "",
-  [ChainKey.MAYACHAIN]: "cacao",
+  [ChainKey.MAYACHAIN]: "",
   [ChainKey.OPTIMISM]: "",
   [ChainKey.POLKADOT]: "",
   [ChainKey.POLYGON]: "",
