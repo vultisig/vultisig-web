@@ -449,7 +449,8 @@ export default class VaultProvider {
     chain: ChainKey,
     contractAddress: string,
     decimals: number,
-    isNative: boolean
+    isNative: boolean,
+    ticker: string
   ): Promise<number> => {
     return new Promise((resolve) => {
       const denom = balanceDenom[chain];
@@ -460,11 +461,17 @@ export default class VaultProvider {
         case ChainKey.DYDX:
         case ChainKey.GAIACHAIN:
         case ChainKey.KUJIRA:
-        case ChainKey.MAYACHAIN:
         case ChainKey.TERRA:
         case ChainKey.TERRACLASSIC:
         case ChainKey.THORCHAIN: {
           api.balance.cosmos(path, address, decimals, denom).then(resolve);
+
+          break;
+        }
+        case ChainKey.MAYACHAIN: {
+          api.balance
+            .cosmos(path, address, decimals, ticker.toLowerCase())
+            .then(resolve);
 
           break;
         }
@@ -702,7 +709,8 @@ export default class VaultProvider {
           chain.name,
           coin.contractAddress,
           coin.decimals,
-          coin.isNative
+          coin.isNative,
+          coin.ticker
         ).then((balance) => {
           coin.balance = balance;
         })
