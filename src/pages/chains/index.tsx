@@ -48,7 +48,7 @@ const Component: FC = () => {
                       ...vault,
                       chains: vault.chains.map((chain) => ({
                         ...chain,
-                        updated: false,
+                        coinsUpdated: false,
                       })),
                       isActive: true,
                     })
