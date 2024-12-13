@@ -10,12 +10,11 @@ import constantKeys from "i18n/constant-keys";
 
 import { Info, Synchronize } from "icons";
 import NFTItem from "components/nft-item";
-import TotalBalance from "components/total-balance";
 import VaultDropdown from "components/vault-dropdown";
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const { changePage } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { updateVault, layout, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidMount = () => {
@@ -62,7 +61,18 @@ const Component: FC = () => {
             </div>
           </>
         )}
-        <TotalBalance />
+        <div className="total-balance">
+          <span className="title">{t(constantKeys.TOTAL_BALANCE)}</span>
+          <span className="value">
+            {(
+              vault.chains.reduce(
+                (acc, chain) =>
+                  acc + (chain.nftsBalance ?? 0) * chain.nfts.length,
+                0
+              ) * baseValue
+            ).toValueFormat(currency)}
+          </span>
+        </div>
         {filteredChains.length ? (
           filteredChains.map(({ name, ...res }) => (
             <NFTItem key={name} {...{ ...res, name }} />

@@ -19,6 +19,32 @@
     flex-grow: 1;
   }
 
+  .avatar {
+    background-color: $blue-light;
+    border-radius: rem(20);
+    cursor: pointer;
+    display: block;
+    padding: rem(2) rem(8) rem(2) rem(12);
+    transition: background-color 0.3s;
+    white-space: nowrap;
+
+    span {
+      display: none;
+      font-size: rem(12);
+      font-weight: 600;
+      line-height: rem(20);
+    }
+
+    svg {
+      height: rem(20);
+      width: rem(20);
+    }
+
+    &:hover {
+      background-color: rgba($color: $gray-1, $alpha: 0.2);
+    }
+  }
+
   .action {
     height: rem(24);
     width: rem(24);
@@ -27,6 +53,21 @@
       fill: $cyan-base;
       height: inherit;
       width: inherit;
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .nft-asset-item {
+    .avatar {
+      display: flex;
+      gap: rem(4);
+      justify-content: space-between;
+      width: rem(88);
+
+      span {
+        display: block;
+      }
     }
   }
 }
