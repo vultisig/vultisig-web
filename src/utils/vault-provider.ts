@@ -18,6 +18,7 @@ import type {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
+import { isNewToken } from "utils/functions";
 import { getStoredAddress, setStoredAddress } from "utils/storage";
 import api from "utils/api";
 
@@ -556,13 +557,7 @@ export default class VaultProvider {
               const tokens: TokenProps[] = [];
 
               Object.entries(data.tokens).forEach(([key, value]) => {
-                const notFound =
-                  defTokens.findIndex(
-                    (token) =>
-                      token.contractAddress.toLowerCase() === key.toLowerCase()
-                  ) < 0;
-
-                if (notFound) {
+                if (isNewToken(key)) {
                   tokens.push({
                     chain: chain.name,
                     cmcId: 0,
@@ -580,9 +575,7 @@ export default class VaultProvider {
 
               resolve([...defTokens, ...tokens]);
             })
-            .catch(() => {
-              resolve(defTokens);
-            });
+            .catch(() => resolve(defTokens));
         } else if (token.chain === ChainKey.SOLANA) {
           api.discovery.spl(chain.address).then((tokens) => {
             if (tokens.length) {
@@ -591,12 +584,7 @@ export default class VaultProvider {
                 .then(({ data }) => {
                   const modifiedTokens = tokens.filter(
                     ({ contractAddress }) =>
-                      !!data[contractAddress] &&
-                      defTokens.findIndex(
-                        (token) =>
-                          token.contractAddress.toLowerCase() ===
-                          contractAddress.toLowerCase()
-                      ) < 0
+                      !!data[contractAddress] && isNewToken(contractAddress)
                   );
                   const promises = modifiedTokens.map((token) =>
                     this.getCMC(token)
