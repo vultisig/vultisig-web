@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useBaseContext } from "context";
-import { ChainKey } from "utils/constants";
+import { ChainKey, TickerKey } from "utils/constants";
 import constantKeys from "i18n/constant-keys";
 
 import { Check } from "icons";
@@ -34,7 +34,14 @@ const Component: FC<ComponentProps> = ({
       <div className="token">
         <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>
-        {(isNative || chain !== ChainKey.SOLANA) && (
+        {(isNative ||
+          chain !== ChainKey.SOLANA ||
+          ticker === TickerKey.JUP ||
+          ticker === TickerKey.RNDR ||
+          ticker === TickerKey.USDC ||
+          ticker === TickerKey.USDT ||
+          ticker === TickerKey.DORITO ||
+          ticker === TickerKey.KWEEN) && (
           <span className="counted">
             <Check />
             {t(constantKeys.COUNTED)}
