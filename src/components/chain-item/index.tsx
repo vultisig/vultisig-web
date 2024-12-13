@@ -61,7 +61,9 @@ const Component: FC<ComponentProps> = (chain) => {
         )}
         <TokenActions address={address} name={name} />
         <Link
-          to={`${pathname}/${name.toLowerCase()}`}
+          to={`${
+            pathname.endsWith("/") ? pathname : `${pathname}/`
+          }${name.toLowerCase()}`}
           state={true}
           className="arrow"
         >
