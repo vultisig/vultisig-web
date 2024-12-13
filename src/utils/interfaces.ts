@@ -18,6 +18,7 @@ export interface ChainProps {
   coinsUpdated?: boolean;
   name: ChainKey;
   nfts: NFTProps[];
+  nftsBalance?: number;
   nftsUpdated?: boolean;
   hexPublicKey: string;
 }
@@ -211,6 +212,7 @@ export interface TokenProps {
 
 export interface VaultProps {
   alias: string;
+  avatarUrl: string;
   balance: number;
   chains: ChainProps[];
   hexChainCode: string;

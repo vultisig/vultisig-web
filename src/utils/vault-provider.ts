@@ -590,15 +590,22 @@ export default class VaultProvider {
                 .spl(tokens.map(({ contractAddress }) => contractAddress))
                 .then(({ data }) => {
                   const modifiedTokens = tokens.filter(
-                    ({ contractAddress }) => !!data[contractAddress]
+                    ({ contractAddress }) =>
+                      !!data[contractAddress] &&
+                      defTokens.findIndex(
+                        (token) =>
+                          token.contractAddress.toLowerCase() ===
+                          contractAddress.toLowerCase()
+                      ) < 0
                   );
                   const promises = modifiedTokens.map((token) =>
                     this.getCMC(token)
                   );
 
                   Promise.all(promises).then((numbers) => {
-                    resolve(
-                      modifiedTokens.map((token, index) => {
+                    resolve([
+                      ...defTokens,
+                      ...modifiedTokens.map((token, index) => {
                         const item = data[token.contractAddress];
 
                         return {
@@ -608,15 +615,15 @@ export default class VaultProvider {
                           logo: item.tokenList.image,
                           ticker: item.tokenList.symbol,
                         };
-                      })
-                    );
+                      }),
+                    ]);
                   });
                 })
                 .catch(() => {
-                  resolve([]);
+                  resolve(defTokens);
                 });
             } else {
-              resolve([]);
+              resolve(defTokens);
             }
           });
         } else {
@@ -637,11 +644,13 @@ export default class VaultProvider {
         if (coin.balance) {
           switch (coin.ticker) {
             case TickerKey.CACAO:
-              return api.coin
-                .coingeckoValue(coin.ticker, currency)
-                .then((value) => {
-                  coin.value = value;
-                });
+              return true
+                ? api.coin
+                    .mayachainValue()
+                    .then((value) => (coin.value = value))
+                : api.coin
+                    .coingeckoValue(coin.ticker, currency)
+                    .then((value) => (coin.value = value));
             case TickerKey.MAYA:
               const usdt = defTokens.find(
                 ({ chain, ticker }) =>
