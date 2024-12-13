@@ -297,6 +297,34 @@ body {
   }
 }
 
+.ant-popover {
+  .ant-popconfirm-buttons {
+    .ant-btn {
+      color: $gray-1;
+
+      &:hover {
+        color: $cyan-base !important;
+      }
+    }
+  }
+
+  .ant-popconfirm-message-icon {
+    .anticon {
+      color: $cyan-base !important;
+    }
+  }
+
+  .ant-popover-arrow {
+    &::before {
+      background-color: $blue-light;
+    }
+  }
+
+  .ant-popover-inner {
+    background-color: $blue-light;
+  }
+}
+
 .ant-select {
   height: rem(48);
 
