@@ -12,8 +12,8 @@ import VultiLoading from "components/vulti-loading";
 
 const Component: FC<ChainProps> = (chain) => {
   const { pathname } = useLocation();
-  const { address, name, nfts, nftsUpdated } = chain;
-  const { currency } = useBaseContext();
+  const { address, name, nfts, nftsBalance, nftsUpdated } = chain;
+  const { baseValue, currency } = useBaseContext();
   const { prepareNFT, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidUpdate = () => {
@@ -49,7 +49,11 @@ const Component: FC<ChainProps> = (chain) => {
         )}
       </div>
       {nftsUpdated ? (
-        <span className="amount">{(0).toValueFormat(currency)}</span>
+        <span className="amount">
+          {((nftsBalance ?? 0) * nfts.length * baseValue).toValueFormat(
+            currency
+          )}
+        </span>
       ) : (
         <VultiLoading />
       )}

@@ -147,6 +147,7 @@
 
     .point {
       position: relative;
+      width: 100%;
 
       .avatar {
         background-color: $cyan-base;
@@ -172,7 +173,12 @@
         font-size: rem(16);
         font-weight: 700;
         line-height: rem(24);
+        margin: 0 auto;
+        overflow: hidden;
         text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 50%;
       }
 
       .value {
@@ -356,7 +362,7 @@
 
       .point {
         padding-left: rem(64);
-        position: relative;
+        width: 50%;
 
         .avatar {
           left: 0;
@@ -371,7 +377,8 @@
 
         .name {
           float: left;
-          margin-left: rem(8);
+          margin: 0 0 0 rem(8);
+          text-align: left;
         }
 
         .value {
@@ -415,6 +422,12 @@
       .result {
         gap: rem(24);
         justify-content: end;
+      }
+    }
+
+    .board {
+      .point {
+        width: 60%;
       }
     }
   }

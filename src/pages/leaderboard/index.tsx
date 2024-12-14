@@ -139,7 +139,15 @@ const Component: FC = () => {
       <div className="board">
         <div className="list">
           {data.map(
-            ({ alias, balance, lpValue, rank, registeredAt, totalPoints }) => {
+            ({
+              alias,
+              avatarUrl,
+              balance,
+              lpValue,
+              rank,
+              registeredAt,
+              totalPoints,
+            }) => {
               let medal: string;
 
               switch (rank) {
@@ -167,7 +175,10 @@ const Component: FC = () => {
                   key={rank}
                 >
                   <div className="point">
-                    <img src="/avatar/1.png" className="avatar" />
+                    <img
+                      src={avatarUrl || "/avatar/1.png"}
+                      className="avatar"
+                    />
                     <span className="rank">{`#${rank.toNumberFormat()}`}</span>
                     <span className="name">{`${alias}${
                       layout !== LayoutKey.DEFAULT && rank === vault.rank
@@ -222,7 +233,14 @@ const Component: FC = () => {
           {layout !== LayoutKey.DEFAULT && vault.rank > data.length && (
             <div className="item active">
               <div className="point">
-                <img src="/avatar/1.png" className="avatar" />
+                <img
+                  src={
+                    layout === LayoutKey.VAULT && vault.avatarUrl
+                      ? vault.avatarUrl
+                      : "/avatar/1.png"
+                  }
+                  className="avatar"
+                />
                 <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
                 <span className="name">{`${vault.alias}${
                   layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"

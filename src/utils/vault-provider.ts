@@ -18,6 +18,7 @@ import type {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
+import { isNewToken } from "utils/functions";
 import { getStoredAddress, setStoredAddress } from "utils/storage";
 import api from "utils/api";
 
@@ -556,13 +557,7 @@ export default class VaultProvider {
               const tokens: TokenProps[] = [];
 
               Object.entries(data.tokens).forEach(([key, value]) => {
-                const notFound =
-                  defTokens.findIndex(
-                    (token) =>
-                      token.contractAddress.toLowerCase() === key.toLowerCase()
-                  ) < 0;
-
-                if (notFound) {
+                if (isNewToken(key)) {
                   tokens.push({
                     chain: chain.name,
                     cmcId: 0,
@@ -580,9 +575,7 @@ export default class VaultProvider {
 
               resolve([...defTokens, ...tokens]);
             })
-            .catch(() => {
-              resolve(defTokens);
-            });
+            .catch(() => resolve(defTokens));
         } else if (token.chain === ChainKey.SOLANA) {
           api.discovery.spl(chain.address).then((tokens) => {
             if (tokens.length) {
@@ -590,15 +583,17 @@ export default class VaultProvider {
                 .spl(tokens.map(({ contractAddress }) => contractAddress))
                 .then(({ data }) => {
                   const modifiedTokens = tokens.filter(
-                    ({ contractAddress }) => !!data[contractAddress]
+                    ({ contractAddress }) =>
+                      !!data[contractAddress] && isNewToken(contractAddress)
                   );
                   const promises = modifiedTokens.map((token) =>
                     this.getCMC(token)
                   );
 
                   Promise.all(promises).then((numbers) => {
-                    resolve(
-                      modifiedTokens.map((token, index) => {
+                    resolve([
+                      ...defTokens,
+                      ...modifiedTokens.map((token, index) => {
                         const item = data[token.contractAddress];
 
                         return {
@@ -608,15 +603,15 @@ export default class VaultProvider {
                           logo: item.tokenList.image,
                           ticker: item.tokenList.symbol,
                         };
-                      })
-                    );
+                      }),
+                    ]);
                   });
                 })
                 .catch(() => {
-                  resolve([]);
+                  resolve(defTokens);
                 });
             } else {
-              resolve([]);
+              resolve(defTokens);
             }
           });
         } else {
@@ -637,11 +632,13 @@ export default class VaultProvider {
         if (coin.balance) {
           switch (coin.ticker) {
             case TickerKey.CACAO:
-              return api.coin
-                .coingeckoValue(coin.ticker, currency)
-                .then((value) => {
-                  coin.value = value;
-                });
+              return true
+                ? api.coin
+                    .mayachainValue()
+                    .then((value) => (coin.value = value))
+                : api.coin
+                    .coingeckoValue(coin.ticker, currency)
+                    .then((value) => (coin.value = value));
             case TickerKey.MAYA:
               const usdt = defTokens.find(
                 ({ chain, ticker }) =>

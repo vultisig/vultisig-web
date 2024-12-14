@@ -270,7 +270,7 @@ const Component: FC = () => {
   };
 
   const prepareNFT = (chain: ChainProps, vault: VaultProps): void => {
-    api.nft.thorguard.discover(chain.address).then((nfts) => {
+    api.nft.thorguard.discover(chain.address).then(({ nfts, price }) => {
       setState((prevState) => {
         const vaults = prevState.vaults.map((item) =>
           vaultProvider.compareVault(item, vault)
@@ -278,7 +278,7 @@ const Component: FC = () => {
                 ...item,
                 chains: item.chains.map((item) =>
                   item.name === chain.name
-                    ? { ...item, nfts, nftsUpdated: true }
+                    ? { ...item, nfts, nftsBalance: price, nftsUpdated: true }
                     : item
                 ),
               }

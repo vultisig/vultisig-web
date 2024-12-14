@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useBaseContext } from "context";
 import { ChainKey } from "utils/constants";
+import { isCounted } from "utils/functions";
 import constantKeys from "i18n/constant-keys";
 
 import { Check } from "icons";
@@ -34,7 +35,7 @@ const Component: FC<ComponentProps> = ({
       <div className="token">
         <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>
-        {(isNative || chain !== ChainKey.SOLANA) && (
+        {isCounted(chain, isNative, ticker) && (
           <span className="counted">
             <Check />
             {t(constantKeys.COUNTED)}

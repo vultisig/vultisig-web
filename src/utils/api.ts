@@ -2,7 +2,14 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 import { toCamelCase, toSnakeCase } from "utils/functions";
-import { ChainKey, CollectionKey, Currency, errorKey } from "utils/constants";
+import {
+  ChainKey,
+  CollectionKey,
+  Currency,
+  defTokens,
+  errorKey,
+  nftCollection,
+} from "utils/constants";
 import {
   CoinParams,
   CoinProps,
@@ -475,6 +482,20 @@ const api = {
           });
       });
     },
+    mayachainValue: (): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<string>("https://midgard.mayachain.info/v2/debug/usd")
+          .then(({ data }) => {
+            const match = /cacaoPriceUSD: (\d+(\.\d+)?)/.exec(data);
+
+            resolve(match ? parseFloat(match[1]) : 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
   },
   discovery: {
     info: {
@@ -555,6 +576,43 @@ const api = {
     },
   },
   nft: {
+    price: (address: string): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<{
+            minPrice: {
+              currency: string;
+              decimals: number;
+              value: string;
+            };
+          }>(`nft/price/${address}`)
+          .then(({ data }) => {
+            const chain = defTokens.find(
+              ({ isNative, ticker }) =>
+                isNative && ticker === data.minPrice.currency
+            );
+
+            if (chain) {
+              api.coin.value(chain.cmcId, Currency.USD).then((chainPrice) => {
+                console.log(
+                  (parseInt(data.minPrice.value) /
+                    Math.pow(10, data.minPrice.decimals)) *
+                    chainPrice
+                );
+
+                resolve(
+                  (parseInt(data.minPrice.value) /
+                    Math.pow(10, data.minPrice.decimals)) *
+                    chainPrice
+                );
+              });
+            } else {
+              resolve(0);
+            }
+          })
+          .catch(() => resolve(0));
+      });
+    },
     thorguard: {
       identifier: (address: string, data: number): Promise<number> => {
         return new Promise((resolve) => {
@@ -564,7 +622,7 @@ const api = {
               method: "eth_call",
               params: [
                 {
-                  to: "0xa98b29a8f5a247802149c268ecf860b8308b7291",
+                  to: nftCollection[CollectionKey.THORGUARD],
                   data: `0x2f745c59000000000000000000000000${address.replace(
                     "0x",
                     ""
@@ -580,7 +638,10 @@ const api = {
             .catch(() => resolve(0));
         });
       },
-      discover: (address: string): Promise<NFTProps[]> => {
+
+      discover: (
+        address: string
+      ): Promise<{ nfts: NFTProps[]; price: number }> => {
         return new Promise((resolve) => {
           fetch
             .post<{ result: string }>("https://ethereum.publicnode.com", {
@@ -609,15 +670,20 @@ const api = {
               );
 
               Promise.all(promises).then((identifiers) => {
-                resolve(
-                  identifiers.map((identifier) => ({
-                    collection: CollectionKey.THORGUARD,
-                    identifier,
-                  }))
-                );
+                api.nft
+                  .price(nftCollection[CollectionKey.THORGUARD])
+                  .then((price) => {
+                    resolve({
+                      nfts: identifiers.map((identifier) => ({
+                        collection: CollectionKey.THORGUARD,
+                        identifier,
+                      })),
+                      price,
+                    });
+                  });
               });
             })
-            .catch(() => resolve([]));
+            .catch(() => resolve({ nfts: [], price: 0 }));
         });
       },
     },
@@ -659,6 +725,19 @@ const api = {
     },
     getById: async (id: string) => {
       return await fetch.get<VaultProps>(`vault/shared/${id}`);
+    },
+    avatar: (
+      params: Pick<
+        VaultProps,
+        "hexChainCode" | "publicKeyEcdsa" | "publicKeyEddsa" | "uid"
+      > & { collectionId: string; itemId: string; url: string }
+    ): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        fetch
+          .post<void>("nft/avatar", toSnakeCase(params))
+          .then(() => resolve())
+          .catch(reject);
+      });
     },
     rename: async (params: VaultProps) => {
       return await fetch.post(
