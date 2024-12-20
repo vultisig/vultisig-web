@@ -10,14 +10,14 @@ import useGoBack from "hooks/go-back";
 import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
 
-import { ArrowRight, Hyperlink } from "icons";
+import { ArrowRight, Check, Hyperlink } from "icons";
 import AssetItem from "components/nft-asset-item";
 import TokenImage from "components/token-image";
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const { chainKey } = useParams();
-  const { changePage } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { prepareNFT, layout, vault } = useOutletContext<VaultOutletContext>();
   const navigate = useNavigate();
   const goBack = useGoBack();
@@ -70,11 +70,21 @@ const Component: FC = () => {
           </div>
           <div className="content">
             <div className="nft">
-              <TokenImage alt={chain.name} />
-              <span className="name">{chain.name}</span>
-              {/* <span className="amount">
-                {((chain.balance ?? 0) * baseValue).toValueFormat(currency)}
-              </span> */}
+              <div className="token">
+                <TokenImage alt={chain.name} />
+                <span className="name">{chain.name}</span>
+                <span className="counted">
+                  <Check />
+                  {t(constantKeys.COUNTED)}
+                </span>
+              </div>
+              <span className="amount">
+                {(
+                  (chain.nftsBalance ?? 0) *
+                  baseValue *
+                  chain.nfts.length
+                ).toValueFormat(currency)}
+              </span>
               <Tooltip title="Link to Address">
                 <a
                   href={`${exploreNFT[chain.name]}${chain.address}`}
@@ -91,6 +101,7 @@ const Component: FC = () => {
                 key={identifier}
                 identifier={identifier}
                 collection={collection}
+                value={chain.nftsBalance}
               />
             ))}
           </div>

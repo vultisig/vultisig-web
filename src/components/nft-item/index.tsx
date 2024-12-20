@@ -1,16 +1,19 @@
 import { FC, useEffect } from "react";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 
 import { useBaseContext } from "context";
 import { defNFTs, exploreNFT } from "utils/constants";
 import { ChainProps, VaultOutletContext } from "utils/interfaces";
+import constantKeys from "i18n/constant-keys";
 
-import { ArrowRight, Hyperlink } from "icons";
+import { ArrowRight, Check, Hyperlink } from "icons";
 import TokenImage from "components/token-image";
 import VultiLoading from "components/vulti-loading";
 
 const Component: FC<ChainProps> = (chain) => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const { address, name, nfts, nftsBalance, nftsUpdated } = chain;
   const { baseValue, currency } = useBaseContext();
@@ -24,9 +27,13 @@ const Component: FC<ChainProps> = (chain) => {
 
   return (
     <div className="nft-item">
-      <div className="type">
+      <div className="token">
         <TokenImage alt={name} />
-        {name}
+        <span className="name">{name}</span>
+        <span className="counted">
+          <Check />
+          {t(constantKeys.COUNTED)}
+        </span>
       </div>
       <div className="images">
         {nftsUpdated ? (

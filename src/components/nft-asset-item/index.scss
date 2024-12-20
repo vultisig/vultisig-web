@@ -1,35 +1,49 @@
 @use "~variables" as *;
 
 .nft-asset-item {
-  align-items: center;
   border-top: solid rem(1) $blue-light;
-  display: flex;
-  gap: rem(16);
-  padding: rem(16) 0;
+  padding: rem(16) 0 rem(16) rem(80);
+  position: relative;
 
   .image {
     border-radius: rem(4);
     height: rem(72);
+    left: rem(0);
+    position: absolute;
+    top: rem(16);
     width: rem(72);
   }
 
   .name {
+    display: block;
     font-family: $secondary-font;
     font-weight: 700;
-    flex-grow: 1;
+    line-height: rem(20);
+    text-transform: uppercase;
+  }
+
+  .value {
+    display: block;
+    font-family: $secondary-font;
+    font-size: rem(20);
+    font-weight: 700;
+    line-height: rem(24);
   }
 
   .avatar {
     background-color: $blue-light;
     border-radius: rem(20);
     cursor: pointer;
-    display: block;
+    display: flex;
+    gap: rem(4);
+    justify-content: space-between;
+    margin-top: rem(4);
     padding: rem(2) rem(8) rem(2) rem(12);
     transition: background-color 0.3s;
     white-space: nowrap;
+    width: rem(88);
 
     span {
-      display: none;
       font-size: rem(12);
       font-weight: 600;
       line-height: rem(20);
@@ -47,6 +61,9 @@
 
   .action {
     height: rem(24);
+    position: absolute;
+    right: 0;
+    top: rem(40);
     width: rem(24);
 
     svg {
@@ -59,15 +76,25 @@
 
 @media (min-width: rem(576)) {
   .nft-asset-item {
-    .avatar {
-      display: flex;
-      gap: rem(4);
-      justify-content: space-between;
-      width: rem(88);
+    align-items: center;
+    display: flex;
+    gap: rem(16);
+    padding: rem(16) 0;
 
-      span {
-        display: block;
-      }
+    .image {
+      position: static;
+    }
+
+    .name {
+      flex-grow: 1;
+    }
+
+    .avatar {
+      margin: 0;
+    }
+
+    .action {
+      position: static;
     }
   }
 }

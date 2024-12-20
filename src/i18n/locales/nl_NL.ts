@@ -59,7 +59,7 @@ export default {
   [translation.JOIN_AIRDROP]: "Doe mee aan de airdrop",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "DOE MEE AAN DE AIRDROP",
   [translation.JOIN_THE_AIRDROP_ONBOARDING_EXPLAIN]:
-    "Doe mee aan de airdrop en volg de ranglijst op AIDROP.VULTISIG.COM",
+    "Doe mee aan de airdrop en volg de ranglijst op AIRDROP.VULTISIG.COM",
   // K
   // L
   [translation.LANGUAGE]: "Taal",

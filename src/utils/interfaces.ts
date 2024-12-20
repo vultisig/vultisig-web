@@ -49,6 +49,7 @@ export interface ChainBoolRef {
   [ChainKey.TERRACLASSIC]: boolean;
   [ChainKey.THORCHAIN]: boolean;
   [ChainKey.TON]: boolean;
+  [ChainKey.XRP]: boolean;
   [ChainKey.ZKSYNC]: boolean;
 }
 
@@ -78,6 +79,7 @@ export interface ChainStrRef {
   [ChainKey.TERRACLASSIC]: string;
   [ChainKey.THORCHAIN]: string;
   [ChainKey.TON]: string;
+  [ChainKey.XRP]: string;
   [ChainKey.ZKSYNC]: string;
 }
 

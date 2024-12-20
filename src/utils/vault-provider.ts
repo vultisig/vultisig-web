@@ -70,6 +70,7 @@ export default class VaultProvider {
               [ChainKey.TERRACLASSIC]: walletCore.CoinType.terra,
               [ChainKey.THORCHAIN]: walletCore.CoinType.thorchain,
               [ChainKey.TON]: walletCore.CoinType.ton,
+              [ChainKey.XRP]: walletCore.CoinType.xrp,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
             };
 
@@ -526,6 +527,11 @@ export default class VaultProvider {
 
           break;
         }
+        case ChainKey.XRP: {
+          api.balance.xrp(path, address, decimals).then(resolve);
+
+          break;
+        }
         default:
           resolve(0);
 
@@ -631,14 +637,16 @@ export default class VaultProvider {
       const promises = coins.map((coin) => {
         if (coin.balance) {
           switch (coin.ticker) {
+            // Temporary solution for Coingecko CACAO price issue
             case TickerKey.CACAO:
-              return true
-                ? api.coin
-                    .mayachainValue()
-                    .then((value) => (coin.value = value))
-                : api.coin
-                    .coingeckoValue(coin.ticker, currency)
-                    .then((value) => (coin.value = value));
+              return api.coin
+                .mayachainValue()
+                .then((value) => (coin.value = value));
+            case TickerKey.CACAO:
+            case TickerKey.KWEEN:
+              return api.coin
+                .coingeckoValue(coin.ticker, currency)
+                .then((value) => (coin.value = value));
             case TickerKey.MAYA:
               const usdt = defTokens.find(
                 ({ chain, ticker }) =>

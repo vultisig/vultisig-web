@@ -59,7 +59,7 @@ export default {
   [translation.JOIN_AIRDROP]: "Unirse al airdrop",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "UNIRSE AL AIRDROP",
   [translation.JOIN_THE_AIRDROP_ONBOARDING_EXPLAIN]:
-    "Únase al airdrop y siga la tabla de posiciones en AIDROP.VULTISIG.COM",
+    "Únase al airdrop y siga la tabla de posiciones en AIRDROP.VULTISIG.COM",
   // K
   // L
   [translation.LANGUAGE]: "Idioma",
