@@ -123,6 +123,15 @@ interface SaverPositions {
   }[];
 }
 
+const externalAPI = {
+  ethereumPN: "https://ethereum.publicnode.com",
+  lifi: "https://li.quest/v1/",
+  mayachain: "https://midgard.mayachain.info/v2/",
+  solanaFM: "https://api.solana.fm/v1/",
+  solanaPN: "https://solana-rpc.publicnode.com",
+  thorchain: "https://thornode.ninerealms.com/thorchain/",
+  thorwallet: "https://api-v2-prod.thorwallet.org/",
+};
 const api = {
   airdrop: {
     join: async (params: VaultProps) => {
@@ -136,7 +145,7 @@ const api = {
     nodeInfo: (address: string): Promise<number> => {
       return new Promise((resolve) => {
         fetch
-          .get<NodeInfo[]>(`https://thornode.ninerealms.com/thorchain/nodes`)
+          .get<NodeInfo[]>(`${externalAPI.thorchain}nodes`)
           .then(({ data }) => {
             const amount = data.reduce((acc, node) => {
               const nodeSum =
@@ -146,7 +155,7 @@ const api = {
                       ? sum + Number(provider.bond)
                       : sum,
                   0
-                ) ?? 0;
+                ) || 0;
 
               return acc + nodeSum;
             }, 0);
@@ -158,24 +167,24 @@ const api = {
     },
     getLiquidityPositions: async (addresses: string) => {
       return await fetch.get<ActivePositions>(
-        `https://api-v2-prod.thorwallet.org/pools/positions?addresses=${addresses}`
+        `${externalAPI.thorwallet}pools/positions?addresses=${addresses}`
       );
     },
     getSaverPositions: async (addresses: string) => {
       return await fetch.get<SaverPositions>(
-        `https://api-v2-prod.thorwallet.org/saver/positions?addresses=${addresses}`
+        `${externalAPI.thorwallet}saver/positions?addresses=${addresses}`
       );
     },
     getTGTstake: async (address: string) => {
       return await fetch.get<{ stakedAmount: number; reward: number }>(
-        `https://api-v2-prod.thorwallet.org/stake/${address}`
+        `${externalAPI.thorwallet}stake/${address}`
       );
     },
     getRuneProvider: (address: string): Promise<number> => {
       return new Promise((resolve) => {
         fetch
           .get<{ value: string }>(
-            `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
+            `${externalAPI.thorchain}rune_provider/${address}`
           )
           .then(({ data }) => {
             const value = Number(data?.value);
@@ -260,7 +269,7 @@ const api = {
             data: { account: { balance: string } };
           }>(path, { key: address })
           .then(({ data }) => {
-            resolve(parseFloat(data?.data?.account?.balance ?? "0"));
+            resolve(parseFloat(data?.data?.account?.balance || "0"));
           })
           .catch(() => {
             resolve(0);
@@ -303,7 +312,7 @@ const api = {
               const [value] = data.result.value;
 
               balance =
-                value?.account?.data?.parsed?.info?.tokenAmount?.amount ?? 0;
+                value?.account?.data?.parsed?.info?.tokenAmount?.amount || 0;
             } else {
               balance = data.result.value;
             }
@@ -355,7 +364,7 @@ const api = {
             params: { address, use_v2: false },
           })
           .then(({ data }) => {
-            const balance = parseFloat(data?.balance ?? "0");
+            const balance = parseFloat(data?.balance || "0");
 
             resolve(balance >= 0 ? balance / Math.pow(10, decimals) : 0);
           })
@@ -404,7 +413,7 @@ const api = {
           .then(({ data }) => {
             console.log(data);
             const balance = parseFloat(
-              data?.result?.accountData?.Balance ?? "0"
+              data?.result?.accountData?.Balance || "0"
             );
 
             resolve(balance >= 0 ? balance / Math.pow(10, decimals) : 0);
@@ -465,7 +474,7 @@ const api = {
               data.data[id]?.quote &&
               data.data[id].quote[currency]
             ) {
-              resolve(data.data[id].quote[currency].price ?? 0);
+              resolve(data.data[id].quote[currency].price || 0);
             } else {
               resolve(0);
             }
@@ -490,7 +499,7 @@ const api = {
           .then(({ data }) => {
             Object.entries(data.data).forEach(([key, value]) => {
               modifedData[key] =
-                (value.quote[currency] && value.quote[currency].price) ?? 0;
+                (value.quote[currency] && value.quote[currency].price) || 0;
             });
 
             resolve(modifedData);
@@ -503,13 +512,13 @@ const api = {
     coingeckoValue: (ticker: string, currency: Currency): Promise<number> => {
       return new Promise((resolve) => {
         fetch
-          .get<{ cacao: { [language: string]: number } }>(
+          .get<{ [ticker: string]: { [language: string]: number } }>(
             `${
               import.meta.env.VITE_VULTISIG_SERVER
             }coingeicko/api/v3/simple/price?ids=${ticker}&vs_currencies=${currency}`
           )
           .then(({ data }) => {
-            resolve(data?.cacao?.[currency.toLowerCase()] ?? 0);
+            resolve(data[ticker.toLowerCase()]?.[currency.toLowerCase()] || 0);
           })
           .catch(() => {
             resolve(0);
@@ -520,7 +529,7 @@ const api = {
       return new Promise((resolve) => {
         fetch
           .get<{ priceUSD: string }>(
-            `https://li.quest/v1/token?chain=eth&token=${contractAddress}`
+            `${externalAPI.lifi}token?chain=eth&token=${contractAddress}`
           )
           .then(({ data }) => {
             resolve(parseFloat(data.priceUSD) || 0);
@@ -533,7 +542,7 @@ const api = {
     mayachainValue: (): Promise<number> => {
       return new Promise((resolve) => {
         fetch
-          .get<string>("https://midgard.mayachain.info/v2/debug/usd")
+          .get<string>(`${externalAPI.mayachain}debug/usd`)
           .then(({ data }) => {
             const match = /cacaoPriceUSD: (\d+(\.\d+)?)/.exec(data);
 
@@ -558,7 +567,7 @@ const api = {
               symbol: string;
             };
           };
-        }>("https://api.solana.fm/v1/tokens", { tokens });
+        }>(`${externalAPI.solanaFM}tokens`, { tokens });
       },
     },
     spl: (address: string): Promise<TokenProps[]> => {
@@ -580,7 +589,7 @@ const api = {
                 };
               }[];
             };
-          }>("https://solana-rpc.publicnode.com", {
+          }>(externalAPI.solanaPN, {
             jsonrpc: "2.0",
             id: 1,
             method: "getTokenAccountsByOwner",
@@ -665,7 +674,7 @@ const api = {
       identifier: (address: string, data: number): Promise<number> => {
         return new Promise((resolve) => {
           fetch
-            .post<{ result: string }>("https://ethereum.publicnode.com", {
+            .post<{ result: string }>(externalAPI.ethereumPN, {
               jsonrpc: "2.0",
               method: "eth_call",
               params: [
@@ -686,13 +695,12 @@ const api = {
             .catch(() => resolve(0));
         });
       },
-
       discover: (
         address: string
       ): Promise<{ nfts: NFTProps[]; price: number }> => {
         return new Promise((resolve) => {
           fetch
-            .post<{ result: string }>("https://ethereum.publicnode.com", {
+            .post<{ result: string }>(externalAPI.ethereumPN, {
               jsonrpc: "2.0",
               method: "eth_call",
               params: [
