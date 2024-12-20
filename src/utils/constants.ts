@@ -93,7 +93,6 @@ export enum TickerKey {
   LTC = "LTC",
   MATIC = "MATIC",
   MAYA = "MAYA",
-  RNDR = "RNDR",
   RNDR = "RENDER",
   RUNE = "RUNE",
   SOL = "SOL",
