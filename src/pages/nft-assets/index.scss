@@ -29,26 +29,61 @@
   .nft {
     align-items: center;
     display: flex;
-    flex-grow: 1;
-    font-weight: 700;
     gap: rem(16);
-    padding: rem(16) 0;
+    padding: rem(16) 0 rem(48);
     position: relative;
 
     .token-image {
       height: rem(48);
+      left: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       width: rem(48);
     }
 
     .name {
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(20);
+      height: rem(20);
+      line-height: rem(18);
+    }
+
+    .counted {
+      background-color: rgba($color: $cyan-base, $alpha: 0.2);
+      border-radius: rem(12);
+      display: flex;
+      font-size: rem(12);
+      font-weight: 600;
+      float: left;
+      gap: rem(4);
+      line-height: rem(22);
+      margin-top: rem(6);
+      padding: 0 rem(8) 0 rem(4);
+
+      svg {
+        fill: $cyan-base;
+        height: rem(22);
+        width: rem(22);
+      }
+    }
+
+    .token {
       flex-grow: 1;
-      font-weight: 700;
+      overflow: hidden;
+      padding-left: rem(56);
+      position: relative;
     }
 
     .amount {
+      bottom: rem(16);
       font-family: $secondary-font;
       font-size: rem(20);
       font-weight: 700;
+      left: rem(56);
+      line-height: rem(24);
+      position: absolute;
     }
 
     .action {
@@ -85,6 +120,18 @@
       fill: $cyan-base;
       height: rem(32);
       width: rem(32);
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .nft-assets-page {
+    .nft {
+      padding-bottom: rem(16);
+
+      .amount {
+        position: static;
+      }
     }
   }
 }

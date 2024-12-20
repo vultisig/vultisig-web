@@ -16,16 +16,44 @@
 
   .token-image {
     height: rem(48);
+    left: rem(0);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     width: rem(48);
   }
 
-  .type {
-    align-items: center;
+  .name {
+    display: block;
+    font-family: $secondary-font;
+    font-size: rem(20);
+    height: rem(20);
+    line-height: rem(18);
+  }
+
+  .counted {
+    background-color: rgba($color: $cyan-base, $alpha: 0.2);
+    border-radius: rem(12);
     display: flex;
-    font-size: rem(16);
-    font-weight: 700;
-    gap: rem(12);
-    min-width: rem(168);
+    font-size: rem(12);
+    font-weight: 600;
+    float: left;
+    gap: rem(4);
+    line-height: rem(22);
+    margin-top: rem(6);
+    padding: 0 rem(8) 0 rem(4);
+
+    svg {
+      fill: $cyan-base;
+      height: rem(22);
+      width: rem(22);
+    }
+  }
+
+  .token {
+    overflow: hidden;
+    padding-left: rem(56);
+    position: relative;
   }
 
   .item {

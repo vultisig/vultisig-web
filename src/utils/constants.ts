@@ -37,6 +37,7 @@ export enum ChainKey {
   TERRACLASSIC = "TerraClassic",
   THORCHAIN = "THORChain",
   TON = "TON",
+  XRP = "XRP",
   ZKSYNC = "Zksync",
 }
 
@@ -93,6 +94,7 @@ export enum TickerKey {
   MATIC = "MATIC",
   MAYA = "MAYA",
   RNDR = "RNDR",
+  RNDR = "RENDER",
   RUNE = "RUNE",
   SOL = "SOL",
   SUI = "SUI",
@@ -103,6 +105,7 @@ export enum TickerKey {
   USDT = "USDT",
   VTHOR = "vTHOR",
   WEWE = "WEWE",
+  XRP = "XRP",
 }
 
 export enum Currency {
@@ -199,6 +202,7 @@ export const balanceAPI: ChainStrRef = {
   [ChainKey.THORCHAIN]:
     "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances",
   [ChainKey.TON]: "https://api.vultisig.com/ton/v3/addressInformation",
+  [ChainKey.XRP]: "https://xrplcluster.com",
   [ChainKey.ZKSYNC]: "https://mainnet.era.zksync.io",
 };
 
@@ -228,6 +232,7 @@ export const balanceDenom: ChainStrRef = {
   [ChainKey.TERRACLASSIC]: "uluna",
   [ChainKey.THORCHAIN]: "rune",
   [ChainKey.TON]: "",
+  [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
 };
 
@@ -257,6 +262,7 @@ export const chooseToken: ChainBoolRef = {
   [ChainKey.TERRACLASSIC]: false,
   [ChainKey.THORCHAIN]: false,
   [ChainKey.TON]: false,
+  [ChainKey.XRP]: false,
   [ChainKey.ZKSYNC]: false,
 };
 
@@ -286,6 +292,7 @@ export const exploreNFT: ChainStrRef = {
   [ChainKey.TERRACLASSIC]: "",
   [ChainKey.THORCHAIN]: "",
   [ChainKey.TON]: "",
+  [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
 };
 
@@ -320,6 +327,7 @@ export const exploreToken: ChainStrRef = {
   [ChainKey.TERRACLASSIC]: "https://finder.terra.money/classic/address/",
   [ChainKey.THORCHAIN]: "https://thorchain.net/address/",
   [ChainKey.TON]: "https://tonscan.org/address/",
+  [ChainKey.XRP]: "https://xrpscan.com/account/",
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address/",
 };
 
@@ -688,6 +696,18 @@ export const defTokens: TokenProps[] = [
     isNative: true,
     logo: "",
     ticker: TickerKey.TON,
+  },
+  {
+    chain: ChainKey.XRP,
+    cmcId: 52,
+    contractAddress: "",
+    decimals: 6,
+    hexPublicKey: "ECDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.XRP,
   },
   {
     chain: ChainKey.ZKSYNC,
@@ -1790,7 +1810,7 @@ export const defTokens: TokenProps[] = [
     isDefault: false,
     isLocally: true,
     isNative: false,
-    logo: "",
+    logo: "/coins/kween.png",
     ticker: TickerKey.KWEEN,
   },
   {

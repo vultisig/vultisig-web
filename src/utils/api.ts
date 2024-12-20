@@ -133,10 +133,28 @@ const api = {
     },
   },
   activePositions: {
-    nodeInfo: async () => {
-      return await fetch.get<NodeInfo[]>(
-        `https://thornode.ninerealms.com/thorchain/nodes`
-      );
+    nodeInfo: (address: string): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<NodeInfo[]>(`https://thornode.ninerealms.com/thorchain/nodes`)
+          .then(({ data }) => {
+            const amount = data.reduce((acc, node) => {
+              const nodeSum =
+                node?.bondProviders?.providers?.reduce(
+                  (sum, provider) =>
+                    provider?.bondAddress === address
+                      ? sum + Number(provider.bond)
+                      : sum,
+                  0
+                ) ?? 0;
+
+              return acc + nodeSum;
+            }, 0);
+
+            resolve(amount > 0 ? amount * 1e-8 : amount);
+          })
+          .catch(() => resolve(0));
+      });
     },
     getLiquidityPositions: async (addresses: string) => {
       return await fetch.get<ActivePositions>(
@@ -153,10 +171,18 @@ const api = {
         `https://api-v2-prod.thorwallet.org/stake/${address}`
       );
     },
-    getRuneProvider: async (address: string) => {
-      return await fetch.get<{ value: number }>(
-        `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
-      );
+    getRuneProvider: (address: string): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<{ value: string }>(
+            `https://thornode.ninerealms.com/thorchain/rune_provider/${address}`
+          )
+          .then(({ data }) => {
+            const value = Number(data?.value);
+
+            resolve(isNaN(value) ? 0 : value > 0 ? value * 1e-8 : 0);
+          });
+      });
     },
   },
   balance: {
@@ -360,6 +386,28 @@ const api = {
             } else {
               resolve(0);
             }
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
+    xrp: (path: string, address: string, decimals: number): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .post<{ result: { accountData: { Balance: string } } }>(path, {
+            method: "account_info",
+            params: [
+              { account: address, ledger_index: "current", queue: true },
+            ],
+          })
+          .then(({ data }) => {
+            console.log(data);
+            const balance = parseFloat(
+              data?.result?.accountData?.Balance ?? "0"
+            );
+
+            resolve(balance >= 0 ? balance / Math.pow(10, decimals) : 0);
           })
           .catch(() => {
             resolve(0);
