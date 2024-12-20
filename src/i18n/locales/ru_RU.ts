@@ -64,7 +64,7 @@ export default {
   [translation.JOIN_AIRDROP]: "Присоединиться к airdrop",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "ПРИСОЕДИНИТЬСЯ К AIRDROP",
   [translation.JOIN_THE_AIRDROP_ONBOARDING_EXPLAIN]:
-    "Присоединяйтесь к airdrop и следите за таблицей лидеров на AIDROP.VULTISIG.COM",
+    "Присоединяйтесь к airdrop и следите за таблицей лидеров на AIRDROP.VULTISIG.COM",
   // K
   // L
   [translation.LANGUAGE]: "Язык",

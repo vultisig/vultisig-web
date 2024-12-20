@@ -59,7 +59,7 @@ export default {
   [translation.JOIN_AIRDROP]: "Participar no airdrop",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "PARTICIPE NO AIRDROP",
   [translation.JOIN_THE_AIRDROP_ONBOARDING_EXPLAIN]:
-    "Participe no airdrop e siga a classificação em AIDROP.VULTISIG.COM",
+    "Participe no airdrop e siga a classificação em AIRDROP.VULTISIG.COM",
   // K
   // L
   [translation.LANGUAGE]: "Idioma",
