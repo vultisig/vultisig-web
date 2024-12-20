@@ -215,9 +215,7 @@ const Component: FC = () => {
       if (address) {
         api.activePositions
           .getRuneProvider(address)
-          .then(({ data }) => {
-            const tokenAmount = (Number(data.value) ?? 0) * 1e-8;
-
+          .then((tokenAmount) => {
             runeProvider.push({
               base: {
                 chain: ChainKey.THORCHAIN,
@@ -328,22 +326,8 @@ const Component: FC = () => {
 
       if (address) {
         api.activePositions
-          .nodeInfo()
-          .then(({ data }) => {
-            const tokenAmount =
-              data.reduce((acc, node) => {
-                const nodeSum = node?.bondProviders?.providers?.reduce(
-                  (sum, provider) => {
-                    return provider?.bondAddress === address
-                      ? sum + parseInt(provider.bond)
-                      : sum;
-                  },
-                  0
-                );
-
-                return acc + nodeSum;
-              }, 0) * 1e-8;
-
+          .nodeInfo(address)
+          .then((tokenAmount) => {
             thorBond.push({
               base: {
                 chain: ChainKey.THORCHAIN,
