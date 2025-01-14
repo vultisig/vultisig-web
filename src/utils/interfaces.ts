@@ -222,6 +222,7 @@ export interface VaultProps {
   joinAirdrop: boolean;
   logo: string;
   lpValue: number;
+  nftValue: number;
   name: string;
   positions: {
     mayaBond?: PositionProps[];

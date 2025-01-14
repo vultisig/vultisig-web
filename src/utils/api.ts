@@ -78,6 +78,7 @@ namespace Leaderboard {
     totalVaultCount: number;
     totalBalance: number;
     totalLp: number;
+    totalNft: number
   }
 }
 

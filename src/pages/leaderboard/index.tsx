@@ -54,7 +54,7 @@ const Component: FC = () => {
             ...prevState,
             loaded: true,
             loading: false,
-            balance: data.totalBalance + data.totalLp,
+            balance: data.totalBalance + data.totalLp + data.totalNft,
             data: [...prevState.data, ...data.vaults],
             total: data.totalVaultCount,
           }));
@@ -80,7 +80,7 @@ const Component: FC = () => {
   const vaultBalance = vault
     ? (vault.balance ??
         vault.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0)) +
-      (vault.lpValue ?? 0)
+      (vault.lpValue ?? 0) + (vault.nftValue ?? 0)
     : 0;
 
   return loaded ? (
@@ -144,6 +144,7 @@ const Component: FC = () => {
               avatarUrl,
               balance,
               lpValue,
+              nftValue,
               rank,
               registeredAt,
               totalPoints,
@@ -196,7 +197,7 @@ const Component: FC = () => {
                     <span className="price">{`${(
                       (layout !== LayoutKey.DEFAULT && rank === vault.rank
                         ? vaultBalance 
-                        : balance + lpValue) * baseValue
+                        : balance + lpValue+nftValue) * baseValue
                     ).toValueFormat(currency)}`}</span>
                   </div>
                   {medal && (
