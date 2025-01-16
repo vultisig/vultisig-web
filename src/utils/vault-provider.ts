@@ -1,5 +1,4 @@
 import { initWasm, type WalletCore } from "@trustwallet/wallet-core";
-import { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
 
 import {
   ChainKey,
@@ -12,6 +11,7 @@ import {
   oneInchRef,
 } from "utils/constants";
 import type {
+  ChainCoinRef,
   ChainProps,
   CoinParams,
   CoinProps,
@@ -22,18 +22,14 @@ import { isNewToken } from "utils/functions";
 import { getStoredAddress, setStoredAddress } from "utils/storage";
 import api from "utils/api";
 
-interface ChainRef {
-  [chainKey: string]: CoinType;
-}
-
 export default class VaultProvider {
-  private chainRef?: ChainRef;
+  private chainRef?: ChainCoinRef;
   private walletCore?: WalletCore;
 
   constructor() {}
 
   private getWalletCore = (): Promise<{
-    chainRef: ChainRef;
+    chainRef: ChainCoinRef;
     walletCore: WalletCore;
   }> => {
     return new Promise((resolve, reject) => {
@@ -62,6 +58,7 @@ export default class VaultProvider {
               [ChainKey.LITECOIN]: walletCore.CoinType.litecoin,
               [ChainKey.MAYACHAIN]: walletCore.CoinType.thorchain,
               [ChainKey.OPTIMISM]: walletCore.CoinType.optimism,
+              [ChainKey.OSMOSIS]: walletCore.CoinType.osmosis,
               [ChainKey.POLKADOT]: walletCore.CoinType.polkadot,
               [ChainKey.POLYGON]: walletCore.CoinType.polygon,
               [ChainKey.SOLANA]: walletCore.CoinType.solana,
@@ -463,6 +460,7 @@ export default class VaultProvider {
         case ChainKey.DYDX:
         case ChainKey.GAIACHAIN:
         case ChainKey.KUJIRA:
+        case ChainKey.OSMOSIS:
         case ChainKey.TERRA:
         case ChainKey.TERRACLASSIC:
         case ChainKey.THORCHAIN: {
