@@ -427,6 +427,8 @@ const Component: FC = () => {
             setStoredVaults(modifiedVaults);
           }
         } else {
+          setStoredVaults([]);
+
           navigate(constantPaths.root, { replace: true });
         }
       });

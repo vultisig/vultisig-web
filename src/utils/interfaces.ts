@@ -1,3 +1,5 @@
+import { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
+
 import {
   ChainKey,
   CollectionKey,
@@ -40,6 +42,7 @@ export interface ChainBoolRef {
   [ChainKey.KUJIRA]: boolean;
   [ChainKey.LITECOIN]: boolean;
   [ChainKey.MAYACHAIN]: boolean;
+  [ChainKey.OSMOSIS]: boolean;
   [ChainKey.OPTIMISM]: boolean;
   [ChainKey.POLKADOT]: boolean;
   [ChainKey.POLYGON]: boolean;
@@ -51,6 +54,37 @@ export interface ChainBoolRef {
   [ChainKey.TON]: boolean;
   [ChainKey.XRP]: boolean;
   [ChainKey.ZKSYNC]: boolean;
+}
+
+export interface ChainCoinRef {
+  [ChainKey.ARBITRUM]: CoinType;
+  [ChainKey.AVALANCHE]: CoinType;
+  [ChainKey.BASE]: CoinType;
+  [ChainKey.BITCOIN]: CoinType;
+  [ChainKey.BITCOINCASH]: CoinType;
+  [ChainKey.BLAST]: CoinType;
+  [ChainKey.BSCCHAIN]: CoinType;
+  [ChainKey.CRONOSCHAIN]: CoinType;
+  [ChainKey.DASH]: CoinType;
+  [ChainKey.DOGECOIN]: CoinType;
+  [ChainKey.DYDX]: CoinType;
+  [ChainKey.ETHEREUM]: CoinType;
+  [ChainKey.GAIACHAIN]: CoinType;
+  [ChainKey.KUJIRA]: CoinType;
+  [ChainKey.LITECOIN]: CoinType;
+  [ChainKey.MAYACHAIN]: CoinType;
+  [ChainKey.OPTIMISM]: CoinType;
+  [ChainKey.OSMOSIS]: CoinType;
+  [ChainKey.POLKADOT]: CoinType;
+  [ChainKey.POLYGON]: CoinType;
+  [ChainKey.SOLANA]: CoinType;
+  [ChainKey.SUI]: CoinType;
+  [ChainKey.TERRA]: CoinType;
+  [ChainKey.TERRACLASSIC]: CoinType;
+  [ChainKey.THORCHAIN]: CoinType;
+  [ChainKey.TON]: CoinType;
+  [ChainKey.XRP]: CoinType;
+  [ChainKey.ZKSYNC]: CoinType;
 }
 
 export interface ChainStrRef {
@@ -71,6 +105,7 @@ export interface ChainStrRef {
   [ChainKey.LITECOIN]: string;
   [ChainKey.MAYACHAIN]: string;
   [ChainKey.OPTIMISM]: string;
+  [ChainKey.OSMOSIS]: string;
   [ChainKey.POLKADOT]: string;
   [ChainKey.POLYGON]: string;
   [ChainKey.SOLANA]: string;
