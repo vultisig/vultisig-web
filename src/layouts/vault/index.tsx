@@ -148,6 +148,8 @@ const Component: FC = () => {
                 )
                 .then((balance) => {
                   if (balance) {
+                    newToken.balance = balance;
+
                     vaultProvider
                       .getValues([newToken], Currency.USD)
                       .then(([{ value }]) => {

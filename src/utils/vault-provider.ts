@@ -672,12 +672,12 @@ export default class VaultProvider {
             default:
               coin.value = 0;
 
-              return false;
+              return Promise.resolve();
           }
         } else {
           coin.value = 0;
 
-          return false;
+          return Promise.resolve();
         }
       });
 
