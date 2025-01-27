@@ -5,6 +5,7 @@ import { Button, Empty, Tooltip } from "antd";
 
 import { useBaseContext } from "context";
 import { LayoutKey, PageKey } from "utils/constants";
+import { getAssetsBalance } from "utils/functions";
 import { VaultOutletContext } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
@@ -12,12 +13,11 @@ import constantModals from "modals/constant-modals";
 import { CirclePlus, Info, Synchronize } from "icons";
 import ChainItem from "components/chain-item";
 import ChooseChain from "modals/choose-chain";
-import TotalBalance from "components/total-balance";
 import VaultDropdown from "components/vault-dropdown";
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const { changePage } = useBaseContext();
+  const { changePage, baseValue, currency } = useBaseContext();
   const { updateVault, layout, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidMount = () => {
@@ -40,9 +40,16 @@ const Component: FC = () => {
 
             <div className="breadcrumb">
               <VaultDropdown />
-              <Tooltip title="Refresh">
+              <Tooltip
+                title={
+                  vault.assetsUpdating
+                    ? t(constantKeys.LOADING)
+                    : t(constantKeys.REFRESH)
+                }
+              >
                 <Button
                   type="link"
+                  icon={<Synchronize />}
                   onClick={() =>
                     updateVault({
                       ...vault,
@@ -53,14 +60,18 @@ const Component: FC = () => {
                       isActive: true,
                     })
                   }
-                >
-                  <Synchronize />
-                </Button>
+                  loading={vault.assetsUpdating}
+                />
               </Tooltip>
             </div>
           </>
         )}
-        <TotalBalance />
+        <div className="total-balance">
+          <span className="title">{t(constantKeys.ASSETS_BALANCE)}</span>
+          <span className="value">
+            {(getAssetsBalance(vault) * baseValue).toValueFormat(currency)}
+          </span>
+        </div>
         {vault.chains.length ? (
           vault.chains
             .slice()

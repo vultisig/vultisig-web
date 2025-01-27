@@ -384,6 +384,30 @@ body {
     width: 100%;
     z-index: 2;
 
+    .balance {
+      align-items: center;
+      background-color: $blue-base;
+      border-radius: rem(20);
+      display: flex;
+      float: right;
+      font-size: rem(12);
+      gap: rem(6);
+      height: rem(40);
+      line-height: rem(40);
+      margin-right: rem(16);
+      padding: 0 rem(16);
+
+      .icon {
+        fill: $blue-sharp;
+        height: rem(22);
+        width: rem(22);
+      }
+
+      .value {
+        font-weight: 600;
+      }
+    }
+
     .logo {
       align-items: center;
       display: flex;
@@ -411,7 +435,7 @@ body {
       float: right;
       font-size: rem(12);
       height: rem(32);
-      margin: rem(4) rem(8);
+      margin: rem(4) rem(8) rem(4) 0;
       padding: 0 rem(12);
     }
 
@@ -426,43 +450,50 @@ body {
       }
     }
 
-    .navbar {
-      display: flex;
+    .ant-menu {
+      background-color: transparent;
+      border-bottom: none;
       float: left;
-      gap: rem(32);
+      gap: rem(16);
       margin-left: rem(90);
 
-      a {
-        color: $gray-1;
-        display: block;
-        font-size: rem(14);
-        font-weight: 500;
+      .ant-menu-item-icon {
+        fill: $gray-1;
+        height: rem(16);
+        margin-right: rem(-2);
+        transform: rotate(90deg);
+        width: rem(16);
+      }
+
+      .ant-menu-title-content {
+        margin-left: 0 !important;
+        margin-right: rem(10);
+      }
+
+      .ant-menu-submenu-title {
+        align-items: center;
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      .ant-menu-submenu-selected {
+        .ant-menu-item-icon {
+          fill: $cyan-base;
+        }
+      }
+
+      .ant-menu-item,
+      .ant-menu-submenu {
         line-height: rem(40);
-        padding: 0 rem(4);
-        position: relative;
+        padding: 0;
 
-        &::before {
-          background-image: linear-gradient(
-            102deg,
-            $cyan-base 14%,
-            $blue-sharp 140%
-          );
-          bottom: 0;
-          content: "";
-          height: rem(2);
-          left: 50%;
-          position: absolute;
-          transform: translateX(-50%);
-          transition: width 0.3s;
-          width: 0;
+        &::after {
+          inset-inline: 0;
         }
+      }
 
-        &:hover,
-        &.active {
-          &::before {
-            width: 100%;
-          }
-        }
+      &::before {
+        content: none;
       }
     }
   }
@@ -510,6 +541,27 @@ body {
   }
 
   &-menu {
+    .balance {
+      align-items: center;
+      background-color: $blue-base;
+      display: flex;
+      font-size: rem(12);
+      gap: rem(6);
+      height: rem(40);
+      line-height: rem(40);
+      padding: 0 rem(16);
+
+      .icon {
+        fill: $blue-sharp;
+        height: rem(22);
+        width: rem(22);
+      }
+
+      .value {
+        font-weight: 600;
+      }
+    }
+
     .ant-menu-item-icon {
       fill: $gray-1;
       height: rem(20);
@@ -592,6 +644,24 @@ body {
 
     .ant-drawer-body {
       padding: rem(16) 0;
+    }
+  }
+}
+
+.layout-header-menu {
+  &.ant-menu-submenu {
+    .ant-menu-item-selected {
+      background-color: $blue-light;
+    }
+
+    .ant-menu-item {
+      &:active {
+        background-color: $blue-light !important;
+      }
+    }
+
+    .ant-menu {
+      background-color: $blue-base;
     }
   }
 }
@@ -962,7 +1032,7 @@ html[theme="light"] {
       .airdrop {
         font-size: rem(14);
         height: rem(40);
-        margin: 0 rem(16);
+        margin: 0 rem(16) 0 0;
         padding: 0 rem(24);
       }
 

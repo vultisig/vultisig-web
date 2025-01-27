@@ -1,10 +1,10 @@
-import { FC, useEffect } from "react";
-import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { FC } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Truncate } from "@re-dev/react-truncate";
 
 import { useBaseContext } from "context";
-import { ChainProps, VaultOutletContext } from "utils/interfaces";
+import { ChainProps } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 
 import { ArrowRight, Check } from "icons";
@@ -12,20 +12,16 @@ import TokenActions from "components/token-actions";
 import TokenImage from "components/token-image";
 import VultiLoading from "components/vulti-loading";
 
-interface ComponentProps extends ChainProps {}
-
-const Component: FC<ComponentProps> = (chain) => {
+const Component: FC<ChainProps> = ({
+  address,
+  balance,
+  coins,
+  coinsUpdated,
+  name,
+}) => {
   const { t } = useTranslation();
-  const { address, balance, coins, coinsUpdated, name } = chain;
-  const { pathname } = useLocation();
   const { baseValue, currency } = useBaseContext();
-  const { prepareChain, vault } = useOutletContext<VaultOutletContext>();
-
-  const componentDidUpdate = () => {
-    if (!coinsUpdated) prepareChain(chain, vault);
-  };
-
-  useEffect(componentDidUpdate, [coinsUpdated]);
+  const { pathname } = useLocation();
 
   const coin = coins.find(({ isNative }) => isNative);
 

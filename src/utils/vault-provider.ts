@@ -15,6 +15,7 @@ import type {
   ChainProps,
   CoinParams,
   CoinProps,
+  NFTProps,
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
@@ -721,9 +722,48 @@ export default class VaultProvider {
 
       Promise.all(promises).then(() => {
         this.getValues(chain.coins, currency).then((coins) => {
-          resolve({ ...chain, coins });
+          resolve({
+            balance: coins.reduce(
+              (acc, coin) => acc + coin.balance * coin.value,
+              0
+            ),
+            name: chain.name,
+            coins: coins
+              .slice()
+              .sort((a, b) => b.balance * b.value - a.balance * a.value),
+            coinsUpdated: true,
+          } as ChainProps);
         });
       });
+    });
+  };
+
+  public prepareNFT = (chain: ChainProps): Promise<ChainProps> => {
+    return new Promise((resolve) => {
+      switch (chain.name) {
+        case ChainKey.ETHEREUM: {
+          api.nft.thorguard.discover(chain.address).then(({ nfts, price }) => {
+            resolve({
+              name: chain.name,
+              nfts,
+              nftsBalance: price,
+              nftsUpdated: true,
+            } as ChainProps);
+          });
+
+          break;
+        }
+        default: {
+          resolve({
+            name: chain.name,
+            nfts: [] as NFTProps[],
+            nftsBalance: 0,
+            nftsUpdated: true,
+          } as ChainProps);
+
+          break;
+        }
+      }
     });
   };
 
