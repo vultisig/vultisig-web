@@ -6,6 +6,11 @@ import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
 import { LayoutKey, PageKey } from "utils/constants";
+import {
+  getAssetsBalance,
+  getNFTsBalance,
+  getPositionsBalance,
+} from "utils/functions";
 import { VaultOutletContext, VaultProps } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 import api from "utils/api";
@@ -45,10 +50,7 @@ const Component: FC = () => {
       const from = data.length ? data[data.length - 1].rank : 0;
 
       api
-        .leaderboard({
-          from,
-          limit: pageSize,
-        })
+        .leaderboard({ from, limit: pageSize })
         .then(({ data }) => {
           setState((prevState) => ({
             ...prevState,
@@ -78,9 +80,14 @@ const Component: FC = () => {
   useEffect(componentDidMount, []);
 
   const vaultBalance = vault
-    ? (vault.balance ??
-        vault.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0)) +
-      (vault.lpValue ?? 0) + (vault.nftValue ?? 0)
+    ? (getAssetsBalance(vault) +
+        getNFTsBalance(vault) +
+        getPositionsBalance(vault)) *
+      baseValue
+    : 0;
+
+  const lastCycleBalance = vault
+    ? (vault.balance + vault.nftValue + vault.lpValue) * baseValue
     : 0;
 
   return loaded ? (
@@ -194,10 +201,10 @@ const Component: FC = () => {
                     <span className="date">
                       {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                     </span>
-                    <span className="price">{`${(
-                      (layout !== LayoutKey.DEFAULT && rank === vault.rank
-                        ? vaultBalance 
-                        : balance + lpValue+nftValue) * baseValue
+                    <span className="price">{`${(layout !== LayoutKey.DEFAULT &&
+                    rank === vault.rank
+                      ? lastCycleBalance || vaultBalance
+                      : (balance + lpValue + nftValue) * baseValue
                     ).toValueFormat(currency)}`}</span>
                   </div>
                   {medal && (
@@ -253,7 +260,7 @@ const Component: FC = () => {
                   {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                 </span>
                 <span className="price">{`${(
-                  vaultBalance * baseValue
+                  lastCycleBalance || vaultBalance
                 ).toValueFormat(currency)}`}</span>
               </div>
             </div>

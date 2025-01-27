@@ -75,10 +75,10 @@ namespace Leaderboard {
 
   export interface Props {
     vaults: VaultProps[];
-    totalVaultCount: number;
     totalBalance: number;
     totalLp: number;
-    totalNft: number
+    totalNft: number;
+    totalVaultCount: number;
   }
 }
 
@@ -412,7 +412,6 @@ const api = {
             ],
           })
           .then(({ data }) => {
-            console.log(data);
             const balance = parseFloat(
               data?.result?.accountData?.Balance || "0"
             );
@@ -652,12 +651,6 @@ const api = {
 
             if (chain) {
               api.coin.value(chain.cmcId, Currency.USD).then((chainPrice) => {
-                console.log(
-                  (parseInt(data.minPrice.value) /
-                    Math.pow(10, data.minPrice.decimals)) *
-                    chainPrice
-                );
-
                 resolve(
                   (parseInt(data.minPrice.value) /
                     Math.pow(10, data.minPrice.decimals)) *
@@ -768,17 +761,13 @@ const api = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    get: (vault: VaultProps): Promise<VaultProps | undefined> => {
-      return new Promise((resolve) => {
-        fetch
-          .get<VaultProps>(
-            `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`
-          )
-          .then(({ data }) => {
-            resolve({ ...vault, ...data });
-          })
-          .catch(() => resolve(undefined));
-      });
+    get: (vault: VaultProps) => {
+      return fetch
+        .get<VaultProps>(
+          `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`
+        )
+        .then(({ data }) => ({ ...vault, ...data }))
+        .catch(() => undefined);
     },
     getById: async (id: string) => {
       return await fetch.get<VaultProps>(`vault/shared/${id}`);

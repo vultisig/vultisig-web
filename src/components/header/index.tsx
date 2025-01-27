@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
@@ -11,9 +11,17 @@ import {
   MenuProps,
   message,
 } from "antd";
+import { ArrowRight } from "icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
+import {
+  getAssetsBalance,
+  getNFTsBalance,
+  getPositionsBalance,
+} from "utils/functions";
+import { VaultProps } from "utils/interfaces";
+import { getStoredVaults } from "utils/storage";
 import api from "utils/api";
 import useGoBack from "hooks/go-back";
 import i18n from "i18n/config";
@@ -29,12 +37,11 @@ import {
   ExternalLink,
   Globe,
   HamburgerLG,
-  Settings,
-  Vultisig,
   RadioWave,
+  Settings,
+  Storage,
+  Vultisig,
 } from "icons";
-import { getStoredVaults } from "utils/storage";
-import { VaultProps } from "utils/interfaces";
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -52,7 +59,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { loading, visible } = state;
-  const { activePage, currency } = useBaseContext();
+  const { activePage, baseValue, currency } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
@@ -123,6 +130,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   useEffect(componentDidUpdate, [hash]);
 
   let language: Language;
+  let selectedKey: string;
 
   switch (i18n.language) {
     case Language.CROATIA:
@@ -151,103 +159,42 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       break;
   }
 
-  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
+  switch (activePage) {
+    case PageKey.SHARED_CHAINS:
+    case PageKey.SHARED_CHAIN_ASSETS:
+    case PageKey.VAULT_CHAINS:
+    case PageKey.VAULT_CHAIN_ASSETS:
+      selectedKey = "1-1";
+      break;
+    case PageKey.SHARED_NFTS:
+    case PageKey.SHARED_NFT_ASSETS:
+    case PageKey.VAULT_NFTS:
+    case PageKey.VAULT_NFT_ASSETS:
+      selectedKey = "1-2";
+      break;
+    case PageKey.SHARED_POSITIONS:
+    case PageKey.VAULT_POSITIONS:
+      selectedKey = "1-3";
+      break;
+    case PageKey.LEADERBOARD:
+    case PageKey.SHARED_LEADERBOARD:
+    case PageKey.VAULT_LEADERBOARD:
+      selectedKey = "2";
+      break;
+    case PageKey.ONBOARDING:
+      selectedKey = "3";
+      break;
+    case PageKey.IMPORT:
+    case PageKey.UPLOAD:
+      selectedKey = "4";
+      break;
+    default:
+      selectedKey = "";
+      break;
+  }
 
-  const navbarItems = [
-    ...[
-      ...(vaults.length
-        ? [
-            <Link
-              to={
-                layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.chains)
-                  : constantPaths.vault.chains
-              }
-              className={`${
-                activePage === PageKey.SHARED_CHAINS ||
-                activePage === PageKey.SHARED_CHAIN_ASSETS ||
-                activePage === PageKey.VAULT_CHAINS ||
-                activePage === PageKey.VAULT_CHAIN_ASSETS
-                  ? "active"
-                  : ""
-              }`}
-            >
-              {t(constantKeys.BALANCES)}
-            </Link>,
-            <Link
-              to={
-                layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.nfts)
-                  : constantPaths.vault.nfts
-              }
-              className={`${
-                activePage === PageKey.SHARED_NFTS ||
-                activePage === PageKey.SHARED_NFT_ASSETS ||
-                activePage === PageKey.VAULT_NFTS ||
-                activePage === PageKey.VAULT_NFT_ASSETS
-                  ? "active"
-                  : ""
-              }`}
-            >
-              {t(constantKeys.NFTS)}
-            </Link>,
-            <Link
-              to={
-                layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.positions)
-                  : constantPaths.vault.positions
-              }
-              className={`${
-                activePage === PageKey.SHARED_POSITIONS ||
-                activePage === PageKey.VAULT_POSITIONS
-                  ? "active"
-                  : ""
-              }`}
-            >
-              {t(constantKeys.ACTIVE_POSITIONS)}
-            </Link>,
-          ]
-        : []),
-      <Link
-        to={
-          layout === LayoutKey.SHARED
-            ? handleSharePath(constantPaths.shared.leaderboard)
-            : vaults.length
-            ? constantPaths.vault.leaderboard
-            : constantPaths.default.leaderboard
-        }
-        className={`${
-          activePage === PageKey.LEADERBOARD ||
-          activePage === PageKey.SHARED_LEADERBOARD ||
-          activePage === PageKey.VAULT_LEADERBOARD
-            ? "active"
-            : ""
-        }`}
-      >
-        {t(constantKeys.AIRDROP_LEADERBOARD)}
-      </Link>,
-      ...(!vaults.length
-        ? [
-            <Link
-              to={constantPaths.default.onboarding}
-              className={`${activePage === PageKey.ONBOARDING ? "active" : ""}`}
-            >
-              {t(constantKeys.HOW_TO_PARTICIPATE)}
-            </Link>,
-            <Link
-              to={constantPaths.default.import}
-              className={`${
-                activePage === PageKey.IMPORT || activePage === PageKey.UPLOAD
-                  ? "active"
-                  : ""
-              }`}
-            >
-              {t(constantKeys.CONNECT_YOUR_WALLET)}
-            </Link>,
-          ]
-        : []),
-    ],
-  ];
+  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
+  const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
     ...(layout === LayoutKey.VAULT
@@ -367,10 +314,98 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     },
   ];
 
-  const navbarMenu: MenuProps["items"] = navbarItems.map((item, ind) => ({
-    key: `${ind + 1}`,
-    label: item,
-  }));
+  const _firstItems: MenuProps["items"] = [
+    {
+      key: "1",
+      label: t(constantKeys.BALANCES),
+      icon: <ArrowRight />,
+      type: "submenu",
+      children: [
+        {
+          key: "1-1",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.chains)
+                  : constantPaths.vault.chains
+              }
+            >
+              {t(constantKeys.ASSETS)}
+            </Link>
+          ),
+        },
+        {
+          key: "1-2",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.nfts)
+                  : constantPaths.vault.nfts
+              }
+            >
+              {t(constantKeys.NFTS)}
+            </Link>
+          ),
+        },
+        {
+          key: "1-3",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.positions)
+                  : constantPaths.vault.positions
+              }
+            >
+              {t(constantKeys.POSITIONS)}
+            </Link>
+          ),
+        },
+      ],
+    },
+  ];
+
+  const navbarMenu: MenuProps["items"] = [
+    ...(vaults.length ? _firstItems : []),
+    {
+      key: "2",
+      label: (
+        <Link
+          to={
+            layout === LayoutKey.SHARED
+              ? handleSharePath(constantPaths.shared.leaderboard)
+              : vaults.length
+              ? constantPaths.vault.leaderboard
+              : constantPaths.default.leaderboard
+          }
+        >
+          {t(constantKeys.LEADERBOARD)}
+        </Link>
+      ),
+    },
+    ...(!vaults.length
+      ? [
+          {
+            key: "3",
+            label: (
+              <Link to={constantPaths.default.onboarding}>
+                {t(constantKeys.HOW_TO_PARTICIPATE)}
+              </Link>
+            ),
+          },
+          {
+            key: "4",
+            label: (
+              <Link to={constantPaths.default.import}>
+                {t(constantKeys.CONNECT_YOUR_WALLET)}
+              </Link>
+            ),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
@@ -427,13 +462,27 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         </Link>
 
         {isDesktop && (
-          <>
-            <div className="navbar">
-              {navbarItems.map((item, index) => (
-                <Fragment key={index}>{item}</Fragment>
-              ))}
-            </div>
-          </>
+          <Menu
+            items={navbarMenu}
+            selectedKeys={selectedKey ? [selectedKey] : []}
+            mode="horizontal"
+            rootClassName="layout-header-menu"
+          />
+        )}
+
+        {isTablet && vault && (
+          <div className="balance">
+            <Storage className="icon" />
+            <span className="text">{`${t(constantKeys.VAULT_BALANCE)}:`}</span>
+            <span className="value">
+              {(
+                (getAssetsBalance(vault) +
+                  getNFTsBalance(vault) +
+                  getPositionsBalance(vault)) *
+                baseValue
+              ).toValueFormat(currency)}
+            </span>
+          </div>
         )}
       </div>
 
@@ -477,7 +526,31 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           placement="left"
           className="layout-menu"
         >
-          <Menu items={navbarMenu} selectedKeys={[]} />
+          {!isTablet && vault && (
+            <>
+              <div className="balance">
+                <Storage className="icon" />
+                <span className="text">{`${t(
+                  constantKeys.VAULT_BALANCE
+                )}:`}</span>
+                <span className="value">
+                  {(
+                    (getAssetsBalance(vault) +
+                      getNFTsBalance(vault) +
+                      getPositionsBalance(vault)) *
+                    baseValue
+                  ).toValueFormat(currency)}
+                </span>
+              </div>
+              <Divider />
+            </>
+          )}
+          <Menu
+            items={navbarMenu.map((item) =>
+              item?.type ? { ...item, type: "group" } : item
+            )}
+            selectedKeys={[]}
+          />
           <Divider />
           <Menu items={dropdownMenu} selectedKeys={[]} />
         </Drawer>

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { Currency, defTokens, LayoutKey } from "utils/constants";
+import { Currency, LayoutKey, defTokens } from "utils/constants";
 import { ChainProps, TokenProps, VaultProps } from "utils/interfaces";
 import {
   getStoredAddresses,
@@ -11,6 +11,8 @@ import {
 } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
+import PositionProvider from "utils/position-provider";
+import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
 import SplashScreen from "components/splash-screen";
@@ -23,7 +25,6 @@ import VaultSettings from "modals/vault-settings";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
-import VaultProvider from "utils/vault-provider";
 
 interface InitialState {
   tokens: TokenProps[];
@@ -66,12 +67,15 @@ const Component: FC = () => {
                           )
                         : vault.chains.map((chain) =>
                             chain.name === token.chain
-                              ? vaultProvider.sortChain({
+                              ? {
                                   ...chain,
-                                  coins: chain.coins.filter(
-                                    ({ ticker }) => token.ticker !== ticker
-                                  ),
-                                })
+                                  ...vaultProvider.sortChain({
+                                    ...chain,
+                                    coins: chain.coins.filter(
+                                      ({ ticker }) => token.ticker !== ticker
+                                    ),
+                                  }),
+                                }
                               : chain
                           ),
                     }
@@ -156,18 +160,21 @@ const Component: FC = () => {
                                   ...item,
                                   chains: item.chains.map((chain) =>
                                     chain.name === selectedChain.name
-                                      ? vaultProvider.sortChain({
+                                      ? {
                                           ...chain,
-                                          coins: chain.coins.map((coin) =>
-                                            coin.ticker === newToken.ticker
-                                              ? {
-                                                  ...coin,
-                                                  balance,
-                                                  value,
-                                                }
-                                              : coin
-                                          ),
-                                        })
+                                          ...vaultProvider.sortChain({
+                                            ...chain,
+                                            coins: chain.coins.map((coin) =>
+                                              coin.ticker === newToken.ticker
+                                                ? {
+                                                    ...coin,
+                                                    balance,
+                                                    value,
+                                                  }
+                                                : coin
+                                            ),
+                                          }),
+                                        }
                                       : chain
                                   ),
                                 }
@@ -235,64 +242,106 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.root, { replace: true });
+        navigate(constantPaths.default.leaderboard, { replace: true });
 
         return { ...prevState };
       }
     });
   };
 
-  const prepareChain = (chain: ChainProps, vault: VaultProps): void => {
-    vaultProvider.prepareChain(chain, Currency.USD).then((chain) => {
-      setState((prevState) => {
-        const vaults = prevState.vaults.map((item) =>
-          vaultProvider.compareVault(item, vault)
-            ? {
-                ...item,
-                chains: item.chains.map((item) =>
-                  item.name === chain.name
-                    ? vaultProvider.sortChain(chain)
-                    : item
-                ),
-              }
-            : item
+  const prepareVault = (vault: VaultProps) => {
+    const _assets = vault.chains.filter(({ coinsUpdated }) => !coinsUpdated);
+    const _nfts = vault.chains.filter(({ nftsUpdated }) => !nftsUpdated);
+
+    if (_assets.length) {
+      if (!vault.assetsUpdating) {
+        vault.assetsUpdating = true;
+
+        _assets.forEach((item) =>
+          vaultProvider
+            .prepareChain(item, Currency.USD)
+            .then((chain) => updateChain(chain, vault))
         );
+      }
+    } else if (vault.assetsUpdating) {
+      vault.assetsUpdating = false;
+    }
 
-        setStoredVaults(vaults);
+    if (_nfts.length) {
+      if (!vault.nftsUpdating) {
+        vault.nftsUpdating = true;
 
-        return {
-          ...prevState,
-          vault: vaults.find(({ isActive }) => isActive),
-          vaults,
-        };
-      });
-    });
+        _nfts.forEach((item) =>
+          vaultProvider
+            .prepareNFT(item)
+            .then((chain) => updateChain(chain, vault))
+        );
+      }
+    } else if (vault.nftsUpdating) {
+      vault.nftsUpdating = false;
+    }
+
+    if (!vault.positionsUpdating) {
+      if (!vault.positions.updated) {
+        const positionProvider = new PositionProvider(vault);
+
+        vault.positionsUpdating = true;
+
+        positionProvider.getPrerequisites().then(() => {
+          Promise.all([
+            positionProvider.getLiquidityPositions().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getMayaBond().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getRuneProvider().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getSaverPositions().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getThorBond().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getTGTStake().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+            positionProvider.getWewePositions().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
+          ]).then(() => {
+            updatePositions({ ...vault, positions: { updated: true } });
+          });
+        });
+      }
+    } else if (vault.positions.updated) {
+      vault.positionsUpdating = false;
+    }
+
+    updateVault(vault);
   };
 
-  const prepareNFT = (chain: ChainProps, vault: VaultProps): void => {
-    api.nft.thorguard.discover(chain.address).then(({ nfts, price }) => {
-      setState((prevState) => {
-        const vaults = prevState.vaults.map((item) =>
-          vaultProvider.compareVault(item, vault)
-            ? {
-                ...item,
-                chains: item.chains.map((item) =>
-                  item.name === chain.name
-                    ? { ...item, nfts, nftsBalance: price, nftsUpdated: true }
-                    : item
-                ),
-              }
-            : item
-        );
+  const updateChain = (chain: ChainProps, vault: VaultProps): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? {
+              ...item,
+              chains: item.chains.map((item) =>
+                item.name === chain.name ? { ...item, ...chain } : item
+              ),
+            }
+          : item
+      );
 
-        setStoredVaults(vaults);
+      setStoredVaults(vaults);
 
-        return {
-          ...prevState,
-          vault: vaults.find(({ isActive }) => isActive),
-          vaults,
-        };
-      });
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
     });
   };
 
@@ -336,6 +385,10 @@ const Component: FC = () => {
         vaults,
       };
     });
+  };
+
+  const componentDidUpdate = (): void => {
+    if (vault) prepareVault(vault);
   };
 
   const componentDidMount = (): void => {
@@ -429,15 +482,16 @@ const Component: FC = () => {
         } else {
           setStoredVaults([]);
 
-          navigate(constantPaths.root, { replace: true });
+          navigate(constantPaths.default.leaderboard, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.root, { replace: true });
+      navigate(constantPaths.default.leaderboard, { replace: true });
     }
   };
 
   useEffect(componentDidMount, []);
+  useEffect(componentDidUpdate, [vault]);
 
   return vault ? (
     <>
@@ -451,10 +505,7 @@ const Component: FC = () => {
           context={{
             deleteVault,
             getTokens,
-            prepareChain,
-            prepareNFT,
             toggleToken,
-            updatePositions,
             updateVault,
             layout: LayoutKey.VAULT,
             tokens,
