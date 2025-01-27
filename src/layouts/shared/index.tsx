@@ -8,6 +8,7 @@ import { ChainProps, VaultProps } from "utils/interfaces";
 import api from "utils/api";
 import constantKeys from "i18n/constant-keys";
 import constantPaths from "routes/constant-paths";
+import PositionProvider from "utils/position-provider";
 import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
@@ -34,61 +35,93 @@ const Component: FC = () => {
   const vaultProvider = new VaultProvider();
   const navigate = useNavigate();
 
-  const prepareChain = (chain: ChainProps): void => {
-    vaultProvider.prepareChain(chain, Currency.USD).then((chain) => {
-      setState((prevState) =>
-        prevState.vault
-          ? {
-              ...prevState,
-              vault: {
-                ...prevState.vault,
-                chains: prevState.vault.chains.map((item) =>
-                  item.name === chain.name
-                    ? vaultProvider.sortChain(chain)
-                    : item
-                ),
-              },
-            }
-          : prevState
-      );
-    });
+  const prepareVault = (vault: VaultProps) => {
+    const _assets = vault.chains.filter(({ coinsUpdated }) => !coinsUpdated);
+    const _nfts = vault.chains.filter(({ nftsUpdated }) => !nftsUpdated);
+
+    if (_assets.length) {
+      if (!vault.assetsUpdating) {
+        vault.assetsUpdating = true;
+
+        _assets.forEach((item) =>
+          vaultProvider.prepareChain(item, Currency.USD).then(updateChain)
+        );
+      }
+    } else if (vault.assetsUpdating) {
+      vault.assetsUpdating = false;
+    }
+
+    if (_nfts.length) {
+      if (!vault.nftsUpdating) {
+        vault.nftsUpdating = true;
+
+        _nfts.forEach((item) =>
+          vaultProvider.prepareNFT(item).then(updateChain)
+        );
+      }
+    } else if (vault.nftsUpdating) {
+      vault.nftsUpdating = false;
+    }
+
+    if (!vault.positionsUpdating) {
+      if (!vault.positions.updated) {
+        const positionProvider = new PositionProvider(vault);
+
+        vault.positionsUpdating = true;
+
+        positionProvider.getPrerequisites().then(() => {
+          Promise.all([
+            positionProvider.getLiquidityPositions().then(updatePositions),
+            positionProvider.getMayaBond().then(updatePositions),
+            positionProvider.getRuneProvider().then(updatePositions),
+            positionProvider.getSaverPositions().then(updatePositions),
+            positionProvider.getThorBond().then(updatePositions),
+            positionProvider.getTGTStake().then(updatePositions),
+            positionProvider.getWewePositions().then(updatePositions),
+          ]).then(() => {
+            vault.positions = { updated: true };
+          });
+        });
+      }
+    } else if (vault.positions.updated) {
+      vault.positionsUpdating = false;
+    }
+
+    updateVault(vault);
   };
 
-  const prepareNFT = (chain: ChainProps): void => {
-    api.nft.thorguard.discover(chain.address).then(({ nfts, price }) => {
-      setState((prevState) =>
-        prevState.vault
-          ? {
-              ...prevState,
-              vault: {
-                ...prevState.vault,
-                chains: prevState.vault.chains.map((item) =>
-                  item.name === chain.name
-                    ? { ...item, nfts, nftsBalance: price, nftsUpdated: true }
-                    : item
-                ),
-              },
-            }
-          : prevState
-      );
-    });
+  const updateChain = (chain: ChainProps): void => {
+    setState((prevState) =>
+      prevState.vault
+        ? {
+            ...prevState,
+            vault: {
+              ...prevState.vault,
+              chains: prevState.vault.chains.map((item) =>
+                item.name === chain.name ? { ...item, ...chain } : item
+              ),
+            },
+          }
+        : prevState
+    );
+  };
+
+  const updatePositions = (positions: VaultProps["positions"]): void => {
+    setState((prevState) =>
+      prevState.vault
+        ? {
+            ...prevState,
+            vault: {
+              ...prevState.vault,
+              positions: { ...prevState.vault.positions, ...positions },
+            },
+          }
+        : prevState
+    );
   };
 
   const updateVault = (vault: VaultProps): void => {
     setState((prevState) => ({ ...prevState, vault }));
-  };
-
-  const updatePositions = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const modifiedVault = prevState.vault
-        ? {
-            ...prevState.vault,
-            positions: { ...prevState.vault.positions, ...vault.positions },
-          }
-        : vault;
-
-      return { ...prevState, vault: modifiedVault };
-    });
   };
 
   const componentDidMount = (): void => {
@@ -99,16 +132,13 @@ const Component: FC = () => {
           api.sharedSettings.get(uid).then(({ data: { logo, theme } }) => {
             changeTheme(theme);
 
-            setState((prevState) => ({
-              ...prevState,
-              vault: {
-                ...data,
-                chains: data.chains.map((chain) => ({ ...chain, nfts: [] })),
-                logo,
-                positions: {},
-                theme,
-              },
-            }));
+            prepareVault({
+              ...data,
+              chains: data.chains.map((chain) => ({ ...chain, nfts: [] })),
+              logo,
+              positions: {},
+              theme,
+            });
 
             if (!alias) {
               navigate(
@@ -150,10 +180,7 @@ const Component: FC = () => {
           context={{
             layout: LayoutKey.SHARED,
             vault,
-            prepareChain,
-            prepareNFT,
             updateVault,
-            updatePositions,
           }}
         />
         <div className="layout-footer">

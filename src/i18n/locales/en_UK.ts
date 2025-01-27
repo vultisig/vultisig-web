@@ -14,6 +14,8 @@ export default {
     "Your Airdrop Share is based on the amount of assets in Vultisig multiplied by time in Vaults.",
   [translation.ASSENT_COUNT_MANAGE]:
     "The assets counted for the airdrop can be",
+  [translation.ASSETS]: "Assets",
+  [translation.ASSETS_BALANCE]: "Assets Balance",
   // B
   [translation.BALANCES]: "Balances",
   [translation.BECOME_VULTISIG_USER]:
@@ -68,6 +70,7 @@ export default {
   // K
   // L
   [translation.LANGUAGE]: "Language",
+  [translation.LEADERBOARD]: "Leaderboard",
   [translation.LIQUIDITY_POSITION_TITLE]: "Liquidity Position",
   [translation.LINK_SEE_HERE]: "seen here.",
   [translation.LOADING]: "Loading",
@@ -82,6 +85,7 @@ export default {
   [translation.MAYA]: "Maya",
   // N
   [translation.NFTS]: "NFTs",
+  [translation.NFTS_BALANCE]: "NFTs Balance",
   [translation.NO_BOND_FOUND]: "No Bond Found",
   [translation.NOT_COLLECTED]: "No other information is collected.",
   [translation.NO_LIQUIDITY_POSITION]: "No Liquidity Position Found",
@@ -91,8 +95,10 @@ export default {
   // O
   [translation.OTHER]: "Other",
   // P
-  [translation.POWERED_BY]: "Powered by",
+  [translation.POSITIONS]: "Positions",
+  [translation.POSITIONS_BALANCE]: "Positions Balance",
   [translation.POSITIONS_TITLE]: "Positions",
+  [translation.POWERED_BY]: "Powered by",
   [translation.PRIVACY]: "Read the Founder Pledge on Privacy here.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "How do I register for the airdrop?",
@@ -113,6 +119,7 @@ export default {
   [translation.REMOVE_VAULT_TITLE]: "Remove Vault",
   [translation.REMOVE]: "Remove",
   [translation.RENAME_VAULT]: "Rename vault",
+  [translation.REFRESH]: "Refresh",
   [translation.RENAME]: "Rename",
   [translation.REPEAT_REGISTRATION]:
     "You can register as many times as you like.",
@@ -167,6 +174,7 @@ export default {
   [translation.VULTICONNECT]: "VultiConnect",
   [translation.VAULT_AIRDROP_JOINED]:
     "Your Vault {0} has joined the Vultisig Airdrop. You will now begin to accumulate VULTIES on a daily basis. Check back tomorrow to see your first VULTIES on the Leaderboard and check out your competitors.",
+  [translation.VAULT_BALANCE]: "Vault Balance",
   [translation.VAULT_SETTINGS]: "Vault Settings",
   [translation.VULT_TOKEN]: "The $VULT Token",
   [translation.VULTISIG]: "Vultisig",

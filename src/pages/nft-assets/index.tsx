@@ -27,7 +27,8 @@ const Component: FC = () => {
   );
 
   const componentDidUpdate = () => {
-    if (chain && !chain.nftsUpdated) prepareNFT(chain, vault);
+    if (layout === LayoutKey.SHARED && chain && !chain.nftsUpdated)
+      prepareNFT(chain, vault);
   };
 
   const componentDidMount = () => {

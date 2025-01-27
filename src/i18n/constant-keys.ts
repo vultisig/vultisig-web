@@ -10,6 +10,8 @@ export default keyMirror({
   AIRDROP_NOT_STARTED: true,
   AIRDROP_SHARE_CALCULATION: true,
   ASSENT_COUNT_MANAGE: true,
+  ASSETS: true,
+  ASSETS_BALANCE: true,
   // B
   BALANCES: true,
   BECOME_VULTISIG_USER: true,
@@ -57,6 +59,7 @@ export default keyMirror({
   // K
   // L
   LANGUAGE: true,
+  LEADERBOARD: true,
   LINK_SEE_HERE: true,
   LIQUIDITY_POSITION_TITLE: true,
   LOADING: true,
@@ -71,6 +74,7 @@ export default keyMirror({
   MAYA: true,
   // N
   NFTS: true,
+  NFTS_BALANCE: true,
   NO_BOND_FOUND: true,
   NOT_COLLECTED: true,
   NO_LIQUIDITY_POSITION: true,
@@ -80,8 +84,10 @@ export default keyMirror({
   // O
   OTHER: true,
   // P
-  POWERED_BY: true,
+  POSITIONS: true,
+  POSITIONS_BALANCE: true,
   POSITIONS_TITLE: true,
+  POWERED_BY: true,
   PRIVACY: true,
   // Q
   QUESTION_FIRST_ONBOARDING: true,
@@ -94,6 +100,7 @@ export default keyMirror({
   REGISTER_PUBLIC_KEYS_VAULTS: true,
   REGISTER_UNLIMITED_VAULTS: true,
   REGISTEREDـVAULTS_AIRDROP: true,
+  REFRESH: true,
   REMOVE_VAULT: true,
   REMOVE_VAULT_TITLE: true,
   REMOVE: true,
@@ -142,6 +149,7 @@ export default keyMirror({
   UPLOAD_VAULT_QR: true,
   // V
   VAULT_AIRDROP_JOINED: true,
+  VAULT_BALANCE: true,
   VAULT_SETTINGS: true,
   VULTICONNECT: true,
   VULTISIG: true,

@@ -249,6 +249,7 @@ export interface TokenProps {
 
 export interface VaultProps {
   alias: string;
+  assetsUpdating?: boolean;
   avatarUrl: string;
   balance: number;
   chains: ChainProps[];
@@ -257,8 +258,9 @@ export interface VaultProps {
   joinAirdrop: boolean;
   logo: string;
   lpValue: number;
-  nftValue: number;
   name: string;
+  nftValue: number;
+  nftsUpdating?: boolean;
   positions: {
     mayaBond?: PositionProps[];
     mayaLiquidity?: PositionProps[];
@@ -270,6 +272,7 @@ export interface VaultProps {
     wewePositions?: PositionProps[];
     updated?: boolean;
   };
+  positionsUpdating?: boolean;
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   rank: number;

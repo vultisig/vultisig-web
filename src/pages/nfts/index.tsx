@@ -5,6 +5,7 @@ import { Button, Empty, Tooltip } from "antd";
 
 import { useBaseContext } from "context";
 import { ChainKey, LayoutKey, PageKey } from "utils/constants";
+import { getNFTsBalance } from "utils/functions";
 import { VaultOutletContext } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 
@@ -41,9 +42,16 @@ const Component: FC = () => {
 
             <div className="breadcrumb">
               <VaultDropdown />
-              <Tooltip title="Refresh">
+              <Tooltip
+                title={
+                  vault.nftsUpdating
+                    ? t(constantKeys.LOADING)
+                    : t(constantKeys.REFRESH)
+                }
+              >
                 <Button
                   type="link"
+                  icon={<Synchronize />}
                   onClick={() =>
                     updateVault({
                       ...vault,
@@ -54,23 +62,16 @@ const Component: FC = () => {
                       isActive: true,
                     })
                   }
-                >
-                  <Synchronize />
-                </Button>
+                  loading={vault.nftsUpdating}
+                />
               </Tooltip>
             </div>
           </>
         )}
         <div className="total-balance">
-          <span className="title">{t(constantKeys.TOTAL_BALANCE)}</span>
+          <span className="title">{t(constantKeys.NFTS_BALANCE)}</span>
           <span className="value">
-            {(
-              vault.chains.reduce(
-                (acc, chain) =>
-                  acc + (chain.nftsBalance ?? 0) * chain.nfts.length,
-                0
-              ) * baseValue
-            ).toValueFormat(currency)}
+            {(getNFTsBalance(vault) * baseValue).toValueFormat(currency)}
           </span>
         </div>
         {filteredChains.length ? (

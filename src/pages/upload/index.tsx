@@ -35,42 +35,51 @@ const Component: FC = () => {
     if (!loading && vault && status === "success") {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      api.vault.add(vault).then((newVault) => {
-        if (newVault) {
-          const vaults = getStoredVaults();
+      api.vault
+        .add(vault)
+        .then((newVault) => {
+          if (newVault) {
+            const vaults = getStoredVaults();
 
-          const index = vaults.findIndex(
-            (old) =>
-              old.publicKeyEcdsa === vault.publicKeyEcdsa &&
-              old.publicKeyEddsa === vault.publicKeyEddsa
-          );
-
-          if (index >= 0) {
-            setStoredVaults(
-              vaults.map((vault, ind) => ({
-                ...vault,
-                isActive: ind === index,
-              }))
+            const index = vaults.findIndex(
+              (old) =>
+                old.publicKeyEcdsa === vault.publicKeyEcdsa &&
+                old.publicKeyEddsa === vault.publicKeyEddsa
             );
-          } else {
-            setStoredVaults([
-              { ...vault, isActive: true },
-              ...vaults.map((vault) => ({
-                ...vault,
-                isActive: false,
-              })),
-            ]);
-          }
 
-          navigate(constantPaths.vault.chains);
-        } else {
+            if (index >= 0) {
+              setStoredVaults(
+                vaults.map((vault, ind) => ({
+                  ...vault,
+                  isActive: ind === index,
+                }))
+              );
+            } else {
+              setStoredVaults([
+                { ...vault, isActive: true },
+                ...vaults.map((vault) => ({
+                  ...vault,
+                  isActive: false,
+                })),
+              ]);
+            }
+
+            navigate(constantPaths.vault.chains);
+          } else {
+            setState((prevState) => ({
+              ...prevState,
+              loading: false,
+              status: "error",
+            }));
+          }
+        })
+        .catch(() => {
           setState((prevState) => ({
             ...prevState,
             loading: false,
             status: "error",
           }));
-        }
-      });
+        });
     }
   };
 
