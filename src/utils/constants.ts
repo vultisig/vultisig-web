@@ -203,7 +203,7 @@ export const balanceAPI: ChainStrRef = {
     "https://terra-classic-lcd.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.THORCHAIN]:
     "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances",
-  [ChainKey.TON]: "https://api.vultisig.com/ton/",
+  [ChainKey.TON]: "https://api.vultisig.com/ton//v3/addressInformation",
   [ChainKey.XRP]: "https://api.vultisig.com/ripple/",
   [ChainKey.ZKSYNC]: "https://api.vultisig.com/zksync/",
 };
