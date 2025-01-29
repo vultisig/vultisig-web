@@ -165,15 +165,15 @@ export const errorKey = keyMirror({
 });
 
 export const balanceAPI: ChainStrRef = {
-  [ChainKey.ARBITRUM]: "https://arbitrum-one-rpc.publicnode.com",
-  [ChainKey.AVALANCHE]: "https://avalanche-c-chain-rpc.publicnode.com",
-  [ChainKey.BASE]: "https://base-rpc.publicnode.com",
+  [ChainKey.ARBITRUM]: "https://api.vultisig.com/arb/",
+  [ChainKey.AVALANCHE]: "https://api.vultisig.com/avax/",
+  [ChainKey.BASE]: "https://api.vultisig.com/base/",
   [ChainKey.BITCOIN]:
     "https://api.vultisig.com/blockchair/bitcoin/dashboards/address",
   [ChainKey.BITCOINCASH]:
     "https://api.vultisig.com/blockchair/bitcoin-cash/dashboards/address",
-  [ChainKey.BLAST]: "https://rpc.ankr.com/blast",
-  [ChainKey.BSCCHAIN]: "https://bsc-rpc.publicnode.com",
+  [ChainKey.BLAST]: "https://api.vultisig.com/blast/",
+  [ChainKey.BSCCHAIN]: "https://api.vultisig.com/bnb/",
   [ChainKey.CRONOSCHAIN]: "https://cronos-evm-rpc.publicnode.com",
   [ChainKey.DASH]:
     "https://api.vultisig.com/blockchair/dash/dashboards/address",
@@ -181,7 +181,7 @@ export const balanceAPI: ChainStrRef = {
     "https://api.vultisig.com/blockchair/dogecoin/dashboards/address",
   [ChainKey.DYDX]:
     "https://dydx-rest.publicnode.com/cosmos/bank/v1beta1/balances",
-  [ChainKey.ETHEREUM]: "https://ethereum-rpc.publicnode.com",
+  [ChainKey.ETHEREUM]: "https://api.vultisig.com/eth/",
   [ChainKey.GAIACHAIN]:
     "https://cosmos-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.KUJIRA]:
@@ -190,12 +190,12 @@ export const balanceAPI: ChainStrRef = {
     "https://api.vultisig.com/blockchair/litecoin/dashboards/address",
   [ChainKey.MAYACHAIN]:
     "https://mayanode.mayachain.info/cosmos/bank/v1beta1/balances",
-  [ChainKey.OPTIMISM]: "https://optimism-rpc.publicnode.com",
+  [ChainKey.OPTIMISM]: "https://api.vultisig.com/opt/",
   [ChainKey.OSMOSIS]:
     "https://osmosis-rest.publicnode.com/cosmos/bank/v1beta1/balances/",
   [ChainKey.POLKADOT]: "https://polkadot.api.subscan.io/api/v2/scan/search",
-  [ChainKey.POLYGON]: "https://polygon-bor-rpc.publicnode.com",
-  [ChainKey.SOLANA]: "https://solana-rpc.publicnode.com",
+  [ChainKey.POLYGON]: "https://api.vultisig.com/polygon/",
+  [ChainKey.SOLANA]: "https://api.vultisig.com/solana/",
   [ChainKey.SUI]: "https://sui-rpc.publicnode.com",
   [ChainKey.TERRA]:
     "https://terra-lcd.publicnode.com/cosmos/bank/v1beta1/balances",
@@ -203,9 +203,9 @@ export const balanceAPI: ChainStrRef = {
     "https://terra-classic-lcd.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.THORCHAIN]:
     "https://thornode.ninerealms.com/cosmos/bank/v1beta1/balances",
-  [ChainKey.TON]: "https://api.vultisig.com/ton/v3/addressInformation",
-  [ChainKey.XRP]: "https://xrplcluster.com",
-  [ChainKey.ZKSYNC]: "https://mainnet.era.zksync.io",
+  [ChainKey.TON]: "https://api.vultisig.com/ton/",
+  [ChainKey.XRP]: "https://api.vultisig.com/ripple/",
+  [ChainKey.ZKSYNC]: "https://api.vultisig.com/zksync/",
 };
 
 export const balanceDenom: ChainStrRef = {
