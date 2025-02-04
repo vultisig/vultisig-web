@@ -79,7 +79,7 @@ export default class PositionProvider {
     return (
       defTokens.find(
         (token) => token.chain === chain && token.ticker === ticker
-      )?.cmcId ?? 0
+      )?.cmcId || 0
     );
   };
 
@@ -99,8 +99,8 @@ export default class PositionProvider {
         .then(({ data }) => {
           data.maya.forEach((item) => {
             const chain = this.getChain(item.pool);
-            const assetAdded = Number(item.assetAdded) ?? 0;
-            const runeAdded = Number(item.runeAdded) ?? 0;
+            const assetAdded = Number(item.assetAdded) || 0;
+            const runeAdded = Number(item.runeAdded) || 0;
 
             if (chain) {
               mayaLiquidity.push({
@@ -128,8 +128,8 @@ export default class PositionProvider {
 
           data.thorchain.forEach((item) => {
             const chain = this.getChain(item.pool);
-            const assetAdded = Number(item.assetAdded) ?? 0;
-            const runeAdded = Number(item.runeAdded) ?? 0;
+            const assetAdded = Number(item.assetAdded) || 0;
+            const runeAdded = Number(item.runeAdded) || 0;
 
             if (chain) {
               thorLiquidity.push({
@@ -198,7 +198,7 @@ export default class PositionProvider {
             runeProvider.push({
               base: {
                 chain: ChainKey.THORCHAIN,
-                price: (this.runePrice ?? 0) * tokenAmount,
+                price: (this.runePrice || 0) * tokenAmount,
                 tiker: TickerKey.RUNE,
                 tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
                 tokenAmount: tokenAmount.toBalanceFormat(),
@@ -246,12 +246,12 @@ export default class PositionProvider {
 
                   if (chain) {
                     const cmcId = this.getCMC(chain.name, chain.ticker);
-                    const tokenAmount = (Number(item.assetRedeem) ?? 0) * 1e-8;
+                    const tokenAmount = (Number(item.assetRedeem) || 0) * 1e-8;
 
                     saverPosition.push({
                       base: {
                         chain: chain.name,
-                        price: (values[cmcId] ?? 0) * tokenAmount,
+                        price: (values[cmcId] || 0) * tokenAmount,
                         tiker: chain.ticker,
                         tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                           item.assetAddress
@@ -289,7 +289,7 @@ export default class PositionProvider {
             thorBond.push({
               base: {
                 chain: ChainKey.THORCHAIN,
-                price: (this.runePrice ?? 0) * tokenAmount,
+                price: (this.runePrice || 0) * tokenAmount,
                 tiker: TickerKey.RUNE,
                 tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
                 tokenAmount: tokenAmount.toBalanceFormat(),
@@ -320,11 +320,11 @@ export default class PositionProvider {
               base: {
                 chain: ChainKey.ARBITRUM,
                 price:
-                  (this.tgtPrice ?? 0) * data.stakedAmount +
-                  data.reward * (this.usdtPrice ?? 0),
+                  (this.tgtPrice || 0) * data.stakedAmount +
+                  data.reward * (this.usdtPrice || 0),
                 tiker: TickerKey.TGT,
                 tokenAddress: `${exploreToken[ChainKey.ARBITRUM]}${address}`,
-                tokenAmount: (Number(data.stakedAmount) ?? 0).toBalanceFormat(),
+                tokenAmount: (Number(data.stakedAmount) || 0).toBalanceFormat(),
                 reward: data.reward,
               },
             });
@@ -348,7 +348,7 @@ export default class PositionProvider {
 
       if (address) {
         this.weweProvider
-          .getPositions(address, this.runePrice ?? 0)
+          .getPositions(address, this.runePrice || 0)
           .then((positions) => {
             positions.forEach((position) => {
               wewePositions.push({

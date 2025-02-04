@@ -86,7 +86,7 @@ const Component: FC = () => {
           }));
 
         return modifiedCoins;
-      }) ?? []),
+      }) || []),
     ...tokens
       .filter(
         ({ chain, isNative }) => !isNative && chain.toLowerCase() === chainKey

@@ -89,8 +89,8 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   const handleSharePath = (path: string): string => {
     return path
-      .replace(":alias", (vault?.alias ?? "").replace(/ /g, "-"))
-      .replace(":uid", vault?.uid ?? "");
+      .replace(":alias", (vault?.alias || "").replace(/ /g, "-"))
+      .replace(":uid", vault?.uid || "");
   };
 
   const handleShare = (): void => {

@@ -84,7 +84,7 @@ const Component: FC = () => {
         }));
 
       return modifiedCoins;
-    }) ?? []),
+    }) || []),
     ...defTokens.filter(
       ({ isNative, chain }) =>
         isNative &&

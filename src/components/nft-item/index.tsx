@@ -57,7 +57,7 @@ const Component: FC<ChainProps> = (chain) => {
       </div>
       {nftsUpdated ? (
         <span className="amount">
-          {((nftsBalance ?? 0) * nfts.length * baseValue).toValueFormat(
+          {((nftsBalance || 0) * nfts.length * baseValue).toValueFormat(
             currency
           )}
         </span>

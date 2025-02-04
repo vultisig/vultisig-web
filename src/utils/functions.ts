@@ -20,7 +20,7 @@ const toSnake = (value: string): string => {
 };
 
 export const changeTheme = (theme?: Theme): void => {
-  document.documentElement.setAttribute("theme", theme ?? "");
+  document.documentElement.setAttribute("theme", theme || "");
 };
 
 export const getAssetsBalance = (vault: VaultProps): number => {
@@ -52,23 +52,24 @@ export const getPositionsBalance = (vault: VaultProps): number => {
   return totalSum;
 };
 
-export const isCounted = (
-  chain: ChainKey,
-  isNative: boolean,
-  ticker: string
-): boolean => {
+export const isCounted = (chain: ChainKey, ticker: string): boolean => {
   const validTickers: string[] = [
-    TickerKey.JUP,
-    TickerKey.RENDER,
-    TickerKey.USDC,
-    TickerKey.USDT,
     TickerKey.DORITO,
     TickerKey.KWEEN,
+    TickerKey.JUP,
+    TickerKey.RENDER,
+    TickerKey.SOL,
+    TickerKey.USDC,
+    TickerKey.USDT,
   ];
 
-  return (
-    isNative || chain !== ChainKey.SOLANA || validTickers.indexOf(ticker) >= 0
-  );
+  switch (chain) {
+    case ChainKey.NOBLE:
+    case ChainKey.SOLANA:
+      return validTickers.indexOf(ticker) >= 0;
+    default:
+      return true;
+  }
 };
 
 export const isNewToken = (contractAddress: string): boolean => {
