@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 
 import { useBaseContext } from "context";
-import { defNFTs, exploreNFT } from "utils/constants";
+import { LayoutKey, defNFTs, exploreNFT } from "utils/constants";
 import { ChainProps, VaultOutletContext } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 
@@ -17,10 +17,10 @@ const Component: FC<ChainProps> = (chain) => {
   const { pathname } = useLocation();
   const { address, name, nfts, nftsBalance, nftsUpdated } = chain;
   const { baseValue, currency } = useBaseContext();
-  const { prepareNFT, vault } = useOutletContext<VaultOutletContext>();
+  const { prepareNFT, layout, vault } = useOutletContext<VaultOutletContext>();
 
   const componentDidUpdate = () => {
-    if (!nftsUpdated) prepareNFT(chain, vault);
+    if (layout === LayoutKey.SHARED && !nftsUpdated) prepareNFT(chain, vault);
   };
 
   useEffect(componentDidUpdate, [nftsUpdated]);

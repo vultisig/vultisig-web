@@ -27,18 +27,13 @@ const Component: FC = () => {
   const { t } = useTranslation();
   const { chainKey } = useParams();
   const { changePage, baseValue, currency } = useBaseContext();
-  const { getTokens, prepareChain, layout, vault } =
-    useOutletContext<VaultOutletContext>();
+  const { getTokens, layout, vault } = useOutletContext<VaultOutletContext>();
   const navigate = useNavigate();
   const goBack = useGoBack();
 
   const chain = vault.chains.find(
     ({ name }) => name.toLowerCase() === chainKey
   );
-
-  const componentDidUpdate = () => {
-    if (chain && !chain.coinsUpdated) prepareChain(chain, vault);
-  };
 
   const componentDidMount = () => {
     if (chain) {
@@ -58,7 +53,6 @@ const Component: FC = () => {
     }
   };
 
-  useEffect(componentDidUpdate, [chain?.coinsUpdated]);
   useEffect(componentDidMount, []);
 
   return (
