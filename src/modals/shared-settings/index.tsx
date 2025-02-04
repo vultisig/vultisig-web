@@ -54,7 +54,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
       api.sharedSettings
         .set({
           uid: vault.uid,
-          logo: file.data ?? "",
+          logo: file.data || "",
           theme,
           publicKeyEcdsa: vault.publicKeyEcdsa,
           publicKeyEddsa: vault.publicKeyEddsa,

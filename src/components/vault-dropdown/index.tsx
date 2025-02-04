@@ -42,7 +42,7 @@ const Component: FC = () => {
       className="vault-dropdown"
       overlayClassName="vault-dropdown-overlay"
     >
-      <span>{vault?.alias ?? ""}</span>
+      <span>{vault?.alias || ""}</span>
     </Dropdown>
   );
 };

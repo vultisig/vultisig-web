@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Truncate } from "@re-dev/react-truncate";
 
 import { useBaseContext } from "context";
+import { ChainKey } from "utils/constants";
+import { isCounted } from "utils/functions";
 import { ChainProps } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 
@@ -32,9 +34,12 @@ const Component: FC<ChainProps> = ({
           <TokenImage alt={name} />
           <span className="name">{name}</span>
           <span className="text">{coin?.ticker}</span>
-          <span className="counted">
-            <Check /> {t(constantKeys.COUNTED)}
-          </span>
+          {(name !== ChainKey.NOBLE ||
+            coins.findIndex(({ ticker }) => isCounted(name, ticker)) >= 0) && (
+            <span className="counted">
+              <Check /> {t(constantKeys.COUNTED)}
+            </span>
+          )}
         </div>
         <div className="key">
           <Truncate end={10} middle>

@@ -75,7 +75,7 @@ const Component: FC = () => {
         {vault.chains.length ? (
           vault.chains
             .slice()
-            .sort((a, b) => (b.balance ?? 0) - (a.balance ?? 0))
+            .sort((a, b) => (b.balance || 0) - (a.balance || 0))
             .map(({ name, ...res }) => (
               <ChainItem key={name} {...{ ...res, name }} />
             ))

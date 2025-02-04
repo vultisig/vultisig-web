@@ -19,6 +19,7 @@ import {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
+import { decodeBase58 } from "ethers";
 
 const fetch = axios.create({
   baseURL: `${import.meta.env.VITE_SERVER_ADDRESS}`,
@@ -132,7 +133,9 @@ const externalAPI = {
   solanaPN: "https://solana-rpc.publicnode.com",
   thorchain: "https://thornode.ninerealms.com/thorchain/",
   thorwallet: "https://api-v2-prod.thorwallet.org/",
+  trongrid: "https://api.trongrid.io/jsonrpc",
 };
+
 const api = {
   airdrop: {
     join: async (params: VaultProps) => {
@@ -153,7 +156,7 @@ const api = {
                 node?.bondProviders?.providers?.reduce(
                   (sum, provider) =>
                     provider?.bondAddress === address
-                      ? sum + Number(provider.bond)
+                      ? sum + parseInt(provider.bond)
                       : sum,
                   0
                 ) || 0;
@@ -188,9 +191,9 @@ const api = {
             `${externalAPI.thorchain}rune_provider/${address}`
           )
           .then(({ data }) => {
-            const value = Number(data?.value);
+            const result = parseInt(data?.value);
 
-            resolve(isNaN(value) ? 0 : value > 0 ? value * 1e-8 : 0);
+            resolve(result ? result / Math.pow(10, 8) : 0);
           });
       });
     },
@@ -234,7 +237,7 @@ const api = {
     ): Promise<number> => {
       return new Promise((resolve) => {
         fetch
-          .post<{ id: number; jsonrpc: string; result: string }>(path, {
+          .post<{ result: string }>(path, {
             id: uuidv4(),
             jsonrpc: "2.0",
             method: isNative ? "eth_getBalance" : "eth_call",
@@ -252,11 +255,9 @@ const api = {
             ],
           })
           .then(({ data }) => {
-            resolve(
-              data?.result
-                ? parseInt(data.result, 16) / Math.pow(10, decimals)
-                : 0
-            );
+            const result = parseInt(data?.result, 16);
+
+            resolve(result ? result / Math.pow(10, decimals) : 0);
           })
           .catch(() => {
             resolve(0);
@@ -372,6 +373,57 @@ const api = {
           .catch(() => {
             resolve(0);
           });
+      });
+    },
+    tron: (
+      path: string,
+      address: string,
+      decimals: number,
+      contract: string,
+      isNative: boolean
+    ): Promise<number> => {
+      return new Promise((resolve) => {
+        if (isNative) {
+          fetch
+            .post<{ balance: number }>(path, { address, visible: true })
+            .then(({ data }) => {
+              resolve(
+                data?.balance >= 0 ? data.balance / Math.pow(10, decimals) : 0
+              );
+            })
+            .catch(() => {
+              resolve(0);
+            });
+        } else {
+          const hexAddress = decodeBase58(address).toString(16).slice(0, -8);
+          const hexContract = decodeBase58(contract).toString(16).slice(0, -8);
+
+          fetch
+            .post<{ result: string }>(externalAPI.trongrid, {
+              method: "eth_call",
+              params: [
+                {
+                  from: `0x${hexAddress}`,
+                  to: `0x${hexContract}`,
+                  gas: "0x0",
+                  gasPrice: "0x0",
+                  value: "0x0",
+                  data: `0x70a082310000000000000000000000${hexAddress}`,
+                },
+                "latest",
+              ],
+              jsonrpc: "2.0",
+              id: uuidv4(),
+            })
+            .then(({ data }) => {
+              const result = parseInt(data?.result, 16);
+
+              resolve(result ? result / Math.pow(10, decimals) : 0);
+            })
+            .catch(() => {
+              resolve(0);
+            });
+        }
       });
     },
     utxo: (

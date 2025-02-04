@@ -58,6 +58,7 @@ export default class VaultProvider {
               [ChainKey.KUJIRA]: walletCore.CoinType.kujira,
               [ChainKey.LITECOIN]: walletCore.CoinType.litecoin,
               [ChainKey.MAYACHAIN]: walletCore.CoinType.thorchain,
+              [ChainKey.NOBLE]: walletCore.CoinType.noble,
               [ChainKey.OPTIMISM]: walletCore.CoinType.optimism,
               [ChainKey.OSMOSIS]: walletCore.CoinType.osmosis,
               [ChainKey.POLKADOT]: walletCore.CoinType.polkadot,
@@ -68,6 +69,7 @@ export default class VaultProvider {
               [ChainKey.TERRACLASSIC]: walletCore.CoinType.terra,
               [ChainKey.THORCHAIN]: walletCore.CoinType.thorchain,
               [ChainKey.TON]: walletCore.CoinType.ton,
+              [ChainKey.TRON]: walletCore.CoinType.tron,
               [ChainKey.XRP]: walletCore.CoinType.xrp,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
             };
@@ -119,7 +121,9 @@ export default class VaultProvider {
                   )?.description();
                 } else {
                   address = walletCore.AnyAddress.createWithPublicKey(
-                    publicKey,
+                    chain === ChainKey.TRON
+                      ? publicKey.uncompressed()
+                      : publicKey,
                     coin
                   )?.description();
                 }
@@ -476,6 +480,13 @@ export default class VaultProvider {
 
           break;
         }
+        case ChainKey.NOBLE: {
+          api.balance
+            .cosmos(path, address, decimals, `u${ticker.toLowerCase()}`)
+            .then(resolve);
+
+          break;
+        }
         // EVM
         case ChainKey.ARBITRUM:
         case ChainKey.AVALANCHE:
@@ -504,6 +515,7 @@ export default class VaultProvider {
           break;
         }
         // CUSTOM
+
         case ChainKey.POLKADOT: {
           api.balance.polkadot(path, address).then(resolve);
 
@@ -523,6 +535,13 @@ export default class VaultProvider {
         }
         case ChainKey.TON: {
           api.balance.ton(path, address, decimals).then(resolve);
+
+          break;
+        }
+        case ChainKey.TRON: {
+          api.balance
+            .tron(path, address, decimals, contractAddress, isNative)
+            .then(resolve);
 
           break;
         }
@@ -691,7 +710,7 @@ export default class VaultProvider {
             resolve(
               coins.map((coin) => ({
                 ...coin,
-                value: values[coin.cmcId] ?? coin.value,
+                value: values[coin.cmcId] || coin.value,
               }))
             );
           });

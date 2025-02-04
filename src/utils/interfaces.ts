@@ -42,6 +42,7 @@ export interface ChainBoolRef {
   [ChainKey.KUJIRA]: boolean;
   [ChainKey.LITECOIN]: boolean;
   [ChainKey.MAYACHAIN]: boolean;
+  [ChainKey.NOBLE]: boolean;
   [ChainKey.OSMOSIS]: boolean;
   [ChainKey.OPTIMISM]: boolean;
   [ChainKey.POLKADOT]: boolean;
@@ -52,6 +53,7 @@ export interface ChainBoolRef {
   [ChainKey.TERRACLASSIC]: boolean;
   [ChainKey.THORCHAIN]: boolean;
   [ChainKey.TON]: boolean;
+  [ChainKey.TRON]: boolean;
   [ChainKey.XRP]: boolean;
   [ChainKey.ZKSYNC]: boolean;
 }
@@ -73,6 +75,7 @@ export interface ChainCoinRef {
   [ChainKey.KUJIRA]: CoinType;
   [ChainKey.LITECOIN]: CoinType;
   [ChainKey.MAYACHAIN]: CoinType;
+  [ChainKey.NOBLE]: CoinType;
   [ChainKey.OPTIMISM]: CoinType;
   [ChainKey.OSMOSIS]: CoinType;
   [ChainKey.POLKADOT]: CoinType;
@@ -83,6 +86,7 @@ export interface ChainCoinRef {
   [ChainKey.TERRACLASSIC]: CoinType;
   [ChainKey.THORCHAIN]: CoinType;
   [ChainKey.TON]: CoinType;
+  [ChainKey.TRON]: CoinType;
   [ChainKey.XRP]: CoinType;
   [ChainKey.ZKSYNC]: CoinType;
 }
@@ -104,6 +108,7 @@ export interface ChainStrRef {
   [ChainKey.KUJIRA]: string;
   [ChainKey.LITECOIN]: string;
   [ChainKey.MAYACHAIN]: string;
+  [ChainKey.NOBLE]: string;
   [ChainKey.OPTIMISM]: string;
   [ChainKey.OSMOSIS]: string;
   [ChainKey.POLKADOT]: string;
@@ -114,6 +119,7 @@ export interface ChainStrRef {
   [ChainKey.TERRACLASSIC]: string;
   [ChainKey.THORCHAIN]: string;
   [ChainKey.TON]: string;
+  [ChainKey.TRON]: string;
   [ChainKey.XRP]: string;
   [ChainKey.ZKSYNC]: string;
 }

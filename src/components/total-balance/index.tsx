@@ -16,7 +16,7 @@ const Component: FC = () => {
       <span className="title">{t(constantKeys.TOTAL_BALANCE)}</span>
       <span className="value">
         {(
-          vault.chains.reduce((acc, chain) => acc + (chain.balance ?? 0), 0) *
+          vault.chains.reduce((acc, chain) => acc + (chain.balance || 0), 0) *
           baseValue
         ).toValueFormat(currency)}
       </span>

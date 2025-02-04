@@ -81,7 +81,7 @@ const Component: FC = () => {
               </div>
               <span className="amount">
                 {(
-                  (chain.nftsBalance ?? 0) *
+                  (chain.nftsBalance || 0) *
                   baseValue *
                   chain.nfts.length
                 ).toValueFormat(currency)}

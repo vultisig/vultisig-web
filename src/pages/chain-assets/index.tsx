@@ -89,16 +89,15 @@ const Component: FC = () => {
                 </Truncate>
               </div>
               <span className="amount">
-                {((chain.balance ?? 0) * baseValue).toValueFormat(currency)}
+                {((chain.balance || 0) * baseValue).toValueFormat(currency)}
               </span>
               <TokenActions address={chain.address} name={chain.name} />
             </div>
-            {chain.coins.map(({ balance, isNative, logo, ticker, value }) => (
+            {chain.coins.map(({ balance, logo, ticker, value }) => (
               <AssetItem
                 key={ticker}
                 chain={chain.name}
                 balance={balance}
-                isNative={isNative}
                 logo={logo}
                 ticker={ticker}
                 value={value}

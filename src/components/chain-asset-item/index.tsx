@@ -13,7 +13,6 @@ import VultiLoading from "components/vulti-loading";
 interface ComponentProps {
   balance: number;
   chain: ChainKey;
-  isNative: boolean;
   logo: string;
   ticker: string;
   value: number;
@@ -22,7 +21,6 @@ interface ComponentProps {
 const Component: FC<ComponentProps> = ({
   balance,
   chain,
-  isNative,
   logo,
   ticker,
   value,
@@ -35,7 +33,7 @@ const Component: FC<ComponentProps> = ({
       <div className="token">
         <TokenImage alt={ticker} url={logo} />
         <span className="name">{ticker}</span>
-        {isCounted(chain, isNative, ticker) && (
+        {isCounted(chain, ticker) && (
           <span className="counted">
             <Check />
             {t(constantKeys.COUNTED)}
