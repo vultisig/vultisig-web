@@ -59,7 +59,7 @@ export const isCounted = (
 ): boolean => {
   const validTickers: string[] = [
     TickerKey.JUP,
-    TickerKey.RNDR,
+    TickerKey.RENDER,
     TickerKey.USDC,
     TickerKey.USDT,
     TickerKey.DORITO,
