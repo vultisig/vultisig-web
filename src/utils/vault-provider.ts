@@ -380,19 +380,15 @@ export default class VaultProvider {
 
             api.coin
               .add(vault, baseCoin)
-              .then(({ data: { coinId } }) => {
-                const newCoin: CoinParams & CoinProps = {
+              .then((id) => {
+                resolve({
                   ...baseCoin,
                   balance: 0,
-                  id: coinId,
+                  id,
                   value: 0,
-                };
-
-                resolve(newCoin);
+                });
               })
-              .catch((error) => {
-                reject(error);
-              });
+              .catch(reject);
           })
           .catch(reject);
       });
@@ -577,12 +573,12 @@ export default class VaultProvider {
         if (id) {
           api
             .oneInch(id)
-            .then(({ data }) => {
-              const tokens: TokenProps[] = [];
+            .then(({ tokens }) => {
+              const _tokens: TokenProps[] = [];
 
-              Object.entries(data.tokens).forEach(([key, value]) => {
+              Object.entries(tokens).forEach(([key, value]) => {
                 if (isNewToken(key)) {
-                  tokens.push({
+                  _tokens.push({
                     chain: chain.name,
                     cmcId: 0,
                     contractAddress: key,
@@ -597,7 +593,7 @@ export default class VaultProvider {
                 }
               });
 
-              resolve([...defTokens, ...tokens]);
+              resolve([...defTokens, ..._tokens]);
             })
             .catch(() => resolve(defTokens));
         } else if (token.chain === ChainKey.SOLANA) {

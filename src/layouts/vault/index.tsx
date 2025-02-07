@@ -1,8 +1,20 @@
 import { FC, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { Currency, LayoutKey, defTokens } from "utils/constants";
-import { ChainProps, TokenProps, VaultProps } from "utils/interfaces";
+import {
+  Currency,
+  LayoutKey,
+  balanceAPI,
+  defTokens,
+  oneInchRef,
+} from "utils/constants";
+import {
+  ChainProps,
+  CoinParams,
+  CoinProps,
+  TokenProps,
+  VaultProps,
+} from "utils/interfaces";
 import {
   getStoredAddresses,
   getStoredVaults,
@@ -41,6 +53,95 @@ const Component: FC = () => {
   const { tokens, vault, vaults } = state;
   const navigate = useNavigate();
   const vaultProvider = new VaultProvider();
+
+  const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
+    const oneInchId = oneInchRef[token.chain];
+
+    if (oneInchId) {
+      const path = balanceAPI[token.chain];
+
+      api.discovery.tokens(path, token.address).then((discoveredTokens) => {
+        api.coin
+          .getInfo(
+            oneInchId,
+            discoveredTokens.map(({ contractAddress }) => contractAddress)
+          )
+          .then((updatedTokens) => {
+            const promises = discoveredTokens
+              .filter(({ contractAddress }) => !!updatedTokens[contractAddress])
+              .map(({ contractAddress, tokenBalance }) =>
+                api.coin.cmc(contractAddress).then((cmcId) => {
+                  const decimals = updatedTokens[contractAddress].decimals;
+
+                  return {
+                    address: token.address,
+                    balance:
+                      parseInt(tokenBalance, 16) / Math.pow(10, decimals),
+                    chain: token.chain,
+                    cmcId,
+                    contractAddress: contractAddress,
+                    decimals,
+                    hexPublicKey:
+                      token.hexPublicKey === "ECDSA"
+                        ? vault.publicKeyEcdsa
+                        : vault.publicKeyEddsa,
+                    isNative: false,
+                    logo: updatedTokens[contractAddress].logoURI || "",
+                    ticker: updatedTokens[contractAddress].symbol,
+                  };
+                })
+              );
+
+            Promise.all(promises).then((coins) => {
+              const promises = coins
+                .filter(({ cmcId }) => cmcId)
+                .map(({ balance, ...coin }) =>
+                  api.coin
+                    .add(vault, coin)
+                    .catch(() => 0)
+                    .then((id) => ({ ...coin, balance, id, value: 0 }))
+                );
+
+              Promise.all(promises).then((coins) => {
+                const validCoins = coins.filter(({ id }) => id);
+
+                vaultProvider
+                  .getValues(validCoins, Currency.USD)
+                  .then((newCoins) => {
+                    setState((prevState) => {
+                      const vaults = prevState.vaults.map((item) =>
+                        vaultProvider.compareVault(item, vault)
+                          ? {
+                              ...item,
+                              chains: item.chains.map((chain) =>
+                                chain.name === token.chain
+                                  ? {
+                                      ...vaultProvider.sortChain({
+                                        ...chain,
+                                        coins: [...chain.coins, ...newCoins],
+                                      }),
+                                    }
+                                  : chain
+                              ),
+                            }
+                          : item
+                      );
+
+                      setStoredVaults(vaults);
+
+                      return {
+                        ...prevState,
+                        vault: vaults.find(({ isActive }) => isActive),
+                        vaults,
+                      };
+                    });
+                  });
+              });
+            });
+          });
+      });
+    }
+  };
 
   const toggleToken = (token: TokenProps, vault: VaultProps): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -104,7 +205,7 @@ const Component: FC = () => {
                   ? {
                       ...item,
                       chains: selectedChain
-                        ? vault.chains.map((chain) =>
+                        ? item.chains.map((chain) =>
                             chain.name === selectedChain.name
                               ? {
                                   ...chain,
@@ -113,7 +214,7 @@ const Component: FC = () => {
                               : chain
                           )
                         : [
-                            ...vault.chains,
+                            ...item.chains,
                             {
                               address: newToken.address,
                               balance: 0,
@@ -163,16 +264,11 @@ const Component: FC = () => {
                                   chains: item.chains.map((chain) =>
                                     chain.name === selectedChain.name
                                       ? {
-                                          ...chain,
                                           ...vaultProvider.sortChain({
                                             ...chain,
                                             coins: chain.coins.map((coin) =>
                                               coin.ticker === newToken.ticker
-                                                ? {
-                                                    ...coin,
-                                                    balance,
-                                                    value,
-                                                  }
+                                                ? { ...coin, balance, value }
                                                 : coin
                                             ),
                                           }),
@@ -194,6 +290,8 @@ const Component: FC = () => {
                       });
                   }
                 });
+            } else {
+              discoverAssets(newToken, vault);
             }
 
             resolve();

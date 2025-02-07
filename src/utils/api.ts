@@ -83,17 +83,13 @@ namespace Leaderboard {
   }
 }
 
-namespace OneInch {
-  export interface Props {
-    tokens: {
-      [address: string]: {
-        decimals: number;
-        logoURI: string;
-        name: string;
-        symbol: string;
-      };
-    };
-  }
+interface OneInchProps {
+  [address: string]: {
+    decimals: number;
+    logoURI: string;
+    name: string;
+    symbol: string;
+  };
 }
 
 interface ActivePositions {
@@ -478,33 +474,29 @@ const api = {
   },
   coin: {
     add: async (vault: VaultProps, coin: CoinParams) => {
-      return await fetch.post<{
-        coinId: number;
-      }>(
-        `coin/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`,
-        toSnakeCase(coin),
-        { headers: { "x-hex-chain-code": vault.hexChainCode } }
-      );
+      return await fetch
+        .post<{ coinId: number }>(
+          `coin/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`,
+          toSnakeCase(coin),
+          { headers: { "x-hex-chain-code": vault.hexChainCode } }
+        )
+        .then(({ data }) => data.coinId);
     },
-    cmc: (address: string): Promise<number> => {
-      return new Promise((resolve) => {
-        fetch
-          .get<{
-            data: { [cmcId: string]: { id: number } };
-          }>(
-            `${
-              import.meta.env.VITE_VULTISIG_SERVER
-            }cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
-          )
-          .then(({ data }) => {
-            const [key] = Object.keys(data.data);
+    cmc: async (address: string): Promise<number> => {
+      return fetch
+        .get<{
+          data: { [cmcId: string]: { id: number } };
+        }>(
+          `${
+            import.meta.env.VITE_VULTISIG_SERVER
+          }cmc/v1/cryptocurrency/info?address=${address}&skip_invalid=true&aux=status`
+        )
+        .then(({ data }) => {
+          const [key] = Object.keys(data.data);
 
-            key ? resolve(parseInt(key)) : resolve(0);
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      });
+          return key ? parseInt(key) : 0;
+        })
+        .catch(() => 0);
     },
     del: async (vault: VaultProps, coin: CoinProps) => {
       return await fetch.delete(
@@ -512,54 +504,46 @@ const api = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    value: (id: number, currency: Currency): Promise<number> => {
-      return new Promise((resolve) => {
-        fetch
-          .get<CMC.Result>(
-            `${
-              import.meta.env.VITE_VULTISIG_SERVER
-            }cmc/v2/cryptocurrency/quotes/latest?id=${id}&skip_invalid=true&aux=is_active&convert=${currency}`
-          )
-          .then(({ data }) => {
-            if (
-              data?.data &&
-              data.data[id]?.quote &&
-              data.data[id].quote[currency]
-            ) {
-              resolve(data.data[id].quote[currency].price || 0);
-            } else {
-              resolve(0);
-            }
-          })
-          .catch(() => {
-            resolve(0);
-          });
-      });
+    value: async (id: number, currency: Currency) => {
+      return fetch
+        .get<CMC.Result>(
+          `${
+            import.meta.env.VITE_VULTISIG_SERVER
+          }cmc/v2/cryptocurrency/quotes/latest?id=${id}&skip_invalid=true&aux=is_active&convert=${currency}`
+        )
+        .then(({ data }) => {
+          if (
+            data?.data &&
+            data.data[id]?.quote &&
+            data.data[id].quote[currency]
+          ) {
+            return data.data[id].quote[currency].price || 0;
+          } else {
+            return 0;
+          }
+        })
+        .catch(() => 0);
     },
-    values: async (ids: number[], currency: Currency): Promise<CMC.Props> => {
-      return new Promise((resolve) => {
-        const modifedData: CMC.Props = {};
+    values: async (ids: number[], currency: Currency) => {
+      const modifedData: CMC.Props = {};
 
-        fetch
-          .get<CMC.Result>(
-            `${
-              import.meta.env.VITE_VULTISIG_SERVER
-            }cmc/v2/cryptocurrency/quotes/latest?id=${ids
-              .filter((id) => id > 0)
-              .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
-          )
-          .then(({ data }) => {
-            Object.entries(data.data).forEach(([key, value]) => {
-              modifedData[key] =
-                (value.quote[currency] && value.quote[currency].price) || 0;
-            });
-
-            resolve(modifedData);
-          })
-          .catch(() => {
-            resolve(modifedData);
+      return fetch
+        .get<CMC.Result>(
+          `${
+            import.meta.env.VITE_VULTISIG_SERVER
+          }cmc/v2/cryptocurrency/quotes/latest?id=${ids
+            .filter((id) => id > 0)
+            .join(",")}&skip_invalid=true&aux=is_active&convert=${currency}`
+        )
+        .then(({ data }) => {
+          Object.entries(data.data).forEach(([key, value]) => {
+            modifedData[key] =
+              (value.quote[currency] && value.quote[currency].price) || 0;
           });
-      });
+
+          return modifedData;
+        })
+        .catch(() => modifedData);
     },
     coingeckoValue: (ticker: string, currency: Currency): Promise<number> => {
       return new Promise((resolve) => {
@@ -605,8 +589,34 @@ const api = {
           });
       });
     },
+    getInfo: async (chainId: number, contractAddresses: string[]) => {
+      return await fetch
+        .get<OneInchProps>(
+          `${
+            import.meta.env.VITE_VULTISIG_SERVER
+          }1inch/token/v1.2/${chainId}/custom?addresses=${contractAddresses.join(
+            ","
+          )}`
+        )
+        .then(({ data }) => data);
+    },
   },
   discovery: {
+    tokens: async (path: string, address: string) => {
+      return fetch
+        .post<{
+          result: {
+            tokenBalances: [{ contractAddress: string; tokenBalance: string }];
+          };
+        }>(path, {
+          jsonrpc: "2.0",
+          method: "alchemy_getTokenBalances",
+          params: [address, "erc20"],
+          id: uuidv4(),
+        })
+        .then(({ data }) => data?.result?.tokenBalances || [])
+        .catch(() => []);
+    },
     info: {
       spl: async (tokens: string[]) => {
         return await fetch.post<{
@@ -864,9 +874,11 @@ const api = {
     );
   },
   oneInch: async (id: number) => {
-    return await fetch.get<OneInch.Props>(
-      `${import.meta.env.VITE_VULTISIG_SERVER}1inch/swap/v6.0/${id}/tokens`
-    );
+    return await fetch
+      .get<{ tokens: OneInchProps }>(
+        `${import.meta.env.VITE_VULTISIG_SERVER}1inch/swap/v6.0/${id}/tokens`
+      )
+      .then(({ data }) => data);
   },
 };
 
