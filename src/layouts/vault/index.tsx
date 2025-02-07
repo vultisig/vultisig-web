@@ -252,12 +252,13 @@ const Component: FC = () => {
   };
 
   const prepareVault = (vault: VaultProps) => {
+    const updatedVault = {} as VaultProps;
     const _assets = vault.chains.filter(({ coinsUpdated }) => !coinsUpdated);
     const _nfts = vault.chains.filter(({ nftsUpdated }) => !nftsUpdated);
 
     if (_assets.length) {
       if (!vault.assetsUpdating) {
-        vault.assetsUpdating = true;
+        updatedVault.assetsUpdating = true;
 
         _assets.forEach((item) =>
           vaultProvider
@@ -266,12 +267,12 @@ const Component: FC = () => {
         );
       }
     } else if (vault.assetsUpdating) {
-      vault.assetsUpdating = false;
+      updatedVault.assetsUpdating = false;
     }
 
     if (_nfts.length) {
       if (!vault.nftsUpdating) {
-        vault.nftsUpdating = true;
+        updatedVault.nftsUpdating = true;
 
         _nfts.forEach((item) =>
           vaultProvider
@@ -280,14 +281,14 @@ const Component: FC = () => {
         );
       }
     } else if (vault.nftsUpdating) {
-      vault.nftsUpdating = false;
+      updatedVault.nftsUpdating = false;
     }
 
     if (!vault.positionsUpdating) {
       if (!vault.positions.updated) {
         const positionProvider = new PositionProvider(vault);
 
-        vault.positionsUpdating = true;
+        updatedVault.positionsUpdating = true;
 
         positionProvider.getPrerequisites().then(() => {
           Promise.all([
@@ -318,10 +319,11 @@ const Component: FC = () => {
         });
       }
     } else if (vault.positions.updated) {
-      vault.positionsUpdating = false;
+      updatedVault.positionsUpdating = false;
     }
 
-    updateVault(vault);
+    if (Object.keys(updatedVault).length)
+      updateVault({ ...vault, ...updatedVault });
   };
 
   const updateChain = (chain: ChainProps, vault: VaultProps): void => {
