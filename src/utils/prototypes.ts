@@ -20,17 +20,17 @@ Number.prototype.toBalanceFormat = function () {
 
   let value: number = parseFloat(`${this}`);
   let symbol: string = "";
-  let decimals: number = 0;
+  let decimals: number = 2;
 
   if (value >= tillion) {
     symbol = "T";
-    value = Math.floor(value / tillion);
+    value = value / tillion;
   } else if (value >= billion) {
     symbol = "B";
-    value = Math.floor(value / billion);
+    value = value / billion;
   } else if (value >= million) {
     symbol = "M";
-    value = Math.floor(value / million);
+    value = value / million;
   } else if (value) {
     const length = this.toString().split(".")[1]?.length;
 
