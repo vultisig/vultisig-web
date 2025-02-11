@@ -1,7 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Upload, UploadProps } from "antd";
+import { useMediaQuery } from "react-responsive";
 import { useTranslation } from "react-i18next";
+import { Button, Carousel, Upload, UploadProps } from "antd";
 import { ReaderOptions, readBarcodesFromImageFile } from "zxing-wasm/reader";
 
 import { useBaseContext } from "context";
@@ -18,6 +19,7 @@ import DownloadVultisig from "components/download-vultisig";
 
 interface InitialState {
   file?: FileProps;
+  hint: { image: string; title: string }[];
   loading: boolean;
   status: "default" | "error" | "success";
   vault?: VaultProps;
@@ -25,11 +27,29 @@ interface InitialState {
 
 const Component: FC = () => {
   const { t } = useTranslation();
-  const initialState: InitialState = { loading: false, status: "default" };
+  const initialState: InitialState = {
+    hint: [
+      {
+        image: "/images/qr-export-one.png",
+        title: "Open your Vultisig app on mobile",
+      },
+      {
+        image: "/images/qr-export-two.png",
+        title: "Export the Vault QR in the top right corner",
+      },
+      {
+        image: "/images/qr-export-three.png",
+        title: "Import your Vault QR code here",
+      },
+    ],
+    loading: false,
+    status: "default",
+  };
   const [state, setState] = useState(initialState);
-  const { file, loading, status, vault } = state;
+  const { file, hint, loading, status, vault } = state;
   const { changePage } = useBaseContext();
   const navigate = useNavigate();
+  const isTablet = useMediaQuery({ query: "(min-width: 576px)" });
 
   const handleStart = (): void => {
     if (!loading && vault && status === "success") {
@@ -221,6 +241,29 @@ const Component: FC = () => {
         >
           {t(constantKeys.START)}
         </Button>
+        <div className="export">
+          <h3 className="title">Instructions</h3>
+
+          {isTablet ? (
+            <ul className="grid">
+              {hint.map(({ image, title }, index) => (
+                <li key={index}>
+                  <img src={image} className="image" />
+                  <span className="text">{title}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Carousel effect="fade">
+              {hint.map(({ image, title }, index) => (
+                <Fragment key={index}>
+                  <img src={image} className="image" />
+                  <span className="text">{title}</span>
+                </Fragment>
+              ))}
+            </Carousel>
+          )}
+        </div>
       </div>
       <DownloadVultisig />
     </div>

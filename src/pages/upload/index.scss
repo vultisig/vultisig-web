@@ -46,6 +46,56 @@
     }
 
     .ant-upload-wrapper {
+      .title {
+        font-size: rem(20);
+        font-weight: 600;
+      }
+
+      .text {
+        font-size: rem(14);
+        margin-top: rem(8);
+
+        u {
+          margin-left: rem(4);
+        }
+      }
+
+      .icon {
+        height: rem(48);
+        margin: 0 auto rem(24);
+      }
+
+      .close {
+        height: rem(14);
+        position: absolute;
+        right: rem(16);
+        top: rem(16);
+        width: rem(14);
+
+        svg {
+          fill: $gray-1;
+        }
+      }
+
+      .image {
+        height: rem(128);
+        margin: 0 auto rem(24);
+        max-width: 100%;
+      }
+
+      .name {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .error {
+        color: $red-base;
+        font-size: rem(14);
+        margin-top: rem(8);
+      }
+
       &.error {
         .ant-upload-drag {
           background-color: rgba($color: $red-dark, $alpha: 0.1);
@@ -67,59 +117,62 @@
       margin-bottom: rem(32);
     }
 
-    .icon {
-      height: rem(48);
-      margin: 0 auto rem(24);
-    }
-
-    .title {
-      font-size: rem(20);
-      font-weight: 600;
-    }
-
-    .text {
-      font-size: rem(14);
-      margin-top: rem(8);
-
-      u {
-        margin-left: rem(4);
-      }
-    }
-
-    .close {
-      height: rem(14);
-      position: absolute;
-      right: rem(16);
-      top: rem(16);
-      width: rem(14);
-
-      svg {
-        fill: $gray-1;
-      }
-    }
-
-    .image {
-      height: rem(128);
-      margin: 0 auto rem(24);
-      max-width: 100%;
-    }
-
-    .name {
-      font-weight: 700;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .error {
-      color: $red-base;
-      font-size: rem(14);
-      margin-top: rem(8);
-    }
-
     .hint {
       font-size: rem(14);
       margin: rem(32) 0;
+    }
+
+    .export {
+      margin-top: rem(24);
+
+      .title {
+        font-size: rem(12);
+        font-weight: 400;
+      }
+
+      .image {
+        height: rem(144);
+        margin: 0 auto rem(12);
+      }
+
+      .text {
+        display: block;
+        font-size: rem(12);
+        text-align: center;
+      }
+
+      .grid {
+        display: flex;
+        gap: rem(24);
+        margin-top: rem(24);
+
+        li {
+          background-color: $blue-light;
+          border-radius: rem(16);
+          padding: rem(16);
+          width: 100%;
+        }
+      }
+
+      .ant-carousel {
+        margin-top: rem(24);
+
+        .slick-slide {
+          background-color: $blue-light;
+          border-radius: rem(16);
+          padding: rem(16);
+        }
+
+        .slick-dots {
+          bottom: 0;
+          margin-top: rem(24);
+          position: relative;
+
+          button {
+            background-color: $gray-1;
+          }
+        }
+      }
     }
   }
 
