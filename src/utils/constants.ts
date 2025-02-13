@@ -1063,7 +1063,7 @@ export const defTokens: TokenProps[] = [
     cmcId: 32343,
     contractAddress: "0x6b9bb36519538e0C073894E964E90172E1c0B41F",
     decimals: 18,
-    hexPublicKey: "EDDSA",
+    hexPublicKey: "ECDSA",
     isDefault: false,
     isLocally: true,
     isNative: false,
