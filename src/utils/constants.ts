@@ -1035,7 +1035,6 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.BASE,
-    cmcId: 32343,
     cmcId: 32994,
     contractAddress: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
     decimals: 8,
