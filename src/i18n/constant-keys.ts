@@ -124,6 +124,7 @@ export default keyMirror({
   SHARE_VAULT_LOGO: true,
   SHARE_CURRENT_LOGO: true,
   SHARE_UPLOAD_LOGO: true,
+  SHOW_NAME_IN_LEADERBOARD: true,
   SOMETHING_WRONG: true,
   STAKE_TITLE: true,
   START: true,
