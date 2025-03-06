@@ -283,6 +283,7 @@ export interface VaultProps {
   publicKeyEddsa: string;
   rank: number;
   registeredAt: number;
+  showNameInLeaderboard: boolean;
   theme: Theme;
   totalPoints: number;
   uid: string;

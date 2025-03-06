@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
@@ -20,6 +20,7 @@ interface InitialState {
 
 type FieldType = {
   alias: string;
+  showNameInLeaderboard: boolean;
 };
 
 const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
@@ -34,12 +35,12 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then(({ alias }: FieldType) => {
+      .then(({ alias, showNameInLeaderboard }: FieldType) => {
         if (!submitting && vault) {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
           api.vault
-            .rename({ ...vault, name: alias })
+            .rename({ ...vault, name: alias, showNameInLeaderboard })
             .then(() => {
               updateVault({ ...vault, alias });
 
@@ -101,6 +102,12 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       <Form form={form} onFinish={handleSubmit}>
         <Form.Item<FieldType> name="alias" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+        <Form.Item<FieldType>
+          name="showNameInLeaderboard"
+          valuePropName="checked"
+        >
+          <Checkbox>{t(constantKeys.SHOW_NAME_IN_LEADERBOARD)}</Checkbox>
         </Form.Item>
         <Button htmlType="submit" style={{ display: "none" }} />
       </Form>

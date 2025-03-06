@@ -142,6 +142,7 @@ export default {
   [translation.SHARE_VAULT_LOGO]: "Shared Vault Logo",
   [translation.SHARE_CURRENT_LOGO]: "Your Current Logo",
   [translation.SHARE_UPLOAD_LOGO]: "Upload Your Logo",
+  [translation.SHOW_NAME_IN_LEADERBOARD]: "Show vault name in leaderboard",
   [translation.SOMETHING_WRONG]: "Something is wrong",
   [translation.STAKE_TITLE]: "Stake",
   [translation.START]: "Start",

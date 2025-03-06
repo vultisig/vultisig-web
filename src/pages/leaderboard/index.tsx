@@ -250,9 +250,11 @@ const Component: FC = () => {
                   className="avatar"
                 />
                 <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
-                <span className="name">{`${vault.alias}${
-                  layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"
-                }`}</span>
+                <span className="name">{`${
+                  vault.showNameInLeaderboard
+                    ? vault.alias
+                    : vault.uid.substring(0, 10)
+                }${layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"}`}</span>
                 <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
               </div>
               <div className="balance">
