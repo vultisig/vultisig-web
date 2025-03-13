@@ -113,6 +113,7 @@ export default keyMirror({
   SAVE: true,
   SAVER_TITLE: true,
   SEARCH: true,
+  SEASON_END_TIME: true,
   SECURE_CRYPTO_VAULT: true,
   SEE_FULL_LIST: true,
   SELECT_CHAINS_TOKENS: true,

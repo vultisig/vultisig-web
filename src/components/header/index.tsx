@@ -12,6 +12,7 @@ import {
   message,
 } from "antd";
 import { ArrowRight } from "icons";
+import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -202,6 +203,33 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
+    {
+      key: "0",
+      type: "group",
+      label: t(constantKeys.VAULT_BALANCE),
+      children: [
+        ...(layout === LayoutKey.VAULT
+          ? [
+              {
+                key: "0-1",
+                label: (
+                  <span className="balance">
+                    {vault
+                      ? (
+                          (getAssetsBalance(vault) +
+                            getNFTsBalance(vault) +
+                            getPositionsBalance(vault)) *
+                          baseValue
+                        ).toValueFormat(currency)
+                      : 0}
+                  </span>
+                ),
+                icon: <Storage className="icon" />,
+              },
+            ]
+          : []),
+      ],
+    },
     ...(layout === LayoutKey.VAULT
       ? [
           {
@@ -501,16 +529,11 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
         {isTablet && vault && (
           <div className="balance">
-            <Storage className="icon" />
-            <span className="text">{`${t(constantKeys.VAULT_BALANCE)}:`}</span>
-            <span className="value">
-              {(
-                (getAssetsBalance(vault) +
-                  getNFTsBalance(vault) +
-                  getPositionsBalance(vault)) *
-                baseValue
-              ).toValueFormat(currency)}
-            </span>
+            <ClockCircleOutlined className="clock-icon" />
+            <span className="text">{`${t(
+              constantKeys.SEASON_END_TIME
+            )}:`}</span>
+            <span className="value">30d 6h 24min</span>
           </div>
         )}
       </div>
@@ -555,7 +578,14 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           placement="left"
           className="layout-menu"
         >
-          {!isTablet && vault && (
+          <div className="balance">
+            <ClockCircleOutlined className="clock-icon" />
+            <span className="text">{`${t(
+              constantKeys.SEASON_END_TIME
+            )}:`}</span>
+            <span className="value">30d 6h 24min</span>
+          </div>
+          {vault && (
             <>
               <div className="balance">
                 <Storage className="icon" />
