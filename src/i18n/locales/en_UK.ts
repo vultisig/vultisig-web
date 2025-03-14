@@ -6,6 +6,7 @@ export default {
     "Your assets will accumulate VULTIES over a period of 12 months. At the end of this period, you will receive your share of the airdrop (5% of $VULT).",
   [translation.ACTIVE_POSITIONS]: "Active Positions",
   [translation.ADD_NEW_VAULT]: "Add new vault",
+  [translation.AIRDROP]: "Airdrop",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Note: The airdrop is based on the total amount in your vault multiplied by the time the assets are held in the vault. The largest amounts for the longest time earn the most.",
   [translation.AIRDROP_LEADERBOARD]: "Airdrop Leaderboard",
@@ -150,6 +151,7 @@ export default {
   [translation.SUCCESSFUL_COPY_TEXT]: "Text copied to clipboard",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
+  [translation.SWAP]: "Swap",
   //T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
