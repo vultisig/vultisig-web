@@ -113,18 +113,11 @@ interface ActivePositions {
   }[];
 }
 
-interface SaverPositions {
-  pools: {
-    assetRedeem: number;
-    assetAddress: string;
-    pool: string;
-  }[];
-}
-
 const externalAPI = {
   ethereumPN: "https://ethereum.publicnode.com",
   lifi: "https://li.quest/v1/",
   mayachain: "https://midgard.mayachain.info/v2/",
+  midgardNinerealms: "https://midgard.ninerealms.com/",
   solanaFM: "https://api.solana.fm/v1/",
   solanaPN: "https://solana-rpc.publicnode.com",
   thorchain: "https://thornode.ninerealms.com/thorchain/",
@@ -171,9 +164,12 @@ const api = {
       );
     },
     getSaverPositions: async (addresses: string) => {
-      return await fetch.get<SaverPositions>(
-        `${externalAPI.thorwallet}saver/positions?addresses=${addresses}`
-      );
+      return await fetch
+        .get<{
+          pools: { assetRedeem: string; assetAddress: string; pool: string }[];
+        }>(`${externalAPI.midgardNinerealms}v2/saver/${addresses}`)
+        .then(({ data }) => data.pools || [])
+        .catch(() => []);
     },
     getTGTstake: async (address: string) => {
       return await fetch.get<{ stakedAmount: number; reward: number }>(
