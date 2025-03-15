@@ -5,6 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Ihre Vermögenswerte sammeln VULTIES über einen Zeitraum von 12 Monaten. Am Ende dieses Zeitraums erhalten Sie Ihren Anteil am Airdrop (5 % von $VULT).",
   [translation.ACTIVE_POSITIONS]: "Aktive Positionen",
+  [translation.ACHIEVEMENTS]: "Errungenschaften",
   [translation.ADD_NEW_VAULT]: "Neues Vault hinzufügen",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Hinweis: Der Airdrop basiert auf der Gesamtmenge in Ihrem Vault, multipliziert mit der Zeit, die die Vermögenswerte im Vault gehalten werden. Die größten Beträge für die längste Zeit erhalten am meisten.",
@@ -103,6 +104,7 @@ export default {
     "Welche Vermögenswerte werden für den Airdrop gezählt?",
   [translation.QUESTION_THIRD_ONBOARDING]: "Was ist der Airdrop-Prozess?",
   // R
+  [translation.REFERRAL_MULTIPLIER]: "Empfehlungs-Multiplikator",
   [translation.READ_MORE_ABOUT_IT]: "Lesen Sie mehr darüber",
   [translation.REFER_FRIEND_ONBOARDING]: "FREUND EMPFEHLEN",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
@@ -130,6 +132,7 @@ export default {
   [translation.SETUP_MULTIـONBOARDING]: "MULTI-FAKTOR-WALLET EINRICHTEN",
   [translation.SETUP_MULTI_ONBOARDING_EXPLAIN]:
     "Erstellen Sie ein sicheres Wallet mit Multi-Faktor-Authentifizierung, um Ihre Vermögenswerte zu schützen und die Sicherheit Ihres Kontos zu erhöhen.",
+  [translation.SHARE_ACHIEVEMENTS]: "Erfolge teilen",
   [translation.SHARE_VAULT]: "Teilen Sie Ihr Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalisieren Sie die geteilte Vault-Seite",
@@ -146,6 +149,8 @@ export default {
   [translation.SUCCESSFUL_COPY_TEXT]: "Text in die Zwischenablage kopiert",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer-1-Vermögenswerte und die meisten von Vultisig unterstützten Tokens werden gezählt. Andere aktive Vermögenswerte wie LPs und Node Bonds von THORChain, MAYA Protocol und gestakte Token sind ebenfalls gültig.",
+  [translation.SWAP_VOLUME]: "Swap-Volumen",
+  [translation.SWAP_MULTIPLIER]: "Swap-Multiplikator",
   // T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
