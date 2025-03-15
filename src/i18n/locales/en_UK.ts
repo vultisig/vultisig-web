@@ -5,7 +5,9 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Your assets will accumulate VULTIES over a period of 12 months. At the end of this period, you will receive your share of the airdrop (5% of $VULT).",
   [translation.ACTIVE_POSITIONS]: "Active Positions",
+  [translation.ACHIEVEMENTS]: "Achievements",
   [translation.ADD_NEW_VAULT]: "Add new vault",
+  [translation.AIRDROP]: "Airdrop",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Note: The airdrop is based on the total amount in your vault multiplied by the time the assets are held in the vault. The largest amounts for the longest time earn the most.",
   [translation.AIRDROP_LEADERBOARD]: "Airdrop Leaderboard",
@@ -83,6 +85,7 @@ export default {
   // M
   [translation.MANAGE_AIRDROP]: "Manage Airdrop",
   [translation.MAYA]: "Maya",
+  [translation.MY_SHARE_OF_THE]: "My Share of the",
   // N
   [translation.NFTS]: "NFTs",
   [translation.NFTS_BALANCE]: "NFTs Balance",
@@ -110,6 +113,7 @@ export default {
   [translation.REFER_FRIEND_ONBOARDING]: "REFER FRIEND",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Refer friends with our simple Telegram Mini App and increase your airdrop",
+  [translation.REFERRAL_MULTIPLIER]: "Referral Multiplier",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:
     "You are registering your Public Keys and vault addresses.",
   [translation.REGISTER_UNLIMITED_VAULTS]:
@@ -137,12 +141,13 @@ export default {
     "Create a secure wallet with multi-factor authentication to protect your assets and enhance your account's security.",
   [translation.SHARE_VAULT]: "Share your Vault",
   [translation.SHARE_SETTINGS_TITLE]: "Personalize Shared Vault Page",
+  [translation.SHARE_ACHIEVEMENTS]: "Share Achievements",
   [translation.SHARE_SETTINGS]: "Customize Shared Vault Appearance",
   [translation.SHARE_VAULT_THEME]: "Shared Vault Theme",
   [translation.SHARE_VAULT_LOGO]: "Shared Vault Logo",
   [translation.SHARE_CURRENT_LOGO]: "Your Current Logo",
   [translation.SHARE_UPLOAD_LOGO]: "Upload Your Logo",
-  [translation.SHOW_NAME_IN_LEADERBOARD]: "Show vault name in leaderboard",
+  [translation.SHOW_NAME_IN_LEADERBOARD]: "Show name in leaderboard",
   [translation.SOMETHING_WRONG]: "Something is wrong",
   [translation.STAKE_TITLE]: "Stake",
   [translation.START]: "Start",
@@ -150,6 +155,9 @@ export default {
   [translation.SUCCESSFUL_COPY_TEXT]: "Text copied to clipboard",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
+  [translation.SWAP]: "Swap",
+  [translation.SWAP_MULTIPLIER]: "Swap Multiplier",
+  [translation.SWAP_VOLUME]: "Swap Volume",
   //T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
@@ -157,6 +165,7 @@ export default {
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Airdrop Vaults",
   [translation.TOTAL_BALANCE]: "Total Balance",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets",
+  [translation.TOTAL_VULTIES]: "Total Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFER FUNDS TO VAULTS",
   [translation.TRANSFER_FUNDSـONBOARDING_EXPLAIN]:

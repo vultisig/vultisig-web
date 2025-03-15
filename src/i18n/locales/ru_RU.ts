@@ -5,6 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Ваши активы будут накапливать VULTIES в течение 12 месяцев. В конце этого периода вы получите свою долю airdrop (5% от $VULT).",
   [translation.ACTIVE_POSITIONS]: "Активные позиции",
+  [translation.ACHIEVEMENTS]: "Дости",
   [translation.ADD_NEW_VAULT]: "Добавить новый хранилище",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Примечание: Airdrop основывается на общей сумме в вашем хранилище, умноженной на время, в течение которого активы хранятся в хранилище. Чем больше сумма и дольше срок, тем больше доход.",
@@ -101,6 +102,7 @@ export default {
     "Какие активы учитываются для airdrop?",
   [translation.QUESTION_THIRD_ONBOARDING]: "Каков процесс airdrop?",
   // R
+  [translation.REFERRAL_MULTIPLIER]: "Коэффициент реферальной программы",
   [translation.READ_MORE_ABOUT_IT]: "Узнать больше об этом",
   [translation.REFER_FRIEND_ONBOARDING]: "ПРИГЛАСИТЕ ДРУГА",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
@@ -131,6 +133,7 @@ export default {
   [translation.SHARE_VAULT]: "Поделитесь вашим хранилищем",
   [translation.SHARE_SETTINGS_TITLE]:
     "Настройте страницу общего доступа к хранилищу",
+  [translation.SHARE_ACHIEVEMENTS]: "Поделиться достижениями",
   [translation.SHARE_SETTINGS]: "Настройте внешний вид общего хранилища",
   [translation.SHARE_VAULT_THEME]: "Тема общего хранилища",
   [translation.SHARE_VAULT_LOGO]: "Логотип общего хранилища",
@@ -143,6 +146,8 @@ export default {
   [translation.SUCCESSFUL_COPY_TEXT]: "Текст скопирован в буфер обмена",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Активы первого уровня и большинство токенов, поддерживаемых Vultisig, учитываются. Другие активные активы, такие как LP и облигации узлов THORChain, протокола MAYA и токены на стейкинге, также действительны.",
+  [translation.SWAP_VOLUME]: "Объем свопа",
+  [translation.SWAP_MULTIPLIER]: "Коэффициент свопа",
   // T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:

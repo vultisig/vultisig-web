@@ -13,5 +13,6 @@ export default keyMirror({
   QR_CODE: true,
   RENAME_VAULT: true,
   VAULT_SETTINGS: true,
+  SHARE_ACHIEVEMENTS: true,
   SHARE_SETTINGS: true,
 });
