@@ -284,6 +284,7 @@ export interface VaultProps {
   rank: number;
   registeredAt: number;
   showNameInLeaderboard: boolean;
+  swapVolume: number;
   theme: Theme;
   totalPoints: number;
   uid: string;

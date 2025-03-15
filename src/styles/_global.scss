@@ -372,6 +372,22 @@ body {
   }
 }
 
+.ant-dropdown-menu-title-content {
+  .balance {
+    float: left !important;
+  }
+  .icon{
+    fill: $blue-persian !important;
+  }
+}
+
+.ant-dropdown-menu-item
+{
+  .icon{
+    fill: $blue-persian !important;
+  }
+}
+
 .layout {
   &-header {
     background-color: $blue-dark;
@@ -395,13 +411,7 @@ body {
       height: rem(40);
       line-height: rem(40);
       margin-right: rem(16);
-      padding: 0 rem(16);
-
-      .icon {
-        fill: $blue-sharp;
-        height: rem(22);
-        width: rem(22);
-      }
+      padding: 0 rem(12);
 
       .value {
         font-weight: 600;
@@ -552,7 +562,7 @@ body {
       padding: 0 rem(16);
 
       .icon {
-        fill: $blue-sharp;
+        fill: $blue-persian;
         height: rem(22);
         width: rem(22);
       }
@@ -646,6 +656,13 @@ body {
       padding: rem(16) 0;
     }
   }
+}
+
+.clock-icon {
+  color: $blue-persian;
+  height: rem(22);
+  width: rem(22);
+  font-size: rem(19);
 }
 
 .layout-header-menu {
