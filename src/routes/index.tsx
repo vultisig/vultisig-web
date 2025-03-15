@@ -16,12 +16,13 @@ const VaultLayout = lazy(() => import("layouts/vault"));
 const ChainAssetsPage = lazy(() => import("pages/chain-assets"));
 const ChainsPage = lazy(() => import("pages/chains"));
 const ImportPage = lazy(() => import("pages/import"));
-const LeaderboardPage = lazy(() => import("pages/leaderboard"));
+const AirdropPage = lazy(() => import("pages/airdrop"));
 const NFTAssetsPage = lazy(() => import("pages/nft-assets"));
 const NFTsPage = lazy(() => import("pages/nfts"));
 const OnboardingPage = lazy(() => import("pages/onboarding"));
 const PositionsPage = lazy(() => import("pages/positions"));
 const RedirectPage = lazy(() => import("pages/redirect"));
+const SwapPage = lazy(() => import("pages/swap"));
 const UploadPage = lazy(() => import("pages/upload"));
 
 interface RouteConfig {
@@ -63,7 +64,7 @@ const Component = () => {
       path: constantPaths.root,
       redirect: vaults.length
         ? constantPaths.vault.chains
-        : constantPaths.default.leaderboard,
+        : constantPaths.default.aridrop,
     },
     {
       path: constantPaths.redirect,
@@ -79,7 +80,7 @@ const Component = () => {
       children: [
         {
           path: constantPaths.default.root,
-          redirect: constantPaths.default.leaderboard,
+          redirect: constantPaths.default.aridrop,
         },
         {
           path: constantPaths.default.import,
@@ -90,10 +91,18 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.default.leaderboard,
+          path: constantPaths.default.aridrop,
           element: (
             <Suspense>
-              <LeaderboardPage />
+              <AirdropPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.default.swap,
+          element: (
+            <Suspense>
+              <SwapPage />
             </Suspense>
           ),
         },
@@ -132,10 +141,18 @@ const Component = () => {
           redirect: constantPaths.root,
         },
         {
-          path: constantPaths.shared.leaderboard,
+          path: constantPaths.shared.aridrop,
           element: (
             <Suspense>
-              <LeaderboardPage />
+              <AirdropPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.shared.swap,
+          element: (
+            <Suspense>
+              <SwapPage />
             </Suspense>
           ),
         },
@@ -214,10 +231,18 @@ const Component = () => {
           redirect: constantPaths.vault.chains,
         },
         {
-          path: constantPaths.vault.leaderboard,
+          path: constantPaths.vault.aridrop,
           element: (
             <Suspense>
-              <LeaderboardPage />
+              <AirdropPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: constantPaths.vault.swap,
+          element: (
+            <Suspense>
+              <SwapPage />
             </Suspense>
           ),
         },

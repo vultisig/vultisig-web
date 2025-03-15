@@ -176,10 +176,15 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     case PageKey.VAULT_POSITIONS:
       selectedKey = "1-3";
       break;
-    case PageKey.LEADERBOARD:
-    case PageKey.SHARED_LEADERBOARD:
-    case PageKey.VAULT_LEADERBOARD:
-      selectedKey = "2";
+    case PageKey.AIRDROP:
+    case PageKey.SHARED_AIRDROP:
+    case PageKey.VAULT_AIRDROP:
+      selectedKey = "2-1";
+      break;
+    case PageKey.SWAP:
+    case PageKey.SHARED_SWAP:
+    case PageKey.VAULT_SWAP:
+      selectedKey = "2-2";
       break;
     case PageKey.ONBOARDING:
       selectedKey = "3";
@@ -367,44 +372,68 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     },
   ];
 
+  const _lastItems: MenuProps["items"] = [
+    {
+      key: "3",
+      label: (
+        <Link to={constantPaths.default.onboarding}>
+          {t(constantKeys.HOW_TO_PARTICIPATE)}
+        </Link>
+      ),
+    },
+    {
+      key: "4",
+      label: (
+        <Link to={constantPaths.default.import}>
+          {t(constantKeys.CONNECT_YOUR_WALLET)}
+        </Link>
+      ),
+    },
+  ];
+
   const navbarMenu: MenuProps["items"] = [
     ...(vaults.length ? _firstItems : []),
     {
       key: "2",
-      label: (
-        <Link
-          to={
-            layout === LayoutKey.SHARED
-              ? handleSharePath(constantPaths.shared.leaderboard)
-              : vaults.length
-              ? constantPaths.vault.leaderboard
-              : constantPaths.default.leaderboard
-          }
-        >
-          {t(constantKeys.LEADERBOARD)}
-        </Link>
-      ),
+      label: t(constantKeys.LEADERBOARD),
+      icon: <ArrowRight />,
+      type: "submenu",
+      children: [
+        {
+          key: "2-1",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.aridrop)
+                  : vaults.length
+                  ? constantPaths.vault.aridrop
+                  : constantPaths.default.aridrop
+              }
+            >
+              {t(constantKeys.AIRDROP)}
+            </Link>
+          ),
+        },
+        {
+          key: "2-2",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.swap)
+                  : vaults.length
+                  ? constantPaths.vault.swap
+                  : constantPaths.default.swap
+              }
+            >
+              {t(constantKeys.SWAP)}
+            </Link>
+          ),
+        },
+      ],
     },
-    ...(!vaults.length
-      ? [
-          {
-            key: "3",
-            label: (
-              <Link to={constantPaths.default.onboarding}>
-                {t(constantKeys.HOW_TO_PARTICIPATE)}
-              </Link>
-            ),
-          },
-          {
-            key: "4",
-            label: (
-              <Link to={constantPaths.default.import}>
-                {t(constantKeys.CONNECT_YOUR_WALLET)}
-              </Link>
-            ),
-          },
-        ]
-      : []),
+    ...(!vaults.length ? _lastItems : []),
   ];
 
   return (
@@ -438,7 +467,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               ? handleSharePath(constantPaths.shared.chains)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.leaderboard
+              : constantPaths.default.aridrop
           }
           className="logo"
         >
@@ -497,7 +526,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
                   ? handleSharePath(constantPaths.shared.chains)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.leaderboard
+                  : constantPaths.default.aridrop
               }
               className="logo"
             >
