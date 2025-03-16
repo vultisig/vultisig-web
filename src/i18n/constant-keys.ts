@@ -5,6 +5,7 @@ export default keyMirror({
   ACCUMULATE_VULTIES_PERIOD: true,
   ACTIVE_POSITIONS: true,
   ADD_NEW_VAULT: true,
+  AIRDROP: true,
   AIRDROP_CALCULATION_NOTE: true,
   AIRDROP_LEADERBOARD: true,
   AIRDROP_NOT_STARTED: true,
@@ -112,6 +113,7 @@ export default keyMirror({
   SAVE: true,
   SAVER_TITLE: true,
   SEARCH: true,
+  SEASON_END_TIME: true,
   SECURE_CRYPTO_VAULT: true,
   SEE_FULL_LIST: true,
   SELECT_CHAINS_TOKENS: true,
@@ -131,6 +133,7 @@ export default keyMirror({
   SUCCESSFUL_COPY_LINK: true,
   SUCCESSFUL_COPY_TEXT: true,
   SUPPORTED_ASSETS_NOTE: true,
+  SWAP: true,
   //T
   TGT: true,
   TITLE_ONBOARDING: true,

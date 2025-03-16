@@ -35,6 +35,9 @@ export default class PositionProvider {
       case "AVAX":
         name = ChainKey.AVALANCHE;
         break;
+      case "BASE":
+        name = ChainKey.BASE;
+        break;
       case "BCH":
         name = ChainKey.BITCOINCASH;
         break;
@@ -225,10 +228,10 @@ export default class PositionProvider {
 
       api.activePositions
         .getSaverPositions(addresses)
-        .then(({ data }) => {
+        .then((pools) => {
           const cmcIds: number[] = [];
 
-          data.pools.forEach((item) => {
+          pools.forEach((item) => {
             const chain = this.getChain(item.pool);
 
             if (chain) {
@@ -237,11 +240,12 @@ export default class PositionProvider {
               if (id) cmcIds.push(id);
             }
           });
+
           if (cmcIds.length) {
             api.coin
               .values(cmcIds, Currency.USD)
               .then((values) => {
-                data.pools.forEach((item) => {
+                pools.forEach((item) => {
                   const chain = this.getChain(item.pool);
 
                   if (chain) {

@@ -110,6 +110,7 @@ export default {
   [translation.SAVE]: "Opslaan",
   [translation.SAVER_TITLE]: "Spaarder",
   [translation.SEARCH]: "Zoeken",
+  [translation.SEASON_END_TIME]: "Het seizoen eindigt in",
   [translation.SECURE_CRYPTO_VAULT]: "VEILIGE CRYPTO KLUIS",
   [translation.SEE_FULL_LIST]: "Bekijk de volledige lijst",
   [translation.SELECT_CHAINS_TOKENS]:
