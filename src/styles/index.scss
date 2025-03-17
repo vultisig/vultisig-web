@@ -30,10 +30,12 @@
 @use "../modals/manage-airdrop";
 @use "../modals/qr-code";
 @use "../modals/rename-vault";
+@use "../modals/share-achievements";
 @use "../modals/shared-settings";
 @use "../modals/vault-settings";
 
 @use "../pages/airdrop";
+@use "../pages/achievements";
 @use "../pages/chain-assets";
 @use "../pages/chains";
 @use "../pages/import";
