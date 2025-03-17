@@ -25,6 +25,7 @@ export default {
   vault: {
     root: "/vault",
     aridrop: "/vault/aridrop",
+    achievements: "/vault/achievements",
     chains: "/vault/balances",
     chainAssets: "/vault/balances/:chainKey",
     nfts: "/vault/nfts",

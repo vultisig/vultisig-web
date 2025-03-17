@@ -11,8 +11,6 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { ArrowRight } from "icons";
-import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -31,6 +29,7 @@ import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
 import {
+  ArrowRight,
   CircleDollar,
   CircleHelp,
   CircleUser,
@@ -187,12 +186,15 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     case PageKey.VAULT_SWAP:
       selectedKey = "2-2";
       break;
-    case PageKey.ONBOARDING:
+    case PageKey.ACHIEVEMENTES:
       selectedKey = "3";
+      break;
+    case PageKey.ONBOARDING:
+      selectedKey = "4";
       break;
     case PageKey.IMPORT:
     case PageKey.UPLOAD:
-      selectedKey = "4";
+      selectedKey = "5";
       break;
     default:
       selectedKey = "";
@@ -203,33 +205,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
-    {
-      key: "0",
-      type: "group",
-      label: t(constantKeys.VAULT_BALANCE),
-      children: [
-        ...(layout === LayoutKey.VAULT
-          ? [
-              {
-                key: "0-1",
-                label: (
-                  <span className="balance">
-                    {vault
-                      ? (
-                          (getAssetsBalance(vault) +
-                            getNFTsBalance(vault) +
-                            getPositionsBalance(vault)) *
-                          baseValue
-                        ).toValueFormat(currency)
-                      : 0}
-                  </span>
-                ),
-                icon: <Storage className="icon" />,
-              },
-            ]
-          : []),
-      ],
-    },
     ...(layout === LayoutKey.VAULT
       ? [
           {
@@ -269,15 +244,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             ),
             icon: <CircleDollar />,
           },
-          // ...(layout === LayoutKey.VAULT
-          //   ? [
-          //       {
-          //         key: "4",
-          //         label: t(constantKeys.DEFAULT_CHAINS),
-          //         icon: <ChainOutlined />,
-          //       },
-          //     ]
-          //   : []),
         ]
       : []),
     {
@@ -402,7 +368,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   const _lastItems: MenuProps["items"] = [
     {
-      key: "3",
+      key: "4",
       label: (
         <Link to={constantPaths.default.onboarding}>
           {t(constantKeys.HOW_TO_PARTICIPATE)}
@@ -410,7 +376,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       ),
     },
     {
-      key: "4",
+      key: "5",
       label: (
         <Link to={constantPaths.default.import}>
           {t(constantKeys.CONNECT_YOUR_WALLET)}
@@ -461,6 +427,19 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         },
       ],
     },
+    ...(vaults.length
+      ? [
+          {
+            key: "3",
+            label: (
+              <Link to={constantPaths.vault.achievements}>
+                {t(constantKeys.ACHIEVEMENTS)}
+              </Link>
+            ),
+          },
+        ]
+      : []),
+
     ...(!vaults.length ? _lastItems : []),
   ];
 
@@ -478,7 +457,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <HamburgerLG />
           </Button>
         )}
-
+        {/* <Button href={`#${constantModals.SHARE_ACHIEVEMENTS}`}>"Share"</Button> */}
         {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
           <Button
             onClick={handleJoinAirdrop}
@@ -529,11 +508,16 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
         {isTablet && vault && (
           <div className="balance">
-            <ClockCircleOutlined className="clock-icon" />
-            <span className="text">{`${t(
-              constantKeys.SEASON_END_TIME
-            )}:`}</span>
-            <span className="value">30d 6h 24min</span>
+            <Storage className="icon" />
+            <span className="text">{`${t(constantKeys.VAULT_BALANCE)}:`}</span>
+            <span className="value">
+              {(
+                (getAssetsBalance(vault) +
+                  getNFTsBalance(vault) +
+                  getPositionsBalance(vault)) *
+                baseValue
+              ).toValueFormat(currency)}
+            </span>
           </div>
         )}
       </div>
@@ -578,14 +562,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           placement="left"
           className="layout-menu"
         >
-          <div className="balance">
-            <ClockCircleOutlined className="clock-icon" />
-            <span className="text">{`${t(
-              constantKeys.SEASON_END_TIME
-            )}:`}</span>
-            <span className="value">30d 6h 24min</span>
-          </div>
-          {vault && (
+          {!isTablet && vault && (
             <>
               <div className="balance">
                 <Storage className="icon" />
