@@ -40,25 +40,25 @@ const Component: FC = () => {
   const data = [
     {
       key: "X",
-      title: "Share on X",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["X"])}`,
       icon: "/images/X-app.png",
       color: "#03A9F4",
     },
     {
       key: "facebook",
-      title: "Share on Facebook",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Facebook"])}`,
       icon: "/images/facebook-icon.png",
       color: "#1877F2",
     },
     {
       key: "whatsapp",
-      title: "Share on Whatsapp",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Whatsapp"])}`,
       icon: "/images/whatsapp-icon.png",
       color: "#4CAF50",
     },
     {
       key: "telegram",
-      title: "Share on Telegram",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Telegram"])}`,
       icon: "/images/telegram-icon.png",
       color: "#039BE5",
     },
@@ -82,10 +82,14 @@ const Component: FC = () => {
         </div>
         <div className="share-vult">
           <div className="share-info">
-            <span className="title">
-              {t(constantKeys.MY_SHARE_OF_THE)} <span>$VULT</span>{" "}
-              {t(constantKeys.AIRDROP)}
-            </span>
+            <span
+              className="title"
+              dangerouslySetInnerHTML={{
+                __html: t(
+                  constantKeys.MY_SHARE_OF_THE_VULT_AIRDROP
+                ).replaceArgs(["<span>$VULT</span>"]),
+              }}
+            ></span>
             <span className="total-vulties">
               {t(constantKeys.TOTAL_VULTIES)}
             </span>

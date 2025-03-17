@@ -65,19 +65,30 @@
       align-items: center;
       align-content: center;
       margin-top: rem(21);
+      height: rem(80);
       li {
         border-left: 1px rgba(27, 63, 115, 1) solid;
-        padding: rem(2) rem(16);
+        // background-color: gray;
+        padding: rem(5) rem(10) rem(45) rem(10);
+        position: relative;
+        width: 33%;
+        height: 100%;
         .title {
           display: block;
           color: #97acbf;
-          font-size: rem(10);
+          font-size: rem(11);
+          margin-bottom: rem(5);
         }
         .number {
+          position: absolute;
+          bottom: rem(1);
+          display: block;
           font-size: rem(18);
           font-weight: 600;
         }
         .multiplier {
+          position: absolute;
+          bottom: rem(1);
           color: $blue-persian;
           font-size: rem(18);
           font-weight: 600;
@@ -99,5 +110,10 @@
   }
   .ant-modal-footer {
     display: none;
+  }
+}
+@media (min-width: rem(576)) {
+  .swap-info {
+    height: rem(70) !important;
   }
 }

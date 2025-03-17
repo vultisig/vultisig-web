@@ -6,6 +6,8 @@ import { Tokens, NFTs } from "icons";
 import { useBaseContext } from "context";
 import { PageKey } from "utils/constants";
 
+import constantKeys from "i18n/constant-keys";
+
 import VultiLoading from "components/vulti-loading";
 import { Link } from "react-router-dom";
 
@@ -14,6 +16,7 @@ interface InitialState {
   loaded: boolean;
   loading: boolean;
   pageSize: number;
+  showTokens: boolean;
   total: number;
 }
 
@@ -24,10 +27,11 @@ const Component: FC = () => {
     loaded: false,
     loading: false,
     pageSize: 24,
+    showTokens: true,
     total: 0,
   };
   const [state, setState] = useState(initialState);
-  const { loaded, loading } = state;
+  const { loaded, loading, showTokens } = state;
   const { changePage } = useBaseContext();
 
   const fetchData = (): void => {
@@ -35,6 +39,13 @@ const Component: FC = () => {
       setState((prevState) => ({ ...prevState, loading: true }));
     }
     setState((prevState) => ({ ...prevState, loading: false, loaded: true }));
+  };
+
+  const handelSwitch = (): void => {
+    setState((prevState) => ({
+      ...prevState,
+      showTokens: !prevState.showTokens,
+    }));
   };
 
   const componentDidMount = (): void => {
@@ -48,41 +59,43 @@ const Component: FC = () => {
   return loaded ? (
     <div className="layout-content achievements-page">
       <div className="achievements-title">
-        <h1 className="title">$VULT Airdrop Achievements</h1>
+        <h1 className="title">{t(constantKeys.VAULT_AIRDROP_ACHIEVEMENTS)}</h1>
         <Link
           to={`#${constantModals.SHARE_ACHIEVEMENTS}`}
           className="share-btn"
         >
-          <ShareAltOutlined /> Share
+          <ShareAltOutlined /> {t(constantKeys.SHARE)}
         </Link>
       </div>
 
       <div className="projectedVult">
-        <p className="title">Projected $VULT at end of Season</p>
+        <p className="title">
+          {t(constantKeys.PROJECTED_$VULT_AT_END_OF_SEASON)}
+        </p>
         <span className="price">2,500 $VULT</span>
       </div>
 
       <ul className="stats">
         <li>
-          <p className="title">Total vulties</p>
+          <p className="title">{t(constantKeys.TOTAL_VULTIES)}</p>
           <span className="price cyan">75,000</span>
         </li>
         <li>
-          <p className="title">Swap Volume</p>
+          <p className="title">{t(constantKeys.SWAP_VOLUME)}</p>
           <span className="price">$5,000</span>
         </li>
         <li>
-          <p className="title">Swap Multiplier</p>
+          <p className="title">{t(constantKeys.SWAP_MULTIPLIER)}</p>
           <span className="price blue">1.6X</span>
         </li>
         <li>
-          <p className="title">Referral Multiplier</p>
+          <p className="title">{t(constantKeys.REFERRAL_MULTIPLIER)}</p>
           <span className="price blue">1.5X</span>
         </li>
       </ul>
 
       <div className="milestones">
-        <h3 className="title">Milestones</h3>
+        <h3 className="title">{t(constantKeys.MILESTONES)}</h3>
         <ul className="items">
           <li className="active">
             <img className="icon" src="/images/initiate.png" alt="icon" />
@@ -97,7 +110,7 @@ const Component: FC = () => {
             <p className="title">100,000 VULTIES</p>
             <div className="status">
               <img className="award" src="/images/award.svg" />
-              <span>Locked</span>
+              <span>{t(constantKeys.LOCKED)}</span>
             </div>
           </li>
           <li>
@@ -109,7 +122,7 @@ const Component: FC = () => {
             <p className="title">500,000 VULTIES</p>
             <div className="status">
               <img className="award" src="/images/award.svg" />
-              <span>Locked</span>
+              <span>{t(constantKeys.LOCKED)}</span>
             </div>
           </li>
           <li>
@@ -121,7 +134,7 @@ const Component: FC = () => {
             <p className="title">1000,000 VULTIES</p>
             <div className="status">
               <img className="award" src="/images/award.svg" />
-              <span>Locked</span>
+              <span>{t(constantKeys.LOCKED)}</span>
             </div>
           </li>
           <li>
@@ -129,14 +142,14 @@ const Component: FC = () => {
             <p className="title">10,000,000 VULTIES</p>
             <div className="status">
               <img className="award" src="/images/award.svg" />
-              <span>Locked</span>
+              <span>{t(constantKeys.LOCKED)}</span>
             </div>
           </li>
         </ul>
       </div>
 
       <div className="next-milestones">
-        <h3 className="title">Progress to Next Milestone</h3>
+        <h3 className="title">{t(constantKeys.PROGRESS_TO_NEXT_MILESTONE)}</h3>
         <div className="data">
           <div className="steps">
             <p>50,000 VULTIES</p>
@@ -146,202 +159,224 @@ const Component: FC = () => {
             <div className="value" style={{ width: "45%" }}></div>
           </div>
           <div className="info">
-            <span>75,000 / 100,000 VULTIES (50% to next milestone)</span>
+            <span>
+              75,000 / 100,000 VULTIES (50% {t(constantKeys.TO_NEXT_MILESTONE)})
+            </span>
           </div>
         </div>
       </div>
 
       <div className="multiplier-boosts">
-        <h3 className="title">Multiplier Boosts</h3>
+        <h3 className="title">{t(constantKeys.MULTIPLIER_BOOSTS)}</h3>
         <div className="data">
           <div className="switcher">
-            <div className="item active">
+            <div
+              className={`item ${showTokens ? "active" : ""}`}
+              onClick={handelSwitch}
+            >
               <Tokens />
               <span>Tokens</span>
             </div>
-            <div className="item">
+            <div
+              className={`item ${!showTokens ? "active" : ""}`}
+              onClick={handelSwitch}
+            >
               <NFTs />
               <span>NFTs</span>
             </div>
           </div>
-          <ul className="coins" >
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+          {showTokens ? (
+            <ul className="coins">
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+              </li>
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+              </li>
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/coins/btc.svg" alt="coin" />
-                <div className="info">
-                  <p className="title">VULT</p>
-                  <p className="value">Min. 1,000 token</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-          </ul>
-          <ul className="nfts" style={{ display: "none" }}>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+              </li>
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+              </li>
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+              </li>
+              <li>
+                <div className="coin">
+                  <img className="logo" src="/coins/btc.svg" alt="coin" />
+                  <div className="info">
+                    <p className="title">VULT</p>
+                    <p className="value">Min. 1,000 token</p>
+                  </div>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-            <li>
-              <div className="coin">
-                <img className="logo" src="/images/nft-sample.png" alt="coin" />
-                <div className="info">
-                  <p className="title">Thorguard</p>
-                  <p className="value">#123</p>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                 </div>
-              </div>
-              <div className="value">
-                <p className="boost-value">1.5X</p>
-                <p className="multiplier">Multiplier</p>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          ) : (
+            <ul className="nfts">
+              <li>
+                <div className="coin">
+                  <img
+                    className="logo"
+                    src="/images/nft-sample.png"
+                    alt="coin"
+                  />
+                  <div className="info">
+                    <p className="title">Thorguard</p>
+                    <p className="value">#123</p>
+                  </div>
+                </div>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
+                </div>
+              </li>
+              <li>
+                <div className="coin">
+                  <img
+                    className="logo"
+                    src="/images/nft-sample.png"
+                    alt="coin"
+                  />
+                  <div className="info">
+                    <p className="title">Thorguard</p>
+                    <p className="value">#123</p>
+                  </div>
+                </div>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
+                </div>
+              </li>
+              <li>
+                <div className="coin">
+                  <img
+                    className="logo"
+                    src="/images/nft-sample.png"
+                    alt="coin"
+                  />
+                  <div className="info">
+                    <p className="title">Thorguard</p>
+                    <p className="value">#123</p>
+                  </div>
+                </div>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
+                </div>
+              </li>
+              <li>
+                <div className="coin">
+                  <img
+                    className="logo"
+                    src="/images/nft-sample.png"
+                    alt="coin"
+                  />
+                  <div className="info">
+                    <p className="title">Thorguard</p>
+                    <p className="value">#123</p>
+                  </div>
+                </div>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
+                </div>
+              </li>
+              <li>
+                <div className="coin">
+                  <img
+                    className="logo"
+                    src="/images/nft-sample.png"
+                    alt="coin"
+                  />
+                  <div className="info">
+                    <p className="title">Thorguard</p>
+                    <p className="value">#123</p>
+                  </div>
+                </div>
+                <div className="value">
+                  <p className="boost-value">1.5X</p>
+                  <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
+                </div>
+              </li>
+            </ul>
+          )}
         </div>
       </div>
 
       <div className="boost">
-        <p>Boost Your Earnings</p>
+        <p>{t(constantKeys.BOOST_YOUR_EAENINGS)}</p>
         <div className="plans">
           <div className="item">
             <img src="/images/refresh.svg" />
             <div className="info">
-              <p className="title">Increase Swap Volume</p>
-              <p className="desc">Swap more to earn more VULTIES</p>
+              <p className="title">{t(constantKeys.INCREASE_SWAP_VOLUME)}</p>
+              <p className="desc">
+                {t(constantKeys.SWAP_MORE_TO_EARN_MORE_VULTIES)}
+              </p>
             </div>
           </div>
           <div className="item">
             <img src="/images/users.svg" />
             <div className="info">
               <p className="title">Refer Friends</p>
-              <p className="desc">Get a x% bonus on referral earnings</p>
+              <p className="desc">
+                {t(constantKeys.BONUS_ON_REFERRAL_EARNINGS).replaceArgs(["x"])}
+              </p>
             </div>
           </div>
         </div>
