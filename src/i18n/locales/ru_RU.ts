@@ -136,6 +136,7 @@ export default {
   [translation.SAVE]: "Сохранить",
   [translation.SAVER_TITLE]: "Сберегатель",
   [translation.SEARCH]: "Поиск",
+  [translation.SEASON_END_TIME]: "Сезон заканчивается через",
   [translation.SECURE_CRYPTO_VAULT]: "БЕЗОПАСНОЕ КРИПТОХРАНИЛИЩЕ",
   [translation.SEE_FULL_LIST]: "Смотреть полный список",
   [translation.SELECT_CHAINS_TOKENS]:

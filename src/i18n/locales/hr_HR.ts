@@ -135,6 +135,7 @@ export default {
   [translation.SAVE]: "Spremi",
   [translation.SAVER_TITLE]: "Štednja",
   [translation.SEARCH]: "Pretraži",
+  [translation.SEASON_END_TIME]: "Sezona završava za",
   [translation.SECURE_CRYPTO_VAULT]: "SIGURNI KRIPTO VAULT",
   [translation.SEE_FULL_LIST]: "Pogledajte cijeli popis",
   [translation.SELECT_CHAINS_TOKENS]:

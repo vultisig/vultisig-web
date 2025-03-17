@@ -133,6 +133,7 @@ export default {
   [translation.SAVE]: "Guardar",
   [translation.SAVER_TITLE]: "Poupador",
   [translation.SEARCH]: "Pesquisar",
+  [translation.SEASON_END_TIME]: "A temporada termina em",
   [translation.SECURE_CRYPTO_VAULT]: "COFRE CRIPTO SEGURO",
   [translation.SEE_FULL_LIST]: "Ver lista completa",
   [translation.SELECT_CHAINS_TOKENS]:
