@@ -17,7 +17,6 @@ const ChainAssetsPage = lazy(() => import("pages/chain-assets"));
 const ChainsPage = lazy(() => import("pages/chains"));
 const ImportPage = lazy(() => import("pages/import"));
 const AirdropPage = lazy(() => import("pages/airdrop"));
-const AchievmentsPage = lazy(() => import("pages/achievements"));
 const NFTAssetsPage = lazy(() => import("pages/nft-assets"));
 const NFTsPage = lazy(() => import("pages/nfts"));
 const OnboardingPage = lazy(() => import("pages/onboarding"));
@@ -230,14 +229,6 @@ const Component = () => {
         {
           path: constantPaths.vault.root,
           redirect: constantPaths.vault.chains,
-        },
-        {
-          path: constantPaths.vault.achievements,
-          element: (
-            <Suspense>
-              <AchievmentsPage />
-            </Suspense>
-          ),
         },
         {
           path: constantPaths.vault.aridrop,

@@ -34,7 +34,6 @@ import DeleteVault from "modals/delete-vault";
 import LogoutVault from "modals/logout-vault";
 import RenameVault from "modals/rename-vault";
 import VaultSettings from "modals/vault-settings";
-import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
@@ -625,7 +624,6 @@ const Component: FC = () => {
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
-      <ShareAchievements />
       <SharedSettings vault={vault} />
     </>
   ) : (

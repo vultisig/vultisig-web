@@ -56,7 +56,6 @@ export enum LayoutKey {
 
 export enum PageKey {
   AIRDROP,
-  ACHIEVEMENTES,
   IMPORT,
   ONBOARDING,
   SWAP,

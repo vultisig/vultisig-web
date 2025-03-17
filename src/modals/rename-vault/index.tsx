@@ -39,8 +39,6 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
         if (!submitting && vault) {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
-          console.log(showNameInLeaderboard);
-
           api.vault
             .rename({ ...vault, name: alias, showNameInLeaderboard })
             .then(() => {

@@ -3,7 +3,6 @@ import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip } from "antd";
 import { useBaseContext } from "context";
-
 import { LayoutKey, PageKey } from "utils/constants";
 import { getPositionsBalance } from "utils/functions";
 import { VaultOutletContext } from "utils/interfaces";

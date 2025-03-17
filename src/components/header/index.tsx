@@ -11,7 +11,9 @@ import {
   MenuProps,
   message,
 } from "antd";
+import { ArrowRight } from "icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
+
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
 import {
@@ -29,7 +31,6 @@ import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
 import {
-  ArrowRight,
   CircleDollar,
   CircleHelp,
   CircleUser,
@@ -186,15 +187,12 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     case PageKey.VAULT_SWAP:
       selectedKey = "2-2";
       break;
-    case PageKey.ACHIEVEMENTES:
-      selectedKey = "3";
-      break;
     case PageKey.ONBOARDING:
-      selectedKey = "4";
+      selectedKey = "3";
       break;
     case PageKey.IMPORT:
     case PageKey.UPLOAD:
-      selectedKey = "5";
+      selectedKey = "4";
       break;
     default:
       selectedKey = "";
@@ -271,6 +269,15 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             ),
             icon: <CircleDollar />,
           },
+          // ...(layout === LayoutKey.VAULT
+          //   ? [
+          //       {
+          //         key: "4",
+          //         label: t(constantKeys.DEFAULT_CHAINS),
+          //         icon: <ChainOutlined />,
+          //       },
+          //     ]
+          //   : []),
         ]
       : []),
     {
@@ -395,7 +402,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   const _lastItems: MenuProps["items"] = [
     {
-      key: "4",
+      key: "3",
       label: (
         <Link to={constantPaths.default.onboarding}>
           {t(constantKeys.HOW_TO_PARTICIPATE)}
@@ -403,7 +410,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       ),
     },
     {
-      key: "5",
+      key: "4",
       label: (
         <Link to={constantPaths.default.import}>
           {t(constantKeys.CONNECT_YOUR_WALLET)}
@@ -454,19 +461,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         },
       ],
     },
-    ...(vaults.length
-      ? [
-          {
-            key: "3",
-            label: (
-              <Link to={constantPaths.vault.achievements}>
-                {t(constantKeys.ACHIEVEMENTS)}
-              </Link>
-            ),
-          },
-        ]
-      : []),
-
     ...(!vaults.length ? _lastItems : []),
   ];
 
@@ -484,7 +478,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <HamburgerLG />
           </Button>
         )}
-        {/* <Button href={`#${constantModals.SHARE_ACHIEVEMENTS}`}>"Share"</Button> */}
+
         {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
           <Button
             onClick={handleJoinAirdrop}

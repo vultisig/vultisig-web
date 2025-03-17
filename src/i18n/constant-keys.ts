@@ -4,7 +4,6 @@ export default keyMirror({
   // A
   ACCUMULATE_VULTIES_PERIOD: true,
   ACTIVE_POSITIONS: true,
-  ACHIEVEMENTS: true,
   ADD_NEW_VAULT: true,
   AIRDROP: true,
   AIRDROP_CALCULATION_NOTE: true,
@@ -18,8 +17,6 @@ export default keyMirror({
   BALANCES: true,
   BECOME_VULTISIG_USER: true,
   BOND_TITLE: true,
-  BONUS_ON_REFERRAL_EARNINGS: true,
-  BOOST_YOUR_EAENINGS: true,
   // C
   CHECK_LEANDER_BOARD: true,
   CHOOSE_CHAIN: true,
@@ -56,7 +53,6 @@ export default keyMirror({
   HOW_TO_PARTICIPATE: true,
   // I
   INSPECT_CODE_MANAGE: true,
-  INCREASE_SWAP_VOLUME: true,
   // J
   JOIN_AIRDROP: true,
   JOIN_THE_AIRDROP_ONBOARDING: true,
@@ -64,7 +60,6 @@ export default keyMirror({
   // K
   // L
   LANGUAGE: true,
-  LOCKED: true,
   LEADERBOARD: true,
   LINK_SEE_HERE: true,
   LIQUIDITY_POSITION_TITLE: true,
@@ -75,15 +70,9 @@ export default keyMirror({
   LOGOUT_VAULT: true,
   LOGOUT_VAULT_TITLE: true,
   LOGOUT_VAULT_WARNING: true,
-
   // M
   MANAGE_AIRDROP: true,
   MAYA: true,
-  MILESTONES: true,
-  MULTIPLIER: true,
-  MULTIPLIER_BOOSTS: true,
-  MY_SHARE_OF_THE_VULT_AIRDROP: true,
-
   // N
   NFTS: true,
   NFTS_BALANCE: true,
@@ -100,8 +89,6 @@ export default keyMirror({
   POSITIONS_BALANCE: true,
   POSITIONS_TITLE: true,
   POWERED_BY: true,
-  PROGRESS_TO_NEXT_MILESTONE: true,
-  PROJECTED_$VULT_AT_END_OF_SEASON: true,
   PRIVACY: true,
   // Q
   QUESTION_FIRST_ONBOARDING: true,
@@ -111,8 +98,6 @@ export default keyMirror({
   READ_MORE_ABOUT_IT: true,
   REFER_FRIEND_ONBOARDING: true,
   REFER_FRIEND_ONBOARDING_EXPLAIN: true,
-  REFERRAL_MULTIPLIER: true,
-  REFER_FRIENDS: true,
   REGISTER_PUBLIC_KEYS_VAULTS: true,
   REGISTER_UNLIMITED_VAULTS: true,
   REGISTEREDـVAULTS_AIRDROP: true,
@@ -134,10 +119,7 @@ export default keyMirror({
   SELECT_CHAINS_TOKENS: true,
   SETUP_MULTIـONBOARDING: true,
   SETUP_MULTI_ONBOARDING_EXPLAIN: true,
-  SHARE: true,
-  SHARE_ON: true,
   SHARE_VAULT: true,
-  SHARE_ACHIEVEMENTS: true,
   SHARE_SETTINGS: true,
   SHARE_SETTINGS_TITLE: true,
   SHARE_VAULT_THEME: true,
@@ -152,17 +134,12 @@ export default keyMirror({
   SUCCESSFUL_COPY_TEXT: true,
   SUPPORTED_ASSETS_NOTE: true,
   SWAP: true,
-  SWAP_MORE_TO_EARN_MORE_VULTIES: true,
-  SWAP_MULTIPLIER: true,
-  SWAP_VOLUME: true,
   //T
   TGT: true,
   TITLE_ONBOARDING: true,
-  TO_NEXT_MILESTONE: true,
   TOTAL_AIRDROP_VAULT_VALUE: true,
   TOTAL_BALANCE: true,
   TOTAL_REGISTERED_WALLETS: true,
-  TOTAL_VULTIES: true,
   THORCHAIN: true,
   TRANSFER_FUNDS_ONBOARDING: true,
   TRANSFER_FUNDSـONBOARDING_EXPLAIN: true,
@@ -175,7 +152,6 @@ export default keyMirror({
   UPLOAD_VAULT_SHARE: true,
   UPLOAD_VAULT_QR: true,
   // V
-  VAULT_AIRDROP_ACHIEVEMENTS: true,
   VAULT_AIRDROP_JOINED: true,
   VAULT_BALANCE: true,
   VAULT_SETTINGS: true,
