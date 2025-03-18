@@ -5,6 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Your assets will accumulate VULTIES over a period of 12 months. At the end of this period, you will receive your share of the airdrop (5% of $VULT).",
   [translation.ACTIVE_POSITIONS]: "Active Positions",
+  [translation.ACHIEVEMENTS]: "Achievements",
   [translation.ADD_NEW_VAULT]: "Add new vault",
   [translation.AIRDROP]: "Airdrop",
   [translation.AIRDROP_CALCULATION_NOTE]:
@@ -22,6 +23,9 @@ export default {
   [translation.BECOME_VULTISIG_USER]:
     "Become a Vultisig user and join the airdrop calculation.",
   [translation.BOND_TITLE]: "Bond",
+  [translation.BONUS_ON_REFERRAL_EARNINGS]:
+    "Get a {0}% bonus on referral earnings",
+  [translation.BOOST_YOUR_EAENINGS]: "Boost Your Earnings",
   // C
   [translation.CHECK_LEANDER_BOARD]: "Check Leaderboard",
   [translation.CHOOSE_CHAIN]: "Choose Chains",
@@ -63,6 +67,7 @@ export default {
   [translation.HOW_TO_PARTICIPATE]: "How to Participate",
   // I
   [translation.INSPECT_CODE_MANAGE]: "Inspect the code here.",
+  [translation.INCREASE_SWAP_VOLUME]: "Increase Swap Volume",
   // J
   [translation.JOIN_AIRDROP]: "Join Airdrop",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "JOIN THE AIRDROP",
@@ -75,6 +80,7 @@ export default {
   [translation.LIQUIDITY_POSITION_TITLE]: "Liquidity Position",
   [translation.LINK_SEE_HERE]: "seen here.",
   [translation.LOADING]: "Loading",
+  [translation.LOCKED]: "Locked",
   [translation.LOGO]: "Logo",
   [translation.LOGO_SIZE]: "The maximum allowed logo size is 100KB",
   [translation.LOGOUT]: "Logout",
@@ -84,6 +90,11 @@ export default {
   // M
   [translation.MANAGE_AIRDROP]: "Manage Airdrop",
   [translation.MAYA]: "Maya",
+  [translation.MILESTONES]: "Milestones",
+  [translation.MULTIPLIER]: "Multiplier",
+  [translation.MULTIPLIER_BOOSTS]: "Multiplier Boosts",
+  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "My Share of the {0} airdrop",
+
   // N
   [translation.NFTS]: "NFTs",
   [translation.NFTS_BALANCE]: "NFTs Balance",
@@ -100,6 +111,9 @@ export default {
   [translation.POSITIONS_BALANCE]: "Positions Balance",
   [translation.POSITIONS_TITLE]: "Positions",
   [translation.POWERED_BY]: "Powered by",
+  [translation.PROGRESS_TO_NEXT_MILESTONE]: "Progress to Next Milestone",
+  [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
+    "Projected $VULT at end of Season",
   [translation.PRIVACY]: "Read the Founder Pledge on Privacy here.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "How do I register for the airdrop?",
@@ -111,6 +125,8 @@ export default {
   [translation.REFER_FRIEND_ONBOARDING]: "REFER FRIEND",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Refer friends with our simple Telegram Mini App and increase your airdrop",
+  [translation.REFERRAL_MULTIPLIER]: "Referral Multiplier",
+  [translation.REFER_FRIENDS]: "Refer Friends",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:
     "You are registering your Public Keys and vault addresses.",
   [translation.REGISTER_UNLIMITED_VAULTS]:
@@ -137,9 +153,12 @@ export default {
   [translation.SETUP_MULTIـONBOARDING]: "SETUP MULTI-FACTOR WALLET",
   [translation.SETUP_MULTI_ONBOARDING_EXPLAIN]:
     "Create a secure wallet with multi-factor authentication to protect your assets and enhance your account's security.",
-  [translation.SHARE_VAULT]: "Share your Vault",
+  [translation.SHARE]: "Share",
+  [translation.SHARE_ON]: "Share on {0}",
+  [translation.SHARE_ACHIEVEMENTS]: "Share Achievements",
   [translation.SHARE_SETTINGS_TITLE]: "Personalize Shared Vault Page",
   [translation.SHARE_SETTINGS]: "Customize Shared Vault Appearance",
+  [translation.SHARE_VAULT]: "Share your Vault",
   [translation.SHARE_VAULT_THEME]: "Shared Vault Theme",
   [translation.SHARE_VAULT_LOGO]: "Shared Vault Logo",
   [translation.SHARE_CURRENT_LOGO]: "Your Current Logo",
@@ -153,13 +172,19 @@ export default {
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
   [translation.SWAP]: "Swap",
+  [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
+    "Swap more to earn more VULTIES",
+  [translation.SWAP_MULTIPLIER]: "Swap Multiplier",
+  [translation.SWAP_VOLUME]: "Swap Volume",
   //T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "how to participate in THE <span>$5M</span> VULTISIG AIRDROP",
+  [translation.TO_NEXT_MILESTONE]: "to next milestone",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Airdrop Vaults",
   [translation.TOTAL_BALANCE]: "Total Balance",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets",
+  [translation.TOTAL_VULTIES]: "Total Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFER FUNDS TO VAULTS",
   [translation.TRANSFER_FUNDSـONBOARDING_EXPLAIN]:
@@ -175,6 +200,7 @@ export default {
   [translation.UPLOAD_VAULT_SHARE]: "Upload your Vultisig Public Key to start",
   [translation.UPLOAD_VAULT_QR]: "Upload Vault QR",
   // V
+  [translation.VAULT_AIRDROP_ACHIEVEMENTS]: "$VULT Airdrop Achievements",
   [translation.VULTICONNECT]: "VultiConnect",
   [translation.VAULT_AIRDROP_JOINED]:
     "Your Vault {0} has joined the Vultisig Airdrop. You will now begin to accumulate VULTIES on a daily basis. Check back tomorrow to see your first VULTIES on the Leaderboard and check out your competitors.",
