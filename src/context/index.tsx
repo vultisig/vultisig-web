@@ -6,7 +6,6 @@ import {
   useEffect,
   useContext,
 } from "react";
-
 import { Currency, Language, PageKey } from "utils/constants";
 import {
   getStoredCurrency,
