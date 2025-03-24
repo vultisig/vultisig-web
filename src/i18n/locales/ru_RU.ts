@@ -28,6 +28,14 @@ export default {
   [translation.CONNECT_OR_UPLOAD]:
     "Подключитесь с помощью VultiConnect или загрузите ваш QR-код хранилища для начала",
   [translation.CONNECT_YOUR_WALLET]: "Подключите ваш кошелек",
+  [translation.CONFIRM_REMOVE_VAULT_WARNING]:
+    "Пожалуйста, подтвердите, что вы потеряете весь свой прогресс перед продолжением",
+  [translation.CONFIRM_REMOVE_DESCRIPRION]:
+    "Это НАВСЕГДА УДАЛИТ ваш Vault из базы данных Airdrop",
+  [translation.CONFIRM_REMOVE_DESCRIPRION1]:
+    "Это также УДАЛИТ ВСЕ ваши накопленные VULTIES (эйрдроп-баллы)!",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Подтверждаю, что я потеряю весь свой прогресс",
   [translation.COUNTED]: "учтено",
   [translation.CURRENCY]: "Валюта",
   // D
