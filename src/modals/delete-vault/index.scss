@@ -31,6 +31,29 @@
       text-align: center;
       width: rem(16) (64);
     }
+
+    .warning-message{
+      display: flex;
+      border: 1px solid $red-base;
+      margin-top: rem(24);
+      padding: rem(16);
+      border-radius: rem(8);
+      background-color: rgba($color: $red-base, $alpha: 0.35) ;
+      p{
+        width: 100%;
+      }
+      .anticon{
+        margin-right: rem(16);
+        svg{
+          fill: $red-base;
+          width: rem(20);
+          height: rem(20);
+        }
+      }
+    }
+    .confirm{
+      margin-top: rem(22);
+    }
   }
 
   .ant-modal-footer {

@@ -29,6 +29,13 @@ export default {
     "Mit VultiConnect verbinden oder Ihr Vault-QR hochladen, um zu starten",
   [translation.CONNECT_YOUR_WALLET]: "Verbinden Sie Ihre Wallet",
   [translation.COUNTED]: "gezählt",
+  [translation.CONFIRM_REMOVE_VAULT_WARNING]:
+    "Bitte bestätigen Sie, dass Sie Ihren gesamten Fortschritt verlieren werden, bevor Sie fortfahren.",
+  [translation.CONFIRM_REMOVE_DESCRIPRION]:
+    "Dadurch wird Ihr Vault dauerhaft aus der Airdrop-Datenbank GELÖSCHT",
+  [translation.CONFIRM_REMOVE_DESCRIPRION1]:
+    "Dadurch werden auch ALLE Ihre gesammelten VULTIES (Airdrop-Punkte) gelöscht!",
+  [translation.CONFIRM_REMOVE_CHECKBOX]: "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
   [translation.CURRENCY]: "Währung",
   // D
   [translation.DAILY_UPDATE_POINTS]:
