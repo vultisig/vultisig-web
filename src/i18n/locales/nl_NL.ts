@@ -34,7 +34,8 @@ export default {
     "Dit zal uw Vault permanent VERWIJDEREN uit de Airdrop-database",
   [translation.CONFIRM_REMOVE_DESCRIPRION1]:
     "Hierdoor worden ook AL uw verzamelde VULTIES (airdrop-punten) verwijderd!",
-    [translation.CONFIRM_REMOVE_CHECKBOX]: "Ik bevestig dat ik al mijn voortgang zal verliezen",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Ik bevestig dat ik al mijn voortgang zal verliezen",
   [translation.COUNTED]: "geteld",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -109,6 +110,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Lees meer erover",
   [translation.REFER_FRIEND_ONBOARDING]: "VERWIJS EEN VRIEND",
+  [translation.REFERRAL_CODE]: "Verwijzingscode",
+  [translation.REFERRAL_DESC]:
+    "Deze code wordt opgeslagen in onze database voor samenwerking met partners.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Verwijs vrienden met onze eenvoudige Telegram Mini App en verhoog je airdrop",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:

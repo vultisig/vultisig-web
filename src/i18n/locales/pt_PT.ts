@@ -34,7 +34,8 @@ export default {
     "Isto irá APAGAR permanentemente o seu Vault da base de dados do Airdrop",
   [translation.CONFIRM_REMOVE_DESCRIPRION1]:
     "Isto também irá apagar TODOS os seus VULTIES acumulados (pontos de airdrop)!",
-    [translation.CONFIRM_REMOVE_CHECKBOX]: "Confirmo que vou perder todo o meu progresso",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Confirmo que vou perder todo o meu progresso",
   [translation.COUNTED]: "contado",
   [translation.CURRENCY]: "Moeda",
   // D
@@ -108,6 +109,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Leia mais sobre isso",
   [translation.REFER_FRIEND_ONBOARDING]: "INDIQUE UM AMIGO",
+  [translation.REFERRAL_CODE]: "Código de referência",
+  [translation.REFERRAL_DESC]:
+    "Este código é guardado na nossa base de dados para colaboração com parceiros.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Indique amigos com a nossa simples Mini App do Telegram e aumente o seu airdrop",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:

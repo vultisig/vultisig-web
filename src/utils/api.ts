@@ -853,9 +853,9 @@ const api = {
         toSnakeCase(params)
       );
     },
-    referalCod: async (params: VaultProps) => {
+    referralCod: async (params: VaultProps) => {
       return await fetch.post(
-        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
+        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/referral`,
         toSnakeCase(params)
       );
     },

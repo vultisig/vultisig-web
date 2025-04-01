@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
 import api from "utils/api";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import useGoBack from "hooks/go-back";
 import constantKeys from "i18n/constant-keys";
 
@@ -39,10 +40,10 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
           api.vault
-            .referalCod({ ...vault, referralCode })
+            .referralCod({ ...vault, referralCode })
             .then(() => {
               updateVault({ ...vault, referralCode });
-              
+
               goBack();
             })
             .catch(() => {
@@ -100,8 +101,12 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
     >
       <Form form={form} onFinish={handleSubmit}>
         <Form.Item<FieldType> name="referralCode" rules={[{ required: true }]}>
-          <Input />
+          <Input placeholder="Type here" />
         </Form.Item>
+        <div className="desc">
+          <InfoCircleOutlined className="icon" />
+          <p>{t(constantKeys.REFERRAL_DESC)}</p>
+        </div>
         <Button htmlType="submit" style={{ display: "none" }} />
       </Form>
     </Modal>
