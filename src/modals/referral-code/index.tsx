@@ -40,7 +40,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
           api.vault
-            .referralCod({ ...vault, referralCode })
+            .referralCode({ ...vault, referralCode })
             .then(() => {
               updateVault({ ...vault, referralCode });
 
