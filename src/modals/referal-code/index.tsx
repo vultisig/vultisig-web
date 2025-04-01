@@ -56,7 +56,8 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
 
   const componentDidUpdate = () => {
     switch (hash) {
-      case `#${constantModals.REFERRAL}`: {
+      case `#${constantModals.REFERRAL_CODE}`: {
+        console.log('Try to open referal')
         if (vault) {
           setState((prevState) => ({ ...prevState, visible: true }));
 

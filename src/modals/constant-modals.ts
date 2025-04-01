@@ -12,7 +12,7 @@ export default keyMirror({
   MENU: true,
   QR_CODE: true,
   RENAME_VAULT: true,
-  REFERRAL: true,
+  REFERRAL_CODE: true,
   VAULT_SETTINGS: true,
   SHARE_SETTINGS: true,
 });
