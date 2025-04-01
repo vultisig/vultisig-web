@@ -116,6 +116,7 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Read more about it",
   [translation.REFER_FRIEND_ONBOARDING]: "REFER FRIEND",
+  [translation.REFERRAL_CODE]: "Referral Code",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Refer friends with our simple Telegram Mini App and increase your airdrop",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:

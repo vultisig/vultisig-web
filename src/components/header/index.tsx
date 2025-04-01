@@ -11,7 +11,7 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { ArrowRight } from "icons";
+import { ArrowRight, Handshake } from "icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -268,6 +268,15 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         {
           key: "6-1",
           label: (
+            <Link to={`#${constantModals.REFERRAL}`} state={true}>
+              {t(constantKeys.REFERRAL_CODE)}
+            </Link>
+          ),
+          icon: <Handshake />,
+        },
+        {
+          key: "6-2",
+          label: (
             <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
               {t(constantKeys.MANAGE_AIRDROP)}
             </Link>
@@ -275,7 +284,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           icon: <RadioWave />,
         },
         {
-          key: "6-2",
+          key: "6-3",
           label: (
             <a
               href="https://vultisig.com/vult"
@@ -288,7 +297,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           icon: <Vultisig />,
         },
         {
-          key: "6-3",
+          key: "6-4",
           label: (
             <a
               href="https://chromewebstore.google.com/detail/vulticonnect/ggafhcdaplkhmmnlbfjpnnkepdfjaelb"
@@ -303,7 +312,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         ...(layout === LayoutKey.VAULT
           ? [
               {
-                key: "6-4",
+                key: "6-5",
                 label: t(constantKeys.SHARE_VAULT),
                 icon: <ExternalLink />,
                 onClick: () => handleShare(),
