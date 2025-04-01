@@ -268,7 +268,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
         {
           key: "6-1",
           label: (
-            <Link to={`#${constantModals.REFERRAL}`} state={true}>
+            <Link to={`#${constantModals.REFERRAL_CODE}`} state={true}>
               {t(constantKeys.REFERRAL_CODE)}
             </Link>
           ),

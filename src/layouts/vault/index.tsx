@@ -33,6 +33,7 @@ import ChangeLanguage from "modals/change-language";
 import DeleteVault from "modals/delete-vault";
 import LogoutVault from "modals/logout-vault";
 import RenameVault from "modals/rename-vault";
+import ReferalCode from "modals/referal-code";
 import VaultSettings from "modals/vault-settings";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
@@ -620,6 +621,7 @@ const Component: FC = () => {
       <ChangeLanguage />
       <ManageAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
+      <ReferalCode vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Checkbox, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
@@ -9,7 +9,6 @@ import useGoBack from "hooks/go-back";
 import constantKeys from "i18n/constant-keys";
 
 interface ComponentProps {
-  updateVault: (vault: VaultProps) => void;
   vault?: VaultProps;
 }
 
@@ -19,11 +18,10 @@ interface InitialState {
 }
 
 type FieldType = {
-  alias: string;
-  showNameInLeaderboard: boolean;
+  Code: string;
 };
 
-const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
+const Component: FC<ComponentProps> = ({ vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
@@ -35,15 +33,13 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then(({ alias, showNameInLeaderboard }: FieldType) => {
+      .then(({ Code }: FieldType) => {
         if (!submitting && vault) {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
-          api.vault
-            .rename({ ...vault, name: alias, showNameInLeaderboard })
+          api.referalCode.set
+            ({Code})
             .then(() => {
-              updateVault({ ...vault, alias });
-
               goBack();
             })
             .catch(() => {
@@ -57,7 +53,6 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const componentDidUpdate = () => {
     switch (hash) {
       case `#${constantModals.REFERRAL_CODE}`: {
-        console.log('Try to open referal')
         if (vault) {
           setState((prevState) => ({ ...prevState, visible: true }));
 
@@ -80,7 +75,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
 
   return (
     <Modal
-      className="modal-rename-vault"
+      className="modal-referal-code"
       title={t(constantKeys.REFERRAL_CODE)}
       centered={true}
       footer={
@@ -101,14 +96,8 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       width={480}
     >
       <Form form={form} onFinish={handleSubmit}>
-        <Form.Item<FieldType> name="alias" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="Code" rules={[{ required: true }]}>
           <Input />
-        </Form.Item>
-        <Form.Item<FieldType>
-          name="showNameInLeaderboard"
-          valuePropName="checked"
-        >
-          <Checkbox>{t(constantKeys.SHOW_NAME_IN_LEADERBOARD)}</Checkbox>
         </Form.Item>
         <Button htmlType="submit" style={{ display: "none" }} />
       </Form>

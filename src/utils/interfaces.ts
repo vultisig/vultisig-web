@@ -231,6 +231,10 @@ export interface QRCodeProps {
   vault: VaultProps;
 }
 
+export interface ReferralCode {
+  Code: string;
+}
+
 export interface SharedSettings {
   hexChainCode?: string;
   logo: string;

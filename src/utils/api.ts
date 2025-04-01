@@ -15,6 +15,7 @@ import {
   CoinProps,
   NFTProps,
   NodeInfo,
+  ReferralCode,
   SharedSettings,
   TokenProps,
   VaultProps,
@@ -798,6 +799,11 @@ const api = {
             .catch(() => resolve({ nfts: [], price: 0 }));
         });
       },
+    },
+  },
+  referalCode: {
+    set: async (params: ReferralCode) => {
+      return await fetch.post("", toSnakeCase(params));
     },
   },
   vault: {
