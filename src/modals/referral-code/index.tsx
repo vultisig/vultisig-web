@@ -79,7 +79,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
 
   return (
     <Modal
-      className="modal-referal-code"
+      className="modal-referral-code"
       title={t(constantKeys.REFERRAL_CODE)}
       centered={true}
       footer={
