@@ -231,10 +231,6 @@ export interface QRCodeProps {
   vault: VaultProps;
 }
 
-export interface ReferralCode {
-  Code: string;
-}
-
 export interface SharedSettings {
   hexChainCode?: string;
   logo: string;
@@ -287,6 +283,7 @@ export interface VaultProps {
   publicKeyEddsa: string;
   rank: number;
   registeredAt: number;
+  referralCode: string;
   showNameInLeaderboard: boolean;
   theme: Theme;
   totalPoints: number;

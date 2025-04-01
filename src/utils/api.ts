@@ -15,7 +15,6 @@ import {
   CoinProps,
   NFTProps,
   NodeInfo,
-  ReferralCode,
   SharedSettings,
   TokenProps,
   VaultProps,
@@ -801,11 +800,6 @@ const api = {
       },
     },
   },
-  referalCode: {
-    set: async (params: ReferralCode) => {
-      return await fetch.post("", toSnakeCase(params));
-    },
-  },
   vault: {
     add: (params: VaultProps): Promise<VaultProps | undefined> => {
       return new Promise((resolve, reject) => {
@@ -821,6 +815,19 @@ const api = {
               reject();
             }
           });
+      });
+    },
+    avatar: (
+      params: Pick<
+        VaultProps,
+        "hexChainCode" | "publicKeyEcdsa" | "publicKeyEddsa" | "uid"
+      > & { collectionId: string; itemId: string; url: string }
+    ): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        fetch
+          .post<void>("nft/avatar", toSnakeCase(params))
+          .then(() => resolve())
+          .catch(reject);
       });
     },
     del: async (vault: VaultProps) => {
@@ -840,20 +847,13 @@ const api = {
     getById: async (id: string) => {
       return await fetch.get<VaultProps>(`vault/shared/${id}`);
     },
-    avatar: (
-      params: Pick<
-        VaultProps,
-        "hexChainCode" | "publicKeyEcdsa" | "publicKeyEddsa" | "uid"
-      > & { collectionId: string; itemId: string; url: string }
-    ): Promise<void> => {
-      return new Promise((resolve, reject) => {
-        fetch
-          .post<void>("nft/avatar", toSnakeCase(params))
-          .then(() => resolve())
-          .catch(reject);
-      });
-    },
     rename: async (params: VaultProps) => {
+      return await fetch.post(
+        `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
+        toSnakeCase(params)
+      );
+    },
+    referalCod: async (params: VaultProps) => {
       return await fetch.post(
         `vault/${params.publicKeyEcdsa}/${params.publicKeyEddsa}/alias`,
         toSnakeCase(params)

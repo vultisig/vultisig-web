@@ -9,6 +9,7 @@ import useGoBack from "hooks/go-back";
 import constantKeys from "i18n/constant-keys";
 
 interface ComponentProps {
+  updateVault: (vault: VaultProps) => void;
   vault?: VaultProps;
 }
 
@@ -18,10 +19,10 @@ interface InitialState {
 }
 
 type FieldType = {
-  Code: string;
+  referralCode: string;
 };
 
-const Component: FC<ComponentProps> = ({ vault }) => {
+const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { submitting: false, visible: false };
   const [state, setState] = useState(initialState);
@@ -33,13 +34,15 @@ const Component: FC<ComponentProps> = ({ vault }) => {
   const handleSubmit = () => {
     form
       .validateFields()
-      .then(({ Code }: FieldType) => {
+      .then(({ referralCode }: FieldType) => {
         if (!submitting && vault) {
           setState((prevState) => ({ ...prevState, submitting: true }));
 
-          api.referalCode.set
-            ({Code})
+          api.vault
+            .referalCod({ ...vault, referralCode })
             .then(() => {
+              updateVault({ ...vault, referralCode });
+              
               goBack();
             })
             .catch(() => {
@@ -96,7 +99,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
       width={480}
     >
       <Form form={form} onFinish={handleSubmit}>
-        <Form.Item<FieldType> name="Code" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="referralCode" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
         <Button htmlType="submit" style={{ display: "none" }} />
