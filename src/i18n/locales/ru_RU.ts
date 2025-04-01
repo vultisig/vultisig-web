@@ -111,6 +111,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Узнать больше об этом",
   [translation.REFER_FRIEND_ONBOARDING]: "ПРИГЛАСИТЕ ДРУГА",
+  [translation.REFERRAL_CODE]: "Реферальный код",
+  [translation.REFERRAL_DESC]:
+    "Этот код сохранен в нашей базе данных для сотрудничества с партнёрами.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Пригласите друзей с помощью нашего простого мини-приложения Telegram и увеличьте свой airdrop",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:

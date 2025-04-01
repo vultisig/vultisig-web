@@ -35,7 +35,8 @@ export default {
     "Dadurch wird Ihr Vault dauerhaft aus der Airdrop-Datenbank GELÖSCHT",
   [translation.CONFIRM_REMOVE_DESCRIPRION1]:
     "Dadurch werden auch ALLE Ihre gesammelten VULTIES (Airdrop-Punkte) gelöscht!",
-  [translation.CONFIRM_REMOVE_CHECKBOX]: "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
   [translation.CURRENCY]: "Währung",
   // D
   [translation.DAILY_UPDATE_POINTS]:
@@ -106,6 +107,10 @@ export default {
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]:
     "Wie melde ich mich für den Airdrop an?",
+  [translation.REFERRAL_CODE]: "Empfehlungscode",
+  [translation.REFERRAL_DESC]:
+    "Dieser Code wird in unserer Datenbank gespeichert, um mit Partnern zusammenzuarbeiten.",
+
   [translation.QUESTION_SECOND_ONBOARDING]:
     "Welche Vermögenswerte werden für den Airdrop gezählt?",
   [translation.QUESTION_THIRD_ONBOARDING]: "Was ist der Airdrop-Prozess?",
