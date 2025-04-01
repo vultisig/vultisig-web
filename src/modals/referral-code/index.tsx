@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal,message } from "antd";
 import { useTranslation } from "react-i18next";
 import { VaultProps } from "utils/interfaces";
 import constantModals from "modals/constant-modals";
@@ -31,6 +31,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
   const { hash } = useLocation();
   const [form] = Form.useForm();
   const goBack = useGoBack();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleSubmit = () => {
     form
@@ -48,6 +49,10 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
             })
             .catch(() => {
               setState((prevState) => ({ ...prevState, submitting: false }));
+              messageApi.open({
+                type: "error",
+                content: "Failed to update referral code",
+              });
             });
         }
       })
@@ -109,6 +114,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
         </div>
         <Button htmlType="submit" style={{ display: "none" }} />
       </Form>
+      {contextHolder}
     </Modal>
   );
 };
