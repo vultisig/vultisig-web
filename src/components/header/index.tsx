@@ -12,7 +12,6 @@ import {
   message,
 } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
-import { ArrowRight, Handshake } from "icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -38,6 +37,7 @@ import {
   ChromeExtension,
   ExternalLink,
   Globe,
+  Handshake,
   HamburgerLG,
   RadioWave,
   Settings,
