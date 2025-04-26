@@ -209,13 +209,13 @@
 
         .active {
           background-color: $blue-dark;
+          border-radius: rem(99);
           color: $cyan-base;
           svg {
             path {
               stroke: $cyan-base;
             }
           }
-          border-radius: rem(99);
         }
       }
       .coins {
