@@ -32,6 +32,14 @@ export default {
   [translation.CONNECT_OR_UPLOAD]:
     "Connettiti con VultiConnect o carica il tuo codice QR del vault per iniziare",
   [translation.CONNECT_YOUR_WALLET]: "Connetti il tuo wallet",
+  [translation.CONFIRM_REMOVE_VAULT_WARNING]:
+    "Si prega di confermare che perderai tutti i tuoi progressi prima di procedere",
+  [translation.CONFIRM_REMOVE_DESCRIPRION]:
+    "Questo ELIMINERÀ definitivamente il tuo Vault dal database di Airdrop",
+  [translation.CONFIRM_REMOVE_DESCRIPRION1]:
+    "Questo eliminerà anche TUTTI i tuoi VULTIES accumulati (punti airdrop)!",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Confermo che perderò tutti i miei progressi",
   [translation.COUNTED]: "conteggiato",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -117,6 +125,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Leggi di più su di esso",
   [translation.REFER_FRIEND_ONBOARDING]: "RACCOMANDA UN AMICO",
+  [translation.REFERRAL_CODE]: "Codice di riferimento",
+  [translation.REFERRAL_DESC]:
+    "Questo codice è salvato nel nostro database per la collaborazione con i partner",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Raccomanda amici con la nostra semplice mini app di Telegram e aumenta il tuo airdrop",
   [translation.REFERRAL_MULTIPLIER]: "Moltiplicatore di riferimento",

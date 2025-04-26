@@ -32,6 +32,14 @@ export default {
   [translation.CONNECT_OR_UPLOAD]:
     "Verbind met VultiConnect of upload je QR-code van de kluis om te beginnen",
   [translation.CONNECT_YOUR_WALLET]: "Verbind je wallet",
+  [translation.CONFIRM_REMOVE_VAULT_WARNING]:
+    "Bevestig alstublieft dat u al uw voortgang verliest voordat u doorgaat",
+  [translation.CONFIRM_REMOVE_DESCRIPRION]:
+    "Dit zal uw Vault permanent VERWIJDEREN uit de Airdrop-database",
+  [translation.CONFIRM_REMOVE_DESCRIPRION1]:
+    "Hierdoor worden ook AL uw verzamelde VULTIES (airdrop-punten) verwijderd!",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Ik bevestig dat ik al mijn voortgang zal verliezen",
   [translation.COUNTED]: "geteld",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -116,6 +124,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Lees meer erover",
   [translation.REFER_FRIEND_ONBOARDING]: "VERWIJS EEN VRIEND",
+  [translation.REFERRAL_CODE]: "Verwijzingscode",
+  [translation.REFERRAL_DESC]:
+    "Deze code wordt opgeslagen in onze database voor samenwerking met partners.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Verwijs vrienden met onze eenvoudige Telegram Mini App en verhoog je airdrop",
   [translation.REFERRAL_MULTIPLIER]: "Referral-multiplier",

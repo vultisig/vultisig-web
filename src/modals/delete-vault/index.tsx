@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "antd";
+import { Button, Checkbox, Modal, message } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 import { VaultProps } from "utils/interfaces";
 import useGoBack from "hooks/go-back";
@@ -19,17 +20,32 @@ interface ComponentProps {
 interface InitialState {
   submitting: boolean;
   visible: boolean;
+  isChecked: boolean;
 }
 
 const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
   const { t } = useTranslation();
-  const initialState: InitialState = { submitting: false, visible: false };
+  const initialState: InitialState = {
+    submitting: false,
+    visible: false,
+    isChecked: false,
+  };
   const [state, setState] = useState(initialState);
-  const { visible, submitting } = state;
+  const [messageApi, contextHolder] = message.useMessage();
+  const { visible, submitting, isChecked } = state;
   const { hash } = useLocation();
+
   const goBack = useGoBack();
 
   const handleSubmit = () => {
+    if (!isChecked) {
+      messageApi.open({
+        type: "error",
+        content: t(constantKeys.CONFIRM_REMOVE_VAULT_WARNING),
+      });
+      return;
+    }
+
     if (!submitting && vault) {
       setState((prevState) => ({ ...prevState, submitting: true }));
 
@@ -37,7 +53,6 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
         .del(vault)
         .then(() => {
           goBack();
-
           deleteVault(vault);
         })
         .catch(() => {
@@ -49,13 +64,15 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
   const componentDidUpdate = () => {
     switch (hash) {
       case `#${constantModals.DELETE_VAULT}`: {
-        setState((prevState) => ({ ...prevState, visible: !!vault }));
-
+        setState((prevState) => ({
+          ...prevState,
+          visible: !!vault,
+          isChecked: false,
+        }));
         break;
       }
       default: {
         setState(initialState);
-
         break;
       }
     }
@@ -88,6 +105,25 @@ const Component: FC<ComponentProps> = ({ deleteVault, vault }) => {
       <Warning className="icon" />
       <span className="warning">{t(constantKeys.DELETE_VAULT_WARNING)}:</span>
       <span className="name">{vault?.alias}</span>
+      <div className="warning-message">
+        <InfoCircleOutlined />
+        <p>
+          {t(constantKeys.CONFIRM_REMOVE_DESCRIPRION)}
+          <br />
+          {t(constantKeys.CONFIRM_REMOVE_DESCRIPRION1)}
+        </p>
+      </div>
+
+      <Checkbox
+        className="confirm"
+        checked={isChecked}
+        onChange={(e) =>
+          setState((prev) => ({ ...prev, isChecked: e.target.checked }))
+        }
+      >
+        {t(constantKeys.CONFIRM_REMOVE_CHECKBOX)}
+      </Checkbox>
+      {contextHolder}
     </Modal>
   );
 };

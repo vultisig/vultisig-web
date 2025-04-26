@@ -32,6 +32,14 @@ export default {
   [translation.CONNECT_OR_UPLOAD]:
     "Povežite se s VultiConnectom ili učitajte svoj QR kod vaulta za početak",
   [translation.CONNECT_YOUR_WALLET]: "Povežite svoj wallet",
+  [translation.CONFIRM_REMOVE_VAULT_WARNING]:
+    "Molimo potvrdite da ćete izgubiti sav svoj napredak prije nego što nastavite",
+  [translation.CONFIRM_REMOVE_DESCRIPRION]:
+    "Ovo će trajno OBRISATI vaš Vault iz baze podataka Airdrop",
+  [translation.CONFIRM_REMOVE_DESCRIPRION1]:
+    "Ovo će također izbrisati SVE vaše prikupljene VULTIES (airdrop bodove)!",
+  [translation.CONFIRM_REMOVE_CHECKBOX]:
+    "Potvrđujem da ću izgubiti sav svoj napredak",
   [translation.COUNTED]: "brojano",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -115,6 +123,9 @@ export default {
   // R
   [translation.READ_MORE_ABOUT_IT]: "Pročitajte više o tome",
   [translation.REFER_FRIEND_ONBOARDING]: "PREPORUČITE PRIJATELJA",
+  [translation.REFERRAL_CODE]: "Referalni kod",
+  [translation.REFERRAL_DESC]:
+    "Ovaj kod je spremljen u našoj bazi podataka za suradnju s partnerima.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Preporučite prijatelje pomoću naše jednostavne mini aplikacije za Telegram i povećajte svoj airdrop",
   [translation.REFERRAL_MULTIPLIER]: "Referalni multiplikator",
