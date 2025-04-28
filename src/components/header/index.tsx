@@ -550,7 +550,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 6h 24min</span>
+            <span className="value">30d 0h 0min</span>
           </div>
         )}
       </div>
@@ -600,7 +600,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 6h 24min</span>
+            <span className="value">30d 0h 0min</span>
           </div>
           {vault && (
             <>

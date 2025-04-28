@@ -178,7 +178,7 @@ const Component: FC = () => {
           <li>
             <p className="title">{t(constantKeys.SWAP_VOLUME)}</p>
             <span className="price">
-              {content.AirdropAchievements.swapVolum.toNumberFormat()}
+              {content.AirdropAchievements.swapVolume.toNumberFormat()}
             </span>
           </li>
           <li>
@@ -271,7 +271,7 @@ const Component: FC = () => {
             </div>
             {showTokens ? (
               <ul className="coins">
-                {content.MultiplierBoosts.tokens.map((token, index) => (
+                {/* {content.MultiplierBoosts.tokens.map((token, index) => (
                   <li key={index}>
                     <div className="coin">
                       <img className="logo" src={token.image} alt="coin" />
@@ -285,11 +285,11 @@ const Component: FC = () => {
                       <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                     </div>
                   </li>
-                ))}
+                ))} */}
               </ul>
             ) : (
               <ul className="nfts">
-                {content.MultiplierBoosts.nfts.map((nft, index) => (
+                {/* {content.MultiplierBoosts.nfts.map((nft, index) => (
                   <li key={index}>
                     <div className="coin">
                       <img className="logo" src={nft.image} alt="coin" />
@@ -303,7 +303,7 @@ const Component: FC = () => {
                       <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                     </div>
                   </li>
-                ))}
+                ))} */}
               </ul>
             )}
           </div>

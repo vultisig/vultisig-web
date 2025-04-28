@@ -93,7 +93,7 @@ const Component: FC = () => {
             <span className="total-vulties">
               {t(constantKeys.TOTAL_VULTIES)}
             </span>
-            <span className="total-vulties-numder">75,450.200</span>
+            <span className="total-vulties-numder">0</span>
           </div>
           <img
             className="img"
@@ -104,7 +104,7 @@ const Component: FC = () => {
         <ul className="swap-info">
           <li>
             <span className="title">{t(constantKeys.SWAP_VOLUME)}</span>
-            <span className="number">$5,000</span>
+            <span className="number">$0</span>
           </li>
           <li>
             <span className="title">{t(constantKeys.SWAP_MULTIPLIER)}</span>
