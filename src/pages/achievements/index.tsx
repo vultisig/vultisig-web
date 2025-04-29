@@ -295,7 +295,6 @@ const Component: FC = () => {
                       <img className="logo" src={nft.image} alt="coin" />
                       <div className="info">
                         <p className="title">{nft.name}</p>
-                        <p className="value">{`#${nft.Hashtag}`}</p>
                       </div>
                     </div>
                     <div className="value">
@@ -325,11 +324,11 @@ const Component: FC = () => {
               <img src="/images/users.svg" />
               <div className="info">
                 <p className="title">{t(constantKeys.REFER_FRIENDS)}</p>
-                <p className="desc">
+                {/* <p className="desc">
                   {t(constantKeys.BONUS_ON_REFERRAL_EARNINGS).replaceArgs([
                     content.Earning,
                   ])}
-                </p>
+                </p> */}
               </div>
             </div>
           </div>

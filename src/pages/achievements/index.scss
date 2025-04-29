@@ -336,6 +336,11 @@
           font-size: rem(14);
           color: $opacity-50;
         }
+        .info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
       }
     }
   }
