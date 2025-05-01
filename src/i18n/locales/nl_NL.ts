@@ -31,6 +31,7 @@ export default {
   [translation.CONGRATULATIONS]: "Gefeliciteerd!",
   [translation.CONNECT_OR_UPLOAD]:
     "Verbind met VultiConnect of upload je QR-code van de kluis om te beginnen",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopieer afbeelding naar klembord",
   [translation.CONNECT_YOUR_WALLET]: "Verbind je wallet",
   [translation.COUNTED]: "geteld",
   [translation.CURRENCY]: "Valuta",
@@ -159,6 +160,7 @@ export default {
   [translation.START]: "Start",
   [translation.SUCCESSFUL_COPY_LINK]: "Link gekopieerd naar klembord",
   [translation.SUCCESSFUL_COPY_TEXT]: "Tekst gekopieerd naar klembord",
+  [translation.SUCCESSFUL_COPY_IMAGE]: "Afbeelding gekopieerd naar klembord",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Activa van niveau 1 en de meeste tokens die door Vultisig worden ondersteund, worden meegeteld. Andere actieve activa zoals LP's en node-obligaties van THORChain, MAYA Protocol en gestakete tokens zijn ook geldig.",
   [translation.SWAP_VOLUME]: "Swapvolume",

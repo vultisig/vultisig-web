@@ -34,6 +34,7 @@ export default {
   [translation.CONGRATULATIONS]: "Congratulations!",
   [translation.CONNECT_OR_UPLOAD]:
     "Connect with VultiConnect or upload your vault QR to start",
+    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copy image to clipboard",
   [translation.CONNECT_YOUR_WALLET]: "Connect your Wallet",
   [translation.COUNTED]: "counted",
   [translation.CURRENCY]: "Currency",
@@ -169,6 +170,7 @@ export default {
   [translation.START]: "Start",
   [translation.SUCCESSFUL_COPY_LINK]: "Link copied to clipboard",
   [translation.SUCCESSFUL_COPY_TEXT]: "Text copied to clipboard",
+  [translation.SUCCESSFUL_COPY_IMAGE]: "Image copied to clipboard",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
   [translation.SWAP]: "Swap",

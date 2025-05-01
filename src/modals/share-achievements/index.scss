@@ -98,14 +98,23 @@
   }
   .contact-links {
     margin-top: rem(24);
+    padding: rem(10);
+    text-align: center;
+    color: $gray-1 !important;
+    cursor: pointer;
+    .anticon{
+      margin-right: rem(7);
+    }
     .link {
-      color: $gray-1;
       display: flex;
       gap: rem(12);
       justify-content: center;
       font-size: rem(16);
       font-weight: 600;
       margin-bottom: rem(8);
+    }
+    &:hover{
+      background-color: $blue-light-2 !important;
     }
   }
   .ant-modal-footer {
