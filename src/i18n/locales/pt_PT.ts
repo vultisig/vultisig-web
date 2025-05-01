@@ -31,7 +31,6 @@ export default {
   [translation.CONGRATULATIONS]: "Parabéns!",
   [translation.CONNECT_OR_UPLOAD]:
     "Conecte-se com VultiConnect ou carregue o seu código QR do cofre para começar",
-    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copiar imagem para a área de transferência",
   [translation.CONNECT_YOUR_WALLET]: "Conecte a sua carteira",
   [translation.COUNTED]: "contado",
   [translation.CURRENCY]: "Moeda",
@@ -160,8 +159,6 @@ export default {
     "Link copiado para a área de transferência",
   [translation.SUCCESSFUL_COPY_TEXT]:
     "Texto copiado para a área de transferência",
-  [translation.SUCCESSFUL_COPY_IMAGE]:
-    "Imagem copiada para a área de transferência",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Ativos de nível 1 e a maioria dos tokens suportados por Vultisig são contados. Outros ativos ativos, como LPs e obrigações de nodes da THORChain, Protocolo MAYA e tokens em staking, também são válidos.",
   [translation.SWAP_VOLUME]: "Volume de swap",

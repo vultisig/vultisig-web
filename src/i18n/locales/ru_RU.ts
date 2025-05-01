@@ -31,7 +31,6 @@ export default {
   [translation.CONGRATULATIONS]: "Поздравляем!",
   [translation.CONNECT_OR_UPLOAD]:
     "Подключитесь с помощью VultiConnect или загрузите ваш QR-код хранилища для начала",
-  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Скопировать изображение в буфер обмена",
   [translation.CONNECT_YOUR_WALLET]: "Подключите ваш кошелек",
   [translation.COUNTED]: "учтено",
   [translation.CURRENCY]: "Валюта",
@@ -161,7 +160,6 @@ export default {
   [translation.START]: "Начать",
   [translation.SUCCESSFUL_COPY_LINK]: "Ссылка скопирована в буфер обмена",
   [translation.SUCCESSFUL_COPY_TEXT]: "Текст скопирован в буфер обмена",
-  [translation.SUCCESSFUL_COPY_IMAGE]: "Изображение скопировано в буфер обмена",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Активы первого уровня и большинство токенов, поддерживаемых Vultisig, учитываются. Другие активные активы, такие как LP и облигации узлов THORChain, протокола MAYA и токены на стейкинге, также действительны.",
   [translation.SWAP_VOLUME]: "Объем свопа",

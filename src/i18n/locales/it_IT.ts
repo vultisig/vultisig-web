@@ -31,7 +31,6 @@ export default {
   [translation.CONGRATULATIONS]: "Congratulazioni!",
   [translation.CONNECT_OR_UPLOAD]:
     "Connettiti con VultiConnect o carica il tuo codice QR del vault per iniziare",
-  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copia l'immagine negli appunti",
   [translation.CONNECT_YOUR_WALLET]: "Connetti il tuo wallet",
   [translation.COUNTED]: "conteggiato",
   [translation.CURRENCY]: "Valuta",
@@ -162,7 +161,6 @@ export default {
   [translation.START]: "Inizia",
   [translation.SUCCESSFUL_COPY_LINK]: "Link copiato negli appunti",
   [translation.SUCCESSFUL_COPY_TEXT]: "Testo copiato negli appunti",
-  [translation.SUCCESSFUL_COPY_IMAGE]: "Immagine copiata negli appunti",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Gli asset di livello 1 e la maggior parte dei token supportati da Vultisig vengono conteggiati. Altri asset attivi come LP e obbligazioni di nodi da THORChain, Protocollo MAYA e token in staking sono anche validi.",
   [translation.SWAP_VOLUME]: "Volume di swap",

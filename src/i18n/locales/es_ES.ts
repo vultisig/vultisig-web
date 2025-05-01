@@ -31,7 +31,6 @@ export default {
   [translation.CONGRATULATIONS]: "¡Felicidades!",
   [translation.CONNECT_OR_UPLOAD]:
     "Conéctese con VultiConnect o cargue su código QR del vault para comenzar",
-  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copiar imagen al portapapeles",
   [translation.CONNECT_YOUR_WALLET]: "Conecte su wallet",
   [translation.COUNTED]: "contado",
   [translation.CURRENCY]: "Moneda",
@@ -162,7 +161,6 @@ export default {
   [translation.START]: "Iniciar",
   [translation.SUCCESSFUL_COPY_LINK]: "Enlace copiado al portapapeles",
   [translation.SUCCESSFUL_COPY_TEXT]: "Texto copiado al portapapeles",
-  [translation.SUCCESSFUL_COPY_IMAGE]: "Imagen copiada al portapapeles",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Los activos de capa 1 y la mayoría de los tokens admitidos por Vultisig se cuentan. Otros activos activos como LPs y bonos de nodos de THORChain, el Protocolo MAYA y los tokens apostados también son válidos.",
   [translation.SWAP_VOLUME]: "Volumen de intercambio",

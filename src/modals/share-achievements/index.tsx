@@ -1,14 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Modal, message, List } from "antd";
+import { Modal, List } from "antd";
 
 import { Vultisig } from "icons";
-import { CopyOutlined } from "@ant-design/icons";
 import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
-import html2canvas from "html2canvas";
 
 interface InitialState {
   visible: boolean;
@@ -18,7 +16,6 @@ const Component: FC = () => {
   const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
-  const [messageApi, contextHolder] = message.useMessage();
   const { visible } = state;
   const { hash } = useLocation();
   const goBack = useGoBack();
@@ -40,40 +37,32 @@ const Component: FC = () => {
 
   useEffect(componentDidUpdate, [hash]);
 
-  const handleShare = async () => {
-    const element = document.querySelector(
-      ".achievements-info"
-    ) as HTMLElement | null;
-    if (!element) return;
-
-    try {
-      const canvas = await html2canvas(element);
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-
-        const file = new File([blob], "achievements.png", {
-          type: "image/png",
-        });
-
-        copyImageToClipboard(file);
-      }, "image/png");
-    } catch (error) {
-      console.error("Error capturing screenshot:", error);
-    }
-  };
-
-  const copyImageToClipboard = async (blob: Blob) => {
-    try {
-      messageApi.open({
-        type: "success",
-        content: t(constantKeys.SUCCESSFUL_COPY_IMAGE),
-      });
-      const clipboardItem = new ClipboardItem({ "image/png": blob });
-      await navigator.clipboard.write([clipboardItem]);
-    } catch (error) {
-      console.error("Error :", error);
-    }
-  };
+  const data = [
+    {
+      key: "X",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["X"])}`,
+      icon: "/images/X-app.png",
+      color: "#03A9F4",
+    },
+    {
+      key: "facebook",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Facebook"])}`,
+      icon: "/images/facebook-icon.png",
+      color: "#1877F2",
+    },
+    {
+      key: "whatsapp",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Whatsapp"])}`,
+      icon: "/images/whatsapp-icon.png",
+      color: "#4CAF50",
+    },
+    {
+      key: "telegram",
+      title: `${t(constantKeys.SHARE_ON).replaceArgs(["Telegram"])}`,
+      icon: "/images/telegram-icon.png",
+      color: "#039BE5",
+    },
+  ];
 
   return (
     <Modal
@@ -127,17 +116,20 @@ const Component: FC = () => {
           </li>
         </ul>
       </div>
-
-      <List.Item
-        className="contact-links link"
-        style={{ backgroundColor: `#03A9F4` }}
-        onClick={() => handleShare()}
-      >
-        <CopyOutlined />
-        <span>{t(constantKeys.COPY_IMAGE_TO_CLIPBOARD)}</span>
-      </List.Item>
-
-      {contextHolder}
+      <List
+        className="contact-links"
+        dataSource={data}
+        renderItem={({ key, title, icon, color }) => (
+          <List.Item
+            style={{ backgroundColor: `${color}` }}
+            // onClick={() => handleSelect(key)}
+            className="link"
+          >
+            <img src={icon} alt={key} />
+            {title}
+          </List.Item>
+        )}
+      />
     </Modal>
   );
 };

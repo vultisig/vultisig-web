@@ -31,7 +31,6 @@ export default {
   [translation.CONGRATULATIONS]: "Herzlichen Glückwunsch!",
   [translation.CONNECT_OR_UPLOAD]:
     "Mit VultiConnect verbinden oder Ihr Vault-QR hochladen, um zu starten",
-  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Bild in die Zwischenablage kopieren",
   [translation.CONNECT_YOUR_WALLET]: "Verbinden Sie Ihre Wallet",
   [translation.COUNTED]: "gezählt",
   [translation.CURRENCY]: "Währung",
@@ -165,7 +164,6 @@ export default {
   [translation.START]: "Start",
   [translation.SUCCESSFUL_COPY_LINK]: "Link in die Zwischenablage kopiert",
   [translation.SUCCESSFUL_COPY_TEXT]: "Text in die Zwischenablage kopiert",
-  [translation.SUCCESSFUL_COPY_IMAGE]: "Bild in die Zwischenablage kopiert",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer-1-Vermögenswerte und die meisten von Vultisig unterstützten Tokens werden gezählt. Andere aktive Vermögenswerte wie LPs und Node Bonds von THORChain, MAYA Protocol und gestakte Token sind ebenfalls gültig.",
   [translation.SWAP_VOLUME]: "Swap-Volumen",

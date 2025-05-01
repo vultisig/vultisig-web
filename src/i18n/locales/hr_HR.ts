@@ -32,7 +32,6 @@ export default {
   [translation.CONNECT_OR_UPLOAD]:
     "Povežite se s VultiConnectom ili učitajte svoj QR kod vaulta za početak",
   [translation.CONNECT_YOUR_WALLET]: "Povežite svoj wallet",
-    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopiraj sliku u međuspremnik",
   [translation.COUNTED]: "brojano",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -160,7 +159,6 @@ export default {
   [translation.START]: "Započni",
   [translation.SUCCESSFUL_COPY_LINK]: "Link kopiran u međuspremnik",
   [translation.SUCCESSFUL_COPY_TEXT]: "Tekst kopiran u međuspremnik",
-  [translation.SUCCESSFUL_COPY_IMAGE]: "Slika kopirana u međuspremnik",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Imovina prve razine i većina tokena koje podržava Vultisig se računaju. Ostala aktivna imovina kao što su LP-ovi i obveznice čvorova iz THORChain-a, MAYA Protokola i staked tokeni također su valjani.",
   [translation.SWAP_VOLUME]: "Swap volumen",
