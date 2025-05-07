@@ -291,6 +291,31 @@ export interface VaultProps {
   uid: string;
 }
 
+export interface AchievementsConfig {
+  start: string; 
+  end: string;
+  swapMultiplier: number;
+  referralMultiplier: number;
+  milestones: number[];
+  nfts: NFT[];
+  tokens: Token[];
+}
+
+interface NFT {
+  multiplier: number;
+  collectionName: string;
+  chain: string;
+  contractAddress: string;
+}
+
+interface Token {
+  multiplier: number;
+  name: string;
+  minAmount: number;
+  chain: string;
+  contractAddress: string;
+}
+
 export interface VaultOutletContext {
   getTokens: (chain: ChainProps) => Promise<void>;
   deleteVault: (vault: VaultProps) => void;

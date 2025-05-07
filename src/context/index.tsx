@@ -18,6 +18,7 @@ import i18n from "i18n/config";
 import api from "utils/api";
 
 import Preloader from "components/preloader";
+import { AchievementsConfig } from "utils/interfaces";
 
 interface BaseContext {
   changeCurrency: (currency: Currency) => void;
@@ -27,6 +28,7 @@ interface BaseContext {
   baseValue: number;
   currency: Currency;
   language: Language;
+  achievementsConfig?: AchievementsConfig;
 }
 
 interface InitialState {
@@ -35,6 +37,7 @@ interface InitialState {
   currency: Currency;
   language: Language;
   loading: boolean;
+  achievementsConfig?: AchievementsConfig;
 }
 
 const BaseContext = createContext<BaseContext | undefined>(undefined);
@@ -48,7 +51,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     loading: false,
   };
   const [state, setState] = useState(initialState);
-  const { activePage, baseValue, currency, language, loading } = state;
+  const { achievementsConfig, activePage, baseValue, currency, language, loading } = state;
 
   const changeCurrency = (currency: Currency): void => {
     if (!loading) {
@@ -82,6 +85,13 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const componentDidMount = () => {
     i18n.changeLanguage(language);
 
+    api.achievements.getConfig().then(({ data }) => {
+      setState((prevState) => ({
+        ...prevState,
+        achievementsConfig: data,
+      }));
+    });
+
     api.coin.value(825, currency).then((baseValue) => {
       setState((prevState) => ({ ...prevState, baseValue }));
     });
@@ -95,6 +105,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         changeCurrency,
         changeLanguage,
         changePage,
+        achievementsConfig,
         activePage,
         baseValue,
         currency,

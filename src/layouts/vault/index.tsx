@@ -9,6 +9,7 @@ import {
   oneInchRef,
 } from "utils/constants";
 import {
+  AchievementsConfig,
   ChainProps,
   CoinParams,
   CoinProps,
@@ -39,6 +40,7 @@ import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
+import { useBaseContext } from "context";
 
 interface InitialState {
   tokens: TokenProps[];
@@ -55,6 +57,7 @@ const Component: FC = () => {
   const { tokens, vault, vaults } = state;
   const navigate = useNavigate();
   const vaultProvider = new VaultProvider();
+  const { achievementsConfig } = useBaseContext();
 
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
     const oneInchId = oneInchRef[token.chain];
@@ -622,7 +625,7 @@ const Component: FC = () => {
       <ChangeLanguage />
       <ManageAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
-      <ReferralCode updateVault={updateVault}  vault={vault} />
+      <ReferralCode updateVault={updateVault} vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />

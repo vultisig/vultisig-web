@@ -4,108 +4,77 @@ import constantModals from "modals/constant-modals";
 import { ShareAltOutlined } from "@ant-design/icons";
 import { Tokens, NFTs } from "icons";
 import { useBaseContext } from "context";
-import { PageKey } from "utils/constants";
+import { defTokens, PageKey } from "utils/constants";
+import { VaultOutletContext } from "utils/interfaces";
 import ShareAchievements from "modals/share-achievements";
 
 import constantKeys from "i18n/constant-keys";
 
 import VultiLoading from "components/vulti-loading";
-import { Link } from "react-router-dom";
-import content from "./index.json";
+import { Link, useOutletContext } from "react-router-dom";
+import TokenImage from "components/token-image";
 
 interface InitialState {
-  balance: number;
   loaded: boolean;
   loading: boolean;
-  pageSize: number;
   showTokens: boolean;
-  total: number;
-  currentStep: {
-    image: string;
-    minVultis: number;
-  };
-  nextStep: {
-    image: string;
-    minVultis: number;
-  };
+
+  currentStep: number;
+  nextStep: number;
   progressToNextStep: number;
+  projectedVulties: number;
 }
 
 const Component: FC = () => {
   const { t } = useTranslation();
   const initialState: InitialState = {
-    balance: 0,
     loaded: false,
     loading: false,
-    pageSize: 24,
     showTokens: true,
-    total: 0,
-    currentStep: {
-      image: "",
-      minVultis: 0,
-    },
-    nextStep: {
-      image: "/images/initiate.png",
-      minVultis: 50000,
-    },
+    projectedVulties: 0,
+    currentStep: 0,
+    nextStep: 0,
     progressToNextStep: 0,
   };
   const [state, setState] = useState(initialState);
   const {
-    loaded,
-    loading,
     showTokens,
-    currentStep,
+    projectedVulties,
     nextStep,
+    currentStep,
     progressToNextStep,
   } = state;
-  const { changePage } = useBaseContext();
+  const { changePage, achievementsConfig } = useBaseContext();
+  const { vault } = useOutletContext<VaultOutletContext>();
 
   const milestonesSteps = [
-    {
-      image: "/images/initiate.png",
-      minVultis: 50000,
-    },
-    {
-      image: "/images/keymaster.png",
-      minVultis: 100000,
-    },
-    {
-      image: "/images/cipher-guardian.png",
-      minVultis: 500000,
-    },
-    {
-      image: "/images/consensus-leader.png",
-      minVultis: 1000000,
-    },
-    {
-      image: "/images/validator.png",
-      minVultis: 10000000,
-    },
+    "/images/initiate.png",
+    "/images/keymaster.png",
+    "/images/cipher-guardian.png",
+    "/images/consensus-leader.png",
+    "/images/validator.png",
   ];
 
   const handelStep = (totalVulties: number) => {
-    let currentStepObj = {
-      image: "",
-      minVultis: 0,
-    };
-    let nextStepObj: { image: string; minVultis: number } | null = {
-      image: "/images/initiate.png",
-      minVultis: 50000,
-    };
+    let currentStepObj = 0;
+    let nextStepObj= 0;
 
-    for (let i = 0; i < milestonesSteps.length; i++) {
-      if (totalVulties >= milestonesSteps[i].minVultis) {
-        currentStepObj = milestonesSteps[i];
-        nextStepObj = milestonesSteps[i + 1] || null;
+    if (!achievementsConfig) {
+      return;
+    }
+
+    for (let i = 0; i < achievementsConfig.milestones.length; i++) {
+      if (totalVulties >= achievementsConfig.milestones[i]) {
+        currentStepObj = achievementsConfig.milestones[i];
+        nextStepObj = achievementsConfig.milestones[i + 1] || 0;
       }
     }
 
     const progressToNextStep = nextStepObj
       ? Math.min(
           Math.max(
-            ((totalVulties - currentStepObj.minVultis) /
-              (nextStepObj.minVultis - currentStepObj.minVultis)) *
+            ((totalVulties - currentStepObj) /
+              (nextStepObj - currentStepObj)) *
               100,
             0
           ),
@@ -121,13 +90,6 @@ const Component: FC = () => {
     }));
   };
 
-  const fetchData = (): void => {
-    if (!loading) {
-      setState((prevState) => ({ ...prevState, loading: true }));
-    }
-    setState((prevState) => ({ ...prevState, loading: false, loaded: true }));
-  };
-
   const handelSwitch = (): void => {
     setState((prevState) => ({
       ...prevState,
@@ -137,14 +99,15 @@ const Component: FC = () => {
 
   const componentDidMount = (): void => {
     changePage(PageKey.ACHIEVEMENTES);
-
-    fetchData();
-    handelStep(content.totalVulties);
+    handelStep(vault.totalPoints);
   };
 
   useEffect(componentDidMount, []);
 
-  return loaded ? (
+  vault.totalPoints = vault.totalPoints == 0 ? 52000 : vault.totalPoints;
+  vault.swapVolume = vault.swapVolume == 0 ? 5000 : vault.totalPoints;
+
+  return achievementsConfig ? (
     <>
       <div className="layout-content achievements-page">
         <div className="achievements-title">
@@ -163,50 +126,48 @@ const Component: FC = () => {
           <p className="title">
             {t(constantKeys.PROJECTED_$VULT_AT_END_OF_SEASON)}
           </p>
-          <span className="price">
-            {`${content.AirdropAchievements.vultEndOfSesson.toNumberFormat()} $VULT`}
-          </span>
+          <span className="price">{`${projectedVulties} $VULT`}</span>
         </div>
 
         <ul className="stats">
           <li>
             <p className="title">{t(constantKeys.TOTAL_VULTIES)}</p>
             <span className="price cyan">
-              {content.totalVulties.toNumberFormat()}
+              {vault.totalPoints.toNumberFormat()}
             </span>
           </li>
           <li>
             <p className="title">{t(constantKeys.SWAP_VOLUME)}</p>
-            <span className="price">
-              {content.AirdropAchievements.swapVolume.toNumberFormat()}
-            </span>
+            <span className="price">{vault.swapVolume.toNumberFormat()}</span>
           </li>
           <li>
             <p className="title">{t(constantKeys.SWAP_MULTIPLIER)}</p>
-            <span className="price blue">{`${content.AirdropAchievements.swapMultiplier}X`}</span>
+            <span className="price blue">{`${achievementsConfig.swapMultiplier}X`}</span>
           </li>
           <li>
             <p className="title">{t(constantKeys.REFERRAL_MULTIPLIER)}</p>
-            <span className="price blue">{`${content.AirdropAchievements.referralMultiplier}X`}</span>
+            <span className="price blue">{`${achievementsConfig.referralMultiplier}X`}</span>
           </li>
         </ul>
 
         <div className="milestones">
           <h3 className="title">{t(constantKeys.MILESTONES)}</h3>
           <ul className="items">
-            {milestonesSteps.map((step, index) => (
+            {achievementsConfig.milestones.map((step, index) => (
               <li
-                className={
-                  content.totalVulties >= step.minVultis ? "active" : ""
-                }
+                className={vault.totalPoints >= step ? "active" : ""}
                 key={index}
               >
-                <img className="icon" src={step.image} alt="icon" />
-                <p className="title">{`${step.minVultis.toNumberFormat()} VULTIES`}</p>
+                <img
+                  className="icon"
+                  src={milestonesSteps[index]}
+                  alt="icon"
+                />
+                <p className="title">{`${step.toNumberFormat()} VULTIES`}</p>
                 <div className="status">
                   <img className="award" src="/images/award.svg" />
-                  {content.totalVulties >= step.minVultis ? (
-                    <span>{`+${step.minVultis.toNumberFormat()} VULTIES`}</span>
+                  {vault.totalPoints >= step ? (
+                    <span>{`+${step.toNumberFormat()} VULTIES`}</span>
                   ) : (
                     <span>{t(constantKeys.LOCKED)}</span>
                   )}
@@ -223,13 +184,13 @@ const Component: FC = () => {
           <div className="data">
             {nextStep ? (
               <div className="steps">
-                <p>{`${currentStep?.minVultis.toNumberFormat()} VULTIES`}</p>
-                <p>{`${nextStep?.minVultis.toNumberFormat()} VULTIES`}</p>
+                <p>{`${currentStep.toNumberFormat()} VULTIES`}</p>
+                <p>{`${nextStep.toNumberFormat()} VULTIES`}</p>
               </div>
             ) : (
               <div className="steps">
                 <p>{`1,000,000 VULTIES`}</p>
-                <p>{`${currentStep?.minVultis.toNumberFormat()} VULTIES`}</p>
+                <p>{`${currentStep.toNumberFormat()} VULTIES`}</p>
               </div>
             )}
             <div className="progress">
@@ -241,10 +202,10 @@ const Component: FC = () => {
             <div className="info">
               <span>
                 {nextStep
-                  ? `${content.totalVulties.toNumberFormat()} / ${nextStep?.minVultis.toNumberFormat()} VULTIES (${progressToNextStep}% ${t(
+                  ? `${vault.totalPoints.toNumberFormat()} / ${nextStep.toNumberFormat()} VULTIES (${progressToNextStep}% ${t(
                       constantKeys.TO_NEXT_MILESTONE
                     )})`
-                  : `${currentStep?.minVultis.toNumberFormat()} / ${currentStep?.minVultis.toNumberFormat()} VULTIES (100% )`}
+                  : `${currentStep.toNumberFormat()} / ${currentStep.toNumberFormat()} VULTIES (100% )`}
               </span>
             </div>
           </div>
@@ -271,38 +232,52 @@ const Component: FC = () => {
             </div>
             {showTokens ? (
               <ul className="coins">
-                {/* {content.MultiplierBoosts.tokens.map((token, index) => (
-                  <li key={index}>
-                    <div className="coin">
-                      <img className="logo" src={token.image} alt="coin" />
-                      <div className="info">
-                        <p className="title">{token.name}</p>
-                        <p className="value">{`Min. ${token.minTokens.toNumberFormat()} token`}</p>
+                {achievementsConfig.tokens.map((token, index) => {
+                  const decimals =
+                    defTokens.find((items) => items.chain == token.chain)
+                      ?.decimals || 1;
+                  const minAmount = token.minAmount / Math.pow(10, decimals);
+                  console.log("minAmount", minAmount);
+                  console.log("decimals", decimals);
+                  return (
+                    <li key={index}>
+                      <div className="coin">
+                        <TokenImage alt={token.chain} />
+                        <div className="info">
+                          <p className="title">{token.name}</p>
+                          <p className="value">{`Min. ${minAmount.toNumberFormat()} token`}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="value">
-                      <p className="boost-value">{`${token.Multiplier}X`}</p>
-                      <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
-                    </div>
-                  </li>
-                ))} */}
+                      <div className="value">
+                        <p className="boost-value">{`${token.multiplier}X`}</p>
+                        <p className="multiplier">
+                          {t(constantKeys.MULTIPLIER)}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <ul className="nfts">
-                {/* {content.MultiplierBoosts.nfts.map((nft, index) => (
+                {achievementsConfig.nfts?.map((nft, index) => (
                   <li key={index}>
                     <div className="coin">
-                      <img className="logo" src={nft.image} alt="coin" />
+                      <img
+                        className="logo"
+                        src={`/images/nft-image-collections/${nft.collectionName}.png`}
+                        alt="coin"
+                      />
                       <div className="info">
-                        <p className="title">{nft.name}</p>
+                        <p className="title">{nft.collectionName}</p>
                       </div>
                     </div>
                     <div className="value">
-                      <p className="boost-value">{`${nft.Multiplier}X`}</p>
+                      <p className="boost-value">{`${nft.multiplier}X`}</p>
                       <p className="multiplier">{t(constantKeys.MULTIPLIER)}</p>
                     </div>
                   </li>
-                ))} */}
+                ))}
               </ul>
             )}
           </div>
@@ -324,11 +299,6 @@ const Component: FC = () => {
               <img src="/images/users.svg" />
               <div className="info">
                 <p className="title">{t(constantKeys.REFER_FRIENDS)}</p>
-                {/* <p className="desc">
-                  {t(constantKeys.BONUS_ON_REFERRAL_EARNINGS).replaceArgs([
-                    content.Earning,
-                  ])}
-                </p> */}
               </div>
             </div>
           </div>

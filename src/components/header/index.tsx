@@ -44,6 +44,7 @@ import {
   Storage,
   Vultisig,
 } from "icons";
+import dayjs from "dayjs";
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -61,7 +62,8 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { loading, visible } = state;
-  const { activePage, baseValue, currency } = useBaseContext();
+  const { activePage, baseValue, currency, achievementsConfig } =
+    useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
@@ -550,7 +552,9 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 0h 0min</span>
+            <span className="value">
+              {dayjs(achievementsConfig?.end).format("DD MMM, YYYY")}
+            </span>
           </div>
         )}
       </div>
@@ -600,7 +604,9 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 0h 0min</span>
+            <span className="value">
+              {dayjs(achievementsConfig?.end).format("DD MMM, YYYY")}
+            </span>
           </div>
           {vault && (
             <>
