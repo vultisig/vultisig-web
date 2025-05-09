@@ -55,8 +55,10 @@
         }
       }
       .img {
-        width: 30%;
+        height: 100%;
         max-width: rem(107);
+        border-radius: 15px;
+        background-color: rgb(255 255 255 / 6%);
       }
     }
     .swap-info {

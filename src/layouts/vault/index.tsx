@@ -630,7 +630,7 @@ const Component: FC = () => {
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
-      <ShareAchievements />
+      <ShareAchievements vault={vault}/>
       <SharedSettings vault={vault} />
     </>
   ) : (

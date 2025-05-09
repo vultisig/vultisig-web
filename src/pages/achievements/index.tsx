@@ -22,7 +22,6 @@ interface InitialState {
   currentStep: number;
   nextStep: number;
   progressToNextStep: number;
-  projectedVulties: number;
 }
 
 const Component: FC = () => {
@@ -31,33 +30,18 @@ const Component: FC = () => {
     loaded: false,
     loading: false,
     showTokens: true,
-    projectedVulties: 0,
     currentStep: 0,
     nextStep: 0,
     progressToNextStep: 0,
   };
   const [state, setState] = useState(initialState);
-  const {
-    showTokens,
-    projectedVulties,
-    nextStep,
-    currentStep,
-    progressToNextStep,
-  } = state;
-  const { changePage, achievementsConfig } = useBaseContext();
+  const { showTokens, nextStep, currentStep, progressToNextStep } = state;
+  const { changePage, achievementsConfig, milestonesSteps } = useBaseContext();
   const { vault } = useOutletContext<VaultOutletContext>();
-
-  const milestonesSteps = [
-    "/images/initiate.png",
-    "/images/keymaster.png",
-    "/images/cipher-guardian.png",
-    "/images/consensus-leader.png",
-    "/images/validator.png",
-  ];
 
   const handelStep = (totalVulties: number) => {
     let currentStepObj = 0;
-    let nextStepObj= 0;
+    let nextStepObj = 0;
 
     if (!achievementsConfig) {
       return;
@@ -70,11 +54,20 @@ const Component: FC = () => {
       }
     }
 
+    if (currentStepObj == 0) {
+      currentStepObj = 0;
+      nextStepObj = achievementsConfig.milestones[0];
+    }
+
     const progressToNextStep = nextStepObj
       ? Math.min(
           Math.max(
-            ((totalVulties - currentStepObj) /
-              (nextStepObj - currentStepObj)) *
+            ((totalVulties - currentStepObj < 0
+              ? 1
+              : totalVulties - currentStepObj) /
+              (nextStepObj - currentStepObj == 0
+                ? 1
+                : nextStepObj - currentStepObj)) *
               100,
             0
           ),
@@ -102,10 +95,31 @@ const Component: FC = () => {
     handelStep(vault.totalPoints);
   };
 
+  const getProjectedPoints = (
+    startTime: string,
+    endTime: string,
+    currentPoints: number
+  ): number => {
+    const start = new Date(startTime).getTime();
+    const end = new Date(endTime).getTime();
+    const now = Date.now();
+
+    if (now <= start) return 0;
+    if (now >= end) return currentPoints;
+
+    const elapsed = now - start;
+    const totalDuration = end - start;
+
+    const ratePerMs = currentPoints / elapsed;
+    const projectedPoints = ratePerMs * totalDuration;
+
+    return Math.floor(projectedPoints);
+  };
+
   useEffect(componentDidMount, []);
 
-  vault.totalPoints = vault.totalPoints == 0 ? 52000 : vault.totalPoints;
-  vault.swapVolume = vault.swapVolume == 0 ? 5000 : vault.totalPoints;
+  vault.totalPoints = 1100000;
+  vault.swapVolume = 1000;
 
   return achievementsConfig ? (
     <>
@@ -126,7 +140,11 @@ const Component: FC = () => {
           <p className="title">
             {t(constantKeys.PROJECTED_$VULT_AT_END_OF_SEASON)}
           </p>
-          <span className="price">{`${projectedVulties} $VULT`}</span>
+          <span className="price">{`${getProjectedPoints(
+            achievementsConfig.start,
+            achievementsConfig.end,
+            vault.totalPoints
+          ).toNumberFormat()} $VULT`}</span>
         </div>
 
         <ul className="stats">
@@ -158,11 +176,7 @@ const Component: FC = () => {
                 className={vault.totalPoints >= step ? "active" : ""}
                 key={index}
               >
-                <img
-                  className="icon"
-                  src={milestonesSteps[index]}
-                  alt="icon"
-                />
+                <img className="icon" src={milestonesSteps[index]} alt="icon" />
                 <p className="title">{`${step.toNumberFormat()} VULTIES`}</p>
                 <div className="status">
                   <img className="award" src="/images/award.svg" />
@@ -202,9 +216,9 @@ const Component: FC = () => {
             <div className="info">
               <span>
                 {nextStep
-                  ? `${vault.totalPoints.toNumberFormat()} / ${nextStep.toNumberFormat()} VULTIES (${progressToNextStep}% ${t(
-                      constantKeys.TO_NEXT_MILESTONE
-                    )})`
+                  ? `${vault.totalPoints.toNumberFormat()} / ${nextStep.toNumberFormat()} VULTIES (${
+                      100 - progressToNextStep
+                    }% ${t(constantKeys.TO_NEXT_MILESTONE)})`
                   : `${currentStep.toNumberFormat()} / ${currentStep.toNumberFormat()} VULTIES (100% )`}
               </span>
             </div>
@@ -237,12 +251,11 @@ const Component: FC = () => {
                     defTokens.find((items) => items.chain == token.chain)
                       ?.decimals || 1;
                   const minAmount = token.minAmount / Math.pow(10, decimals);
-                  console.log("minAmount", minAmount);
-                  console.log("decimals", decimals);
+
                   return (
                     <li key={index}>
                       <div className="coin">
-                        <TokenImage alt={token.chain} />
+                        <TokenImage alt={token.name} />
                         <div className="info">
                           <p className="title">{token.name}</p>
                           <p className="value">{`Min. ${minAmount.toNumberFormat()} token`}</p>
@@ -304,7 +317,7 @@ const Component: FC = () => {
           </div>
         </div>
       </div>
-      <ShareAchievements />
+      <ShareAchievements vault={vault} />
     </>
   ) : (
     <div className="layout-content">

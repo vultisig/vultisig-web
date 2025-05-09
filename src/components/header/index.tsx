@@ -116,6 +116,21 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       });
   };
 
+  const getRemainingTimeString = (endTime: string): string => {
+    const end = new Date(endTime).getTime();
+    const now = Date.now();
+    const diff = end - now;
+
+    if (diff <= 0) return "0d 0h 0min";
+
+    const totalMinutes = Math.floor(diff / (1000 * 60));
+    const days = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${days}d ${hours}h ${minutes}min`;
+  };
+
   const componentDidUpdate = (): void => {
     switch (hash) {
       case `#${constantModals.MENU}`: {
@@ -553,7 +568,9 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               constantKeys.SEASON_END_TIME
             )}:`}</span>
             <span className="value">
-              {dayjs(achievementsConfig?.end).format("DD MMM, YYYY")}
+              {getRemainingTimeString(
+                achievementsConfig?.end?.toString() || ""
+              )}
             </span>
           </div>
         )}
@@ -605,7 +622,9 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               constantKeys.SEASON_END_TIME
             )}:`}</span>
             <span className="value">
-              {dayjs(achievementsConfig?.end).format("DD MMM, YYYY")}
+              {getRemainingTimeString(
+                achievementsConfig?.end?.toString() || ""
+              )}
             </span>
           </div>
           {vault && (
