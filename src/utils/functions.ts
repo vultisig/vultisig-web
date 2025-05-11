@@ -116,3 +116,31 @@ export const toSnakeCase = (obj: any): any => {
 
   return obj;
 };
+
+export const calcReferralMultiplier = (referralCount: number) => {
+  // Convert referralCount to float for math operations
+  const rc = referralCount;
+
+  // Compute numerator and denominator
+  const numerator = Math.log(1 + rc);
+  const denominator = Math.log(1 + 500);
+
+  // Calculate multiplier
+  let multiplier = 1 + numerator / denominator;
+
+  // Apply MIN(2, multiplier)
+  if (multiplier > 2) {
+    multiplier = 2;
+  }
+
+  // Round down to 1 decimal place (floor rounding)
+  return Math.floor(multiplier * 10) / 10;
+};
+
+export const calcSwapMultiplier = (swapVolume: number) => {
+  // Calculate the multiplier
+  let multiplier = 1 + 0.02 * Math.sqrt(swapVolume);
+
+  // Round down to 1 decimal place (floor rounding)
+  return Math.floor(multiplier * 10) / 10;
+};

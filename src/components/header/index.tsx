@@ -11,7 +11,6 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { ArrowRight, Handshake } from "icons";
 import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context";
@@ -38,12 +37,14 @@ import {
   ChromeExtension,
   ExternalLink,
   Globe,
+  Handshake,
   HamburgerLG,
   RadioWave,
   Settings,
   Storage,
   Vultisig,
 } from "icons";
+
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -61,7 +62,8 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { loading, visible } = state;
-  const { activePage, baseValue, currency } = useBaseContext();
+  const { activePage, baseValue, currency, achievementsConfig } =
+    useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
@@ -112,6 +114,21 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           content: t(constantKeys.UNSUCCESSFUL_COPY_LINK),
         });
       });
+  };
+
+  const getRemainingTimeString = (endTime: string): string => {
+    const end = new Date(endTime).getTime();
+    const now = Date.now();
+    const diff = end - now;
+
+    if (diff <= 0) return "0d 0h 0min";
+
+    const totalMinutes = Math.floor(diff / (1000 * 60));
+    const days = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${days}d ${hours}h ${minutes}min`;
   };
 
   const componentDidUpdate = (): void => {
@@ -550,7 +567,11 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 6h 24min</span>
+            <span className="value">
+              {getRemainingTimeString(
+                achievementsConfig?.end?.toString() || ""
+              )}
+            </span>
           </div>
         )}
       </div>
@@ -600,7 +621,11 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
             )}:`}</span>
-            <span className="value">30d 6h 24min</span>
+            <span className="value">
+              {getRemainingTimeString(
+                achievementsConfig?.end?.toString() || ""
+              )}
+            </span>
           </div>
           {vault && (
             <>

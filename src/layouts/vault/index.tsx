@@ -622,12 +622,12 @@ const Component: FC = () => {
       <ChangeLanguage />
       <ManageAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
-      <ReferralCode updateVault={updateVault}  vault={vault} />
+      <ReferralCode updateVault={updateVault} vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
-      <ShareAchievements />
+      <ShareAchievements vault={vault}/>
       <SharedSettings vault={vault} />
     </>
   ) : (

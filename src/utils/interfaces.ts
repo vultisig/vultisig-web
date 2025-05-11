@@ -284,11 +284,35 @@ export interface VaultProps {
   rank: number;
   registeredAt: number;
   referralCode: string;
+  referralCount: number;
   showNameInLeaderboard: boolean;
   swapVolume: number;
   theme: Theme;
   totalPoints: number;
   uid: string;
+}
+
+export interface AchievementsConfig {
+  start: string; 
+  end: string;
+  milestones: number[];
+  nfts: NFT[];
+  tokens: Token[];
+}
+
+interface NFT {
+  multiplier: number;
+  collectionName: string;
+  chain: string;
+  contractAddress: string;
+}
+
+interface Token {
+  multiplier: number;
+  name: string;
+  minAmount: number;
+  chain: string;
+  contractAddress: string;
 }
 
 export interface VaultOutletContext {
