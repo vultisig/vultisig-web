@@ -10,6 +10,11 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import html2canvas from "html2canvas";
 import { VaultProps } from "utils/interfaces";
+import {
+  calcSwapMultiplier,
+  calcReferralMultiplier,
+} from "utils/functions";
+import { useBaseContext } from "context";
 
 interface InitialState {
   visible: boolean;
@@ -30,6 +35,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
   };
   const [state, setState] = useState(initialState);
   const [messageApi, contextHolder] = message.useMessage();
+  const { visible, swapMultiplier, referralMultiplier } = state;
   const { hash } = useLocation();
   const { achievementsConfig, milestonesSteps } = useBaseContext();
   const goBack = useGoBack();
