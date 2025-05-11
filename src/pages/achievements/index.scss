@@ -209,13 +209,13 @@
 
         .active {
           background-color: $blue-dark;
+          border-radius: rem(99);
           color: $cyan-base;
           svg {
             path {
               stroke: $cyan-base;
             }
           }
-          border-radius: rem(99);
         }
       }
       .coins {
@@ -258,6 +258,7 @@
               color: $blue-persian;
               font-size: rem(20);
               font-weight: bold;
+              text-align: right;
             }
             .multiplier {
               font-size: rem(14);
@@ -304,6 +305,7 @@
               color: $blue-persian;
               font-size: rem(20);
               font-weight: bold;
+              text-align: right;
             }
             .multiplier {
               font-size: rem(14);
@@ -332,6 +334,8 @@
         flex-direction: row;
         gap: rem(10);
         width: 100%;
+        display: flex;
+        align-items: center;
         .desc {
           font-size: rem(14);
           color: $opacity-50;

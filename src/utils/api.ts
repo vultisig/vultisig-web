@@ -11,6 +11,7 @@ import {
   nftCollection,
 } from "utils/constants";
 import {
+  AchievementsConfig,
   CoinParams,
   CoinProps,
   NFTProps,
@@ -132,6 +133,11 @@ const api = {
     },
     exit: async (params: VaultProps) => {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
+    },
+  },
+  achievements: {
+    getConfig: async () => {
+      return await fetch.get<AchievementsConfig>(`/season/info`);
     },
   },
   activePositions: {
@@ -832,7 +838,7 @@ const api = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    get: (vault: VaultProps) => {
+    get: async (vault: VaultProps) => {
       return fetch
         .get<VaultProps>(
           `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`

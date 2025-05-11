@@ -9,18 +9,29 @@ import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import html2canvas from "html2canvas";
+import { VaultProps } from "utils/interfaces";
 
 interface InitialState {
   visible: boolean;
+  referralMultiplier: number;
+  swapMultiplier: number;
 }
 
-const Component: FC = () => {
+interface ModalProps {
+  vault: VaultProps;
+}
+
+const Component: FC<ModalProps> = ({ vault }) => {
   const { t } = useTranslation();
-  const initialState: InitialState = { visible: false };
+  const initialState: InitialState = {
+    visible: false,
+    referralMultiplier: 0,
+    swapMultiplier: 0,
+  };
   const [state, setState] = useState(initialState);
   const [messageApi, contextHolder] = message.useMessage();
-  const { visible } = state;
   const { hash } = useLocation();
+  const { achievementsConfig, milestonesSteps } = useBaseContext();
   const goBack = useGoBack();
 
   const componentDidUpdate = (): void => {
@@ -36,6 +47,11 @@ const Component: FC = () => {
         break;
       }
     }
+    setState((prevState) => ({
+      ...prevState,
+      swapMultiplier: calcSwapMultiplier(vault.swapVolume),
+      referralMultiplier: calcReferralMultiplier(vault.referralCount),
+    }));
   };
 
   useEffect(componentDidUpdate, [hash]);
@@ -75,6 +91,17 @@ const Component: FC = () => {
     }
   };
 
+  const getMilestoneIndex = (value: number, milestones: number[]): number => {
+    if (value > milestones[milestones.length - 1]) return milestones.length - 1;
+
+    for (let i = milestones.length - 1; i >= 0; i--) {
+      if (value >= milestones[i]) {
+        return i;
+      }
+    }
+    return -1;
+  };
+  
   return (
     <Modal
       className="modal-achievements"
@@ -104,26 +131,44 @@ const Component: FC = () => {
             <span className="total-vulties">
               {t(constantKeys.TOTAL_VULTIES)}
             </span>
-            <span className="total-vulties-numder">75,450.200</span>
+            <span className="total-vulties-numder">
+              {vault.totalPoints.toNumberFormat()}
+            </span>
           </div>
-          <img
-            className="img"
-            src="/images/initiate.svg"
-            alt="share-achievements"
-          />
+          {!(
+            vault.totalPoints <
+            (achievementsConfig?.milestones
+              ? achievementsConfig?.milestones[0]
+              : 0)
+          ) ? (
+            <img
+              className="img"
+              src={
+                milestonesSteps[
+                  getMilestoneIndex(
+                    vault.totalPoints,
+                    achievementsConfig?.milestones
+                      ? achievementsConfig?.milestones
+                      : []
+                  )
+                ]
+              }
+              alt="share-achievements"
+            />
+          ) : null}
         </div>
         <ul className="swap-info">
           <li>
             <span className="title">{t(constantKeys.SWAP_VOLUME)}</span>
-            <span className="number">$5,000</span>
+            <span className="number">{`$ ${vault.swapVolume.toNumberFormat()}`}</span>
           </li>
           <li>
             <span className="title">{t(constantKeys.SWAP_MULTIPLIER)}</span>
-            <span className="multiplier">1.6X</span>
+            <span className="multiplier">{`${swapMultiplier}X`}</span>
           </li>
           <li>
             <span className="title">{t(constantKeys.REFERRAL_MULTIPLIER)}</span>
-            <span className="multiplier">1.5X</span>
+            <span className="multiplier">{`${referralMultiplier}X`}</span>
           </li>
         </ul>
       </div>
