@@ -35,6 +35,7 @@ import LogoutVault from "modals/logout-vault";
 import RenameVault from "modals/rename-vault";
 import ReferralCode from "modals/referral-code";
 import VaultSettings from "modals/vault-settings";
+import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
@@ -343,7 +344,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.leaderboard, { replace: true });
+        navigate(constantPaths.default.aridrop, { replace: true });
 
         return { ...prevState };
       }
@@ -585,11 +586,11 @@ const Component: FC = () => {
         } else {
           setStoredVaults([]);
 
-          navigate(constantPaths.default.leaderboard, { replace: true });
+          navigate(constantPaths.default.aridrop, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.leaderboard, { replace: true });
+      navigate(constantPaths.default.aridrop, { replace: true });
     }
   };
 
@@ -626,6 +627,7 @@ const Component: FC = () => {
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
+      <ShareAchievements />
       <SharedSettings vault={vault} />
     </>
   ) : (

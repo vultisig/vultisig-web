@@ -31,15 +31,18 @@
 @use "../modals/qr-code";
 @use "../modals/rename-vault";
 @use "../modals/referral-code";
+@use "../modals/share-achievements";
 @use "../modals/shared-settings";
 @use "../modals/vault-settings";
 
+@use "../pages/airdrop";
+@use "../pages/achievements";
 @use "../pages/chain-assets";
 @use "../pages/chains";
 @use "../pages/import";
 @use "../pages/nft-assets";
 @use "../pages/nfts";
-@use "../pages/leaderboard";
 @use "../pages/onboarding";
 @use "../pages/positions";
+@use "../pages/swap";
 @use "../pages/upload";

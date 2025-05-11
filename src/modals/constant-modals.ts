@@ -14,5 +14,6 @@ export default keyMirror({
   RENAME_VAULT: true,
   REFERRAL_CODE: true,
   VAULT_SETTINGS: true,
+  SHARE_ACHIEVEMENTS: true,
   SHARE_SETTINGS: true,
 });

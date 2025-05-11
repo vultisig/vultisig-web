@@ -5,6 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Vaša imovina će skupljati VULTIES tijekom razdoblja od 12 mjeseci. Na kraju tog razdoblja primit ćete svoj dio airdropa (5% od $VULT).",
   [translation.ACTIVE_POSITIONS]: "Aktivne pozicije",
+  [translation.ACHIEVEMENTS]: "Postignuća",
   [translation.ADD_NEW_VAULT]: "Dodajte novi vault",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Napomena: Airdrop se temelji na ukupnom iznosu u vašem vaultu pomnoženom s vremenom tijekom kojeg se imovina drži u vaultu. Najveći iznosi tijekom najduljeg vremena ostvaruju najviše.",
@@ -19,6 +20,9 @@ export default {
   [translation.BECOME_VULTISIG_USER]:
     "Postanite korisnik Vultisiga i pridružite se izračunu airdropa.",
   [translation.BOND_TITLE]: "Obveznica",
+  [translation.BONUS_ON_REFERRAL_EARNINGS]:
+    "Ostvari {0}% bonusa na zaradu od preporuka",
+  [translation.BOOST_YOUR_EAENINGS]: "Povećaj svoju zaradu",
   // C
   [translation.CHECK_LEANDER_BOARD]: "Pogledajte poredak",
   [translation.CHOOSE_CHAIN]: "Odaberite lance",
@@ -36,6 +40,7 @@ export default {
     "Ovo će također izbrisati SVE vaše prikupljene VULTIES (airdrop bodove)!",
   [translation.CONFIRM_REMOVE_CHECKBOX]:
     "Potvrđujem da ću izgubiti sav svoj napredak",
+    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopiraj sliku u međuspremnik",
   [translation.COUNTED]: "brojano",
   [translation.CURRENCY]: "Valuta",
   // D
@@ -68,6 +73,7 @@ export default {
   [translation.HOW_TO_PARTICIPATE]: "Kako sudjelovati",
   // I
   [translation.INSPECT_CODE_MANAGE]: "Pregledajte kod ovdje.",
+  [translation.INCREASE_SWAP_VOLUME]: "Povećaj volumen zamjene",
   // J
   [translation.JOIN_AIRDROP]: "Pridružite se airdropu",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "PRIDRUŽITE SE AIRDROPU",
@@ -79,6 +85,7 @@ export default {
   [translation.LIQUIDITY_POSITION_TITLE]: "Pozicija likvidnosti",
   [translation.LINK_SEE_HERE]: "vidi ovdje.",
   [translation.LOADING]: "Učitavanje",
+  [translation.LOCKED]: "Zaključano",
   [translation.LOGO]: "Logo",
   [translation.LOGO_SIZE]: "Maksimalna dopuštena veličina logotipa je 100 KB",
   [translation.LOGOUT]: "Odjava",
@@ -88,6 +95,10 @@ export default {
   // M
   [translation.MANAGE_AIRDROP]: "Upravljajte airdropom",
   [translation.MAYA]: "Maya",
+  [translation.MILESTONES]: "Prekretnice",
+  [translation.MULTIPLIER]: "Množitelj",
+  [translation.MULTIPLIER_BOOSTS]: "Pojačanja množitelja",
+  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Moj udio u {0} airdropu",
   // N
   [translation.NO_BOND_FOUND]: "Nije pronađena obveznica",
   [translation.NOT_COLLECTED]: "Nisu prikupljene druge informacije.",
@@ -101,6 +112,9 @@ export default {
   // P
   [translation.POWERED_BY]: "Pokreće",
   [translation.POSITIONS_TITLE]: "Pozicije",
+  [translation.PROGRESS_TO_NEXT_MILESTONE]: "Napredak do sljedeće prekretnice",
+  [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
+    "Predviđeni $VULT na kraju sezone",
   [translation.PRIVACY]: "Pročitajte obećanje osnivača o privatnosti ovdje.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "Kako se registrirati za airdrop?",
@@ -115,6 +129,8 @@ export default {
     "Ovaj kod je spremljen u našoj bazi podataka za suradnju s partnerima.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Preporučite prijatelje pomoću naše jednostavne mini aplikacije za Telegram i povećajte svoj airdrop",
+  [translation.REFERRAL_MULTIPLIER]: "Referalni multiplikator",
+  [translation.REFER_FRIENDS]: "Preporuči prijatelje",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:
     "Registrirate svoje javne ključeve i adrese vaulta.",
   [translation.REGISTER_UNLIMITED_VAULTS]:
@@ -131,6 +147,7 @@ export default {
   [translation.SAVE]: "Spremi",
   [translation.SAVER_TITLE]: "Štednja",
   [translation.SEARCH]: "Pretraži",
+  [translation.SEASON_END_TIME]: "Sezona završava za",
   [translation.SECURE_CRYPTO_VAULT]: "SIGURNI KRIPTO VAULT",
   [translation.SEE_FULL_LIST]: "Pogledajte cijeli popis",
   [translation.SELECT_CHAINS_TOKENS]:
@@ -138,6 +155,9 @@ export default {
   [translation.SETUP_MULTIـONBOARDING]: "POSTAVITE MULTIFAKTORSKI WALLET",
   [translation.SETUP_MULTI_ONBOARDING_EXPLAIN]:
     "Izradite siguran wallet s multifaktorskom autentifikacijom kako biste zaštitili svoju imovinu i povećali sigurnost svog računa.",
+  [translation.SHARE]: "Podijeli",
+  [translation.SHARE_ON]: "Podijeli na {0}",
+  [translation.SHARE_ACHIEVEMENTS]: "Podijeli postignuća",
   [translation.SHARE_VAULT]: "Podijelite svoj Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizirajte stranicu podijeljenog Vaulta",
@@ -151,16 +171,23 @@ export default {
   [translation.START]: "Započni",
   [translation.SUCCESSFUL_COPY_LINK]: "Link kopiran u međuspremnik",
   [translation.SUCCESSFUL_COPY_TEXT]: "Tekst kopiran u međuspremnik",
+  [translation.SUCCESSFUL_COPY_IMAGE]: "Slika kopirana u međuspremnik",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Imovina prve razine i većina tokena koje podržava Vultisig se računaju. Ostala aktivna imovina kao što su LP-ovi i obveznice čvorova iz THORChain-a, MAYA Protokola i staked tokeni također su valjani.",
+  [translation.SWAP_VOLUME]: "Swap volumen",
+  [translation.SWAP_MULTIPLIER]: "Swap multiplikator",
+  [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
+    "Zamijeni više da zaradiš više VULTIES",
   // T
   [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "kako sudjelovati u AIRDROPU OD <span>$5M</span> VULTISIG-a",
+  [translation.TO_NEXT_MILESTONE]: "do sljedeće prekretnice",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Ukupna vrijednost vaultova airdropa",
   [translation.TOTAL_BALANCE]: "Ukupni saldo",
   [translation.TOTAL_REGISTERED_WALLETS]: "Ukupan broj registriranih walletova",
+  [translation.TOTAL_VULTIES]: "Ukupno Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "PRENESITE SREDSTVA U VAULTOVE",
   [translation.TRANSFER_FUNDSـONBOARDING_EXPLAIN]:
@@ -178,6 +205,7 @@ export default {
   [translation.UPLOAD_VAULT_QR]: "Prenesite QR Vaulta",
   // V
   [translation.VULTICONNECT]: "VultiConnect",
+  [translation.VAULT_AIRDROP_ACHIEVEMENTS]: "Postignuća $VULT Airdropa",
   [translation.VAULT_AIRDROP_JOINED]:
     "Vaš Vault {0} se pridružio airdropu Vultisig-a. Sada ćete početi svakodnevno prikupljati VULTIES. Vratite se sutra kako biste vidjeli svoje prve VULTIES na ljestvici i provjerili svoje konkurente.",
   [translation.VAULT_SETTINGS]: "Postavke Vaulta",

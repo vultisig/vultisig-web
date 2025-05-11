@@ -285,6 +285,7 @@ export interface VaultProps {
   registeredAt: number;
   referralCode: string;
   showNameInLeaderboard: boolean;
+  swapVolume: number;
   theme: Theme;
   totalPoints: number;
   uid: string;
