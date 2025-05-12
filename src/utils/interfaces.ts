@@ -1,10 +1,6 @@
-import { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
-
 import {
   ChainKey,
   CollectionKey,
-  Currency,
-  Language,
   LayoutKey,
   Theme,
 } from "utils/constants";

@@ -77,7 +77,6 @@ const Component: FC = () => {
             positionProvider.getSaverPositions().then(updatePositions),
             positionProvider.getThorBond().then(updatePositions),
             positionProvider.getTGTStake().then(updatePositions),
-            positionProvider.getWewePositions().then(updatePositions),
           ]).then(() => {
             vault.positions = { updated: true };
           });
