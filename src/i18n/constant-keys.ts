@@ -191,8 +191,6 @@ export default keyMirror({
   VULTISIG: true,
   VULT_TOKEN: true,
   // W
-  WEWE: true,
-  WEWE_USDT_ADDRESS_NOT_FOUND: true,
   // Y
   // Z
 });

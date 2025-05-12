@@ -7,18 +7,17 @@ import {
 } from "utils/constants";
 import { PositionProps, VaultProps } from "utils/interfaces";
 import api from "utils/api";
-import WeweProvider from "utils/wewe-provider";
 
 export default class PositionProvider {
   private vault: VaultProps;
-  private weweProvider: WeweProvider;
+
   private runePrice?: number;
   private tgtPrice?: number;
   private usdtPrice?: number;
 
   constructor(vault: VaultProps) {
     this.vault = vault;
-    this.weweProvider = new WeweProvider();
+
   }
 
   private getChain = (
@@ -338,39 +337,6 @@ export default class PositionProvider {
           });
       } else {
         resolve({ tgtStake });
-      }
-    });
-  };
-
-  public getWewePositions = (): Promise<{ wewePositions: PositionProps[] }> => {
-    return new Promise((resolve) => {
-      const address = this.vault.chains.find(
-        ({ name }) => name === ChainKey.BASE
-      )?.address;
-
-      const wewePositions: PositionProps[] = [];
-
-      if (address) {
-        this.weweProvider
-          .getPositions(address, this.runePrice || 0)
-          .then((positions) => {
-            positions.forEach((position) => {
-              wewePositions.push({
-                base: {
-                  chain: ChainKey.BASE,
-                  price: position.value,
-                  tiker: TickerKey.WEWE,
-                  tokenAddress: `${exploreToken[ChainKey.BASE]}${address}`,
-                  tokenAmount: position.shares,
-                },
-              });
-            });
-          })
-          .finally(() => {
-            resolve({ wewePositions });
-          });
-      } else {
-        resolve({ wewePositions });
       }
     });
   };

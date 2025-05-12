@@ -42,9 +42,7 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                       <span className="name">{item.base.chain}</span>
 
                       <span className="text">
-                        {item.base.tiker === TickerKey.WEWE
-                          ? `${item.base.tokenAmount}% ${TickerKey.WEWE}/${TickerKey.USDC}`
-                          : `${item.base.tokenAmount} ${item.base.tiker}`}
+                        {`${item.base.tokenAmount} ${item.base.tiker}`}
                       </span>
                     </div>
                   )}
