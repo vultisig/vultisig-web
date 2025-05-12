@@ -1,4 +1,5 @@
-import { initWasm, type WalletCore } from "@trustwallet/wallet-core";
+import { initWasm, WalletCore } from "@trustwallet/wallet-core";
+import { CoinType } from "@trustwallet/wallet-core/dist/src/wallet-core";
 
 import {
   ChainKey,
@@ -11,7 +12,6 @@ import {
   oneInchRef,
 } from "utils/constants";
 import type {
-  ChainCoinRef,
   ChainProps,
   CoinParams,
   CoinProps,
@@ -24,13 +24,13 @@ import { getStoredAddress, setStoredAddress } from "utils/storage";
 import api from "utils/api";
 
 export default class VaultProvider {
-  private chainRef?: ChainCoinRef;
+  private chainRef?: Record<ChainKey, CoinType>;
   private walletCore?: WalletCore;
 
   constructor() {}
 
   private getWalletCore = (): Promise<{
-    chainRef: ChainCoinRef;
+    chainRef: Record<ChainKey, CoinType>;
     walletCore: WalletCore;
   }> => {
     return new Promise((resolve, reject) => {
@@ -43,6 +43,7 @@ export default class VaultProvider {
 
             this.chainRef = {
               [ChainKey.ARBITRUM]: walletCore.CoinType.arbitrum,
+              [ChainKey.AKASH]: walletCore.CoinType.akash,
               [ChainKey.AVALANCHE]: walletCore.CoinType.avalancheCChain,
               [ChainKey.BASE]: walletCore.CoinType.base,
               [ChainKey.BITCOIN]: walletCore.CoinType.bitcoin,
@@ -458,6 +459,7 @@ export default class VaultProvider {
 
       switch (chain) {
         // Cosmos
+        case ChainKey.AKASH: 
         case ChainKey.DYDX:
         case ChainKey.GAIACHAIN:
         case ChainKey.KUJIRA:
