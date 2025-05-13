@@ -344,7 +344,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.aridrop, { replace: true });
+        navigate(constantPaths.default.airdrop, { replace: true });
 
         return { ...prevState };
       }
@@ -583,11 +583,11 @@ const Component: FC = () => {
         } else {
           setStoredVaults([]);
 
-          navigate(constantPaths.default.aridrop, { replace: true });
+          navigate(constantPaths.default.airdrop, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.aridrop, { replace: true });
+      navigate(constantPaths.default.airdrop, { replace: true });
     }
   };
 

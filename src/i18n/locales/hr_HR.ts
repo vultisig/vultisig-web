@@ -62,6 +62,7 @@ export default {
   [translation.ETH_ARB_ADDRESS_NOT_FOUND]:
     "ETH/ARB adresa nije pronađena u vašem vaultu",
   // F
+  [translation.FAILED_COPY_IMAGE]: "Neuspješno kopiranje slike u međuspremnik",
   [translation.FARMED]: "OBRAĐENO",
   [translation.FAQ]: "Česta pitanja",
   [translation.FILE_SELECTED_SUCCESS]: "Datoteka uspješno odabrana",

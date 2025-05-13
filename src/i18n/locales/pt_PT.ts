@@ -62,6 +62,7 @@ export default {
   [translation.ETH_ARB_ADDRESS_NOT_FOUND]:
     "Endereço ETH/ARB não encontrado no seu cofre",
   // F
+  [translation.FAILED_COPY_IMAGE]: "Falha ao copiar a imagem",
   [translation.FARMED]: "CULTIVADO",
   [translation.FAQ]: "Perguntas frequentes",
   [translation.FILE_SELECTED_SUCCESS]: "Ficheiro selecionado com sucesso",

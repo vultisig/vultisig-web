@@ -109,7 +109,7 @@ export default class PositionProvider {
                 base: {
                   chain: chain.name,
                   price: item.assetPriceUsd * item.assetAdded,
-                  tiker: chain.ticker,
+                  ticker: chain.ticker,
                   tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
                     item.runeAddress || item.assetAddress
                   }`,
@@ -118,7 +118,7 @@ export default class PositionProvider {
                 target: {
                   chain: ChainKey.MAYACHAIN,
                   price: item.runeOrCacaoPricePriceUsd * runeAdded,
-                  tiker: TickerKey.CACAO,
+                  ticker: TickerKey.CACAO,
                   tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${
                     item.runeAddress || item.assetAddress
                   }`,
@@ -138,7 +138,7 @@ export default class PositionProvider {
                 base: {
                   chain: chain.name,
                   price: item.assetPriceUsd * assetAdded,
-                  tiker: chain.ticker,
+                  ticker: chain.ticker,
                   tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                     item.runeAddress || item.assetAddress
                   }`,
@@ -147,7 +147,7 @@ export default class PositionProvider {
                 target: {
                   chain: ChainKey.THORCHAIN,
                   price: item.runeOrCacaoPricePriceUsd * runeAdded,
-                  tiker: TickerKey.RUNE,
+                  ticker: TickerKey.RUNE,
                   tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                     item.runeAddress || item.assetAddress
                   }`,
@@ -175,7 +175,7 @@ export default class PositionProvider {
           base: {
             chain: ChainKey.MAYACHAIN,
             price: 0,
-            tiker: TickerKey.MAYA,
+            ticker: TickerKey.MAYA,
             tokenAddress: `${exploreToken[ChainKey.MAYACHAIN]}${address}`,
             tokenAmount: "0",
           },
@@ -201,7 +201,7 @@ export default class PositionProvider {
               base: {
                 chain: ChainKey.THORCHAIN,
                 price: (this.runePrice || 0) * tokenAmount,
-                tiker: TickerKey.RUNE,
+                ticker: TickerKey.RUNE,
                 tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
                 tokenAmount: tokenAmount.toBalanceFormat(),
               },
@@ -255,7 +255,7 @@ export default class PositionProvider {
                       base: {
                         chain: chain.name,
                         price: (values[cmcId] || 0) * tokenAmount,
-                        tiker: chain.ticker,
+                        ticker: chain.ticker,
                         tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${
                           item.assetAddress
                         }`,
@@ -293,7 +293,7 @@ export default class PositionProvider {
               base: {
                 chain: ChainKey.THORCHAIN,
                 price: (this.runePrice || 0) * tokenAmount,
-                tiker: TickerKey.RUNE,
+                ticker: TickerKey.RUNE,
                 tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
                 tokenAmount: tokenAmount.toBalanceFormat(),
               },
@@ -325,7 +325,7 @@ export default class PositionProvider {
                 price:
                   (this.tgtPrice || 0) * data.stakedAmount +
                   data.reward * (this.usdtPrice || 0),
-                tiker: TickerKey.TGT,
+                ticker: TickerKey.TGT,
                 tokenAddress: `${exploreToken[ChainKey.ARBITRUM]}${address}`,
                 tokenAmount: (Number(data.stakedAmount) || 0).toBalanceFormat(),
                 reward: data.reward,

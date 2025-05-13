@@ -136,9 +136,7 @@ const api = {
     },
   },
   achievements: {
-    getConfig: async () => {
-      return await fetch.get<AchievementsConfig>(`/season/info`);
-    },
+    getConfig: () => fetch.get<AchievementsConfig>(`/season/info`),
   },
   activePositions: {
     nodeInfo: (address: string): Promise<number> => {

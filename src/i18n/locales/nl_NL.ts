@@ -62,6 +62,7 @@ export default {
   [translation.ETH_ARB_ADDRESS_NOT_FOUND]:
     "ETH/ARB-adres niet gevonden in je kluis",
   // F
+  [translation.FAILED_COPY_IMAGE]: "Afbeelding kopiëren mislukt",
   [translation.FARMED]: "GEWASSEN",
   [translation.FAQ]: "Veelgestelde vragen",
   [translation.FILE_SELECTED_SUCCESS]: "Bestand succesvol geselecteerd",

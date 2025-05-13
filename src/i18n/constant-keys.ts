@@ -52,6 +52,7 @@ export default keyMirror({
   ETH_ARB_ADDRESS_NOT_FOUND: true,
   // F
   FARMED: true,
+  FAILED_COPY_IMAGE: true,
   FAQ: true,
   FILE_SELECTED_SUCCESS: true,
   // G

@@ -91,7 +91,7 @@ const Component: FC = () => {
     : 0;
 
   return loaded ? (
-    <div className="layout-content leaderboard-page">
+    <div className="layout-content airdrop-page">
       <div className="stats">
         <div className="item">
           <span className="label">
