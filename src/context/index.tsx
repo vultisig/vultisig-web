@@ -29,6 +29,7 @@ interface BaseContext {
   currency: Currency;
   language: Language;
   achievementsConfig?: AchievementsConfig;
+  milestonesSteps: string[];
 }
 
 interface InitialState {
@@ -38,6 +39,7 @@ interface InitialState {
   language: Language;
   loading: boolean;
   achievementsConfig?: AchievementsConfig;
+  milestonesSteps: string[];
 }
 
 const BaseContext = createContext<BaseContext | undefined>(undefined);
@@ -49,6 +51,13 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     currency: getStoredCurrency(),
     language: getStoredLanguage(),
     loading: false,
+    milestonesSteps: [
+      "/images/initiate.png",
+      "/images/keymaster.png",
+      "/images/cipher-guardian.png",
+      "/images/consensus-leader.png",
+      "/images/validator.png",
+    ],
   };
   const [state, setState] = useState(initialState);
   const {
@@ -58,6 +67,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     currency,
     language,
     loading,
+    milestonesSteps
   } = state;
 
   const changeCurrency = (currency: Currency): void => {
@@ -92,17 +102,12 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const componentDidMount = () => {
     i18n.changeLanguage(language);
 
-    api.achievements
-      .getConfig()
-      .then(({ data }) => {
-        setState((prevState) => ({
-          ...prevState,
-          achievementsConfig: data,
-        }));
-      })
-      .catch((error) => {
-        console.error("Failed to fetch achievements config:", error);
-      });
+    api.achievements.getConfig().then(({ data }) => {
+      setState((prevState) => ({
+        ...prevState,
+        achievementsConfig: data,
+      }));
+    });
 
     api.coin.value(825, currency).then((baseValue) => {
       setState((prevState) => ({ ...prevState, baseValue }));
@@ -122,6 +127,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         baseValue,
         currency,
         language,
+        milestonesSteps,
       }}
     >
       {children}

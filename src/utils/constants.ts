@@ -46,14 +46,6 @@ export enum LayoutKey {
   VAULT,
 }
 
-export const MilestonesSteps = [
-  "/images/initiate.png",
-  "/images/keymaster.png",
-  "/images/cipher-guardian.png",
-  "/images/consensus-leader.png",
-  "/images/validator.png",
-];
-
 export enum PageKey {
   AIRDROP,
   ACHIEVEMENTES,

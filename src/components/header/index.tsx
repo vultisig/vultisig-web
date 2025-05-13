@@ -117,8 +117,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   };
 
   const getRemainingTimeString = (endTime: string): string => {
-    if (!endTime) return "0d 0h 0min";
-
     const end = new Date(endTime).getTime();
     const now = Date.now();
     const diff = end - now;
@@ -129,7 +127,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     const days = Math.floor(totalMinutes / (60 * 24));
     const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
     const minutes = totalMinutes % 60;
-    if (isNaN(diff) || diff <= 0) return "0d 0h 0min";
 
     return `${days}d ${hours}h ${minutes}min`;
   };
@@ -457,10 +454,10 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <Link
               to={
                 layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.airdrop)
+                  ? handleSharePath(constantPaths.shared.aridrop)
                   : vaults.length
-                  ? constantPaths.vault.airdrop
-                  : constantPaths.default.airdrop
+                  ? constantPaths.vault.aridrop
+                  : constantPaths.default.aridrop
               }
             >
               {t(constantKeys.AIRDROP)}
@@ -532,7 +529,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               ? handleSharePath(constantPaths.shared.chains)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.airdrop
+              : constantPaths.default.aridrop
           }
           className="logo"
         >
@@ -590,7 +587,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
                   ? handleSharePath(constantPaths.shared.chains)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.airdrop
+                  : constantPaths.default.aridrop
               }
               className="logo"
             >

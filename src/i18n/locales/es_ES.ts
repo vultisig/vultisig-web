@@ -63,7 +63,6 @@ export default {
   [translation.ETH_ARB_ADDRESS_NOT_FOUND]:
     "Dirección ETH/ARB no encontrada en su vault",
   // F
-  [translation.FAILED_COPY_IMAGE]: "Error al copiar la imagen",
   [translation.FARMED]: "CULTIVADO",
   [translation.FAQ]: "Preguntas frecuentes",
   [translation.FILE_SELECTED_SUCCESS]: "Archivo seleccionado con éxito",

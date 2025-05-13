@@ -27,7 +27,7 @@ const Component: FC<ComponentProps> = ({ vault }) => {
   const goBack = useGoBack();
 
   const handleLeaderboard = () => {
-    navigate(constantPaths.vault.airdrop, { state: true });
+    navigate(constantPaths.vault.aridrop, { state: true });
   };
 
   const componentDidUpdate = () => {

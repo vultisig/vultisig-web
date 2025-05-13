@@ -27,6 +27,8 @@ export default class VaultProvider {
   private chainRef?: Record<ChainKey, CoinType>;
   private walletCore?: WalletCore;
 
+  constructor() {}
+
   private getWalletCore = (): Promise<{
     chainRef: Record<ChainKey, CoinType>;
     walletCore: WalletCore;

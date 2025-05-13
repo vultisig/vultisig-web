@@ -73,7 +73,7 @@ export interface PositionProps {
   base?: {
     chain: ChainKey;
     price: number;
-    ticker: string;
+    tiker: string;
     tokenAddress: string;
     tokenAmount: string;
     reward?: number;
@@ -81,7 +81,7 @@ export interface PositionProps {
   target?: {
     chain: ChainKey;
     price: number;
-    ticker: string;
+    tiker: string;
     tokenAddress: string;
     tokenAmount: string;
   };

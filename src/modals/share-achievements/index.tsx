@@ -10,8 +10,10 @@ import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import html2canvas from "html2canvas";
 import { VaultProps } from "utils/interfaces";
-import { MilestonesSteps } from "utils/constants";
-import { calcSwapMultiplier, calcReferralMultiplier } from "utils/functions";
+import {
+  calcSwapMultiplier,
+  calcReferralMultiplier,
+} from "utils/functions";
 import { useBaseContext } from "context";
 
 interface InitialState {
@@ -35,7 +37,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { visible, swapMultiplier, referralMultiplier } = state;
   const { hash } = useLocation();
-  const { achievementsConfig } = useBaseContext();
+  const { achievementsConfig, milestonesSteps } = useBaseContext();
   const goBack = useGoBack();
 
   const componentDidUpdate = (): void => {
@@ -51,17 +53,14 @@ const Component: FC<ModalProps> = ({ vault }) => {
         break;
       }
     }
-  };
-
-  useEffect(componentDidUpdate, [hash]);
-
-  useEffect(() => {
-    setState((prev) => ({
-      ...prev,
+    setState((prevState) => ({
+      ...prevState,
       swapMultiplier: calcSwapMultiplier(vault.swapVolume),
       referralMultiplier: calcReferralMultiplier(vault.referralCount),
     }));
-  }, [vault.swapVolume, vault.referralCount]);
+  };
+
+  useEffect(componentDidUpdate, [hash]);
 
   const handleShare = async () => {
     const element = document.querySelector(
@@ -95,10 +94,6 @@ const Component: FC<ModalProps> = ({ vault }) => {
       await navigator.clipboard.write([clipboardItem]);
     } catch (error) {
       console.error("Error :", error);
-      messageApi.open({
-        type: "error",
-        content: t(constantKeys.FAILED_COPY_IMAGE),
-      });
     }
   };
 
@@ -112,7 +107,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
     }
     return -1;
   };
-
+  
   return (
     <Modal
       className="modal-achievements"
@@ -131,21 +126,14 @@ const Component: FC<ModalProps> = ({ vault }) => {
         </div>
         <div className="share-vult">
           <div className="share-info">
-            +{" "}
-            <span className="title">
-              {t(constantKeys.MY_SHARE_OF_THE_VULT_AIRDROP)
-                .split("$VULT")
-                .map((part, i) =>
-                  i === 0 ? (
-                    <>
-                      {part}
-                      <span>$VULT</span>
-                    </>
-                  ) : (
-                    part
-                  )
-                )}
-            </span>
+            <span
+              className="title"
+              dangerouslySetInnerHTML={{
+                __html: t(
+                  constantKeys.MY_SHARE_OF_THE_VULT_AIRDROP
+                ).replaceArgs(["<span>$VULT</span>"]),
+              }}
+            ></span>
             <span className="total-vulties">
               {t(constantKeys.TOTAL_VULTIES)}
             </span>
@@ -162,7 +150,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
             <img
               className="img"
               src={
-                MilestonesSteps[
+                milestonesSteps[
                   getMilestoneIndex(
                     vault.totalPoints,
                     achievementsConfig?.milestones
@@ -171,9 +159,6 @@ const Component: FC<ModalProps> = ({ vault }) => {
                   )
                 ]
               }
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
               alt="share-achievements"
             />
           ) : null}

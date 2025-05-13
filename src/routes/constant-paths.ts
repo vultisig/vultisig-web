@@ -4,7 +4,7 @@ export default {
   redirect: "/redirect/:ecdsa/:eddsa",
   default: {
     root: "/",
-    airdrop: "/airdrop",
+    aridrop: "/aridrop",
     import: "/import",
     onboarding: "/onboarding",
     swap: "/swap",
@@ -12,7 +12,7 @@ export default {
   },
   shared: {
     root: "/shared",
-    airdrop: "/shared/vault/:alias/:uid/airdrop",
+    aridrop: "/shared/vault/:alias/:uid/aridrop",
     chainAssets: "/shared/vault/:alias/:uid/:chainKey",
     chainAssetsRedirect: "/shared/:uid/:chainKey",
     chains: "/shared/vault/:alias/:uid/",
@@ -24,7 +24,7 @@ export default {
   },
   vault: {
     root: "/vault",
-    airdrop: "/vault/airdrop",
+    aridrop: "/vault/aridrop",
     achievements: "/vault/achievements",
     chains: "/vault/balances",
     chainAssets: "/vault/balances/:chainKey",

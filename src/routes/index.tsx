@@ -65,7 +65,7 @@ const Component = () => {
       path: constantPaths.root,
       redirect: vaults.length
         ? constantPaths.vault.chains
-        : constantPaths.default.airdrop,
+        : constantPaths.default.aridrop,
     },
     {
       path: constantPaths.redirect,
@@ -81,7 +81,7 @@ const Component = () => {
       children: [
         {
           path: constantPaths.default.root,
-          redirect: constantPaths.default.airdrop,
+          redirect: constantPaths.default.aridrop,
         },
         {
           path: constantPaths.default.import,
@@ -92,7 +92,7 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.default.airdrop,
+          path: constantPaths.default.aridrop,
           element: (
             <Suspense>
               <AirdropPage />
@@ -142,7 +142,7 @@ const Component = () => {
           redirect: constantPaths.root,
         },
         {
-          path: constantPaths.shared.airdrop,
+          path: constantPaths.shared.aridrop,
           element: (
             <Suspense>
               <AirdropPage />
@@ -240,7 +240,7 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.vault.airdrop,
+          path: constantPaths.vault.aridrop,
           element: (
             <Suspense>
               <AirdropPage />

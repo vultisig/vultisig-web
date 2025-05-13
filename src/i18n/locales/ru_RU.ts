@@ -5,7 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Ваши активы будут накапливать VULTIES в течение 12 месяцев. В конце этого периода вы получите свою долю airdrop (5% от $VULT).",
   [translation.ACTIVE_POSITIONS]: "Активные позиции",
-  [translation.ACHIEVEMENTS]: "Достижения",
+  [translation.ACHIEVEMENTS]: "Дости",
   [translation.ADD_NEW_VAULT]: "Добавить новый хранилище",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Примечание: Airdrop основывается на общей сумме в вашем хранилище, умноженной на время, в течение которого активы хранятся в хранилище. Чем больше сумма и дольше срок, тем больше доход.",
@@ -62,7 +62,6 @@ export default {
   [translation.ETH_ARB_ADDRESS_NOT_FOUND]:
     "Адрес ETH/ARB не найден в вашем хранилище",
   // F
-  [translation.FAILED_COPY_IMAGE]: "Не удалось скопировать изображение в буфер обмена",
   [translation.FARMED]: "ОБРАБОТАНО",
   [translation.FAQ]: "Часто задаваемые вопросы",
   [translation.FILE_SELECTED_SUCCESS]: "Файл успешно выбран",
@@ -99,7 +98,7 @@ export default {
   [translation.MILESTONES]: "Вехи",
   [translation.MULTIPLIER]: "Множитель",
   [translation.MULTIPLIER_BOOSTS]: "Усиления множителя",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Моя доля в airdrop {0}",
+  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Моя доля в {0} airdrop'е",
   // N
   [translation.NO_BOND_FOUND]: "Облигации не найдены",
   [translation.NOT_COLLECTED]: "Других данных не собрано.",

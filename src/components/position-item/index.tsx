@@ -36,12 +36,12 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                 <div className="pool">
                   {item.base && (
                     <div className="type">
-                      <TokenImage alt={item.base.ticker} />
+                      <TokenImage alt={item.base.tiker} />
 
                       <span className="name">{item.base.chain}</span>
 
                       <span className="text">
-                        {`${item.base.tokenAmount} ${item.base.ticker}`}
+                        {`${item.base.tokenAmount} ${item.base.tiker}`}
                       </span>
                     </div>
                   )}
@@ -57,7 +57,7 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                       <span className="name">{item.target.chain}</span>
 
                       <span className="text">
-                        {`${item.target.tokenAmount} ${item.target.ticker}`}
+                        {`${item.target.tokenAmount} ${item.target.tiker}`}
                       </span>
                     </div>
                   )}

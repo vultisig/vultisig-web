@@ -1,6 +1,6 @@
 @use "~variables" as *;
 
-.airdrop-page {
+.leaderboard-page {
   max-width: rem(992);
 
   .warning {
@@ -351,7 +351,7 @@
 }
 
 @media (min-width: rem(576)) {
-  .airdrop-page {
+  .leaderboard-page {
     .board {
       .icon {
         margin: 0;
@@ -410,7 +410,7 @@
 }
 
 @media (min-width: rem(768)) {
-  .airdrop-page {
+  .leaderboard-page {
     .stats {
       flex-wrap: nowrap;
     }
@@ -434,7 +434,7 @@
 }
 
 html[theme="dark"] {
-  .airdrop-page {
+  .leaderboard-page {
     .breadcrumb {
       border-color: $gray-11;
       .divider {
@@ -461,7 +461,7 @@ html[theme="dark"] {
 }
 
 html[theme="light"] {
-  .airdrop-page {
+  .leaderboard-page {
     .breadcrumb {
       border-color: $gray-3;
       .divider {

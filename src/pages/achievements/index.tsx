@@ -4,7 +4,7 @@ import constantModals from "modals/constant-modals";
 import { ShareAltOutlined } from "@ant-design/icons";
 import { Tokens, NFTs } from "icons";
 import { useBaseContext } from "context";
-import { defTokens, PageKey, MilestonesSteps } from "utils/constants";
+import { defTokens, PageKey } from "utils/constants";
 import { VaultOutletContext } from "utils/interfaces";
 
 import {
@@ -52,7 +52,7 @@ const Component: FC = () => {
     swapMultiplier,
     referralMultiplier,
   } = state;
-  const { changePage, achievementsConfig } = useBaseContext();
+  const { changePage, achievementsConfig, milestonesSteps } = useBaseContext();
   const { vault } = useOutletContext<VaultOutletContext>();
 
   const handleStep = (totalVulties: number) => {
@@ -109,6 +109,8 @@ const Component: FC = () => {
   const componentDidMount = (): void => {
     changePage(PageKey.ACHIEVEMENTES);
     handleStep(vault.totalPoints);
+
+    console.log("vault", vault);
 
     setState((prevState) => ({
       ...prevState,
@@ -195,7 +197,7 @@ const Component: FC = () => {
                 className={vault.totalPoints >= step ? "active" : ""}
                 key={index}
               >
-                <img className="icon" src={MilestonesSteps[index]} alt="icon" />
+                <img className="icon" src={milestonesSteps[index]} alt="icon" />
                 <p className="title">{`${step.toNumberFormat()} VULTIES`}</p>
                 <div className="status">
                   <img className="award" src="/images/award.svg" />
