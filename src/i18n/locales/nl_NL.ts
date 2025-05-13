@@ -213,7 +213,4 @@ export default {
   [translation.VULT_TOKEN]: "$VULT Token",
   [translation.VULTISIG]: "Vultisig",
   // W
-  [translation.WEWE]: "WEWE",
-  [translation.WEWE_USDT_ADDRESS_NOT_FOUND]:
-    "WEWE/USDT-adres niet gevonden in je kluis",
 };

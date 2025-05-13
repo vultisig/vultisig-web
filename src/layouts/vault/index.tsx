@@ -410,9 +410,6 @@ const Component: FC = () => {
             positionProvider.getTGTStake().then((positions) => {
               updatePositions({ ...vault, positions });
             }),
-            positionProvider.getWewePositions().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
           ]).then(() => {
             updatePositions({ ...vault, positions: { updated: true } });
           });

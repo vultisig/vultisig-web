@@ -214,7 +214,4 @@ export default {
   [translation.VULT_TOKEN]: "El token $VULT",
   [translation.VULTISIG]: "Vultisig",
   // W
-  [translation.WEWE]: "WEWE",
-  [translation.WEWE_USDT_ADDRESS_NOT_FOUND]:
-    "Dirección WEWE/USDT no encontrada en su vault",
 };

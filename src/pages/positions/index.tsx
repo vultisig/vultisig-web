@@ -24,7 +24,6 @@ const Component: FC = () => {
     tgtStake,
     thorBond,
     thorLiquidity,
-    wewePositions,
   } = vault.positions;
 
   const componentDidMount = () => {
@@ -108,16 +107,6 @@ const Component: FC = () => {
           data={tgtStake}
           text="ETH/ARB address not found in your vault"
           title="Stake"
-        />
-      </div>
-
-      <div className="section">
-        <h2 className="heading">WEWE</h2>
-
-        <PositionItem
-          data={wewePositions}
-          text="WEWE/USDT address not found in your vault"
-          title="Positions"
         />
       </div>
     </div>
