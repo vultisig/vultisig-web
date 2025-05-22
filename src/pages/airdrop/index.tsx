@@ -1,5 +1,10 @@
 import { FC, useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import {
+  useMatch,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import dayjs from "dayjs";
@@ -8,16 +13,20 @@ import { useBaseContext } from "context";
 import { LayoutKey, PageKey } from "utils/constants";
 import {
   getAssetsBalance,
+  getCurrentSeason,
   getNFTsBalance,
   getPositionsBalance,
+  getActivity,
+  handleSeasonPath,
 } from "utils/functions";
-import { VaultOutletContext, VaultProps } from "utils/interfaces";
+import { Activities, VaultOutletContext, VaultProps } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 import api from "utils/api";
 
 import { Info } from "icons";
 import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
+import constantPaths from "routes/constant-paths";
 
 interface InitialState {
   balance: number;
@@ -26,6 +35,7 @@ interface InitialState {
   loading: boolean;
   pageSize: number;
   total: number;
+  currentActivity?: Activities;
 }
 
 const Component: FC = () => {
@@ -39,26 +49,37 @@ const Component: FC = () => {
     total: 0,
   };
   const [state, setState] = useState(initialState);
-  const { balance, data, loaded, loading, pageSize, total } = state;
-  const { changePage, baseValue, currency } = useBaseContext();
+  const { balance, data, loaded, loading, pageSize, total, currentActivity } =
+    state;
+  const { changePage, baseValue, currency, seasonInfo } = useBaseContext();
   const { layout, vault } = useOutletContext<VaultOutletContext>();
+  const { id = "0" } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  const fetchData = (): void => {
-    if (!loading) {
+  const match =
+    useMatch(constantPaths.default.airdrop) ||
+    useMatch(constantPaths.shared.airdrop) ||
+    useMatch(constantPaths.vault.airdrop);
+
+  const fetchData = (isReset?: boolean): void => {
+    if ((isReset || !loading) && id) {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      const from = data.length ? data[data.length - 1].rank : 0;
+      const from = !isReset && data.length ? data[data.length - 1].rank : 0;
 
       api
-        .leaderboard({ from, limit: pageSize })
+        .leaderboard({ from, limit: pageSize, season: id })
         .then(({ data }) => {
           setState((prevState) => ({
             ...prevState,
             loaded: true,
             loading: false,
             balance: data.totalBalance + data.totalLp + data.totalNft,
-            data: [...prevState.data, ...data.vaults],
+            data: isReset ? data.vaults : [...prevState.data, ...data.vaults],
             total: data.totalVaultCount,
+            currentActivity: vault
+              ? getActivity(vault, id ? parseInt(id) : 0)
+              : undefined,
           }));
         })
         .catch(() => {
@@ -71,13 +92,31 @@ const Component: FC = () => {
     }
   };
 
-  const componentDidMount = (): void => {
+  const componentDidUpdate = (): void => {
     changePage(PageKey.AIRDROP);
 
-    fetchData();
+    if (vault) {
+      setState((prevState) => ({
+        ...prevState,
+        currentActivity: getActivity(vault, id ? parseInt(id) : 0),
+      }));
+    }
+
+    if (match) {
+      if (parseInt(id) < seasonInfo.length) {
+        fetchData(true);
+      } else {
+        const currentSeason = getCurrentSeason(seasonInfo);
+        const redirectPath = handleSeasonPath(
+          match.pattern.path,
+          currentSeason ? currentSeason.id : "0"
+        );
+        navigate(redirectPath);
+      }
+    }
   };
 
-  useEffect(componentDidMount, []);
+  useEffect(componentDidUpdate, [id, vault]);
 
   const vaultBalance = vault
     ? (getAssetsBalance(vault) +
@@ -86,6 +125,7 @@ const Component: FC = () => {
       baseValue
     : 0;
 
+    //TODO: check logic for all seasons
   const lastCycleBalance = vault
     ? (vault.balance + vault.nftValue + vault.lpValue) * baseValue
     : 0;
@@ -117,29 +157,33 @@ const Component: FC = () => {
             <span className="vault-dropdown">{vault.alias}</span>
           )}
 
-          <div className="result">
-            <div className="item point">
-              <Tooltip title={t(constantKeys.DAILY_UPDATE_POINTS)}>
-                <span className="info">
-                  <Info />
-                </span>
-              </Tooltip>
-              <span className="label">FARMED</span>
-              <span className="value">{`${vault.totalPoints.toNumberFormat()} VULTIES`}</span>
-            </div>
+          {currentActivity ? (
+            <>
+              <div className="result">
+                <div className="item point">
+                  <Tooltip title={t(constantKeys.DAILY_UPDATE_POINTS)}>
+                    <span className="info">
+                      <Info />
+                    </span>
+                  </Tooltip>
+                  <span className="label">{t(constantKeys.FARMED)}</span>
+                  <span className="value">{`${currentActivity.points.toNumberFormat()} POINTS`}</span>
+                </div>
 
-            <div className="item divider" />
+                <div className="item divider" />
 
-            <div className="item rank">
-              <img src="/ranks/basic.svg" className="icon" />
-              <span className="label">
-                {layout === LayoutKey.VAULT
-                  ? "YOUR POSITION"
-                  : "VAULT POSITION"}
-              </span>
-              <span className="value">{`${vault.rank.toNumberFormat()}`}</span>
-            </div>
-          </div>
+                <div className="item rank">
+                  <img src="/ranks/basic.svg" className="icon" />
+                  <span className="label">
+                    {layout === LayoutKey.VAULT
+                      ? "YOUR POSITION"
+                      : "VAULT POSITION"}
+                  </span>
+                  <span className="value">{`${currentActivity.rank.toNumberFormat()}`}</span>
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
       )}
 
@@ -153,8 +197,6 @@ const Component: FC = () => {
               lpValue,
               nftValue,
               rank,
-              registeredAt,
-              totalPoints,
             }) => {
               let medal: string;
 
@@ -176,7 +218,8 @@ const Component: FC = () => {
               return (
                 <div
                   className={`item${medal ? ` top ${medal}` : ""}${
-                    layout !== LayoutKey.DEFAULT && rank === vault.rank
+                    layout !== LayoutKey.DEFAULT &&
+                    rank === currentActivity?.rank
                       ? " active"
                       : ""
                   }`}
@@ -189,20 +232,20 @@ const Component: FC = () => {
                     />
                     <span className="rank">{`#${rank.toNumberFormat()}`}</span>
                     <span className="name">{`${alias}${
-                      layout !== LayoutKey.DEFAULT && rank === vault.rank
+                      layout !== LayoutKey.DEFAULT &&
+                      rank === currentActivity?.rank
                         ? layout === LayoutKey.VAULT
                           ? " (YOU)"
                           : " (VAULT)"
                         : ""
                     }`}</span>
-                    <span className="value">{`${totalPoints.toNumberFormat()} points`}</span>
                   </div>
                   <div className="balance">
-                    <span className="date">
+                    {/* <span className="date">
                       {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
-                    </span>
+                    </span> */}
                     <span className="price">{`${(layout !== LayoutKey.DEFAULT &&
-                    rank === vault.rank
+                    rank === currentActivity?.rank
                       ? lastCycleBalance || vaultBalance
                       : (balance + lpValue + nftValue) * baseValue
                     ).toValueFormat(currency)}`}</span>
@@ -219,7 +262,7 @@ const Component: FC = () => {
             <div className="item loading">
               <VultiLoading />
             </div>
-          ) : total > data.length ? (
+          ) : total > data.length && currentActivity ? (
             <div className="item divider">
               <div className="shape">
                 <img src="/avatar/1.png" className="main" />
@@ -228,45 +271,50 @@ const Component: FC = () => {
               </div>
               <div className="loadmore">
                 <span className="numb">{`+ ${(
-                  (layout !== LayoutKey.DEFAULT && vault.rank > data.length
-                    ? vault.rank - 1
+                  (layout !== LayoutKey.DEFAULT &&
+                  currentActivity.rank > data.length
+                    ? currentActivity.rank - 1
                     : total) - data.length
                 ).toNumberFormat()} others`}</span>
-                <span className="more" onClick={fetchData}>
+                <span className="more" onClick={() => fetchData()}>
                   load more
                 </span>
               </div>
             </div>
           ) : null}
-          {layout !== LayoutKey.DEFAULT && vault.rank > data.length && (
-            <div className="item active">
-              <div className="point">
-                <img
-                  src={
-                    layout === LayoutKey.VAULT && vault.avatarUrl
-                      ? vault.avatarUrl
-                      : "/avatar/1.png"
-                  }
-                  className="avatar"
-                />
-                <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
-                <span className="name">{`${
-                  vault.showNameInLeaderboard
-                    ? vault.alias
-                    : vault.uid.substring(0, 10)
-                }${layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"}`}</span>
-                <span className="value">{`${vault.totalPoints.toNumberFormat()} points`}</span>
+          {layout !== LayoutKey.DEFAULT &&
+            currentActivity &&
+            currentActivity.rank > data.length && (
+              <div className="item active">
+                <div className="point">
+                  <img
+                    src={
+                      layout === LayoutKey.VAULT && vault.avatarUrl
+                        ? vault.avatarUrl
+                        : "/avatar/1.png"
+                    }
+                    className="avatar"
+                  />
+                  <span className="rank">{`#${currentActivity.rank.toNumberFormat()}`}</span>
+                  <span className="name">{`${
+                    vault.showNameInLeaderboard
+                      ? vault.alias
+                      : vault.uid.substring(0, 10)
+                  }${
+                    layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"
+                  }`}</span>
+                  <span className="value">{`${currentActivity} points`}</span>
+                </div>
+                <div className="balance">
+                  <span className="date">
+                    {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
+                  </span>
+                  <span className="price">{`${(
+                    lastCycleBalance || vaultBalance
+                  ).toValueFormat(currency)}`}</span>
+                </div>
               </div>
-              <div className="balance">
-                <span className="date">
-                  {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
-                </span>
-                <span className="price">{`${(
-                  lastCycleBalance || vaultBalance
-                ).toValueFormat(currency)}`}</span>
-              </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </div>

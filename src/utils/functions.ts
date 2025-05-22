@@ -1,5 +1,5 @@
 import { ChainKey, defTokens, Theme, TickerKey } from "utils/constants";
-import { VaultProps } from "utils/interfaces";
+import { Activities, SeasonInfo, VaultProps } from "utils/interfaces";
 
 const isArray = (arr: any): arr is any[] => {
   return Array.isArray(arr);
@@ -143,4 +143,48 @@ export const calcSwapMultiplier = (swapVolume: number) => {
 
   // Round down to 1 decimal place (floor rounding)
   return Math.floor(multiplier * 10) / 10;
+};
+
+export const getCurrentSeason = (
+  seasonInfo: SeasonInfo[]
+): SeasonInfo | undefined => {
+  const now = new Date();
+
+  return (
+    seasonInfo.find((season) => {
+      const start = new Date(season.start);
+      const end = new Date(season.end);
+
+      return now >= start && now <= end;
+    }) || undefined
+  );
+};
+
+export const getCurrentSeasonVulties = (
+  vault: VaultProps,
+  seasonInfo: SeasonInfo[]
+): number => {
+  const currentSeason = getCurrentSeason(seasonInfo);
+
+  return (
+    vault.seasonActivities.find(
+      (activity) => activity.seasonId == (currentSeason ? currentSeason.id : 0)
+    )?.points || 0
+  );
+};
+
+export const getActivity = (vault: VaultProps, seasonId: number): Activities => {
+  return (
+    vault.seasonActivities.find(
+      (activity) => activity.seasonId == seasonId
+    ) || {
+      seasonId: 0,
+      rank: 0,
+      points: 0,
+    }
+  );
+};
+
+export const handleSeasonPath = (path: string, id: string): string => {
+  return path.replace(":id", id);
 };

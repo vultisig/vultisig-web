@@ -5,11 +5,13 @@ import { ShareAltOutlined } from "@ant-design/icons";
 import { Tokens, NFTs } from "icons";
 import { useBaseContext } from "context";
 import { defTokens, PageKey } from "utils/constants";
-import { VaultOutletContext } from "utils/interfaces";
+import { SeasonInfo, VaultOutletContext } from "utils/interfaces";
 
 import {
   calcSwapMultiplier,
   calcReferralMultiplier,
+  getCurrentSeason,
+  getCurrentSeasonVulties,
 } from "utils/functions";
 import ShareAchievements from "modals/share-achievements";
 
@@ -23,12 +25,13 @@ interface InitialState {
   loaded: boolean;
   loading: boolean;
   showTokens: boolean;
-
   currentStep: number;
   nextStep: number;
   progressToNextStep: number;
   swapMultiplier: number;
   referralMultiplier: number;
+  currentSeasonInfo?: SeasonInfo;
+  currentSeasonVulties: number;
 }
 
 const Component: FC = () => {
@@ -42,6 +45,7 @@ const Component: FC = () => {
     progressToNextStep: 0,
     swapMultiplier: 0,
     referralMultiplier: 0,
+    currentSeasonVulties: 0,
   };
   const [state, setState] = useState(initialState);
   const {
@@ -51,28 +55,30 @@ const Component: FC = () => {
     progressToNextStep,
     swapMultiplier,
     referralMultiplier,
+    currentSeasonInfo,
+    currentSeasonVulties,
   } = state;
-  const { changePage, achievementsConfig, milestonesSteps } = useBaseContext();
+  const { changePage, seasonInfo, milestonesSteps } = useBaseContext();
   const { vault } = useOutletContext<VaultOutletContext>();
 
   const handleStep = (totalVulties: number) => {
     let currentStepObj = 0;
     let nextStepObj = 0;
 
-    if (!achievementsConfig) {
+    if (!currentSeasonInfo) {
       return;
     }
 
-    for (let i = 0; i < achievementsConfig.milestones.length; i++) {
-      if (totalVulties >= achievementsConfig.milestones[i]) {
-        currentStepObj = achievementsConfig.milestones[i];
-        nextStepObj = achievementsConfig.milestones[i + 1] || 0;
+    for (let i = 0; i < currentSeasonInfo.milestones.length; i++) {
+      if (totalVulties >= currentSeasonInfo.milestones[i]) {
+        currentStepObj = currentSeasonInfo.milestones[i];
+        nextStepObj = currentSeasonInfo.milestones[i + 1] || 0;
       }
     }
 
     if (currentStepObj == 0) {
       currentStepObj = 0;
-      nextStepObj = achievementsConfig.milestones[0];
+      nextStepObj = currentSeasonInfo.milestones[0];
     }
 
     const progressToNextStep = nextStepObj
@@ -108,15 +114,17 @@ const Component: FC = () => {
 
   const componentDidMount = (): void => {
     changePage(PageKey.ACHIEVEMENTES);
-    handleStep(vault.totalPoints);
+    handleStep(currentSeasonVulties);
 
-    console.log("vault", vault);
-
-    setState((prevState) => ({
-      ...prevState,
-      swapMultiplier: calcSwapMultiplier(vault.swapVolume),
-      referralMultiplier: calcReferralMultiplier(vault.referralCount),
-    }));
+    if (vault) {
+      setState((prevState) => ({
+        ...prevState,
+        swapMultiplier: calcSwapMultiplier(vault.swapVolume),
+        referralMultiplier: calcReferralMultiplier(vault.referralCount),
+        currentSeasonInfo: getCurrentSeason(seasonInfo),
+        currentSeasonVulties: getCurrentSeasonVulties(vault, seasonInfo),
+      }));
+    }
   };
 
   const getProjectedPoints = (
@@ -142,7 +150,7 @@ const Component: FC = () => {
 
   useEffect(componentDidMount, []);
 
-  return achievementsConfig ? (
+  return seasonInfo ? (
     <>
       <div className="layout-content achievements-page">
         <div className="achievements-title">
@@ -162,9 +170,9 @@ const Component: FC = () => {
             {t(constantKeys.PROJECTED_$VULT_AT_END_OF_SEASON)}
           </p>
           <span className="price">{`${getProjectedPoints(
-            achievementsConfig.start,
-            achievementsConfig.end,
-            vault.totalPoints
+            currentSeasonInfo?.start ? currentSeasonInfo.start : "",
+            currentSeasonInfo?.end ? currentSeasonInfo.end : "",
+            currentSeasonVulties
           ).toNumberFormat()} $VULT`}</span>
         </div>
 
@@ -172,7 +180,7 @@ const Component: FC = () => {
           <li>
             <p className="title">{t(constantKeys.TOTAL_VULTIES)}</p>
             <span className="price cyan">
-              {vault.totalPoints.toNumberFormat()}
+              {currentSeasonVulties.toNumberFormat()}
             </span>
           </li>
           <li>
@@ -192,16 +200,16 @@ const Component: FC = () => {
         <div className="milestones">
           <h3 className="title">{t(constantKeys.MILESTONES)}</h3>
           <ul className="items">
-            {achievementsConfig.milestones.map((step, index) => (
+            {currentSeasonInfo?.milestones.map((step, index) => (
               <li
-                className={vault.totalPoints >= step ? "active" : ""}
+                className={currentSeasonVulties >= step ? "active" : ""}
                 key={index}
               >
                 <img className="icon" src={milestonesSteps[index]} alt="icon" />
                 <p className="title">{`${step.toNumberFormat()} VULTIES`}</p>
                 <div className="status">
                   <img className="award" src="/images/award.svg" />
-                  {vault.totalPoints >= step ? (
+                  {currentSeasonVulties >= step ? (
                     <span>{`+${step.toNumberFormat()} VULTIES`}</span>
                   ) : (
                     <span>{t(constantKeys.LOCKED)}</span>
@@ -237,7 +245,7 @@ const Component: FC = () => {
             <div className="info">
               <span>
                 {nextStep
-                  ? `${vault.totalPoints.toNumberFormat()} / ${nextStep.toNumberFormat()} VULTIES (${
+                  ? `${currentSeasonVulties.toNumberFormat()} / ${nextStep.toNumberFormat()} VULTIES (${
                       100 - progressToNextStep
                     }% ${t(constantKeys.TO_NEXT_MILESTONE)})`
                   : `${currentStep.toNumberFormat()} / ${currentStep.toNumberFormat()} VULTIES (100% )`}
@@ -267,7 +275,7 @@ const Component: FC = () => {
             </div>
             {showTokens ? (
               <ul className="coins">
-                {achievementsConfig.tokens.map((token, index) => {
+                {currentSeasonInfo?.tokens.map((token, index) => {
                   const decimals =
                     defTokens.find((items) => items.chain == token.chain)
                       ?.decimals || 1;
@@ -294,7 +302,7 @@ const Component: FC = () => {
               </ul>
             ) : (
               <ul className="nfts">
-                {achievementsConfig.nfts?.map((nft, index) => (
+                {currentSeasonInfo?.nfts?.map((nft, index) => (
                   <li key={index}>
                     <div className="coin">
                       <img

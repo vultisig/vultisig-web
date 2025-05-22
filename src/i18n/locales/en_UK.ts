@@ -46,6 +46,7 @@ export default {
     "I acknowledge that I will lose all my progress",
   [translation.COUNTED]: "counted",
   [translation.CURRENCY]: "Currency",
+  [translation.CURRENT_SEASON]: "Current Season",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "Points and balances are always updated at the end of the day",
@@ -116,6 +117,7 @@ export default {
   // O
   [translation.OTHER]: "Other",
   // P
+  [translation.PAST_SEASONS]: "Past Seasons",
   [translation.POSITIONS]: "Positions",
   [translation.POSITIONS_BALANCE]: "Positions Balance",
   [translation.POSITIONS_TITLE]: "Positions",
@@ -183,7 +185,7 @@ export default {
   [translation.SUCCESSFUL_COPY_IMAGE]: "Image copied to clipboard",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
-  [translation.SWAP]: "Swap",
+  [translation.SWAP]: "Swap Leaderboard",
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Swap more to earn more VULTIES",
   [translation.SWAP_MULTIPLIER]: "Swap Multiplier",

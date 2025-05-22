@@ -31,7 +31,8 @@ export default {
   [translation.CONGRATULATIONS]: "Поздравляем!",
   [translation.CONNECT_OR_UPLOAD]:
     "Подключитесь с помощью VultiConnect или загрузите ваш QR-код хранилища для начала",
-  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Скопировать изображение в буфер обмена",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]:
+    "Скопировать изображение в буфер обмена",
   [translation.CONNECT_YOUR_WALLET]: "Подключите ваш кошелек",
   [translation.CONFIRM_REMOVE_VAULT_WARNING]:
     "Пожалуйста, подтвердите, что вы потеряете весь свой прогресс перед продолжением",
@@ -43,6 +44,7 @@ export default {
     "Подтверждаю, что я потеряю весь свой прогресс",
   [translation.COUNTED]: "учтено",
   [translation.CURRENCY]: "Валюта",
+  [translation.CURRENT_SEASON]: "Текущий сезон",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "Очки и балансы всегда обновляются в конце дня",
@@ -109,6 +111,7 @@ export default {
   // O
   [translation.OTHER]: "Другое",
   // P
+  [translation.PAST_SEASONS]: "Прошлые сезоны",
   [translation.POWERED_BY]: "При поддержке",
   [translation.POSITIONS_TITLE]: "Позиции",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Прогресс к следующей вехе",

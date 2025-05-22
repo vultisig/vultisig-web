@@ -1,9 +1,4 @@
-import {
-  ChainKey,
-  CollectionKey,
-  LayoutKey,
-  Theme,
-} from "utils/constants";
+import { ChainKey, CollectionKey, LayoutKey, Theme } from "utils/constants";
 
 export interface AddressesProps {
   [publicKey: string]: { [chain: string]: string };
@@ -142,18 +137,27 @@ export interface VaultProps {
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   rank: number;
+  swapVolumeRank: number;
   registeredAt: number;
   referralCode: string;
   referralCount: number;
   showNameInLeaderboard: boolean;
   swapVolume: number;
   theme: Theme;
-  totalPoints: number;
+  //totalPoints: number;
   uid: string;
+  seasonActivities: Activities[];
 }
 
-export interface AchievementsConfig {
-  start: string; 
+export interface Activities {
+  seasonId: number;
+  rank: number;
+  points: number;
+}
+
+export interface SeasonInfo {
+  id: string;
+  start: string;
   end: string;
   milestones: number[];
   nfts: NFT[];

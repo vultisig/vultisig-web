@@ -43,6 +43,7 @@ export default {
     "Ik bevestig dat ik al mijn voortgang zal verliezen",
   [translation.COUNTED]: "geteld",
   [translation.CURRENCY]: "Valuta",
+  [translation.CURRENT_SEASON]: "Huidig seizoen",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "Punten en saldo's worden altijd aan het einde van de dag bijgewerkt",
@@ -109,6 +110,7 @@ export default {
   // O
   [translation.OTHER]: "Ander",
   // P
+  [translation.PAST_SEASONS]: "Vorige seizoenen",
   [translation.POWERED_BY]: "Mogelijk gemaakt door",
   [translation.POSITIONS_TITLE]: "Posities",
   [translation.PROGRESS_TO_NEXT_MILESTONE]:
