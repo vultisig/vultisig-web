@@ -54,7 +54,7 @@ importers:
         specifier: ^10.0.0
         version: 10.0.1(react@18.3.1)
       react-router-dom:
-        specifier: ^6.30.0
+        specifier: ^6.27.0
         version: 6.30.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       uuid:
         specifier: ^10.0.0
@@ -81,6 +81,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.7(@types/react@18.3.21)
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
       '@types/react-truncate':
         specifier: ^2.3.7
         version: 2.3.7
@@ -758,6 +761,9 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
+  '@types/history@4.7.11':
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -777,6 +783,12 @@ packages:
     resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
     peerDependencies:
       '@types/react': ^18.0.0
+
+  '@types/react-router-dom@5.3.3':
+    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+
+  '@types/react-router@5.1.20':
+    resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
 
   '@types/react-truncate@2.3.7':
     resolution: {integrity: sha512-gWfw503eLA3Ewx+Imfq7ye1FAllkIhuor4hFQGuE4G3ZHUoc6CITqZerHN8VPBnc26O/MiaDhJKDW4WmBZovZA==}
@@ -2366,6 +2378,8 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
+  '@types/history@4.7.11': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/keymirror@0.1.4': {}
@@ -2382,6 +2396,17 @@ snapshots:
 
   '@types/react-dom@18.3.7(@types/react@18.3.21)':
     dependencies:
+      '@types/react': 18.3.21
+
+  '@types/react-router-dom@5.3.3':
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 18.3.21
+      '@types/react-router': 5.1.20
+
+  '@types/react-router@5.1.20':
+    dependencies:
+      '@types/history': 4.7.11
       '@types/react': 18.3.21
 
   '@types/react-truncate@2.3.7':
