@@ -23,6 +23,9 @@ importers:
       core-js:
         specifier: ^3.38.1
         version: 3.42.0
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       ethers:
         specifier: ^6.13.4
         version: 6.14.1
