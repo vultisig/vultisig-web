@@ -167,7 +167,7 @@ export const getCurrentSeasonVulties = (
   const currentSeason = getCurrentSeason(seasonInfo);
 
   return (
-    vault.seasonActivities.find(
+    vault.seasonStats.find(
       (activity) => activity.seasonId == (currentSeason ? currentSeason.id : 0)
     )?.points || 0
   );
@@ -175,7 +175,7 @@ export const getCurrentSeasonVulties = (
 
 export const getActivity = (vault: VaultProps, seasonId: number): Activities => {
   return (
-    vault.seasonActivities.find(
+    vault.seasonStats.find(
       (activity) => activity.seasonId == seasonId
     ) || {
       seasonId: 0,

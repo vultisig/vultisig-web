@@ -146,7 +146,7 @@ export interface VaultProps {
   theme: Theme;
   //totalPoints: number;
   uid: string;
-  seasonActivities: Activities[];
+  seasonStats: Activities[];
 }
 
 export interface Activities {
