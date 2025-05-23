@@ -43,6 +43,7 @@ export default {
     [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopiraj sliku u međuspremnik",
   [translation.COUNTED]: "brojano",
   [translation.CURRENCY]: "Valuta",
+  [translation.CURRENT_SEASON]: "Trenutna sezona",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "Bodovi i stanja se uvijek ažuriraju na kraju dana",
@@ -110,6 +111,7 @@ export default {
   // O
   [translation.OTHER]: "Drugo",
   // P
+  [translation.PAST_SEASONS]: "Prošle sezone",
   [translation.POWERED_BY]: "Pokreće",
   [translation.POSITIONS_TITLE]: "Pozicije",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Napredak do sljedeće prekretnice",

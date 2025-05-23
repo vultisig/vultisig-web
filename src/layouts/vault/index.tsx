@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import {
   Currency,
@@ -39,6 +39,7 @@ import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
+import { handleSeasonPath } from "utils/functions";
 
 interface InitialState {
   tokens: TokenProps[];
@@ -53,9 +54,9 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { tokens, vault, vaults } = state;
+  const { id = "0" } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const vaultProvider = new VaultProvider();
-
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
     const oneInchId = oneInchRef[token.chain];
 
@@ -344,7 +345,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.aridrop, { replace: true });
+        navigate(constantPaths.default.airdrop, { replace: true });
 
         return { ...prevState };
       }
@@ -583,11 +584,13 @@ const Component: FC = () => {
         } else {
           setStoredVaults([]);
 
-          navigate(constantPaths.default.aridrop, { replace: true });
+          navigate(constantPaths.default.airdrop, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.aridrop, { replace: true });
+      const redirectPath = handleSeasonPath(constantPaths.default.airdrop, id);
+      
+      navigate(redirectPath, { replace: true });
     }
   };
 
@@ -624,7 +627,7 @@ const Component: FC = () => {
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
-      <ShareAchievements vault={vault}/>
+      <ShareAchievements vault={vault} />
       <SharedSettings vault={vault} />
     </>
   ) : (

@@ -9,10 +9,12 @@ import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import html2canvas from "html2canvas";
-import { VaultProps } from "utils/interfaces";
+import { VaultProps, SeasonInfo } from "utils/interfaces";
 import {
   calcSwapMultiplier,
   calcReferralMultiplier,
+  getCurrentSeason,
+  getCurrentSeasonVulties,
 } from "utils/functions";
 import { useBaseContext } from "context";
 
@@ -20,6 +22,8 @@ interface InitialState {
   visible: boolean;
   referralMultiplier: number;
   swapMultiplier: number;
+  currentSeasonInfo?: SeasonInfo;
+  currentSeasonPoints: number;
 }
 
 interface ModalProps {
@@ -32,12 +36,19 @@ const Component: FC<ModalProps> = ({ vault }) => {
     visible: false,
     referralMultiplier: 0,
     swapMultiplier: 0,
+    currentSeasonPoints: 0,
   };
   const [state, setState] = useState(initialState);
   const [messageApi, contextHolder] = message.useMessage();
-  const { visible, swapMultiplier, referralMultiplier } = state;
+  const {
+    visible,
+    swapMultiplier,
+    referralMultiplier,
+    currentSeasonInfo,
+    currentSeasonPoints,
+  } = state;
   const { hash } = useLocation();
-  const { achievementsConfig, milestonesSteps } = useBaseContext();
+  const { seasonInfo, milestonesSteps } = useBaseContext();
   const goBack = useGoBack();
 
   const componentDidUpdate = (): void => {
@@ -53,11 +64,16 @@ const Component: FC<ModalProps> = ({ vault }) => {
         break;
       }
     }
-    setState((prevState) => ({
-      ...prevState,
-      swapMultiplier: calcSwapMultiplier(vault.swapVolume),
-      referralMultiplier: calcReferralMultiplier(vault.referralCount),
-    }));
+
+    if (vault) {
+      setState((prevState) => ({
+        ...prevState,
+        swapMultiplier: calcSwapMultiplier(vault.swapVolume),
+        referralMultiplier: calcReferralMultiplier(vault.referralCount),
+        currentSeasonInfo: getCurrentSeason(seasonInfo),
+        currentSeasonPoints: getCurrentSeasonVulties(vault, seasonInfo),
+      }));
+    }
   };
 
   useEffect(componentDidUpdate, [hash]);
@@ -107,7 +123,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
     }
     return -1;
   };
-  
+
   return (
     <Modal
       className="modal-achievements"
@@ -138,13 +154,13 @@ const Component: FC<ModalProps> = ({ vault }) => {
               {t(constantKeys.TOTAL_VULTIES)}
             </span>
             <span className="total-vulties-numder">
-              {vault.totalPoints.toNumberFormat()}
+              {currentSeasonPoints.toNumberFormat()}
             </span>
           </div>
           {!(
-            vault.totalPoints <
-            (achievementsConfig?.milestones
-              ? achievementsConfig?.milestones[0]
+            currentSeasonPoints <
+            (currentSeasonInfo?.milestones
+              ? currentSeasonInfo?.milestones[0]
               : 0)
           ) ? (
             <img
@@ -152,9 +168,9 @@ const Component: FC<ModalProps> = ({ vault }) => {
               src={
                 milestonesSteps[
                   getMilestoneIndex(
-                    vault.totalPoints,
-                    achievementsConfig?.milestones
-                      ? achievementsConfig?.milestones
+                    currentSeasonPoints,
+                    currentSeasonInfo?.milestones
+                      ? currentSeasonInfo?.milestones
                       : []
                   )
                 ]

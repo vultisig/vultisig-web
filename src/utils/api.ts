@@ -11,7 +11,7 @@ import {
   nftCollection,
 } from "utils/constants";
 import {
-  AchievementsConfig,
+  SeasonInfo,
   CoinParams,
   CoinProps,
   NFTProps,
@@ -73,6 +73,7 @@ namespace Leaderboard {
   export interface Params {
     from: number;
     limit: number;
+    season?: string;
   }
 
   export interface Props {
@@ -135,11 +136,17 @@ const api = {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
   },
-  achievements: {
-    getConfig: async () => {
-      return await fetch.get<AchievementsConfig>(`/season/info`);
+  seasons: {
+    get: async () => {
+      const response = await fetch.get<SeasonInfo[]>(`/seasons/info`);
+      const resultWithIds: SeasonInfo[] = response.data.map((item, index) => ({
+        ...item,
+        id: index.toString(),
+      }));
+      return resultWithIds;
     },
   },
+
   activePositions: {
     nodeInfo: (address: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -877,9 +884,7 @@ const api = {
     );
   },
   leaderboard: async (params: Leaderboard.Params) => {
-    return await fetch.get<Leaderboard.Props>(
-      `leaderboard/vaults?from=${params.from}&limit=${params.limit}`
-    );
+    return await fetch.get<Leaderboard.Props>("leaderboard/vaults", { params });
   },
   oneInch: async (id: number) => {
     return await fetch

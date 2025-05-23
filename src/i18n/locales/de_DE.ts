@@ -43,6 +43,7 @@ export default {
   [translation.CONFIRM_REMOVE_CHECKBOX]:
     "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
   [translation.CURRENCY]: "Währung",
+  [translation.CURRENT_SEASON]: "Aktuelle Saison",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "Punkte und Bilanzen werden immer am Ende des Tages aktualisiert",
@@ -111,6 +112,7 @@ export default {
   // O
   [translation.OTHER]: "Andere",
   // P
+  [translation.PAST_SEASONS]: "Vergangene Saisons",
   [translation.POWERED_BY]: "Powered by",
   [translation.POSITIONS_TITLE]: "Positionen",
   [translation.PROGRESS_TO_NEXT_MILESTONE]:

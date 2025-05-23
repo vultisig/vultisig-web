@@ -43,6 +43,7 @@ export default {
     "Confermo che perderò tutti i miei progressi",
   [translation.COUNTED]: "conteggiato",
   [translation.CURRENCY]: "Valuta",
+  [translation.CURRENT_SEASON]: "Stagione attuale",
   // D
   [translation.DAILY_UPDATE_POINTS]:
     "I punti e i saldi vengono sempre aggiornati alla fine della giornata",
@@ -111,6 +112,7 @@ export default {
   // O
   [translation.OTHER]: "Altro",
   // P
+  [translation.PAST_SEASONS]: "Stagioni passate",
   [translation.POWERED_BY]: "Alimentato da",
   [translation.POSITIONS_TITLE]: "Posizioni",
   [translation.PROGRESS_TO_NEXT_MILESTONE]:
