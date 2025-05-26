@@ -73,6 +73,7 @@ export default class VaultProvider {
               [ChainKey.TRON]: walletCore.CoinType.tron,
               [ChainKey.XRP]: walletCore.CoinType.xrp,
               [ChainKey.ZKSYNC]: walletCore.CoinType.zksync,
+              [ChainKey.ZCASH]: walletCore.CoinType.zcash,
             };
 
             resolve({ chainRef: this.chainRef, walletCore: this.walletCore });
@@ -507,6 +508,7 @@ export default class VaultProvider {
         case ChainKey.BITCOINCASH:
         case ChainKey.DASH:
         case ChainKey.DOGECOIN:
+        case ChainKey.ZCASH:
         case ChainKey.LITECOIN: {
           api.balance.utxo(path, address, decimals).then(resolve);
 
