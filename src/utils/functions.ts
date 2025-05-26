@@ -164,20 +164,21 @@ export const getCurrentSeasonVulties = (
   vault: VaultProps,
   seasonInfo: SeasonInfo[]
 ): number => {
-  const currentSeason = getCurrentSeason(seasonInfo);
+  const currentSeasonId = parseInt(getCurrentSeason(seasonInfo)?.id || "0");
 
   return (
-    vault.seasonStats.find(
-      (activity) => activity.seasonId == (currentSeason ? currentSeason.id : 0)
+    vault.seasonStats?.find(
+      (activity) => activity.seasonId == currentSeasonId
     )?.points || 0
   );
 };
 
-export const getActivity = (vault: VaultProps, seasonId: number): Activities => {
+export const getActivity = (
+  vault: VaultProps,
+  seasonId: number
+): Activities => {
   return (
-    vault.seasonStats.find(
-      (activity) => activity.seasonId == seasonId
-    ) || {
+    vault.seasonStats?.find((activity) => activity.seasonId == seasonId) || {
       seasonId: 0,
       rank: 0,
       points: 0,

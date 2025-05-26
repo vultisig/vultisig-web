@@ -61,48 +61,68 @@ const Component: FC = () => {
   const { changePage, seasonInfo, milestonesSteps } = useBaseContext();
   const { vault } = useOutletContext<VaultOutletContext>();
 
-  const handleStep = (totalVulties: number) => {
-    let currentStepObj = 0;
-    let nextStepObj = 0;
+  const handleStep = () => {
+    const currentSeasonInfo = getCurrentSeason(seasonInfo);
 
-    if (!currentSeasonInfo) {
-      return;
-    }
+    if (currentSeasonInfo) {
+      const swapMultiplier = calcSwapMultiplier(vault.swapVolume);
+      const referralMultiplier = calcReferralMultiplier(vault.referralCount);
+      const currentSeasonVulties = getCurrentSeasonVulties(vault, seasonInfo);
 
-    for (let i = 0; i < currentSeasonInfo.milestones.length; i++) {
-      if (totalVulties >= currentSeasonInfo.milestones[i]) {
-        currentStepObj = currentSeasonInfo.milestones[i];
-        nextStepObj = currentSeasonInfo.milestones[i + 1] || 0;
+      // if currentSeasonVulties < first milestone, set to 0
+      let currentStepObj = 0;
+      let nextStepObj = currentSeasonInfo.milestones[0];
+
+      // calculate current step and next step
+      currentSeasonInfo.milestones.forEach((value, index) => {
+        if (currentSeasonVulties >= value) {
+          const hasNextStep = index + 1 < currentSeasonInfo.milestones.length;
+
+          currentStepObj = hasNextStep
+            ? value
+            : currentSeasonInfo.milestones[index - 1];
+          nextStepObj = hasNextStep
+            ? currentSeasonInfo.milestones[index + 1]
+            : value;
+        }
+      });
+
+      // calculate progress to next step
+      const progressToNextStep =
+        currentSeasonVulties === 0
+          ? 0
+          : nextStepObj
+          ? Math.min(
+              Math.max(
+                ((currentSeasonVulties - currentStepObj < 0
+                  ? 1
+                  : currentSeasonVulties - currentStepObj) /
+                  (nextStepObj - currentStepObj == 0
+                    ? 1
+                    : nextStepObj - currentStepObj)) *
+                  100,
+                0
+              ),
+              100
+            )
+          : 100;
+
+      if (currentStepObj == 0) {
+        currentStepObj = 0;
+        nextStepObj = currentSeasonInfo.milestones[0];
       }
+
+      setState((prevState) => ({
+        ...prevState,
+        currentStep: currentStepObj,
+        nextStep: nextStepObj,
+        progressToNextStep: Number(progressToNextStep.toFixed(0)),
+        swapMultiplier,
+        referralMultiplier,
+        currentSeasonVulties,
+        currentSeasonInfo,
+      }));
     }
-
-    if (currentStepObj == 0) {
-      currentStepObj = 0;
-      nextStepObj = currentSeasonInfo.milestones[0];
-    }
-
-    const progressToNextStep = nextStepObj
-      ? Math.min(
-          Math.max(
-            ((totalVulties - currentStepObj < 0
-              ? 1
-              : totalVulties - currentStepObj) /
-              (nextStepObj - currentStepObj == 0
-                ? 1
-                : nextStepObj - currentStepObj)) *
-              100,
-            0
-          ),
-          100
-        )
-      : 100;
-
-    setState((prevState) => ({
-      ...prevState,
-      currentStep: currentStepObj,
-      nextStep: nextStepObj,
-      progressToNextStep: Number(progressToNextStep.toFixed(0)),
-    }));
   };
 
   const handleSwitch = (): void => {
@@ -114,17 +134,8 @@ const Component: FC = () => {
 
   const componentDidMount = (): void => {
     changePage(PageKey.ACHIEVEMENTES);
-    handleStep(currentSeasonVulties);
 
-    if (vault) {
-      setState((prevState) => ({
-        ...prevState,
-        swapMultiplier: calcSwapMultiplier(vault.swapVolume),
-        referralMultiplier: calcReferralMultiplier(vault.referralCount),
-        currentSeasonInfo: getCurrentSeason(seasonInfo),
-        currentSeasonVulties: getCurrentSeasonVulties(vault, seasonInfo),
-      }));
-    }
+    handleStep();
   };
 
   const getProjectedPoints = (
@@ -232,7 +243,7 @@ const Component: FC = () => {
               </div>
             ) : (
               <div className="steps">
-                <p>{`1,000,000 VULTIES`}</p>
+                <p>{`0 VULTIES`}</p>
                 <p>{`${currentStep.toNumberFormat()} VULTIES`}</p>
               </div>
             )}

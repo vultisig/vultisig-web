@@ -95,12 +95,12 @@ const Component: FC = () => {
   const componentDidUpdate = (): void => {
     changePage(PageKey.AIRDROP);
 
-    if (vault) {
-      setState((prevState) => ({
-        ...prevState,
-        currentActivity: getActivity(vault, id ? parseInt(id) : 0),
-      }));
-    }
+    setState((prevState) => ({
+      ...prevState,
+      currentActivity: vault
+        ? getActivity(vault, id ? parseInt(id) : 0)
+        : undefined,
+    }));
 
     if (match) {
       if (parseInt(id) < seasonInfo.length) {
@@ -303,7 +303,6 @@ const Component: FC = () => {
                   }${
                     layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"
                   }`}</span>
-                  <span className="value">{`${currentActivity} points`}</span>
                 </div>
                 <div className="balance">
                   <span className="date">
