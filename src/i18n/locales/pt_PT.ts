@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Temporada atual",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Os pontos e saldos são sempre atualizados no final do dia",
+    "Os Vulties e saldos são sempre atualizados no final do dia",
   [translation.DOWNLOAD_APP]: "Ainda não tem um cofre? Baixe o Vultisig agora",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Comece por baixar a aplicação Vultisig da App Store ou Google Play para aceder à plataforma e ao airdrop.",

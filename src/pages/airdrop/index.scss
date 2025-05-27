@@ -147,18 +147,19 @@
       position: relative;
     }
 
+    .avatar {
+      background-color: $cyan-base;
+      border-radius: 50%;
+      display: block;
+      height: rem(48);
+      margin: 0 auto rem(8);
+      width: rem(48);
+    }
+
     .point {
       position: relative;
       width: 100%;
 
-      .avatar {
-        background-color: $cyan-base;
-        border-radius: 50%;
-        display: block;
-        height: rem(48);
-        margin: 0 auto rem(8);
-        width: rem(48);
-      }
 
       .rank {
         color: rgba($color: $gray-1, $alpha: 0.5);
@@ -362,16 +363,15 @@
         top: rem(16);
       }
 
+      .avatar {
+        margin: 0;
+        position: absolute;
+      }
+
       .point {
         padding-left: rem(64);
         width: 50%;
 
-        .avatar {
-          left: 0;
-          margin: 0;
-          position: absolute;
-          top: rem(-13);
-        }
 
         .rank {
           float: left;

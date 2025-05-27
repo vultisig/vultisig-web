@@ -49,7 +49,7 @@ export default {
   [translation.CURRENT_SEASON]: "Current Season",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Points and balances are always updated at the end of the day",
+    "Vulties and balances are always updated at the end of the day",
   [translation.DOWNLOAD_APP]: "Don't have a vault yet? Download Vultisig now",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Start by downloading the Vultisig app from the App Store or Google Play to get access to the platform and airdrop.",

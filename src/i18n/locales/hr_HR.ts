@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Trenutna sezona",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Bodovi i stanja se uvijek ažuriraju na kraju dana",
+    "Vulties i stanja se uvijek ažuriraju na kraju dana",
   [translation.DOWNLOAD_APP]: "Još nemate vault? Preuzmite Vultisig sada",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Započnite preuzimanjem aplikacije Vultisig iz App Storea ili Google Playa kako biste dobili pristup platformi i airdropu.",

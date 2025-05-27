@@ -47,7 +47,7 @@ export default {
   [translation.CURRENT_SEASON]: "Текущий сезон",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Очки и балансы всегда обновляются в конце дня",
+    "Вултис и балансы всегда обновляются в конце дня",
   [translation.DOWNLOAD_APP]: "Еще нет хранилища? Скачайте Vultisig сейчас",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Начните с загрузки приложения Vultisig из App Store или Google Play для доступа к платформе и airdrop.",

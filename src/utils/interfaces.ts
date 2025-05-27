@@ -144,7 +144,7 @@ export interface VaultProps {
   showNameInLeaderboard: boolean;
   swapVolume: number;
   theme: Theme;
-  //totalPoints: number;
+  totalPoints: number;
   uid: string;
   seasonStats?: Activities[];
 }
@@ -174,7 +174,6 @@ interface NFT {
 interface Token {
   multiplier: number;
   name: string;
-  minAmount: number;
   chain: string;
   contractAddress: string;
 }

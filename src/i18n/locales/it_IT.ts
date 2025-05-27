@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Stagione attuale",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "I punti e i saldi vengono sempre aggiornati alla fine della giornata",
+    "I Vulties e i saldi vengono sempre aggiornati alla fine della giornata",
   [translation.DOWNLOAD_APP]: "Non hai ancora un vault? Scarica Vultisig ora",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Inizia scaricando l'app Vultisig dall'App Store o Google Play per accedere alla piattaforma e all'airdrop.",

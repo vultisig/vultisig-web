@@ -116,7 +116,7 @@ const Component: FC = () => {
     }
   };
 
-  useEffect(componentDidUpdate, [id, vault]);
+  useEffect(componentDidUpdate, [id, vault.seasonStats]);
 
   const vaultBalance = vault
     ? (getAssetsBalance(vault) +
@@ -125,7 +125,7 @@ const Component: FC = () => {
       baseValue
     : 0;
 
-    //TODO: check logic for all seasons
+  //TODO: check logic for all seasons
   const lastCycleBalance = vault
     ? (vault.balance + vault.nftValue + vault.lpValue) * baseValue
     : 0;
@@ -167,7 +167,7 @@ const Component: FC = () => {
                     </span>
                   </Tooltip>
                   <span className="label">{t(constantKeys.FARMED)}</span>
-                  <span className="value">{`${currentActivity.points.toNumberFormat()} POINTS`}</span>
+                  <span className="value">{`${currentActivity.points.toNumberFormat()} VULTIES`}</span>
                 </div>
 
                 <div className="item divider" />
@@ -190,14 +190,7 @@ const Component: FC = () => {
       <div className="board">
         <div className="list">
           {data.map(
-            ({
-              alias,
-              avatarUrl,
-              balance,
-              lpValue,
-              nftValue,
-              rank,
-            }) => {
+            ({ alias, avatarUrl, balance, lpValue, nftValue, rank ,totalPoints}) => {
               let medal: string;
 
               switch (rank) {
@@ -225,11 +218,8 @@ const Component: FC = () => {
                   }`}
                   key={rank}
                 >
+                  <img src={avatarUrl || "/avatar/1.png"} className="avatar" />
                   <div className="point">
-                    <img
-                      src={avatarUrl || "/avatar/1.png"}
-                      className="avatar"
-                    />
                     <span className="rank">{`#${rank.toNumberFormat()}`}</span>
                     <span className="name">{`${alias}${
                       layout !== LayoutKey.DEFAULT &&
@@ -239,6 +229,9 @@ const Component: FC = () => {
                           : " (VAULT)"
                         : ""
                     }`}</span>
+                    {getCurrentSeason(seasonInfo)?.id == id ? (
+                      <span className="value">{`${totalPoints.toNumberFormat()} vulties`}</span>
+                    ) : null}
                   </div>
                   <div className="balance">
                     {/* <span className="date">

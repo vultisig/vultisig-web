@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Aktuelle Saison",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Punkte und Bilanzen werden immer am Ende des Tages aktualisiert",
+    "Vulties und Bilanzen werden immer am Ende des Tages aktualisiert",
   [translation.DOWNLOAD_APP]:
     "Haben Sie noch kein Vault? Laden Sie jetzt Vultisig herunter",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:

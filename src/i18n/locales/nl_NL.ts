@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Huidig seizoen",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Punten en saldo's worden altijd aan het einde van de dag bijgewerkt",
+    "Vulties en saldo's worden altijd aan het einde van de dag bijgewerkt",
   [translation.DOWNLOAD_APP]: "Nog geen kluis? Download Vultisig nu",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Begin door de Vultisig-app te downloaden uit de App Store of Google Play om toegang te krijgen tot het platform en de airdrop.",

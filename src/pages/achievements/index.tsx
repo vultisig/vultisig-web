@@ -4,7 +4,7 @@ import constantModals from "modals/constant-modals";
 import { ShareAltOutlined } from "@ant-design/icons";
 import { Tokens, NFTs } from "icons";
 import { useBaseContext } from "context";
-import { defTokens, PageKey } from "utils/constants";
+import { PageKey } from "utils/constants";
 import { SeasonInfo, VaultOutletContext } from "utils/interfaces";
 
 import {
@@ -287,10 +287,6 @@ const Component: FC = () => {
             {showTokens ? (
               <ul className="coins">
                 {currentSeasonInfo?.tokens.map((token, index) => {
-                  const decimals =
-                    defTokens.find((items) => items.chain == token.chain)
-                      ?.decimals || 1;
-                  const minAmount = token.minAmount / Math.pow(10, decimals);
 
                   return (
                     <li key={index}>
@@ -298,7 +294,6 @@ const Component: FC = () => {
                         <TokenImage alt={token.name} />
                         <div className="info">
                           <p className="title">{token.name}</p>
-                          <p className="value">{`Min. ${minAmount.toNumberFormat()} token`}</p>
                         </div>
                       </div>
                       <div className="value">

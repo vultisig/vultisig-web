@@ -46,7 +46,7 @@ export default {
   [translation.CURRENT_SEASON]: "Temporada actual",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Los puntos y saldos se actualizan al final del día",
+    "Los Vulties y saldos se actualizan al final del día",
   [translation.DOWNLOAD_APP]:
     "¿Aún no tiene un vault? Descargue Vultisig ahora",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
