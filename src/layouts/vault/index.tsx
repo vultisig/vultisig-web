@@ -408,9 +408,6 @@ const Component: FC = () => {
             positionProvider.getThorBond().then((positions) => {
               updatePositions({ ...vault, positions });
             }),
-            positionProvider.getTGTStake().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
           ]).then(() => {
             updatePositions({ ...vault, positions: { updated: true } });
           });

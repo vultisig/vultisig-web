@@ -116,7 +116,7 @@ export default {
   [translation.POSITIONS_TITLE]: "Позиции",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Прогресс к следующей вехе",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Прогнозируемый $VULT в конце сезона",
+    "Прогнозируемый $VULT к концу сезона",
   [translation.PRIVACY]:
     "Прочитайте обязательство основателя о конфиденциальности здесь.",
   // Q
@@ -183,13 +183,12 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Обменивайте больше, чтобы заработать больше VULTIES",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "как принять участие в AIRDROP НА <span>$5M</span> ОТ VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "до следующей вехи",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Общая стоимость хранилищ airdrop",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Общая стоимость хранилищ за сезон",
   [translation.TOTAL_BALANCE]: "Общий баланс",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Всего зарегистрированных кошельков",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Общее количество зарегистрированных кошельков",
   [translation.TOTAL_VULTIES]: "Общее количество Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "ПЕРЕВОД СРЕДСТВ В ХРАНИЛИЩА",

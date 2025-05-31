@@ -182,13 +182,12 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Troque mais para ganhar mais VULTIES",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "como participar no AIRDROP DE <span>$5M</span> DA VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "para o próximo marco",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres do airdrop",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres na temporada",
   [translation.TOTAL_BALANCE]: "Saldo total",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Total de wallets registadas",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Total de carteiras registadas",
   [translation.TOTAL_VULTIES]: "Vulties totais",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFERIR FUNDOS PARA COFRES",

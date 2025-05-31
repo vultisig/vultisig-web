@@ -118,7 +118,7 @@ export default {
   [translation.PROGRESS_TO_NEXT_MILESTONE]:
     "Fortschritt zum nächsten Meilenstein",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Prognostiziertes $VULT am Ende der Saison",
+    "Prognostizierter $VULT am Ende der Saison",
   [translation.PRIVACY]:
     "Lesen Sie die Gründerversprechen zur Privatsphäre hier.",
   // Q
@@ -187,14 +187,13 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Tausche mehr, um mehr VULTIES zu verdienen",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "Wie man am <span>$5M</span> VULTISIG AIRDROP teilnimmt",
   [translation.TO_NEXT_MILESTONE]: "bis zum nächsten Meilenstein",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Airdrop-Vaults",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Tresore in dieser Saison",
   [translation.TOTAL_BALANCE]: "Gesamtbilanz",
   [translation.TOTAL_REGISTERED_WALLETS]:
-    "Gesamtzahl der registrierten Wallets",
+    "Gesamtzahl registrierter Wallets",
   [translation.TOTAL_VULTIES]: "Gesamte Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "GELD AUF VAULTS ÜBERWEISEN",

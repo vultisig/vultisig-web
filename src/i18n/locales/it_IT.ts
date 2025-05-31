@@ -183,14 +183,13 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Scambia di più per guadagnare più VULTIES",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "come partecipare all'AIRDROP DA <span>$5M</span> DI VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "fino al prossimo traguardo",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
-    "Valore totale dei vault dell'airdrop",
+    "Valore totale dei caveau nella stagione",
   [translation.TOTAL_BALANCE]: "Saldo totale",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Totale dei wallet registrati",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Totale dei portafogli registrati",
   [translation.TOTAL_VULTIES]: "Vulties totali",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRASFERISCI FONDI NEI VAULT",

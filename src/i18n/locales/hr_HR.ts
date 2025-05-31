@@ -116,7 +116,7 @@ export default {
   [translation.POSITIONS_TITLE]: "Pozicije",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Napredak do sljedeće prekretnice",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Predviđeni $VULT na kraju sezone",
+    "Projekcija $VULT na kraju sezone",
   [translation.PRIVACY]: "Pročitajte obećanje osnivača o privatnosti ovdje.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "Kako se registrirati za airdrop?",
@@ -181,14 +181,13 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Zamijeni više da zaradiš više VULTIES",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "kako sudjelovati u AIRDROPU OD <span>$5M</span> VULTISIG-a",
   [translation.TO_NEXT_MILESTONE]: "do sljedeće prekretnice",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
-    "Ukupna vrijednost vaultova airdropa",
+    "Ukupna vrijednost trezora u sezoni",
   [translation.TOTAL_BALANCE]: "Ukupni saldo",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Ukupan broj registriranih walletova",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Ukupan broj registriranih novčanika",
   [translation.TOTAL_VULTIES]: "Ukupno Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "PRENESITE SREDSTVA U VAULTOVE",

@@ -124,7 +124,7 @@ export default {
   [translation.POWERED_BY]: "Powered by",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Progress to Next Milestone",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Projected $VULT at end of Season",
+    "Projected $VULT at the end of the Season",
   [translation.PRIVACY]: "Read the Founder Pledge on Privacy here.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "How do I register for the airdrop?",
@@ -191,13 +191,12 @@ export default {
   [translation.SWAP_MULTIPLIER]: "Swap Multiplier",
   [translation.SWAP_VOLUME]: "Swap Volume",
   //T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "how to participate in THE <span>$5M</span> VULTISIG AIRDROP",
   [translation.TO_NEXT_MILESTONE]: "to next milestone",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Airdrop Vaults",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Vaults in Season",
   [translation.TOTAL_BALANCE]: "Total Balance",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets in Season",
   [translation.TOTAL_VULTIES]: "Total Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFER FUNDS TO VAULTS",

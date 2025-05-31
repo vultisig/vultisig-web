@@ -166,7 +166,6 @@ export default keyMirror({
   SWAP_MULTIPLIER: true,
   SWAP_VOLUME: true,
   //T
-  TGT: true,
   TITLE_ONBOARDING: true,
   TO_NEXT_MILESTONE: true,
   TOTAL_AIRDROP_VAULT_VALUE: true,
