@@ -19,6 +19,7 @@ import {
   SharedSettings,
   TokenProps,
   VaultProps,
+  SeasonsPoints,
 } from "utils/interfaces";
 import { decodeBase58 } from "ethers";
 
@@ -135,6 +136,11 @@ const api = {
     exit: async (params: VaultProps) => {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
+    overhaul: async (id:string) => {
+      return await fetch.get<SeasonsPoints>(
+        `seasons/points/${id}`
+      );
+    },
   },
   seasons: {
     get: async () => {
@@ -183,11 +189,6 @@ const api = {
         }>(`${externalAPI.midgardNinerealms}v2/saver/${addresses}`)
         .then(({ data }) => data.pools || [])
         .catch(() => []);
-    },
-    getTGTstake: async (address: string) => {
-      return await fetch.get<{ stakedAmount: number; reward: number }>(
-        `${externalAPI.thorwallet}stake/${address}`
-      );
     },
     getRuneProvider: (address: string): Promise<number> => {
       return new Promise((resolve) => {

@@ -128,7 +128,6 @@ export interface VaultProps {
     mayaLiquidity?: PositionProps[];
     runeProvider?: PositionProps[];
     saverPosition?: PositionProps[];
-    tgtStake?: PositionProps[];
     thorBond?: PositionProps[];
     thorLiquidity?: PositionProps[];
     updated?: boolean;
@@ -155,11 +154,16 @@ export interface Activities {
   points: number;
 }
 
+export interface Milestones {
+  minimum: number;
+  prize: number;
+}
+
 export interface SeasonInfo {
   id: string;
   start: string;
   end: string;
-  milestones: number[];
+  milestones: Milestones[];
   nfts: NFT[];
   tokens: Token[];
 }
@@ -190,4 +194,8 @@ export interface VaultOutletContext {
   tokens: TokenProps[];
   vault: VaultProps;
   vaults: VaultProps[];
+}
+
+export interface SeasonsPoints {
+  points: number;
 }

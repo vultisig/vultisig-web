@@ -134,7 +134,7 @@ export const calcReferralMultiplier = (referralCount: number) => {
   }
 
   // Round down to 1 decimal place (floor rounding)
-  return Math.floor(multiplier * 10) / 10;
+  return multiplier * 10 / 10;
 };
 
 export const calcSwapMultiplier = (swapVolume: number) => {
@@ -142,7 +142,7 @@ export const calcSwapMultiplier = (swapVolume: number) => {
   let multiplier = 1 + 0.02 * Math.sqrt(swapVolume);
 
   // Round down to 1 decimal place (floor rounding)
-  return Math.floor(multiplier * 10) / 10;
+  return multiplier * 10 / 10;
 };
 
 export const getCurrentSeason = (
