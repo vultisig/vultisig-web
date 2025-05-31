@@ -9,7 +9,7 @@ import constantKeys from "i18n/constant-keys";
 import constantModals from "modals/constant-modals";
 import useGoBack from "hooks/go-back";
 import html2canvas from "html2canvas";
-import { VaultProps, SeasonInfo } from "utils/interfaces";
+import { VaultProps, SeasonInfo, Milestones } from "utils/interfaces";
 import {
   calcSwapMultiplier,
   calcReferralMultiplier,
@@ -86,7 +86,8 @@ const Component: FC<ModalProps> = ({ vault }) => {
 
     try {
       const canvas = await html2canvas(element);
-      canvas.toBlob((blob) => {
+      const croppedCanvas = cropCanvas(canvas);
+      croppedCanvas.toBlob((blob) => {
         if (!blob) return;
 
         const file = new File([blob], "achievements.png", {
@@ -113,17 +114,71 @@ const Component: FC<ModalProps> = ({ vault }) => {
     }
   };
 
-  const getMilestoneIndex = (value: number, milestones: number[]): number => {
-    if (value > milestones[milestones.length - 1]) return milestones.length - 1;
+  const getMilestoneIndex = (value: number, milestones: Milestones[]): number => {
+    if (!milestones || milestones.length === 0) return -1;
+    if (value > milestones[milestones.length - 1].minimum) return milestones.length - 1;
 
     for (let i = milestones.length - 1; i >= 0; i--) {
-      if (value >= milestones[i]) {
+      if (value >= milestones[i].minimum) {
         return i;
       }
     }
     return -1;
   };
 
+  const cropCanvas = (canvas: HTMLCanvasElement): HTMLCanvasElement => {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return canvas;
+  
+    const { width, height } = canvas;
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const pixels = imageData.data;
+  
+    let top: number | null = null,
+      bottom: number | null = null,
+      left: number | null = null,
+      right: number | null = null;
+  
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const alpha = pixels[idx + 3];
+  
+        if (alpha !== 0) {
+          if (top === null) top = y;
+          bottom = y;
+          if (left === null || x < left) left = x;
+          if (right === null || x > right) right = x;
+        }
+      }
+    }
+  
+    if (top === null || bottom === null || left === null || right === null) {
+      return canvas;
+    }
+  
+    const padding = 5;
+    const cropLeft = Math.min(Math.max(left + padding, 0), width - 1);
+    const cropTop = Math.min(Math.max(top + padding, 0), height - 1);
+    const cropRight = Math.max(Math.min(right - padding, width - 1), cropLeft);
+    const cropBottom = Math.max(Math.min(bottom - padding, height - 1), cropTop);
+  
+    const croppedWidth = cropRight - cropLeft + 1;
+    const croppedHeight = cropBottom - cropTop + 1;
+  
+    const newCanvas = document.createElement("canvas");
+    newCanvas.width = croppedWidth;
+    newCanvas.height = croppedHeight;
+  
+    const newCtx = newCanvas.getContext("2d");
+    if (!newCtx) return canvas;
+  
+    const croppedImageData = ctx.getImageData(cropLeft, cropTop, croppedWidth, croppedHeight);
+    newCtx.putImageData(croppedImageData, 0, 0);
+  
+    return newCanvas;
+  };
+  
   return (
     <Modal
       className="modal-achievements"
@@ -160,7 +215,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
           {!(
             currentSeasonPoints <
             (currentSeasonInfo?.milestones
-              ? currentSeasonInfo?.milestones[0]
+              ? currentSeasonInfo?.milestones[0].minimum
               : 0)
           ) ? (
             <img
@@ -186,11 +241,15 @@ const Component: FC<ModalProps> = ({ vault }) => {
           </li>
           <li>
             <span className="title">{t(constantKeys.SWAP_MULTIPLIER)}</span>
-            <span className="multiplier">{`${swapMultiplier}X`}</span>
+            <span className="multiplier">{`${swapMultiplier.toBalanceFormat(
+              3
+            )}X`}</span>
           </li>
           <li>
             <span className="title">{t(constantKeys.REFERRAL_MULTIPLIER)}</span>
-            <span className="multiplier">{`${referralMultiplier}X`}</span>
+            <span className="multiplier">{`${referralMultiplier.toBalanceFormat(
+              3
+            )}X`}</span>
           </li>
         </ul>
       </div>

@@ -116,7 +116,7 @@ const Component: FC = () => {
     }
   };
 
-  useEffect(componentDidUpdate, [id, vault.seasonStats]);
+  useEffect(componentDidUpdate, [id, vault?.seasonStats]);
 
   const vaultBalance = vault
     ? (getAssetsBalance(vault) +
@@ -135,7 +135,7 @@ const Component: FC = () => {
       <div className="stats">
         <div className="item">
           <span className="label">
-            {t(constantKeys.TOTAL_AIRDROP_VAULT_VALUE)}
+          {`${t(constantKeys.TOTAL_AIRDROP_VAULT_VALUE)} ${id}`}
           </span>
           <span className="value">
             {(balance * baseValue).toValueFormat(currency)}
@@ -143,7 +143,7 @@ const Component: FC = () => {
         </div>
         <div className="item">
           <span className="label">
-            {t(constantKeys.TOTAL_REGISTERED_WALLETS)}
+            {`${t(constantKeys.TOTAL_REGISTERED_WALLETS) } ${id}`}
           </span>
           <span className="value">{total.toNumberFormat()}</span>
         </div>
@@ -190,8 +190,20 @@ const Component: FC = () => {
       <div className="board">
         <div className="list">
           {data.map(
-            ({ alias, avatarUrl, balance, lpValue, nftValue, rank ,totalPoints}) => {
+            ({
+              alias,
+              avatarUrl,
+              balance,
+              lpValue,
+              nftValue,
+              rank,
+              totalPoints,
+            }) => {
               let medal: string;
+
+              const vaultNumber = layout !== LayoutKey.DEFAULT && rank === currentActivity?.rank
+                  ? lastCycleBalance || vaultBalance
+                  : (balance + lpValue + nftValue) * baseValue;
 
               switch (rank) {
                 case 1:
@@ -229,19 +241,14 @@ const Component: FC = () => {
                           : " (VAULT)"
                         : ""
                     }`}</span>
-                    {getCurrentSeason(seasonInfo)?.id == id ? (
-                      <span className="value">{`${totalPoints.toNumberFormat()} vulties`}</span>
-                    ) : null}
+                    <span className="value">{`${totalPoints.toNumberFormat()} vulties`}</span>
                   </div>
                   <div className="balance">
                     {/* <span className="date">
                       {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                     </span> */}
-                    <span className="price">{`${(layout !== LayoutKey.DEFAULT &&
-                    rank === currentActivity?.rank
-                      ? lastCycleBalance || vaultBalance
-                      : (balance + lpValue + nftValue) * baseValue
-                    ).toValueFormat(currency)}`}</span>
+                    <span className="price">{getCurrentSeason(seasonInfo)?.id == id ?
+                        vaultNumber.toValueFormat(currency) : `${vaultNumber.toNumberFormat()} VULT`}</span>
                   </div>
                   {medal && (
                     <img src={`/ranks/${medal}.svg`} className="icon" />

@@ -20,6 +20,7 @@ import constantKeys from "i18n/constant-keys";
 import VultiLoading from "components/vulti-loading";
 import { Link, useOutletContext } from "react-router-dom";
 import TokenImage from "components/token-image";
+import api from "utils/api";
 
 interface InitialState {
   loaded: boolean;
@@ -32,6 +33,7 @@ interface InitialState {
   referralMultiplier: number;
   currentSeasonInfo?: SeasonInfo;
   currentSeasonVulties: number;
+  projectedPoints: number;
 }
 
 const Component: FC = () => {
@@ -46,6 +48,7 @@ const Component: FC = () => {
     swapMultiplier: 0,
     referralMultiplier: 0,
     currentSeasonVulties: 0,
+    projectedPoints: 0,
   };
   const [state, setState] = useState(initialState);
   const {
@@ -57,8 +60,10 @@ const Component: FC = () => {
     referralMultiplier,
     currentSeasonInfo,
     currentSeasonVulties,
+    projectedPoints,
   } = state;
-  const { changePage, seasonInfo, milestonesSteps } = useBaseContext();
+  const { baseValue, currency, changePage, seasonInfo, milestonesSteps } =
+    useBaseContext();
   const { vault } = useOutletContext<VaultOutletContext>();
 
   const handleStep = () => {
@@ -71,19 +76,19 @@ const Component: FC = () => {
 
       // if currentSeasonVulties < first milestone, set to 0
       let currentStepObj = 0;
-      let nextStepObj = currentSeasonInfo.milestones[0];
+      let nextStepObj = currentSeasonInfo.milestones[0].minimum;
 
       // calculate current step and next step
       currentSeasonInfo.milestones.forEach((value, index) => {
-        if (currentSeasonVulties >= value) {
+        if (currentSeasonVulties >= value.minimum) {
           const hasNextStep = index + 1 < currentSeasonInfo.milestones.length;
 
           currentStepObj = hasNextStep
-            ? value
-            : currentSeasonInfo.milestones[index - 1];
+            ? value.minimum
+            : currentSeasonInfo.milestones[index - 1].minimum;
           nextStepObj = hasNextStep
-            ? currentSeasonInfo.milestones[index + 1]
-            : value;
+            ? currentSeasonInfo.milestones[index + 1].minimum
+            : value.minimum;
         }
       });
 
@@ -109,19 +114,32 @@ const Component: FC = () => {
 
       if (currentStepObj == 0) {
         currentStepObj = 0;
-        nextStepObj = currentSeasonInfo.milestones[0];
+        nextStepObj = currentSeasonInfo.milestones[0].minimum;
       }
 
-      setState((prevState) => ({
-        ...prevState,
-        currentStep: currentStepObj,
-        nextStep: nextStepObj,
-        progressToNextStep: Number(progressToNextStep.toFixed(0)),
-        swapMultiplier,
-        referralMultiplier,
-        currentSeasonVulties,
-        currentSeasonInfo,
-      }));
+      api.airdrop
+        .overhaul(currentSeasonInfo?.id ? currentSeasonInfo.id : "0")
+        .then(({ data }) => {
+          const totalAirdropAmount = 5000000;
+          const seasonAirdrop = totalAirdropAmount / 4;
+          const adjustedValueInVault = vault.totalPoints;
+          const averageVULTperUserPerSeason =
+            seasonAirdrop *
+            ((adjustedValueInVault * swapMultiplier * referralMultiplier) /
+              data.points);
+
+          setState((prevState) => ({
+            ...prevState,
+            currentStep: currentStepObj,
+            nextStep: nextStepObj,
+            progressToNextStep: Number(progressToNextStep.toFixed(0)),
+            swapMultiplier,
+            referralMultiplier,
+            currentSeasonVulties,
+            currentSeasonInfo,
+            projectedPoints: Math.floor(averageVULTperUserPerSeason),
+          }));
+        });
     }
   };
 
@@ -136,27 +154,6 @@ const Component: FC = () => {
     changePage(PageKey.ACHIEVEMENTES);
 
     handleStep();
-  };
-
-  const getProjectedPoints = (
-    startTime: string,
-    endTime: string,
-    currentPoints: number
-  ): number => {
-    const start = new Date(startTime).getTime();
-    const end = new Date(endTime).getTime();
-    const now = Date.now();
-
-    if (now <= start) return 0;
-    if (now >= end) return currentPoints;
-
-    const elapsed = now - start;
-    const totalDuration = end - start;
-
-    const ratePerMs = currentPoints / elapsed;
-    const projectedPoints = ratePerMs * totalDuration;
-
-    return Math.floor(projectedPoints);
   };
 
   useEffect(componentDidMount, []);
@@ -180,11 +177,7 @@ const Component: FC = () => {
           <p className="title">
             {t(constantKeys.PROJECTED_$VULT_AT_END_OF_SEASON)}
           </p>
-          <span className="price">{`${getProjectedPoints(
-            currentSeasonInfo?.start ? currentSeasonInfo.start : "",
-            currentSeasonInfo?.end ? currentSeasonInfo.end : "",
-            currentSeasonVulties
-          ).toNumberFormat()} $VULT`}</span>
+          <span className="price">{`${projectedPoints.toNumberFormat()} $VULT`}</span>
         </div>
 
         <ul className="stats">
@@ -196,15 +189,21 @@ const Component: FC = () => {
           </li>
           <li>
             <p className="title">{t(constantKeys.SWAP_VOLUME)}</p>
-            <span className="price">{vault.swapVolume.toNumberFormat()}</span>
+            <span className="price">
+              {(vault.swapVolume * baseValue).toValueFormat(currency)}
+            </span>
           </li>
           <li>
             <p className="title">{t(constantKeys.SWAP_MULTIPLIER)}</p>
-            <span className="price blue">{`${swapMultiplier}X`}</span>
+            <span className="price blue">{`${swapMultiplier.toBalanceFormat(
+              3
+            )}X`}</span>
           </li>
           <li>
             <p className="title">{t(constantKeys.REFERRAL_MULTIPLIER)}</p>
-            <span className="price blue">{`${referralMultiplier}X`}</span>
+            <span className="price blue">{`${referralMultiplier.toBalanceFormat(
+              3
+            )}X`}</span>
           </li>
         </ul>
 
@@ -213,15 +212,15 @@ const Component: FC = () => {
           <ul className="items">
             {currentSeasonInfo?.milestones.map((step, index) => (
               <li
-                className={currentSeasonVulties >= step ? "active" : ""}
+                className={currentSeasonVulties >= step.minimum ? "active" : ""}
                 key={index}
               >
                 <img className="icon" src={milestonesSteps[index]} alt="icon" />
-                <p className="title">{`${step.toNumberFormat()} VULTIES`}</p>
+                <p className="title">{`${step.minimum.toNumberFormat()} VULTIES`}</p>
                 <div className="status">
                   <img className="award" src="/images/award.svg" />
-                  {currentSeasonVulties >= step ? (
-                    <span>{`+${step.toNumberFormat()} VULTIES`}</span>
+                  {currentSeasonVulties >= step.minimum ? (
+                    <span>{`+${step.prize.toNumberFormat()} VULTIES`}</span>
                   ) : (
                     <span>{t(constantKeys.LOCKED)}</span>
                   )}
@@ -287,7 +286,6 @@ const Component: FC = () => {
             {showTokens ? (
               <ul className="coins">
                 {currentSeasonInfo?.tokens.map((token, index) => {
-
                   return (
                     <li key={index}>
                       <div className="coin">
@@ -334,21 +332,27 @@ const Component: FC = () => {
         <div className="boost">
           <p>{t(constantKeys.BOOST_YOUR_EAENINGS)}</p>
           <div className="plans">
-            <div className="item">
-              <img src="/images/refresh.svg" />
-              <div className="info">
-                <p className="title">{t(constantKeys.INCREASE_SWAP_VOLUME)}</p>
-                <p className="desc">
-                  {t(constantKeys.SWAP_MORE_TO_EARN_MORE_VULTIES)}
-                </p>
+            <a href="https://vultisig.com/download/vultisig" target="_blank">
+              <div className="item">
+                <img src="/images/refresh.svg" />
+                <div className="info">
+                  <p className="title">
+                    {t(constantKeys.INCREASE_SWAP_VOLUME)}
+                  </p>
+                  <p className="desc">
+                    {t(constantKeys.SWAP_MORE_TO_EARN_MORE_VULTIES)}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="item">
-              <img src="/images/users.svg" />
-              <div className="info">
-                <p className="title">{t(constantKeys.REFER_FRIENDS)}</p>
+            </a>
+            <a href="https://t.me/vultirefbot" target="_blank">
+              <div className="item">
+                <img src="/images/users.svg" />
+                <div className="info">
+                  <p className="title">{t(constantKeys.REFER_FRIENDS)}</p>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
