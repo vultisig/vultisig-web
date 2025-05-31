@@ -10,10 +10,7 @@ import api from "utils/api";
 
 export default class PositionProvider {
   private vault: VaultProps;
-
   private runePrice?: number;
-  private tgtPrice?: number;
-  private usdtPrice?: number;
 
   constructor(vault: VaultProps) {
     this.vault = vault;
@@ -308,51 +305,15 @@ export default class PositionProvider {
     });
   };
 
-  public getTGTStake = (): Promise<{ tgtStake: PositionProps[] }> => {
-    return new Promise((resolve) => {
-      const address = this.vault.chains.find(
-        ({ name }) => name === ChainKey.ARBITRUM
-      )?.address;
-      const tgtStake: PositionProps[] = [];
-
-      if (address) {
-        api.activePositions
-          .getTGTstake(address)
-          .then(({ data }) => {
-            tgtStake.push({
-              base: {
-                chain: ChainKey.ARBITRUM,
-                price:
-                  (this.tgtPrice || 0) * data.stakedAmount +
-                  data.reward * (this.usdtPrice || 0),
-                tiker: TickerKey.TGT,
-                tokenAddress: `${exploreToken[ChainKey.ARBITRUM]}${address}`,
-                tokenAmount: (Number(data.stakedAmount) || 0).toBalanceFormat(),
-                reward: data.reward,
-              },
-            });
-          })
-          .finally(() => {
-            resolve({ tgtStake });
-          });
-      } else {
-        resolve({ tgtStake });
-      }
-    });
-  };
-
   public getPrerequisites = (): Promise<void> => {
     return new Promise((resolve) => {
       const runeCMCId = this.getCMC(ChainKey.THORCHAIN, TickerKey.RUNE);
-      const tgtCMCId = this.getCMC(ChainKey.ARBITRUM, TickerKey.TGT);
       const usdtCMCId = this.getCMC(ChainKey.ETHEREUM, TickerKey.USDT);
 
       api.coin
-        .values([runeCMCId, tgtCMCId, usdtCMCId], Currency.USD)
+        .values([runeCMCId, usdtCMCId], Currency.USD)
         .then((data) => {
           this.runePrice = data[runeCMCId];
-          this.tgtPrice = data[tgtCMCId];
-          this.usdtPrice = data[usdtCMCId];
         })
         .finally(resolve);
     });
