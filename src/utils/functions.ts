@@ -139,7 +139,7 @@ export const calcReferralMultiplier = (referralCount: number) => {
 
 export const calcSwapMultiplier = (swapVolume: number) => {
   // Calculate the multiplier
-  let multiplier = 1 + 0.02 * Math.sqrt(swapVolume);
+  let multiplier = 1 + 0.002 * Math.sqrt(swapVolume);
 
   // Round down to 1 decimal place (floor rounding)
   return multiplier * 10 / 10;
