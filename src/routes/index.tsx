@@ -8,6 +8,8 @@ import {
 
 import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
+import { getCurrentSeason, handleSeasonPath } from "utils/functions";
+import { useBaseContext } from "context";
 
 const DefaultLayout = lazy(() => import("layouts/default"));
 const ShareLayout = lazy(() => import("layouts/shared"));
@@ -35,6 +37,11 @@ interface RouteConfig {
 
 const Component = () => {
   const vaults = getStoredVaults();
+  const { seasonInfo } = useBaseContext();
+  const airdropPath = handleSeasonPath(
+    constantPaths.default.airdrop,
+    getCurrentSeason(seasonInfo)?.id || "0"
+  );
 
   const processRoutes = (routes: RouteConfig[]): RouteObject[] => {
     return routes.reduce<RouteObject[]>(
@@ -63,9 +70,7 @@ const Component = () => {
   const routes: RouteConfig[] = [
     {
       path: constantPaths.root,
-      redirect: vaults.length
-        ? constantPaths.vault.chains
-        : constantPaths.default.aridrop,
+      redirect: vaults.length ? constantPaths.vault.chains : airdropPath,
     },
     {
       path: constantPaths.redirect,
@@ -81,7 +86,7 @@ const Component = () => {
       children: [
         {
           path: constantPaths.default.root,
-          redirect: constantPaths.default.aridrop,
+          redirect: airdropPath,
         },
         {
           path: constantPaths.default.import,
@@ -92,7 +97,7 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.default.aridrop,
+          path: constantPaths.default.airdrop,
           element: (
             <Suspense>
               <AirdropPage />
@@ -142,7 +147,7 @@ const Component = () => {
           redirect: constantPaths.root,
         },
         {
-          path: constantPaths.shared.aridrop,
+          path: constantPaths.shared.airdrop,
           element: (
             <Suspense>
               <AirdropPage />
@@ -240,7 +245,7 @@ const Component = () => {
           ),
         },
         {
-          path: constantPaths.vault.aridrop,
+          path: constantPaths.vault.airdrop,
           element: (
             <Suspense>
               <AirdropPage />

@@ -46,9 +46,10 @@ export default {
     "I acknowledge that I will lose all my progress",
   [translation.COUNTED]: "counted",
   [translation.CURRENCY]: "Currency",
+  [translation.CURRENT_SEASON]: "Current Season",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Points and balances are always updated at the end of the day",
+    "Vulties and balances are always updated at the end of the day",
   [translation.DOWNLOAD_APP]: "Don't have a vault yet? Download Vultisig now",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Start by downloading the Vultisig app from the App Store or Google Play to get access to the platform and airdrop.",
@@ -116,13 +117,14 @@ export default {
   // O
   [translation.OTHER]: "Other",
   // P
+  [translation.PAST_SEASONS]: "Past Seasons",
   [translation.POSITIONS]: "Positions",
   [translation.POSITIONS_BALANCE]: "Positions Balance",
   [translation.POSITIONS_TITLE]: "Positions",
   [translation.POWERED_BY]: "Powered by",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Progress to Next Milestone",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Projected $VULT at end of Season",
+    "Projected $VULT at the end of the Season",
   [translation.PRIVACY]: "Read the Founder Pledge on Privacy here.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]: "How do I register for the airdrop?",
@@ -183,19 +185,18 @@ export default {
   [translation.SUCCESSFUL_COPY_IMAGE]: "Image copied to clipboard",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer 1 assets and most tokens supported by Vultisig are counted. Other active assets such as LPs and Node Bonds from THORChain, MAYA Protocol and staked token are also valid.",
-  [translation.SWAP]: "Swap",
+  [translation.SWAP]: "Swap Leaderboard",
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Swap more to earn more VULTIES",
   [translation.SWAP_MULTIPLIER]: "Swap Multiplier",
   [translation.SWAP_VOLUME]: "Swap Volume",
   //T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "how to participate in THE <span>$5M</span> VULTISIG AIRDROP",
   [translation.TO_NEXT_MILESTONE]: "to next milestone",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Airdrop Vaults",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Vaults in Season",
   [translation.TOTAL_BALANCE]: "Total Balance",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets in Season",
   [translation.TOTAL_VULTIES]: "Total Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFER FUNDS TO VAULTS",

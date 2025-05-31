@@ -6,13 +6,14 @@ import dayjs from "dayjs";
 
 import { useBaseContext } from "context";
 import { Currency, LayoutKey, PageKey } from "utils/constants";
-import { VaultOutletContext, VaultProps } from "utils/interfaces";
+import { Activities, VaultOutletContext, VaultProps } from "utils/interfaces";
 import constantKeys from "i18n/constant-keys";
 import api from "utils/api";
 
 import { Info } from "icons";
 import VaultDropdown from "components/vault-dropdown";
 import VultiLoading from "components/vulti-loading";
+import { getActivity, getCurrentSeason } from "utils/functions";
 
 interface InitialState {
   data: VaultProps[];
@@ -20,6 +21,7 @@ interface InitialState {
   loading: boolean;
   pageSize: number;
   total: number;
+  currentActivity?: Activities;
 }
 
 const Component: FC = () => {
@@ -32,8 +34,8 @@ const Component: FC = () => {
     total: 0,
   };
   const [state, setState] = useState(initialState);
-  const { data, loaded, loading, pageSize, total } = state;
-  const { changePage, baseValue, currency } = useBaseContext();
+  const { data, loaded, loading, pageSize, total, currentActivity } = state;
+  const { changePage, baseValue, currency, seasonInfo } = useBaseContext();
   const { layout, vault } = useOutletContext<VaultOutletContext>();
 
   const fetchData = (): void => {
@@ -69,7 +71,21 @@ const Component: FC = () => {
     fetchData();
   };
 
+  const componentDidUpdate = (): void => {
+    if (vault) {
+      const currentSeason = getCurrentSeason(seasonInfo)?.id;
+      setState((prevState) => ({
+        ...prevState,
+        currentActivity: getActivity(
+          vault,
+          parseInt(currentSeason ? currentSeason : "0")
+        ),
+      }));
+    }
+  };
+
   useEffect(componentDidMount, []);
+  useEffect(componentDidUpdate, [vault]);
 
   const place: { [rank: number]: string } = {
     1: "first",
@@ -95,6 +111,7 @@ const Component: FC = () => {
                 </span>
               </Tooltip>
               <span className="label">SWAP VOLUME</span>
+              <span className="value">{`${vault.swapVolume.toNumberFormat()}`}</span>
             </div>
 
             <div className="item divider" />
@@ -106,47 +123,75 @@ const Component: FC = () => {
                   ? "YOUR POSITION"
                   : "VAULT POSITION"}
               </span>
-              <span className="value">{`${vault.rank.toNumberFormat()}`}</span>
+              <span className="value">{`${vault.swapVolumeRank.toNumberFormat()}`}</span>
             </div>
           </div>
         </div>
       )}
 
-      <div className="winners">
-        {data
-          .filter((_item, index) => index < 3)
-          .map(
-            ({
-              alias,
-              avatarUrl,
-              rank,
-              registeredAt,
-              swapVolume,
-              totalPoints,
-            }) => (
-              <div
-                className={`item ${place[rank]}${
-                  layout !== LayoutKey.DEFAULT && rank === vault.rank
-                    ? " active"
-                    : ""
-                }`}
-                key={rank}
-              >
+          <div className="winners">
+            {data
+              .filter((_item, index) => index < 3)
+              .map(({ alias, avatarUrl, rank,  swapVolume }) => (
+                <div
+                  className={`item ${place[rank]}${
+                    layout !== LayoutKey.DEFAULT && rank === vault.swapVolumeRank
+                      ? " active"
+                      : ""
+                  }`}
+                  key={rank}
+                >
+                  <div className="point">
+                    <img
+                      src={avatarUrl || "/avatar/1.png"}
+                      className="avatar"
+                    />
+                    <span className="title">
+                      <span className="rank">{`#${rank.toNumberFormat()}`}</span>
+                      <span className="name">{`${alias}${
+                        layout !== LayoutKey.DEFAULT && rank === vault.swapVolumeRank
+                          ? layout === LayoutKey.VAULT
+                            ? " (YOU)"
+                            : " (VAULT)"
+                          : ""
+                      }`}</span>
+                    </span>
+   
+                  </div>
+                  <div className="balance">
+ 
+                    <span className="price">{`${(
+                      swapVolume * baseValue
+                    ).toValueFormat(currency)}`}</span>
+                  </div>
+                  <img
+                    src={`/ranks/${place[rank]}-place.svg`}
+                    className="icon"
+                  />
+                </div>
+              ))}
+          </div>
+
+
+      <div className="board">
+        <div className="list">
+          {data
+            .filter((_item, index) => index > 2)
+            .map(({ alias, avatarUrl, rank, registeredAt, swapVolume }) => (
+              <div key={rank} className="item">
                 <div className="point">
                   <img src={avatarUrl || "/avatar/1.png"} className="avatar" />
                   <span className="title">
                     <span className="rank">{`#${rank.toNumberFormat()}`}</span>
                     <span className="name">{`${alias}${
-                      layout !== LayoutKey.DEFAULT && rank === vault.rank
+                      layout !== LayoutKey.DEFAULT && rank === vault.swapVolumeRank
                         ? layout === LayoutKey.VAULT
                           ? " (YOU)"
                           : " (VAULT)"
                         : ""
                     }`}</span>
                   </span>
-                  <span className="value">{`${totalPoints.toNumberFormat()} ${
-                    Currency.USD
-                  }`}</span>
+                  {/* <span className="value">{`${currentActivity?.vulties.toNumberFormat()} Vulties`}</span> */}
                 </div>
                 <div className="balance">
                   <span className="date">
@@ -156,54 +201,8 @@ const Component: FC = () => {
                     swapVolume * baseValue
                   ).toValueFormat(currency)}`}</span>
                 </div>
-                <img src={`/ranks/${place[rank]}-place.svg`} className="icon" />
               </div>
-            )
-          )}
-      </div>
-
-      <div className="board">
-        <div className="list">
-          {data
-            .filter((_item, index) => index > 2)
-            .map(
-              ({
-                alias,
-                avatarUrl,
-                rank,
-                registeredAt,
-                swapVolume,
-                totalPoints,
-              }) => (
-                <div key={rank} className="item">
-                  <div className="point">
-                    <img
-                      src={avatarUrl || "/avatar/1.png"}
-                      className="avatar"
-                    />
-                    <span className="title">
-                      <span className="rank">{`#${rank.toNumberFormat()}`}</span>
-                      <span className="name">{`${alias}${
-                        layout !== LayoutKey.DEFAULT && rank === vault.rank
-                          ? layout === LayoutKey.VAULT
-                            ? " (YOU)"
-                            : " (VAULT)"
-                          : ""
-                      }`}</span>
-                    </span>
-                    <span className="value">{`${totalPoints.toNumberFormat()} Vulties`}</span>
-                  </div>
-                  <div className="balance">
-                    <span className="date">
-                      {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
-                    </span>
-                    <span className="price">{`${(
-                      swapVolume * baseValue
-                    ).toValueFormat(currency)}`}</span>
-                  </div>
-                </div>
-              )
-            )}
+            ))}
 
           {loading ? (
             <div className="item loading">
@@ -218,8 +217,8 @@ const Component: FC = () => {
               </div>
               <div className="loadmore">
                 <span className="numb">{`+ ${(
-                  (layout !== LayoutKey.DEFAULT && vault.rank > data.length
-                    ? vault.rank - 1
+                  (layout !== LayoutKey.DEFAULT && vault.swapVolumeRank > data.length
+                    ? vault.swapVolumeRank - 1
                     : total) - data.length
                 ).toNumberFormat()} others`}</span>
                 <span className="more" onClick={fetchData}>
@@ -228,7 +227,8 @@ const Component: FC = () => {
               </div>
             </div>
           ) : null}
-          {layout !== LayoutKey.DEFAULT && vault.rank > data.length && (
+          
+          {layout !== LayoutKey.DEFAULT && vault.swapVolumeRank > data.length && (
             <div className="item active">
               <div className="point">
                 <img
@@ -240,7 +240,7 @@ const Component: FC = () => {
                   className="avatar"
                 />
                 <span className="title">
-                  <span className="rank">{`#${vault.rank.toNumberFormat()}`}</span>
+                  <span className="rank">{`#${vault.swapVolumeRank.toNumberFormat()}`}</span>
                   <span className="name">{`${
                     vault.showNameInLeaderboard
                       ? vault.alias
@@ -249,7 +249,7 @@ const Component: FC = () => {
                     layout === LayoutKey.VAULT ? " (YOU)" : " (VAULT)"
                   }`}</span>
                 </span>
-                <span className="value">{`${vault.totalPoints.toNumberFormat()} ${
+                <span className="value">{`${currentActivity?.points.toNumberFormat()} ${
                   Currency.USD
                 }`}</span>
               </div>

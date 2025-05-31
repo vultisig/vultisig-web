@@ -43,9 +43,10 @@ export default {
     "Ik bevestig dat ik al mijn voortgang zal verliezen",
   [translation.COUNTED]: "geteld",
   [translation.CURRENCY]: "Valuta",
+  [translation.CURRENT_SEASON]: "Huidig seizoen",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Punten en saldo's worden altijd aan het einde van de dag bijgewerkt",
+    "Vulties en saldo's worden altijd aan het einde van de dag bijgewerkt",
   [translation.DOWNLOAD_APP]: "Nog geen kluis? Download Vultisig nu",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Begin door de Vultisig-app te downloaden uit de App Store of Google Play om toegang te krijgen tot het platform en de airdrop.",
@@ -109,12 +110,13 @@ export default {
   // O
   [translation.OTHER]: "Ander",
   // P
+  [translation.PAST_SEASONS]: "Vorige seizoenen",
   [translation.POWERED_BY]: "Mogelijk gemaakt door",
   [translation.POSITIONS_TITLE]: "Posities",
   [translation.PROGRESS_TO_NEXT_MILESTONE]:
     "Vooruitgang naar de volgende mijlpaal",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Geprojecteerde $VULT aan het einde van het seizoen",
+    "Geschatte $VULT aan het einde van het seizoen",
   [translation.PRIVACY]: "Lees de privacybelofte van de oprichter hier.",
   // Q
   [translation.QUESTION_FIRST_ONBOARDING]:
@@ -179,12 +181,11 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Ruil meer om meer VULTIES te verdienen",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "hoe deel te nemen aan de AIRDROP VAN <span>$5M</span> VAN VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "naar de volgende mijlpaal",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
-    "Totale waarde van de airdrop-kluizen",
+    "Totale waarde van kluizen in het seizoen",
   [translation.TOTAL_BALANCE]: "Totaal saldo",
   [translation.TOTAL_REGISTERED_WALLETS]:
     "Totaal aantal geregistreerde wallets",

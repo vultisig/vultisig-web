@@ -18,7 +18,7 @@ import i18n from "i18n/config";
 import api from "utils/api";
 
 import Preloader from "components/preloader";
-import { AchievementsConfig } from "utils/interfaces";
+import { SeasonInfo } from "utils/interfaces";
 
 interface BaseContext {
   changeCurrency: (currency: Currency) => void;
@@ -28,7 +28,7 @@ interface BaseContext {
   baseValue: number;
   currency: Currency;
   language: Language;
-  achievementsConfig?: AchievementsConfig;
+  seasonInfo: SeasonInfo[];
   milestonesSteps: string[];
 }
 
@@ -37,8 +37,9 @@ interface InitialState {
   baseValue: number;
   currency: Currency;
   language: Language;
+  loaded: boolean;
   loading: boolean;
-  achievementsConfig?: AchievementsConfig;
+  seasonInfo: SeasonInfo[];
   milestonesSteps: string[];
 }
 
@@ -50,6 +51,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     baseValue: 0,
     currency: getStoredCurrency(),
     language: getStoredLanguage(),
+    loaded: false,
     loading: false,
     milestonesSteps: [
       "/images/initiate.png",
@@ -58,14 +60,16 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
       "/images/consensus-leader.png",
       "/images/validator.png",
     ],
+    seasonInfo: [],
   };
   const [state, setState] = useState(initialState);
   const {
-    achievementsConfig,
+    seasonInfo,
     activePage,
     baseValue,
     currency,
     language,
+    loaded,
     loading,
     milestonesSteps
   } = state;
@@ -102,16 +106,18 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const componentDidMount = () => {
     i18n.changeLanguage(language);
 
-    api.achievements.getConfig().then(({ data }) => {
+    api.seasons.get().then(( data ) => {
       setState((prevState) => ({
         ...prevState,
-        achievementsConfig: data,
+        loaded: true,
+        seasonInfo: data,
       }));
     });
 
     api.coin.value(825, currency).then((baseValue) => {
       setState((prevState) => ({ ...prevState, baseValue }));
     });
+
   };
 
   useEffect(componentDidMount, []);
@@ -122,7 +128,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         changeCurrency,
         changeLanguage,
         changePage,
-        achievementsConfig,
+        seasonInfo,
         activePage,
         baseValue,
         currency,
@@ -130,7 +136,7 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         milestonesSteps,
       }}
     >
-      {children}
+      {loaded && children}
       <Preloader visible={loading} />
     </BaseContext.Provider>
   );
