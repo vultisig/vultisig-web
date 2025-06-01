@@ -21,6 +21,7 @@ const Component: FC = () => {
     mayaLiquidity,
     runeProvider,
     saverPosition,
+    tcyStake,
     thorBond,
     thorLiquidity,
   } = vault.positions;
@@ -85,6 +86,12 @@ const Component: FC = () => {
         />
 
         <PositionItem data={thorBond} text="No Bond Found" title="Bond" />
+
+        <PositionItem
+          data={tcyStake}
+          text="No TCY Stake Position Found"
+          title="TCY Stake"
+        />
       </div>
 
       <div className="section">
