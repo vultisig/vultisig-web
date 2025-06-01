@@ -1,0 +1,520 @@
+@use "~variables" as *;
+
+.leaderboard-page {
+  max-width: rem(992);
+
+  .warning {
+    align-items: center;
+    background-color: rgba($color: $red-dark, $alpha: 0.3);
+    border: solid rem(1) $red-base;
+    border-radius: rem(8);
+    display: flex;
+    font-size: rem(16);
+    font-weight: 500;
+    gap: rem(16);
+    justify-content: space-between;
+    line-height: rem(24);
+    margin-bottom: rem(32);
+    padding: rem(16);
+    text-align: center;
+
+    span {
+      flex-shrink: 48;
+    }
+
+    svg {
+      height: rem(24);
+      fill: $red-base;
+    }
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(16);
+    margin-bottom: rem(16);
+
+    .label {
+      color: $opacity-50;
+      display: block;
+      font-size: rem(14);
+      font-weight: 500;
+      line-height: rem(22);
+    }
+
+    .value {
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(20);
+      font-weight: 700;
+      line-height: rem(30);
+      margin-top: rem(4);
+    }
+
+    .item {
+      background-color: $opacity-03;
+      border-radius: rem(8);
+      padding: rem(16) rem(24);
+      width: 100%;
+    }
+  }
+
+  .breadcrumb {
+    border-bottom: solid rem(1) $blue-light;
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(16);
+    margin-bottom: rem(32);
+    padding-bottom: rem(32);
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      height: rem(48);
+      justify-content: space-between;
+      position: relative;
+
+      .icon {
+        height: rem(48);
+        left: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .info {
+        border-radius: 50%;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        top: rem(2);
+
+        svg {
+          fill: $cyan-base;
+          height: rem(18);
+        }
+      }
+
+      .label {
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+      }
+
+      .value {
+        color: $cyan-base;
+        font-family: $secondary-font;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        text-align: right;
+      }
+    }
+
+    .divider {
+      background-color: $blue-light;
+      width: rem(1);
+    }
+
+    .point {
+      .label {
+        padding-right: rem(22);
+        text-align: right;
+      }
+    }
+
+    .rank {
+      padding-left: rem(64);
+    }
+
+    .result {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .vault-dropdown {
+      width: 100%;
+    }
+  }
+
+  .board {
+    background-color: $opacity-03;
+    border-radius: rem(24);
+    padding: rem(16);
+
+    .icon {
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .avatar {
+      background-color: $cyan-base;
+      border-radius: 50%;
+      display: block;
+      height: rem(48);
+      margin: 0 auto rem(8);
+      width: rem(48);
+    }
+
+    .point {
+      position: relative;
+      width: 100%;
+
+
+      .rank {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(24);
+        text-align: center;
+      }
+
+      .name {
+        color: $gray-1;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        margin: 0 auto;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 50%;
+      }
+
+      .value {
+        color: $cyan-base;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        text-align: center;
+      }
+    }
+
+    .balance {
+      position: relative;
+
+      .date {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+        text-align: center;
+      }
+
+      .price {
+        color: $gray-5;
+        display: block;
+        font-family: $secondary-font;
+        font-size: rem(20);
+        font-weight: 700;
+        line-height: rem(30);
+        margin-top: rem(4);
+        text-align: center;
+      }
+    }
+
+    .shape {
+      position: relative;
+
+      .main {
+        border-radius: 50%;
+        height: rem(48);
+      }
+
+      .bottom {
+        border: solid rem(4) $blue-base;
+        border-radius: 50%;
+        bottom: rem(-12);
+        height: rem(32);
+        left: rem(-12);
+        position: absolute;
+      }
+
+      .top {
+        border: solid rem(4) $blue-base;
+        border-radius: 50%;
+        height: rem(32);
+        position: absolute;
+        right: rem(-12);
+        top: rem(-12);
+      }
+    }
+
+    .loadmore {
+      .numb {
+        color: $gray-5;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(22);
+        text-align: center;
+      }
+
+      .more {
+        color: rgba($color: $gray-1, $alpha: 0.6);
+        cursor: pointer;
+        display: block;
+        font-size: rem(14);
+        font-weight: 500;
+        line-height: rem(22);
+        margin-top: rem(4);
+        text-align: center;
+        text-decoration: underline;
+      }
+    }
+
+    .item {
+      align-items: center;
+      background-color: $blue-base;
+      border-radius: rem(8);
+      display: flex;
+      flex-direction: column;
+      gap: rem(16);
+      justify-content: space-between;
+      padding: rem(16) rem(24);
+      position: relative;
+
+      &.active {
+        background-color: $blue-persian;
+      }
+
+      &.top {
+        border-style: solid;
+        border-width: rem(1);
+
+        &::before {
+          bottom: 0;
+          content: "";
+          left: 0;
+          position: absolute;
+          right: 50%;
+          top: 0;
+        }
+      }
+
+      &.bronze {
+        background-color: rgba($color: $bronze-base, $alpha: 0.05);
+        border-color: rgba($color: $bronze-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $bronze-base, $alpha: 0.1),
+            rgba($color: $bronze-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.gold {
+        background-color: rgba($color: $gold-base, $alpha: 0.05);
+        border-color: rgba($color: $gold-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $gold-base, $alpha: 0.1),
+            rgba($color: $gold-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.silver {
+        background-color: rgba($color: $silver-base, $alpha: 0.05);
+        border-color: rgba($color: $silver-base, $alpha: 0.5);
+
+        &::before {
+          background-image: linear-gradient(
+            90deg,
+            rgba($color: $silver-base, $alpha: 0.1),
+            rgba($color: $silver-base, $alpha: 0)
+          );
+        }
+      }
+
+      &.divider {
+        background-color: transparent;
+        border: dashed rem(1) $blue-light;
+        justify-content: center;
+      }
+
+      &.loading {
+        justify-content: center;
+      }
+
+      + .item {
+        margin-top: rem(16);
+      }
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .leaderboard-page {
+    .board {
+      .icon {
+        margin: 0;
+        position: absolute;
+        right: rem(24);
+        top: rem(16);
+      }
+
+      .avatar {
+        margin: 0;
+        position: absolute;
+      }
+
+      .point {
+        padding-left: rem(64);
+        width: 50%;
+
+
+        .rank {
+          float: left;
+        }
+
+        .name {
+          float: left;
+          margin: 0 0 0 rem(8);
+          text-align: left;
+        }
+
+        .value {
+          clear: both;
+          text-align: left;
+        }
+      }
+
+      .balance {
+        .date {
+          text-align: right;
+        }
+
+        .price {
+          text-align: right;
+        }
+      }
+
+      .item {
+        flex-direction: row;
+        height: rem(100);
+
+        &.top {
+          padding-right: rem(112);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .leaderboard-page {
+    .stats {
+      flex-wrap: nowrap;
+    }
+
+    .breadcrumb {
+      flex-wrap: nowrap;
+      gap: rem(32);
+
+      .result {
+        gap: rem(24);
+        justify-content: end;
+      }
+    }
+
+    .board {
+      .point {
+        width: 60%;
+      }
+    }
+  }
+}
+
+html[theme="dark"] {
+  .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-11;
+      .divider {
+        background-color: $gray-11;
+      }
+    }
+    .board {
+      background-color: $gray-11;
+      .item {
+        background-color: $gray-12;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-9;
+          }
+          &::before {
+            background-color: $gray-10;
+          }
+        }
+      }
+    }
+  }
+}
+
+html[theme="light"] {
+  .leaderboard-page {
+    .breadcrumb {
+      border-color: $gray-3;
+      .divider {
+        background-color: $gray-3;
+      }
+    }
+    .board {
+      background-color: $gray-4;
+      .divider {
+        border-color: $gray-6;
+      }
+      .point {
+        .name {
+          color: $gray-8;
+        }
+      }
+      .rank {
+        .value {
+          color: $gray-6;
+        }
+        .price {
+          color: $gray-8;
+        }
+      }
+      .shape {
+        .bottom,
+        .top {
+          border-color: $gray-2;
+        }
+      }
+      .stats {
+        .more {
+          color: $gray-8;
+        }
+        .numb {
+          color: $gray-6;
+        }
+      }
+      .item {
+        background-color: $gray-2;
+      }
+      .list {
+        &.top {
+          .item {
+            border-color: $gray-5;
+          }
+          &::before {
+            background-color: $gray-4;
+          }
+        }
+      }
+    }
+  }
+}

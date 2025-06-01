@@ -11,6 +11,7 @@ import {
   nftCollection,
 } from "utils/constants";
 import {
+  SeasonInfo,
   CoinParams,
   CoinProps,
   NFTProps,
@@ -18,6 +19,7 @@ import {
   SharedSettings,
   TokenProps,
   VaultProps,
+  SeasonsPoints,
 } from "utils/interfaces";
 import { decodeBase58 } from "ethers";
 
@@ -72,6 +74,7 @@ namespace Leaderboard {
   export interface Params {
     from: number;
     limit: number;
+    season?: string;
   }
 
   export interface Props {
@@ -113,18 +116,11 @@ interface ActivePositions {
   }[];
 }
 
-interface SaverPositions {
-  pools: {
-    assetRedeem: number;
-    assetAddress: string;
-    pool: string;
-  }[];
-}
-
 const externalAPI = {
   ethereumPN: "https://ethereum.publicnode.com",
   lifi: "https://li.quest/v1/",
   mayachain: "https://midgard.mayachain.info/v2/",
+  midgardNinerealms: "https://midgard.ninerealms.com/",
   solanaFM: "https://api.solana.fm/v1/",
   solanaPN: "https://solana-rpc.publicnode.com",
   thorchain: "https://thornode.ninerealms.com/thorchain/",
@@ -140,7 +136,23 @@ const api = {
     exit: async (params: VaultProps) => {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
+    overhaul: async (id:string) => {
+      return await fetch.get<SeasonsPoints>(
+        `seasons/points/${id}`
+      );
+    },
   },
+  seasons: {
+    get: async () => {
+      const response = await fetch.get<SeasonInfo[]>(`/seasons/info`);
+      const resultWithIds: SeasonInfo[] = response.data.map((item, index) => ({
+        ...item,
+        id: index.toString(),
+      }));
+      return resultWithIds;
+    },
+  },
+
   activePositions: {
     nodeInfo: (address: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -171,14 +183,12 @@ const api = {
       );
     },
     getSaverPositions: async (addresses: string) => {
-      return await fetch.get<SaverPositions>(
-        `${externalAPI.thorwallet}saver/positions?addresses=${addresses}`
-      );
-    },
-    getTGTstake: async (address: string) => {
-      return await fetch.get<{ stakedAmount: number; reward: number }>(
-        `${externalAPI.thorwallet}stake/${address}`
-      );
+      return await fetch
+        .get<{
+          pools: { assetRedeem: string; assetAddress: string; pool: string }[];
+        }>(`${externalAPI.midgardNinerealms}v2/saver/${addresses}`)
+        .then(({ data }) => data.pools || [])
+        .catch(() => []);
     },
     getRuneProvider: (address: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -836,7 +846,7 @@ const api = {
         { headers: { "x-hex-chain-code": vault.hexChainCode } }
       );
     },
-    get: (vault: VaultProps) => {
+    get: async (vault: VaultProps) => {
       return fetch
         .get<VaultProps>(
           `vault/${vault.publicKeyEcdsa}/${vault.publicKeyEddsa}`
@@ -875,9 +885,7 @@ const api = {
     );
   },
   leaderboard: async (params: Leaderboard.Params) => {
-    return await fetch.get<Leaderboard.Props>(
-      `leaderboard/vaults?from=${params.from}&limit=${params.limit}`
-    );
+    return await fetch.get<Leaderboard.Props>("leaderboard/vaults", { params });
   },
   oneInch: async (id: number) => {
     return await fetch
@@ -885,6 +893,13 @@ const api = {
         `${import.meta.env.VITE_VULTISIG_SERVER}1inch/swap/v6.0/${id}/tokens`
       )
       .then(({ data }) => data);
+  },
+  swap: async (params: Leaderboard.Params) => {
+    return await fetch.get<{
+      vaults: VaultProps[];
+      totalSwapVolume: number;
+      totalVaultCount: number;
+    }>(`leaderboard/swap/vaults?from=${params.from}&limit=${params.limit}`);
   },
 };
 

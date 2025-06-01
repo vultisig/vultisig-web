@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -11,7 +11,7 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { ArrowRight, Handshake } from "icons";
+import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -19,6 +19,8 @@ import {
   getAssetsBalance,
   getNFTsBalance,
   getPositionsBalance,
+  getCurrentSeason,
+  handleSeasonPath,
 } from "utils/functions";
 import { VaultProps } from "utils/interfaces";
 import { getStoredVaults } from "utils/storage";
@@ -30,12 +32,14 @@ import constantModals from "modals/constant-modals";
 import constantPaths from "routes/constant-paths";
 
 import {
+  ArrowRight,
   CircleDollar,
   CircleHelp,
   CircleUser,
   ChromeExtension,
   ExternalLink,
   Globe,
+  Handshake,
   HamburgerLG,
   RadioWave,
   Settings,
@@ -59,9 +63,10 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { loading, visible } = state;
-  const { activePage, baseValue, currency } = useBaseContext();
+  const { activePage, baseValue, currency, seasonInfo } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const { pathname, hash } = useLocation();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const goBack = useGoBack();
   const vaults = getStoredVaults();
@@ -110,6 +115,21 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           content: t(constantKeys.UNSUCCESSFUL_COPY_LINK),
         });
       });
+  };
+
+  const getRemainingTimeString = (endTime: string): string => {
+    const end = new Date(endTime).getTime();
+    const now = Date.now();
+    const diff = end - now;
+
+    if (diff <= 0) return "0d 0h 0min";
+
+    const totalMinutes = Math.floor(diff / (1000 * 60));
+    const days = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const minutes = totalMinutes % 60;
+
+    return `${days}d ${hours}h ${minutes}min`;
   };
 
   const componentDidUpdate = (): void => {
@@ -176,27 +196,62 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     case PageKey.VAULT_POSITIONS:
       selectedKey = "1-3";
       break;
-    case PageKey.LEADERBOARD:
-    case PageKey.SHARED_LEADERBOARD:
-    case PageKey.VAULT_LEADERBOARD:
-      selectedKey = "2";
+    case PageKey.AIRDROP:
+    case PageKey.SHARED_AIRDROP:
+    case PageKey.VAULT_AIRDROP:
+      selectedKey = getCurrentSeason(seasonInfo)?.id === id ? "8-1" : `2-${id}`;
+      break;
+    case PageKey.SWAP:
+    case PageKey.SHARED_SWAP:
+    case PageKey.VAULT_SWAP:
+      selectedKey = "7";
+      break;
+    case PageKey.ACHIEVEMENTES:
+      selectedKey = "3";
       break;
     case PageKey.ONBOARDING:
-      selectedKey = "3";
+      selectedKey = "4";
       break;
     case PageKey.IMPORT:
     case PageKey.UPLOAD:
-      selectedKey = "4";
+      selectedKey = "5";
       break;
     default:
       selectedKey = "";
       break;
   }
 
-  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
+  const isDesktop = useMediaQuery({ query: "(min-width: 1170px)" });
   const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
+    {
+      key: "0",
+      type: "group",
+      label: t(constantKeys.VAULT_BALANCE),
+      children: [
+        ...(layout === LayoutKey.VAULT
+          ? [
+              {
+                key: "0-1",
+                label: (
+                  <span className="balance">
+                    {vault
+                      ? (
+                          (getAssetsBalance(vault) +
+                            getNFTsBalance(vault) +
+                            getPositionsBalance(vault)) *
+                          baseValue
+                        ).toValueFormat(currency)
+                      : 0}
+                  </span>
+                ),
+                icon: <Storage className="icon" />,
+              },
+            ]
+          : []),
+      ],
+    },
     ...(layout === LayoutKey.VAULT
       ? [
           {
@@ -236,15 +291,6 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             ),
             icon: <CircleDollar />,
           },
-          // ...(layout === LayoutKey.VAULT
-          //   ? [
-          //       {
-          //         key: "4",
-          //         label: t(constantKeys.DEFAULT_CHAINS),
-          //         icon: <ChainOutlined />,
-          //       },
-          //     ]
-          //   : []),
         ]
       : []),
     {
@@ -265,24 +311,28 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       type: "group",
       label: t(constantKeys.OTHER),
       children: [
-        {
-          key: "6-1",
-          label: (
-            <Link to={`#${constantModals.REFERRAL_CODE}`} state={true}>
-              {t(constantKeys.REFERRAL_CODE)}
-            </Link>
-          ),
-          icon: <Handshake />,
-        },
-        {
-          key: "6-2",
-          label: (
-            <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
-              {t(constantKeys.MANAGE_AIRDROP)}
-            </Link>
-          ),
-          icon: <RadioWave />,
-        },
+        ...(layout === LayoutKey.VAULT
+          ? [
+              {
+                key: "6-1",
+                label: (
+                  <Link to={`#${constantModals.REFERRAL_CODE}`} state={true}>
+                    {t(constantKeys.REFERRAL_CODE)}
+                  </Link>
+                ),
+                icon: <Handshake />,
+              },
+              {
+                key: "6-2",
+                label: (
+                  <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
+                    {t(constantKeys.MANAGE_AIRDROP)}
+                  </Link>
+                ),
+                icon: <RadioWave />,
+              },
+            ]
+          : []),
         {
           key: "6-3",
           label: (
@@ -376,44 +426,118 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     },
   ];
 
-  const navbarMenu: MenuProps["items"] = [
-    ...(vaults.length ? _firstItems : []),
+  const _lastItems: MenuProps["items"] = [
     {
-      key: "2",
+      key: "4",
       label: (
-        <Link
-          to={
-            layout === LayoutKey.SHARED
-              ? handleSharePath(constantPaths.shared.leaderboard)
-              : vaults.length
-              ? constantPaths.vault.leaderboard
-              : constantPaths.default.leaderboard
-          }
-        >
-          {t(constantKeys.LEADERBOARD)}
+        <Link to={constantPaths.default.onboarding}>
+          {t(constantKeys.HOW_TO_PARTICIPATE)}
         </Link>
       ),
     },
-    ...(!vaults.length
-      ? [
-          {
-            key: "3",
-            label: (
-              <Link to={constantPaths.default.onboarding}>
-                {t(constantKeys.HOW_TO_PARTICIPATE)}
-              </Link>
-            ),
-          },
-          {
-            key: "4",
-            label: (
-              <Link to={constantPaths.default.import}>
-                {t(constantKeys.CONNECT_YOUR_WALLET)}
-              </Link>
-            ),
-          },
-        ]
-      : []),
+    {
+      key: "5",
+      label: (
+        <Link to={constantPaths.default.import}>
+          {t(constantKeys.CONNECT_YOUR_WALLET)}
+        </Link>
+      ),
+    },
+  ];
+
+  const navbarMenu: MenuProps["items"] = [
+    ...(vaults.length ? _firstItems : []),
+    {
+      key: "8",
+      label: t(constantKeys.CURRENT_SEASON),
+      icon: <ArrowRight />,
+      type: "submenu",
+      children: [
+        {
+          key: `8-1`,
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSeasonPath(
+                      handleSharePath(constantPaths.shared.airdrop),
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
+                  : vaults.length
+                  ? handleSeasonPath(
+                      constantPaths.vault.airdrop,
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
+                  : handleSeasonPath(
+                      constantPaths.default.airdrop,
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
+              }
+            >
+              {t(constantKeys.AIRDROP_LEADERBOARD)}
+            </Link>
+          ),
+        },
+        {
+          key: "7",
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSharePath(constantPaths.shared.swap)
+                  : vaults.length
+                  ? constantPaths.vault.swap
+                  : constantPaths.default.swap
+              }
+            >
+              {t(constantKeys.SWAP)}
+            </Link>
+          ),
+        },
+
+        ...(vaults.length
+          ? [
+              {
+                key: "3",
+                label: (
+                  <Link to={constantPaths.vault.achievements}>
+                    {t(constantKeys.ACHIEVEMENTS)}
+                  </Link>
+                ),
+              },
+            ]
+          : []),
+      ],
+    },
+    {
+      key: "2",
+      label: t(constantKeys.PAST_SEASONS),
+      icon: <ArrowRight />,
+      type: "submenu",
+      children: seasonInfo
+        .filter((season) => new Date(season.end) < new Date())
+        .map((_season, index) => ({
+          key: `2-${index}`,
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSeasonPath(
+                      handleSharePath(constantPaths.shared.airdrop),
+                      `${index}`
+                    )
+                  : vaults.length
+                  ? handleSeasonPath(constantPaths.vault.airdrop, `${index}`)
+                  : handleSeasonPath(constantPaths.default.airdrop, `${index}`)
+              }
+            >
+              {`Season ${index}`}
+            </Link>
+          ),
+        })),
+    },
+
+    ...(!vaults.length ? _lastItems : []),
   ];
 
   return (
@@ -430,7 +554,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <HamburgerLG />
           </Button>
         )}
-
+        {/* <Button href={`#${constantModals.SHARE_ACHIEVEMENTS}`}>"Share"</Button> */}
         {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
           <Button
             onClick={handleJoinAirdrop}
@@ -447,7 +571,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               ? handleSharePath(constantPaths.shared.chains)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.leaderboard
+              : constantPaths.default.airdrop
           }
           className="logo"
         >
@@ -481,15 +605,12 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
         {isTablet && vault && (
           <div className="balance">
-            <Storage className="icon" />
-            <span className="text">{`${t(constantKeys.VAULT_BALANCE)}:`}</span>
+            <ClockCircleOutlined className="clock-icon" />
+            <span className="text">{`${t(
+              constantKeys.SEASON_END_TIME
+            )}:`}</span>
             <span className="value">
-              {(
-                (getAssetsBalance(vault) +
-                  getNFTsBalance(vault) +
-                  getPositionsBalance(vault)) *
-                baseValue
-              ).toValueFormat(currency)}
+              {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
             </span>
           </div>
         )}
@@ -506,7 +627,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
                   ? handleSharePath(constantPaths.shared.chains)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.leaderboard
+                  : constantPaths.default.airdrop
               }
               className="logo"
             >
@@ -535,7 +656,16 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           placement="left"
           className="layout-menu"
         >
-          {!isTablet && vault && (
+          <div className="balance">
+            <ClockCircleOutlined className="clock-icon" />
+            <span className="text">{`${t(
+              constantKeys.SEASON_END_TIME
+            )}:`}</span>
+            <span className="value">
+              {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
+            </span>
+          </div>
+          {vault && (
             <>
               <div className="balance">
                 <Storage className="icon" />

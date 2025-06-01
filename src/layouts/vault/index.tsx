@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import {
   Currency,
@@ -35,9 +35,11 @@ import LogoutVault from "modals/logout-vault";
 import RenameVault from "modals/rename-vault";
 import ReferralCode from "modals/referral-code";
 import VaultSettings from "modals/vault-settings";
+import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
+import { handleSeasonPath } from "utils/functions";
 
 interface InitialState {
   tokens: TokenProps[];
@@ -52,9 +54,9 @@ const Component: FC = () => {
   };
   const [state, setState] = useState(initialState);
   const { tokens, vault, vaults } = state;
+  const { id = "0" } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const vaultProvider = new VaultProvider();
-
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
     const oneInchId = oneInchRef[token.chain];
 
@@ -343,7 +345,7 @@ const Component: FC = () => {
       } else {
         setStoredVaults([]);
 
-        navigate(constantPaths.default.leaderboard, { replace: true });
+        navigate(constantPaths.default.airdrop, { replace: true });
 
         return { ...prevState };
       }
@@ -404,12 +406,6 @@ const Component: FC = () => {
               updatePositions({ ...vault, positions });
             }),
             positionProvider.getThorBond().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getTGTStake().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getWewePositions().then((positions) => {
               updatePositions({ ...vault, positions });
             }),
           ]).then(() => {
@@ -585,11 +581,13 @@ const Component: FC = () => {
         } else {
           setStoredVaults([]);
 
-          navigate(constantPaths.default.leaderboard, { replace: true });
+          navigate(constantPaths.default.airdrop, { replace: true });
         }
       });
     } else {
-      navigate(constantPaths.default.leaderboard, { replace: true });
+      const redirectPath = handleSeasonPath(constantPaths.default.airdrop, id);
+      
+      navigate(redirectPath, { replace: true });
     }
   };
 
@@ -621,11 +619,12 @@ const Component: FC = () => {
       <ChangeLanguage />
       <ManageAirDrop updateVault={updateVault} vaults={vaults} />
       <RenameVault updateVault={updateVault} vault={vault} />
-      <ReferralCode updateVault={updateVault}  vault={vault} />
+      <ReferralCode updateVault={updateVault} vault={vault} />
       <DeleteVault deleteVault={deleteVault} vault={vault} />
       <LogoutVault deleteVault={deleteVault} vault={vault} />
       <JoinAirDrop vault={vault} />
       <VaultSettings vault={vault} />
+      <ShareAchievements vault={vault} />
       <SharedSettings vault={vault} />
     </>
   ) : (

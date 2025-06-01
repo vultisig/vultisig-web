@@ -5,6 +5,7 @@ export default {
   [translation.ACCUMULATE_VULTIES_PERIOD]:
     "Ihre Vermögenswerte sammeln VULTIES über einen Zeitraum von 12 Monaten. Am Ende dieses Zeitraums erhalten Sie Ihren Anteil am Airdrop (5 % von $VULT).",
   [translation.ACTIVE_POSITIONS]: "Aktive Positionen",
+  [translation.ACHIEVEMENTS]: "Errungenschaften",
   [translation.ADD_NEW_VAULT]: "Neues Vault hinzufügen",
   [translation.AIRDROP_CALCULATION_NOTE]:
     "Hinweis: Der Airdrop basiert auf der Gesamtmenge in Ihrem Vault, multipliziert mit der Zeit, die die Vermögenswerte im Vault gehalten werden. Die größten Beträge für die längste Zeit erhalten am meisten.",
@@ -19,6 +20,9 @@ export default {
   [translation.BECOME_VULTISIG_USER]:
     "Werden Sie Vultisig-Nutzer und nehmen Sie an der Airdrop-Berechnung teil.",
   [translation.BOND_TITLE]: "Anleihe",
+  [translation.BONUS_ON_REFERRAL_EARNINGS]:
+    "Erhalte einen {0}%-Bonus auf Empfehlungsverdienste",
+  [translation.BOOST_YOUR_EAENINGS]: "Steigere deine Einnahmen",
   // C
   [translation.CHECK_LEANDER_BOARD]: "Rangliste überprüfen",
   [translation.CHOOSE_CHAIN]: "Ketten wählen",
@@ -27,6 +31,7 @@ export default {
   [translation.CONGRATULATIONS]: "Herzlichen Glückwunsch!",
   [translation.CONNECT_OR_UPLOAD]:
     "Mit VultiConnect verbinden oder Ihr Vault-QR hochladen, um zu starten",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Bild in die Zwischenablage kopieren",
   [translation.CONNECT_YOUR_WALLET]: "Verbinden Sie Ihre Wallet",
   [translation.COUNTED]: "gezählt",
   [translation.CONFIRM_REMOVE_VAULT_WARNING]:
@@ -38,9 +43,10 @@ export default {
   [translation.CONFIRM_REMOVE_CHECKBOX]:
     "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
   [translation.CURRENCY]: "Währung",
+  [translation.CURRENT_SEASON]: "Aktuelle Saison",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Punkte und Bilanzen werden immer am Ende des Tages aktualisiert",
+    "Vulties und Bilanzen werden immer am Ende des Tages aktualisiert",
   [translation.DOWNLOAD_APP]:
     "Haben Sie noch kein Vault? Laden Sie jetzt Vultisig herunter",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
@@ -69,6 +75,7 @@ export default {
   [translation.HOW_TO_PARTICIPATE]: "Wie man teilnimmt",
   // I
   [translation.INSPECT_CODE_MANAGE]: "Überprüfen Sie den Code hier.",
+  [translation.INCREASE_SWAP_VOLUME]: "Erhöhe das Swap-Volumen",
   // J
   [translation.JOIN_AIRDROP]: "Airdrop beitreten",
   [translation.JOIN_THE_AIRDROP_ONBOARDING]: "AIRDROP BEITRETEN",
@@ -80,6 +87,7 @@ export default {
   [translation.LIQUIDITY_POSITION_TITLE]: "Liquiditätsposition",
   [translation.LINK_SEE_HERE]: "hier gesehen.",
   [translation.LOADING]: "Laden",
+  [translation.LOCKED]: "Gesperrt",
   [translation.LOGO]: "Logo",
   [translation.LOGO_SIZE]: "Die maximal zulässige Logogröße beträgt 100 KB",
   [translation.LOGOUT]: "Abmelden",
@@ -89,6 +97,10 @@ export default {
   // M
   [translation.MANAGE_AIRDROP]: "Airdrop verwalten",
   [translation.MAYA]: "Maya",
+  [translation.MILESTONES]: "Meilensteine",
+  [translation.MULTIPLIER]: "Multiplikator",
+  [translation.MULTIPLIER_BOOSTS]: "Multiplikator-Boosts",
+  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Mein Anteil am {0}-Airdrop",
   // N
   [translation.NO_BOND_FOUND]: "Keine Anleihe gefunden",
   [translation.NOT_COLLECTED]:
@@ -100,8 +112,13 @@ export default {
   // O
   [translation.OTHER]: "Andere",
   // P
+  [translation.PAST_SEASONS]: "Vergangene Saisons",
   [translation.POWERED_BY]: "Powered by",
   [translation.POSITIONS_TITLE]: "Positionen",
+  [translation.PROGRESS_TO_NEXT_MILESTONE]:
+    "Fortschritt zum nächsten Meilenstein",
+  [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
+    "Prognostizierter $VULT am Ende der Saison",
   [translation.PRIVACY]:
     "Lesen Sie die Gründerversprechen zur Privatsphäre hier.",
   // Q
@@ -119,6 +136,8 @@ export default {
   [translation.REFER_FRIEND_ONBOARDING]: "FREUND EMPFEHLEN",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Empfehlen Sie Freunde mit unserer einfachen Telegram Mini App und erhöhen Sie Ihren Airdrop",
+  [translation.REFERRAL_MULTIPLIER]: "Empfehlungs-Multiplikator",
+  [translation.REFER_FRIENDS]: "Freunde werben",
   [translation.REGISTER_PUBLIC_KEYS_VAULTS]:
     "Sie registrieren Ihre öffentlichen Schlüssel und Vault-Adressen.",
   [translation.REGISTER_UNLIMITED_VAULTS]:
@@ -135,6 +154,7 @@ export default {
   [translation.SAVE]: "Speichern",
   [translation.SAVER_TITLE]: "Saver",
   [translation.SEARCH]: "Suche",
+  [translation.SEASON_END_TIME]: "Saison endet in",
   [translation.SECURE_CRYPTO_VAULT]: "SICHERER KRYPTOVERT",
   [translation.SEE_FULL_LIST]: "Die vollständige Liste ansehen",
   [translation.SELECT_CHAINS_TOKENS]:
@@ -142,6 +162,9 @@ export default {
   [translation.SETUP_MULTIـONBOARDING]: "MULTI-FAKTOR-WALLET EINRICHTEN",
   [translation.SETUP_MULTI_ONBOARDING_EXPLAIN]:
     "Erstellen Sie ein sicheres Wallet mit Multi-Faktor-Authentifizierung, um Ihre Vermögenswerte zu schützen und die Sicherheit Ihres Kontos zu erhöhen.",
+  [translation.SHARE]: "Teilen",
+  [translation.SHARE_ON]: "Auf {0} teilen",
+  [translation.SHARE_ACHIEVEMENTS]: "Erfolge teilen",
   [translation.SHARE_VAULT]: "Teilen Sie Ihr Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalisieren Sie die geteilte Vault-Seite",
@@ -156,16 +179,22 @@ export default {
   [translation.START]: "Start",
   [translation.SUCCESSFUL_COPY_LINK]: "Link in die Zwischenablage kopiert",
   [translation.SUCCESSFUL_COPY_TEXT]: "Text in die Zwischenablage kopiert",
+  [translation.SUCCESSFUL_COPY_IMAGE]: "Bild in die Zwischenablage kopiert",
   [translation.SUPPORTED_ASSETS_NOTE]:
     "Layer-1-Vermögenswerte und die meisten von Vultisig unterstützten Tokens werden gezählt. Andere aktive Vermögenswerte wie LPs und Node Bonds von THORChain, MAYA Protocol und gestakte Token sind ebenfalls gültig.",
+  [translation.SWAP_VOLUME]: "Swap-Volumen",
+  [translation.SWAP_MULTIPLIER]: "Swap-Multiplikator",
+  [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
+    "Tausche mehr, um mehr VULTIES zu verdienen",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "Wie man am <span>$5M</span> VULTISIG AIRDROP teilnimmt",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Airdrop-Vaults",
+  [translation.TO_NEXT_MILESTONE]: "bis zum nächsten Meilenstein",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Tresore in dieser Saison",
   [translation.TOTAL_BALANCE]: "Gesamtbilanz",
   [translation.TOTAL_REGISTERED_WALLETS]:
-    "Gesamtzahl der registrierten Wallets",
+    "Gesamtzahl registrierter Wallets",
+  [translation.TOTAL_VULTIES]: "Gesamte Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "GELD AUF VAULTS ÜBERWEISEN",
   [translation.TRANSFER_FUNDSـONBOARDING_EXPLAIN]:
@@ -183,13 +212,11 @@ export default {
   [translation.UPLOAD_VAULT_QR]: "Vault QR hochladen",
   // V
   [translation.VULTICONNECT]: "VultiConnect",
+  [translation.VAULT_AIRDROP_ACHIEVEMENTS]: "$VULT Airdrop-Erfolge",
   [translation.VAULT_AIRDROP_JOINED]:
     "Ihr Vault {0} hat am Vultisig-Airdrop teilgenommen. Sie beginnen jetzt täglich VULTIES zu sammeln. Kommen Sie morgen zurück, um Ihre ersten VULTIES auf der Rangliste zu sehen und Ihre Mitbewerber zu überprüfen.",
   [translation.VAULT_SETTINGS]: "Vault-Einstellungen",
   [translation.VULT_TOKEN]: "Der $VULT Token",
   [translation.VULTISIG]: "Vultisig",
   // W
-  [translation.WEWE]: "WEWE",
-  [translation.WEWE_USDT_ADDRESS_NOT_FOUND]:
-    "WEWE/USDT-Adresse nicht in Ihrem Vault gefunden",
 };

@@ -1,0 +1,471 @@
+@use "~variables" as *;
+
+.achievements-page {
+  max-width: rem(992);
+
+  .achievements-title {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: rem(20);
+    .share-btn {
+      display: flex;
+      background-color: $blue-base;
+      border-radius: rem(99);
+      color: $gray-1;
+      cursor: pointer;
+      padding: rem(14) rem(24);
+      justify-content: center;
+      span {
+        margin-right: rem(10);
+      }
+    }
+  }
+
+  .projectedVult {
+    display: flex;
+    flex-direction: column;
+    background-color: $blue-base;
+    padding: rem(20) rem(24);
+    border-radius: rem(10);
+    text-align: center;
+    gap: rem(20);
+    margin-top: rem(22);
+    min-height: rem(104);
+
+    .title {
+      color: $opacity-50;
+      display: block;
+      font-weight: 500;
+    }
+
+    .price {
+      color: $cyan-base;
+      font-weight: bold;
+      font-size: rem(28);
+    }
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: rem(20);
+    margin-top: rem(22);
+    min-height: rem(104);
+
+    li {
+      position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: $blue-base;
+      border-radius: rem(10);
+      padding: rem(20) rem(24) rem(60) rem(24);
+      width: 100%;
+      .title {
+        color: $opacity-50;
+        display: block;
+        font-size: 0.875rem;
+      }
+      .price {
+        position: absolute;
+        bottom: rem(20);
+        font-weight: bold;
+        font-size: rem(28);
+        color: $gray-1;
+        margin-top: rem(15);
+        margin: 0 auto;
+      }
+      .cyan {
+        color: $cyan-base;
+      }
+      .blue {
+        color: $blue-persian;
+      }
+    }
+  }
+
+  .milestones {
+    margin-top: rem(22);
+    display: flex;
+    flex-direction: column;
+    .title {
+      font-size: rem(24);
+    }
+    .items {
+      margin-top: rem(22);
+      display: flex;
+      flex-direction: column;
+      gap: rem(20);
+      li {
+        padding: rem(0) rem(20) rem(20) rem(20);
+        background-color: $blue-base;
+        border-radius: rem(10);
+        height: rem(217);
+        justify-content: center;
+        text-align: center;
+        gap: rem(14);
+        display: flex;
+        flex-direction: column;
+        height: rem(250);
+        width: 100%;
+        .icon {
+          max-width: rem(150);
+          margin: 0 auto;
+          opacity: 0.3;
+        }
+        .title {
+          color: $opacity-50;
+          font-size: rem(14);
+          font-weight: 500;
+        }
+        .status {
+          display: flex;
+          justify-content: center;
+          opacity: 0.4;
+          .award {
+            margin-right: rem(5) !important;
+          }
+          span {
+            color: $cyan-base;
+            font-size: (17.5);
+            font-weight: bold;
+          }
+        }
+      }
+    }
+    .active {
+      background: rgb(51, 230, 191);
+      background: linear-gradient(
+        35deg,
+        rgba(51, 230, 191, 0) 30%,
+        rgba(72, 121, 253, 0.8) 170%
+      );
+      border: rem(1) solid rgba(72, 121, 253, 0.2);
+      .status{
+        opacity: 1 !important;
+      }
+      .title{
+        color: $silver-base-1 !important;
+      }
+      .icon {
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  .next-milestones {
+    margin-top: rem(22);
+    .data {
+      margin-top: rem(22);
+      padding: rem(20);
+      background-color: $blue-base;
+      border-radius: rem(10);
+      .steps {
+        display: flex;
+        justify-content: space-between;
+      }
+      .progress {
+        width: 100%;
+        border-radius: rem(50);
+        margin-top: rem(22);
+        height: rem(14);
+        background-color: $blue-light;
+        .value {
+          height: rem(14);
+          border-radius: rem(50);
+          background-color: $blue-sharp;
+        }
+      }
+      .info {
+        text-align: center;
+        margin-top: rem(22);
+      }
+    }
+  }
+
+  .multiplier-boosts {
+    margin-top: rem(22);
+    .data {
+      margin-top: rem(22);
+      background-color: $blue-base;
+      padding: rem(20);
+      border-radius: rem(10);
+      .switcher {
+        background-color: $blue-light;
+        border-radius: rem(99);
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        padding: rem(4);
+        .item {
+          align-items: center;
+          border-radius: rem(99);
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          padding: rem(16);
+          transition: background-color 0.2s;
+          width: 50%;
+          svg {
+            margin-right: rem(10);
+          }
+        }
+
+        .active {
+          background-color: $blue-dark;
+          border-radius: rem(99);
+          color: $cyan-base;
+          svg {
+            path {
+              stroke: $cyan-base;
+            }
+          }
+        }
+      }
+      .coins {
+        margin-top: rem(28);
+        li {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          align-content: center;
+          background-color: $blue-light;
+          margin-top: rem(12);
+          border-radius: rem(10);
+          padding: rem(12);
+          .coin {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: rem(70);
+            gap: rem(10);
+            .logo {
+              width: rem(36);
+              height: rem(36);
+              border: rem(1) solid $gray-7;
+              border-radius: 50%;
+            }
+            .info {
+              text-align: left;
+              .title {
+                font-size: rem(16);
+              }
+              .value {
+                color: $opacity-50;
+                font-size: rem(14);
+              }
+            }
+          }
+          .value {
+            .boost-value {
+              color: $blue-persian;
+              font-size: rem(20);
+              font-weight: bold;
+              text-align: right;
+            }
+            .multiplier {
+              font-size: rem(14);
+            }
+          }
+        }
+      }
+      .nfts {
+        margin-top: rem(28);
+        li {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          align-content: center;
+          background-color: $blue-light;
+          margin-top: rem(12);
+          border-radius: rem(10);
+          padding: rem(12);
+          .coin {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: rem(70);
+            gap: rem(10);
+            .logo {
+              width: rem(60);
+              height: rem(60);
+              border-radius: rem(8);
+            }
+            .info {
+              text-align: left;
+              .title {
+                font-size: rem(16);
+              }
+              .value {
+                color: $opacity-50;
+                font-size: rem(14);
+              }
+            }
+          }
+          .value {
+            .boost-value {
+              color: $blue-persian;
+              font-size: rem(20);
+              font-weight: bold;
+              text-align: right;
+            }
+            .multiplier {
+              font-size: rem(14);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .boost {
+    margin-top: rem(22);
+    padding: rem(20);
+    background-color: $blue-base;
+    border-radius: rem(10);
+    .plans {
+      display: flex;
+      flex-direction: column;
+      gap: rem(20);
+      margin-top: rem(28);
+      a {
+        border: rem(1) solid $blue-normal;
+        border-radius: rem(10);
+        padding: rem(12);
+        display: flex;
+        flex-direction: row;
+        gap: rem(10);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease;
+        .item {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          gap: rem(10);
+          align-items: center;
+        }
+        .desc {
+          font-size: rem(14);
+          color: $opacity-50;
+        }
+        .info {
+          .title {
+            color: $gray-1;
+          }
+        }
+        &:hover{
+          background-color: $blue-dark;
+          border-color: $blue-normal;
+        }
+        &:active {
+          background-color: $blue-dark;
+          border-color: $blue-normal;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: rem(576)) {
+  .stats {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    li {
+      width: 48% !important;
+    }
+  }
+
+  .milestones {
+    .items {
+      flex-direction: row !important;
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+      li {
+        width: 48% !important;
+      }
+    }
+  }
+}
+
+@media (min-width: rem(768)) {
+  .milestones {
+    .items {
+      li {
+        width: 30% !important;
+      }
+    }
+  }
+  .multiplier-boosts {
+    .nfts {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: rem(8);
+      li {
+        width: 49% !important;
+      }
+    }
+  }
+  .boost {
+    .plans {
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      .item {
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media (min-width: rem(992)) {
+  .achievements-title {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+
+  .stats {
+    li {
+      width: 23% !important;
+    }
+  }
+
+  .milestones {
+    .items {
+      justify-content: space-between !important;
+      gap: rem(10) !important;
+      li {
+        padding: rem(5) rem(5) rem(20) rem(5) !important;
+        width: rem(182) !important;
+        height: rem(240) !important;
+        .icon {
+          max-width: rem(150);
+          margin: auto;
+          opacity: 0.3;
+        }
+        .title {
+          color: $opacity-50;
+          font-size: rem(14);
+        }
+        .status {
+          display: flex;
+          justify-content: center;
+          .award {
+            margin-right: rem(5) !important;
+          }
+          span {
+            font-size: rem(14) !important;
+          }
+        }
+      }
+    }
+  }
+}

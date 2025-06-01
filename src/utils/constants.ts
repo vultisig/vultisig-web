@@ -1,18 +1,10 @@
 import keyMirror from "keymirror";
 
-import {
-  ChainBoolRef,
-  ChainStrRef,
-  CollectionRef,
-  CurrencyRef,
-  LanguageRef,
-  NFTRef,
-  OneInchRef,
-  TokenProps,
-} from "utils/interfaces";
+import { TokenProps } from "utils/interfaces";
 
 export enum ChainKey {
   ARBITRUM = "Arbitrum",
+  AKASH = "Akash",
   AVALANCHE = "Avalanche",
   BASE = "Base",
   BITCOIN = "Bitcoin",
@@ -42,6 +34,7 @@ export enum ChainKey {
   TRON = "Tron",
   XRP = "XRP",
   ZKSYNC = "Zksync",
+  ZCASH = "Zcash",
 }
 
 export enum CollectionKey {
@@ -55,28 +48,33 @@ export enum LayoutKey {
 }
 
 export enum PageKey {
+  AIRDROP,
+  ACHIEVEMENTES,
   IMPORT,
-  LEADERBOARD,
   ONBOARDING,
+  SWAP,
   UPLOAD,
+  SHARED_AIRDROP,
   SHARED_CHAIN_ASSETS,
   SHARED_CHAINS,
   SHARED_ITEMS,
-  SHARED_LEADERBOARD,
   SHARED_NFTS,
   SHARED_NFT_ASSETS,
+  SHARED_SWAP,
   SHARED_POSITIONS,
+  VAULT_AIRDROP,
   VAULT_CHAIN_ASSETS,
   VAULT_CHAINS,
   VAULT_ITEMS,
-  VAULT_LEADERBOARD,
   VAULT_NFTS,
   VAULT_NFT_ASSETS,
   VAULT_POSITIONS,
+  VAULT_SWAP,
 }
 
 export enum TickerKey {
   AVAX = "AVAX",
+  AKT = "AKT",
   ATOM = "ATOM",
   BCH = "BCH",
   BNB = "BNB",
@@ -96,6 +94,7 @@ export enum TickerKey {
   MATIC = "MATIC",
   MAYA = "MAYA",
   OSMO = "OSMO",
+  POL = "POL",
   PYTH = "PYTH",
   RAY = "RAY",
   RENDER = "RENDER",
@@ -110,9 +109,9 @@ export enum TickerKey {
   USDC = "USDC",
   USDT = "USDT",
   VTHOR = "vTHOR",
-  WEWE = "WEWE",
   WIF = "WIF",
   XRP = "XRP",
+  ZEC = "ZEC",
 }
 
 export enum Currency {
@@ -171,8 +170,10 @@ export const errorKey = keyMirror({
   UNKNOWN_ERROR: true,
 });
 
-export const balanceAPI: ChainStrRef = {
+export const balanceAPI: Record<ChainKey, string> = {
   [ChainKey.ARBITRUM]: "https://api.vultisig.com/arb/",
+  [ChainKey.AKASH]:
+    "https://akash-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.AVALANCHE]: "https://api.vultisig.com/avax/",
   [ChainKey.BASE]: "https://api.vultisig.com/base/",
   [ChainKey.BITCOIN]:
@@ -216,10 +217,13 @@ export const balanceAPI: ChainStrRef = {
   [ChainKey.TRON]: "https://tron-rpc.publicnode.com/wallet/getaccount",
   [ChainKey.XRP]: "https://xrplcluster.com",
   [ChainKey.ZKSYNC]: "https://api.vultisig.com/zksync/",
+  [ChainKey.ZCASH]:
+    "https://api.vultisig.com/blockchair/zcash/dashboards/address",
 };
 
-export const balanceDenom: ChainStrRef = {
+export const balanceDenom: Record<ChainKey, string> = {
   [ChainKey.ARBITRUM]: "",
+  [ChainKey.AKASH]: "uakt",
   [ChainKey.AVALANCHE]: "",
   [ChainKey.BASE]: "",
   [ChainKey.BITCOIN]: "",
@@ -249,10 +253,12 @@ export const balanceDenom: ChainStrRef = {
   [ChainKey.TRON]: "",
   [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
+  [ChainKey.ZCASH]: "",
 };
 
-export const chooseToken: ChainBoolRef = {
+export const chooseToken: Record<ChainKey, boolean> = {
   [ChainKey.ARBITRUM]: true,
+  [ChainKey.AKASH]: false,
   [ChainKey.AVALANCHE]: true,
   [ChainKey.BASE]: true,
   [ChainKey.BITCOIN]: false,
@@ -282,10 +288,12 @@ export const chooseToken: ChainBoolRef = {
   [ChainKey.TRON]: true,
   [ChainKey.XRP]: false,
   [ChainKey.ZKSYNC]: false,
+  [ChainKey.ZCASH]: false,
 };
 
-export const exploreNFT: ChainStrRef = {
+export const exploreNFT: Record<ChainKey, string> = {
   [ChainKey.ARBITRUM]: "",
+  [ChainKey.AKASH]: "",
   [ChainKey.AVALANCHE]: "",
   [ChainKey.BASE]: "",
   [ChainKey.BITCOIN]: "",
@@ -315,15 +323,17 @@ export const exploreNFT: ChainStrRef = {
   [ChainKey.TRON]: "",
   [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
+  [ChainKey.ZCASH]: "",
 };
 
-export const exploreNFTAsset: CollectionRef = {
+export const exploreNFTAsset: Record<CollectionKey, string> = {
   [CollectionKey.THORGUARD]:
     "https://opensea.io/assets/ethereum/0xa98b29a8f5a247802149c268ecf860b8308b7291/",
 };
 
-export const exploreToken: ChainStrRef = {
+export const exploreToken: Record<ChainKey, string> = {
   [ChainKey.ARBITRUM]: "https://arbiscan.io/address/",
+  [ChainKey.AKASH]: "https://www.mintscan.io/akash/address/",
   [ChainKey.AVALANCHE]: "https://snowtrace.io/address/",
   [ChainKey.BASE]: "https://basescan.org/address/",
   [ChainKey.BITCOIN]: "https://blockchair.com/bitcoin/address/",
@@ -353,9 +363,10 @@ export const exploreToken: ChainStrRef = {
   [ChainKey.TRON]: "https://tronscan.org/#/address/",
   [ChainKey.XRP]: "https://xrpscan.com/account/",
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address/",
+  [ChainKey.ZCASH]: "https://blockchair.com/zcash/address/",
 };
 
-export const currencyName: CurrencyRef = {
+export const currencyName: Record<Currency, string> = {
   [Currency.AUD]: "Australian Dollar",
   [Currency.CAD]: "Canadian Dollar",
   [Currency.CNY]: "Chinese Yuan",
@@ -368,7 +379,7 @@ export const currencyName: CurrencyRef = {
   [Currency.USD]: "United States Dollar",
 };
 
-export const currencySymbol: CurrencyRef = {
+export const currencySymbol: Record<Currency, string> = {
   [Currency.AUD]: "A$",
   [Currency.CAD]: "C$",
   [Currency.CNY]: "¥",
@@ -381,7 +392,7 @@ export const currencySymbol: CurrencyRef = {
   [Currency.USD]: "$",
 };
 
-export const languageName: LanguageRef = {
+export const languageName: Record<Language, string> = {
   [Language.CROATIA]: "Hrvatski",
   [Language.DUTCH]: "Dutch",
   [Language.ENGLISH]: "English",
@@ -392,11 +403,11 @@ export const languageName: LanguageRef = {
   [Language.SPANISH]: "Espanol",
 };
 
-export const nftCollection: CollectionRef = {
+export const nftCollection: Record<CollectionKey, string> = {
   [CollectionKey.THORGUARD]: "0xa98b29a8f5a247802149c268ecf860b8308b7291",
 };
 
-export const oneInchRef: OneInchRef = {
+export const oneInchRef: Record<string, number> = {
   [ChainKey.ARBITRUM]: 42161,
   [ChainKey.AVALANCHE]: 43114,
   [ChainKey.BASE]: 8453,
@@ -422,16 +433,16 @@ export const defTokens: TokenProps[] = [
     ticker: TickerKey.ETH,
   },
   {
-    chain: ChainKey.ARBITRUM,
-    cmcId: 29814,
-    contractAddress: "0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27",
-    decimals: 18,
-    hexPublicKey: "EDDSA",
+    chain: ChainKey.AKASH,
+    cmcId: 7431,
+    contractAddress: "",
+    decimals: 6,
+    hexPublicKey: "ECDSA",
     isDefault: false,
     isLocally: true,
-    isNative: false,
+    isNative: true,
     logo: "",
-    ticker: "ETHFI",
+    ticker: TickerKey.AKT,
   },
   {
     chain: ChainKey.AVALANCHE,
@@ -450,7 +461,7 @@ export const defTokens: TokenProps[] = [
     cmcId: 1027,
     contractAddress: "",
     decimals: 18,
-    hexPublicKey: "EDDSA",
+    hexPublicKey: "ECDSA",
     isDefault: false,
     isLocally: true,
     isNative: true,
@@ -671,7 +682,7 @@ export const defTokens: TokenProps[] = [
     isLocally: true,
     isNative: true,
     logo: "",
-    ticker: TickerKey.MATIC,
+    ticker: TickerKey.POL,
   },
   {
     chain: ChainKey.SOLANA,
@@ -938,6 +949,18 @@ export const defTokens: TokenProps[] = [
     ticker: "LDO",
   },
   {
+    chain: ChainKey.ARBITRUM,
+    cmcId: 29814,
+    contractAddress: "0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27",
+    decimals: 18,
+    hexPublicKey: "EDDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: false,
+    logo: "",
+    ticker: "ETHFI",
+  },
+  {
     chain: ChainKey.AVALANCHE,
     cmcId: 3408,
     contractAddress: "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e",
@@ -1035,15 +1058,15 @@ export const defTokens: TokenProps[] = [
   },
   {
     chain: ChainKey.BASE,
-    cmcId: 32343,
-    contractAddress: "0x6b9bb36519538e0C073894E964E90172E1c0B41F",
-    decimals: 18,
-    hexPublicKey: "EDDSA",
+    cmcId: 32994,
+    contractAddress: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+    decimals: 8,
+    hexPublicKey: "ECDSA",
     isDefault: false,
     isLocally: true,
     isNative: false,
     logo: "",
-    ticker: TickerKey.WEWE,
+    ticker: "CBBTC",
   },
   {
     chain: ChainKey.BASE,
@@ -1069,6 +1092,7 @@ export const defTokens: TokenProps[] = [
     logo: "",
     ticker: "DAI",
   },
+
   {
     chain: ChainKey.BASE,
     cmcId: 29520,
@@ -1969,9 +1993,21 @@ export const defTokens: TokenProps[] = [
     logo: "",
     ticker: TickerKey.USDT,
   },
+  {
+    chain: ChainKey.ZCASH,
+    cmcId: 1437,
+    contractAddress: "",
+    decimals: 8,
+    hexPublicKey: "ECDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.ZEC,
+  },
 ];
 
-export const defNFTs: NFTRef = {
+export const defNFTs: Record<CollectionKey, Record<string, string>> = {
   [CollectionKey.THORGUARD]: {
     0: "https://i.seadn.io/",
     1: "gae/HBCj24TeVQQis7bnClFhqdpOLWzRWEK0uLOUzl0dB46WzuTd7qIhWYtm3DWKU2EofbVp2eyOGvwmwWNwPUr8TpNDto4TOWrJYZjATg",

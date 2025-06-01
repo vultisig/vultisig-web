@@ -5,7 +5,6 @@ import { CodeSandboxOutlined } from "@ant-design/icons";
 
 import { PositionProps } from "utils/interfaces";
 import { useBaseContext } from "context";
-import { TickerKey } from "utils/constants";
 import constantKeys from "i18n/constant-keys";
 
 import { Check, Hyperlink } from "icons";
@@ -42,9 +41,7 @@ const Component: FC<ComponentProps> = ({ data, text, title }) => {
                       <span className="name">{item.base.chain}</span>
 
                       <span className="text">
-                        {item.base.tiker === TickerKey.WEWE
-                          ? `${item.base.tokenAmount}% ${TickerKey.WEWE}/${TickerKey.USDC}`
-                          : `${item.base.tokenAmount} ${item.base.tiker}`}
+                        {`${item.base.tokenAmount} ${item.base.tiker}`}
                       </span>
                     </div>
                   )}

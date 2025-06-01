@@ -18,6 +18,7 @@ import i18n from "i18n/config";
 import api from "utils/api";
 
 import Preloader from "components/preloader";
+import { SeasonInfo } from "utils/interfaces";
 
 interface BaseContext {
   changeCurrency: (currency: Currency) => void;
@@ -27,6 +28,8 @@ interface BaseContext {
   baseValue: number;
   currency: Currency;
   language: Language;
+  seasonInfo: SeasonInfo[];
+  milestonesSteps: string[];
 }
 
 interface InitialState {
@@ -34,7 +37,10 @@ interface InitialState {
   baseValue: number;
   currency: Currency;
   language: Language;
+  loaded: boolean;
   loading: boolean;
+  seasonInfo: SeasonInfo[];
+  milestonesSteps: string[];
 }
 
 const BaseContext = createContext<BaseContext | undefined>(undefined);
@@ -45,10 +51,28 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
     baseValue: 0,
     currency: getStoredCurrency(),
     language: getStoredLanguage(),
+    loaded: false,
     loading: false,
+    milestonesSteps: [
+      "/images/initiate.png",
+      "/images/keymaster.png",
+      "/images/cipher-guardian.png",
+      "/images/consensus-leader.png",
+      "/images/validator.png",
+    ],
+    seasonInfo: [],
   };
   const [state, setState] = useState(initialState);
-  const { activePage, baseValue, currency, language, loading } = state;
+  const {
+    seasonInfo,
+    activePage,
+    baseValue,
+    currency,
+    language,
+    loaded,
+    loading,
+    milestonesSteps
+  } = state;
 
   const changeCurrency = (currency: Currency): void => {
     if (!loading) {
@@ -82,9 +106,18 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
   const componentDidMount = () => {
     i18n.changeLanguage(language);
 
+    api.seasons.get().then(( data ) => {
+      setState((prevState) => ({
+        ...prevState,
+        loaded: true,
+        seasonInfo: data,
+      }));
+    });
+
     api.coin.value(825, currency).then((baseValue) => {
       setState((prevState) => ({ ...prevState, baseValue }));
     });
+
   };
 
   useEffect(componentDidMount, []);
@@ -95,13 +128,15 @@ const Component: FC<{ children: ReactNode }> = ({ children }) => {
         changeCurrency,
         changeLanguage,
         changePage,
+        seasonInfo,
         activePage,
         baseValue,
         currency,
         language,
+        milestonesSteps,
       }}
     >
-      {children}
+      {loaded && children}
       <Preloader visible={loading} />
     </BaseContext.Provider>
   );

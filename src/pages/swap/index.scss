@@ -1,63 +1,7 @@
 @use "~variables" as *;
 
-.leaderboard-page {
+.swap-page {
   max-width: rem(992);
-
-  .warning {
-    align-items: center;
-    background-color: rgba($color: $red-dark, $alpha: 0.3);
-    border: solid rem(1) $red-base;
-    border-radius: rem(8);
-    display: flex;
-    font-size: rem(16);
-    font-weight: 500;
-    gap: rem(16);
-    justify-content: space-between;
-    line-height: rem(24);
-    margin-bottom: rem(32);
-    padding: rem(16);
-    text-align: center;
-
-    span {
-      flex-shrink: 48;
-    }
-
-    svg {
-      height: rem(24);
-      fill: $red-base;
-    }
-  }
-
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: rem(16);
-    margin-bottom: rem(16);
-
-    .label {
-      color: $opacity-50;
-      display: block;
-      font-size: rem(14);
-      font-weight: 500;
-      line-height: rem(22);
-    }
-
-    .value {
-      display: block;
-      font-family: $secondary-font;
-      font-size: rem(20);
-      font-weight: 700;
-      line-height: rem(30);
-      margin-top: rem(4);
-    }
-
-    .item {
-      background-color: $opacity-03;
-      border-radius: rem(8);
-      padding: rem(16) rem(24);
-      width: 100%;
-    }
-  }
 
   .breadcrumb {
     border-bottom: solid rem(1) $blue-light;
@@ -106,6 +50,7 @@
         font-size: rem(16);
         font-weight: 700;
         line-height: rem(24);
+        text-align: right;
       }
     }
 
@@ -132,6 +77,133 @@
 
     .vault-dropdown {
       width: 100%;
+    }
+  }
+
+  .winners {
+    display: flex;
+    flex-direction: column;
+    gap: rem(16);
+
+    .point {
+      position: relative;
+      width: 100%;
+
+      .avatar {
+        background-color: $cyan-base;
+        border-radius: 50%;
+        display: block;
+        height: rem(48);
+        margin: 0 auto rem(8);
+        width: rem(48);
+      }
+
+      .rank {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(24);
+        text-align: center;
+      }
+
+      .name {
+        color: $gray-1;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        margin: 0 auto;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .value {
+        color: $cyan-base;
+        display: block;
+        font-size: rem(16);
+        font-weight: 700;
+        line-height: rem(24);
+        text-align: center;
+      }
+    }
+
+    .balance {
+      .date {
+        color: rgba($color: $gray-1, $alpha: 0.5);
+        display: block;
+        font-size: rem(14);
+        font-weight: 600;
+        line-height: rem(22);
+        text-align: center;
+      }
+
+      .price {
+        color: $gray-5;
+        display: block;
+        font-family: $secondary-font;
+        font-size: rem(20);
+        font-weight: 700;
+        line-height: rem(30);
+        margin-top: rem(4);
+        text-align: center;
+      }
+    }
+
+    .icon {
+      margin: 0 auto;
+      position: relative;
+      width: rem(94);
+    }
+
+    .item {
+      align-items: center;
+      background-color: $blue-base;
+      border-radius: rem(24);
+      display: flex;
+      flex-direction: column;
+      gap: rem(16);
+      justify-content: space-between;
+      padding: rem(16) rem(24);
+      position: relative;
+      width: 100%;
+
+      &.first {
+        background-image: linear-gradient(
+          72deg,
+          rgba(255, 199, 110, 0.2) 10%,
+          rgba(54, 229, 198, 0.2) 100%,
+          rgba(240, 223, 128, 0) 170%
+        );
+      }
+
+      &.second {
+        background-image: linear-gradient(
+          90deg,
+          rgba(168, 160, 214, 0.1) 0%,
+          rgba(193, 201, 210, 0) 100%
+        );
+      }
+
+      &.third {
+        background-image: linear-gradient(
+          90deg,
+          rgba(231, 96, 55, 0.1) 0%,
+          rgba(195, 161, 128, 0) 100%
+        );
+      }
+    }
+
+    + .board {
+      margin-top: rem(16);
     }
   }
 
@@ -178,7 +250,12 @@
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 50%;
+        width: 100%;
+      }
+
+      .title {
+        display: flex;
+        flex-direction: column;
       }
 
       .value {
@@ -351,7 +428,55 @@
 }
 
 @media (min-width: rem(576)) {
-  .leaderboard-page {
+  .swap-page {
+    .winners {
+      .point {
+        padding-left: rem(64);
+
+        .avatar {
+          left: 0;
+          margin: 0;
+          position: absolute;
+          top: 0;
+        }
+
+        .name {
+          text-align: left;
+        }
+
+        .title {
+          flex-direction: row;
+          gap: rem(8);
+        }
+
+        .value {
+          text-align: left;
+        }
+      }
+
+      .balance {
+        .date {
+          text-align: left;
+        }
+
+        .price {
+          text-align: left;
+        }
+      }
+
+      .icon {
+        bottom: rem(16);
+        margin: 0;
+        position: absolute;
+        right: rem(24);
+      }
+
+      .item {
+        align-items: start;
+        gap: rem(72);
+      }
+    }
+
     .board {
       .icon {
         margin: 0;
@@ -368,17 +493,16 @@
           left: 0;
           margin: 0;
           position: absolute;
-          top: 0;
-        }
-
-        .rank {
-          float: left;
+          top: rem(-13);
         }
 
         .name {
-          float: left;
-          margin: 0 0 0 rem(8);
           text-align: left;
+        }
+
+        .title {
+          flex-direction: row;
+          gap: rem(8);
         }
 
         .value {
@@ -410,11 +534,7 @@
 }
 
 @media (min-width: rem(768)) {
-  .leaderboard-page {
-    .stats {
-      flex-wrap: nowrap;
-    }
-
+  .swap-page {
     .breadcrumb {
       flex-wrap: nowrap;
       gap: rem(32);
@@ -433,8 +553,20 @@
   }
 }
 
+@media (min-width: rem(992)) {
+  .swap-page {
+    .winners {
+      flex-direction: row;
+
+      .item {
+        width: calc(#{100%} / 3);
+      }
+    }
+  }
+}
+
 html[theme="dark"] {
-  .leaderboard-page {
+  .swap-page {
     .breadcrumb {
       border-color: $gray-11;
       .divider {
@@ -461,7 +593,7 @@ html[theme="dark"] {
 }
 
 html[theme="light"] {
-  .leaderboard-page {
+  .swap-page {
     .breadcrumb {
       border-color: $gray-3;
       .divider {

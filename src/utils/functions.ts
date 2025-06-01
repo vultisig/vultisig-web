@@ -1,5 +1,5 @@
 import { ChainKey, defTokens, Theme, TickerKey } from "utils/constants";
-import { VaultProps } from "utils/interfaces";
+import { Activities, SeasonInfo, VaultProps } from "utils/interfaces";
 
 const isArray = (arr: any): arr is any[] => {
   return Array.isArray(arr);
@@ -115,4 +115,77 @@ export const toSnakeCase = (obj: any): any => {
   }
 
   return obj;
+};
+
+export const calcReferralMultiplier = (referralCount: number) => {
+  // Convert referralCount to float for math operations
+  const rc = referralCount;
+
+  // Compute numerator and denominator
+  const numerator = Math.log(1 + rc);
+  const denominator = Math.log(1 + 500);
+
+  // Calculate multiplier
+  let multiplier = 1 + numerator / denominator;
+
+  // Apply MIN(2, multiplier)
+  if (multiplier > 2) {
+    multiplier = 2;
+  }
+
+  // Round down to 1 decimal place (floor rounding)
+  return multiplier * 10 / 10;
+};
+
+export const calcSwapMultiplier = (swapVolume: number) => {
+  // Calculate the multiplier
+  let multiplier = 1 + 0.002 * Math.sqrt(swapVolume);
+
+  // Round down to 1 decimal place (floor rounding)
+  return multiplier * 10 / 10;
+};
+
+export const getCurrentSeason = (
+  seasonInfo: SeasonInfo[]
+): SeasonInfo | undefined => {
+  const now = new Date();
+
+  return (
+    seasonInfo.find((season) => {
+      const start = new Date(season.start);
+      const end = new Date(season.end);
+
+      return now >= start && now <= end;
+    }) || undefined
+  );
+};
+
+export const getCurrentSeasonVulties = (
+  vault: VaultProps,
+  seasonInfo: SeasonInfo[]
+): number => {
+  const currentSeasonId = parseInt(getCurrentSeason(seasonInfo)?.id || "0");
+
+  return (
+    vault.seasonStats?.find(
+      (activity) => activity.seasonId == currentSeasonId
+    )?.points || 0
+  );
+};
+
+export const getActivity = (
+  vault: VaultProps,
+  seasonId: number
+): Activities => {
+  return (
+    vault.seasonStats?.find((activity) => activity.seasonId == seasonId) || {
+      seasonId: 0,
+      rank: 0,
+      points: 0,
+    }
+  );
+};
+
+export const handleSeasonPath = (path: string, id: string): string => {
+  return path.replace(":id", id);
 };
