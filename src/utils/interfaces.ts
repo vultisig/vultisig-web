@@ -128,6 +128,7 @@ export interface VaultProps {
     mayaLiquidity?: PositionProps[];
     runeProvider?: PositionProps[];
     saverPosition?: PositionProps[];
+    tcyStake?: PositionProps[];
     thorBond?: PositionProps[];
     thorLiquidity?: PositionProps[];
     updated?: boolean;
@@ -196,6 +197,9 @@ export interface VaultOutletContext {
   vaults: VaultProps[];
 }
 
+export interface MidgardPool {
+  assetPriceUSD:number;
+}
 export interface SeasonsPoints {
   points: number;
 }

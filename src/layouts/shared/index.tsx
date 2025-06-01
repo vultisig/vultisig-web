@@ -75,6 +75,7 @@ const Component: FC = () => {
             positionProvider.getMayaBond().then(updatePositions),
             positionProvider.getRuneProvider().then(updatePositions),
             positionProvider.getSaverPositions().then(updatePositions),
+            positionProvider.getTCYStake().then(updatePositions),
             positionProvider.getThorBond().then(updatePositions),
           ]).then(() => {
             vault.positions = { updated: true };

@@ -405,6 +405,9 @@ const Component: FC = () => {
             positionProvider.getSaverPositions().then((positions) => {
               updatePositions({ ...vault, positions });
             }),
+            positionProvider.getTCYStake().then((positions) => {
+              updatePositions({ ...vault, positions });
+            }),
             positionProvider.getThorBond().then((positions) => {
               updatePositions({ ...vault, positions });
             }),

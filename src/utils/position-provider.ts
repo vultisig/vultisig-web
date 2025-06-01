@@ -10,11 +10,11 @@ import api from "utils/api";
 
 export default class PositionProvider {
   private vault: VaultProps;
+  private tcyPrice?: number;
   private runePrice?: number;
 
   constructor(vault: VaultProps) {
     this.vault = vault;
-
   }
 
   private getChain = (
@@ -305,6 +305,38 @@ export default class PositionProvider {
     });
   };
 
+  public getTCYStake = (): Promise<{ tcyStake: PositionProps[] }> => {
+    return new Promise((resolve) => {
+      const address = this.vault.chains.find(
+          ({ name }) => name === ChainKey.THORCHAIN
+      )?.address;
+      const tcyStake: PositionProps[] = [];
+
+      if (address) {
+        api.activePositions
+          .getTcyStake(address)
+          .then(({ data }) => {
+            tcyStake.push({
+              base: {
+                chain: ChainKey.THORCHAIN,
+                price: (this.tcyPrice || 0) *1e-8  * data.amount,
+                tiker: TickerKey.TCY,
+                tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
+                tokenAmount: (
+                  Number(data.amount * 1e-8) || 0
+                ).toBalanceFormat(),
+              },
+            });
+          })
+          .finally(() => {
+            resolve({ tcyStake });
+          });
+      } else {
+        resolve({ tcyStake });
+      }
+    });
+  };
+
   public getPrerequisites = (): Promise<void> => {
     return new Promise((resolve) => {
       const runeCMCId = this.getCMC(ChainKey.THORCHAIN, TickerKey.RUNE);
@@ -314,6 +346,14 @@ export default class PositionProvider {
         .values([runeCMCId, usdtCMCId], Currency.USD)
         .then((data) => {
           this.runePrice = data[runeCMCId];
+        })
+        .finally(resolve);
+
+      api.coin
+        .getAssetPriceFromMidgard("THOR.TCY")
+        .then((value: number) => {
+          this.tcyPrice = value;
+          console.log("TCY Price:", value);
         })
         .finally(resolve);
     });
