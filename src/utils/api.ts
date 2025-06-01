@@ -19,6 +19,7 @@ import {
   SharedSettings,
   TokenProps,
   VaultProps,
+  MidgardPool,
   SeasonsPoints,
 } from "utils/interfaces";
 import { decodeBase58 } from "ethers";
@@ -202,6 +203,11 @@ const api = {
             resolve(result ? result / Math.pow(10, 8) : 0);
           });
       });
+    },
+    getTcyStake: async (address: string) => {
+      return await fetch.get<{ amount: number }>(
+          `${externalAPI.thorchain}tcy_staker/${address}`
+      );
     },
   },
   balance: {
@@ -609,6 +615,20 @@ const api = {
           )}`
         )
         .then(({ data }) => data);
+    },
+    getAssetPriceFromMidgard: (poolName: string): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<MidgardPool>(
+            `${externalAPI.midgardNinerealms}v2/pool/${poolName}`
+          )
+          .then(({ data }) => {
+            resolve(data ? data.assetPriceUSD : 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
     },
   },
   discovery: {
