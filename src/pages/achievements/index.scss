@@ -120,10 +120,12 @@
         .title {
           color: $opacity-50;
           font-size: rem(14);
+          font-weight: 500;
         }
         .status {
           display: flex;
           justify-content: center;
+          opacity: 0.4;
           .award {
             margin-right: rem(5) !important;
           }
@@ -143,6 +145,12 @@
         rgba(72, 121, 253, 0.8) 170%
       );
       border: rem(1) solid rgba(72, 121, 253, 0.2);
+      .status{
+        opacity: 1 !important;
+      }
+      .title{
+        color: $silver-base-1 !important;
+      }
       .icon {
         opacity: 1 !important;
       }
@@ -326,7 +334,7 @@
       flex-direction: column;
       gap: rem(20);
       margin-top: rem(28);
-      .item {
+      a {
         border: rem(1) solid $blue-normal;
         border-radius: rem(10);
         padding: rem(12);
@@ -336,9 +344,30 @@
         width: 100%;
         display: flex;
         align-items: center;
+        transition: background-color 0.3s ease;
+        .item {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          gap: rem(10);
+          align-items: center;
+        }
         .desc {
           font-size: rem(14);
           color: $opacity-50;
+        }
+        .info {
+          .title {
+            color: $gray-1;
+          }
+        }
+        &:hover{
+          background-color: $blue-dark;
+          border-color: $blue-normal;
+        }
+        &:active {
+          background-color: $blue-dark;
+          border-color: $blue-normal;
         }
       }
     }
@@ -391,7 +420,7 @@
       flex-direction: row !important;
       justify-content: space-between !important;
       .item {
-        width: 50% !important;
+        width: 50%;
       }
     }
   }

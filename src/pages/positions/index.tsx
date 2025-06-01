@@ -21,7 +21,6 @@ const Component: FC = () => {
     mayaLiquidity,
     runeProvider,
     saverPosition,
-    tgtStake,
     thorBond,
     thorLiquidity,
   } = vault.positions;
@@ -98,16 +97,6 @@ const Component: FC = () => {
         />
 
         <PositionItem data={mayaBond} text="No Bond Found" title="Bond" />
-      </div>
-
-      <div className="section">
-        <h2 className="heading">TGT</h2>
-
-        <PositionItem
-          data={tgtStake}
-          text="ETH/ARB address not found in your vault"
-          title="Stake"
-        />
       </div>
     </div>
   );

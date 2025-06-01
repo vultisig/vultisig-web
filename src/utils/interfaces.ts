@@ -1,9 +1,4 @@
-import {
-  ChainKey,
-  CollectionKey,
-  LayoutKey,
-  Theme,
-} from "utils/constants";
+import { ChainKey, CollectionKey, LayoutKey, Theme } from "utils/constants";
 
 export interface AddressesProps {
   [publicKey: string]: { [chain: string]: string };
@@ -133,7 +128,6 @@ export interface VaultProps {
     mayaLiquidity?: PositionProps[];
     runeProvider?: PositionProps[];
     saverPosition?: PositionProps[];
-    tgtStake?: PositionProps[];
     thorBond?: PositionProps[];
     thorLiquidity?: PositionProps[];
     updated?: boolean;
@@ -142,6 +136,7 @@ export interface VaultProps {
   publicKeyEcdsa: string;
   publicKeyEddsa: string;
   rank: number;
+  swapVolumeRank: number;
   registeredAt: number;
   referralCode: string;
   referralCount: number;
@@ -150,12 +145,25 @@ export interface VaultProps {
   theme: Theme;
   totalPoints: number;
   uid: string;
+  seasonStats?: Activities[];
 }
 
-export interface AchievementsConfig {
-  start: string; 
+export interface Activities {
+  seasonId: number;
+  rank: number;
+  points: number;
+}
+
+export interface Milestones {
+  minimum: number;
+  prize: number;
+}
+
+export interface SeasonInfo {
+  id: string;
+  start: string;
   end: string;
-  milestones: number[];
+  milestones: Milestones[];
   nfts: NFT[];
   tokens: Token[];
 }
@@ -170,7 +178,6 @@ interface NFT {
 interface Token {
   multiplier: number;
   name: string;
-  minAmount: number;
   chain: string;
   contractAddress: string;
 }
@@ -187,4 +194,8 @@ export interface VaultOutletContext {
   tokens: TokenProps[];
   vault: VaultProps;
   vaults: VaultProps[];
+}
+
+export interface SeasonsPoints {
+  points: number;
 }

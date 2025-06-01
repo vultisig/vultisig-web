@@ -2,7 +2,7 @@ import { Currency, currencySymbol } from "utils/constants";
 
 declare global {
   interface Number {
-    toBalanceFormat(): string;
+    toBalanceFormat(digits?:number): string;
     toHexFormat(zeroPad: number): string;
     toNumberFormat(): string;
     toValueFormat(currency: Currency): string;
@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-Number.prototype.toBalanceFormat = function () {
+Number.prototype.toBalanceFormat = function (digits=6) {
   const million = 1000 * 1000;
   const billion = million * 1000;
   const tillion = billion * 1000;
@@ -35,7 +35,7 @@ Number.prototype.toBalanceFormat = function () {
     const length = this.toString().split(".")[1]?.length;
 
     decimals =
-      value >= 1000 ? (length > 3 ? 3 : length) : length > 6 ? 6 : length;
+      value >= 1000 ? (length > 3 ? 3 : length) : length > digits ? digits : length;
   }
 
   const formattedValue = value.toLocaleString("en-US", {

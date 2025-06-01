@@ -35,6 +35,7 @@ export default keyMirror({
   CONFIRM_REMOVE_CHECKBOX: true,
   COUNTED: true,
   CURRENCY: true,
+  CURRENT_SEASON: true,
   // D
   DAILY_UPDATE_POINTS: true,
   DOWNLOAD_APP: true,
@@ -101,6 +102,7 @@ export default keyMirror({
   // O
   OTHER: true,
   // P
+  PAST_SEASONS: true,
   POSITIONS: true,
   POSITIONS_BALANCE: true,
   POSITIONS_TITLE: true,
@@ -164,7 +166,6 @@ export default keyMirror({
   SWAP_MULTIPLIER: true,
   SWAP_VOLUME: true,
   //T
-  TGT: true,
   TITLE_ONBOARDING: true,
   TO_NEXT_MILESTONE: true,
   TOTAL_AIRDROP_VAULT_VALUE: true,

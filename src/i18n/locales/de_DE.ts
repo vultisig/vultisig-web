@@ -43,9 +43,10 @@ export default {
   [translation.CONFIRM_REMOVE_CHECKBOX]:
     "Ich bestätige, dass ich meinen gesamten Fortschritt verlieren werde",
   [translation.CURRENCY]: "Währung",
+  [translation.CURRENT_SEASON]: "Aktuelle Saison",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Punkte und Bilanzen werden immer am Ende des Tages aktualisiert",
+    "Vulties und Bilanzen werden immer am Ende des Tages aktualisiert",
   [translation.DOWNLOAD_APP]:
     "Haben Sie noch kein Vault? Laden Sie jetzt Vultisig herunter",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
@@ -111,12 +112,13 @@ export default {
   // O
   [translation.OTHER]: "Andere",
   // P
+  [translation.PAST_SEASONS]: "Vergangene Saisons",
   [translation.POWERED_BY]: "Powered by",
   [translation.POSITIONS_TITLE]: "Positionen",
   [translation.PROGRESS_TO_NEXT_MILESTONE]:
     "Fortschritt zum nächsten Meilenstein",
   [translation.PROJECTED_$VULT_AT_END_OF_SEASON]:
-    "Prognostiziertes $VULT am Ende der Saison",
+    "Prognostizierter $VULT am Ende der Saison",
   [translation.PRIVACY]:
     "Lesen Sie die Gründerversprechen zur Privatsphäre hier.",
   // Q
@@ -185,14 +187,13 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Tausche mehr, um mehr VULTIES zu verdienen",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "Wie man am <span>$5M</span> VULTISIG AIRDROP teilnimmt",
   [translation.TO_NEXT_MILESTONE]: "bis zum nächsten Meilenstein",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Airdrop-Vaults",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Tresore in dieser Saison",
   [translation.TOTAL_BALANCE]: "Gesamtbilanz",
   [translation.TOTAL_REGISTERED_WALLETS]:
-    "Gesamtzahl der registrierten Wallets",
+    "Gesamtzahl registrierter Wallets",
   [translation.TOTAL_VULTIES]: "Gesamte Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "GELD AUF VAULTS ÜBERWEISEN",

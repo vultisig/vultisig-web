@@ -34,6 +34,7 @@ export enum ChainKey {
   TRON = "Tron",
   XRP = "XRP",
   ZKSYNC = "Zksync",
+  ZCASH = "Zcash",
 }
 
 export enum CollectionKey {
@@ -110,6 +111,7 @@ export enum TickerKey {
   VTHOR = "vTHOR",
   WIF = "WIF",
   XRP = "XRP",
+  ZEC = "ZEC",
 }
 
 export enum Currency {
@@ -170,7 +172,8 @@ export const errorKey = keyMirror({
 
 export const balanceAPI: Record<ChainKey, string> = {
   [ChainKey.ARBITRUM]: "https://api.vultisig.com/arb/",
-  [ChainKey.AKASH]: "https://akash-rest.publicnode.com/cosmos/bank/v1beta1/balances",
+  [ChainKey.AKASH]:
+    "https://akash-rest.publicnode.com/cosmos/bank/v1beta1/balances",
   [ChainKey.AVALANCHE]: "https://api.vultisig.com/avax/",
   [ChainKey.BASE]: "https://api.vultisig.com/base/",
   [ChainKey.BITCOIN]:
@@ -214,6 +217,8 @@ export const balanceAPI: Record<ChainKey, string> = {
   [ChainKey.TRON]: "https://tron-rpc.publicnode.com/wallet/getaccount",
   [ChainKey.XRP]: "https://xrplcluster.com",
   [ChainKey.ZKSYNC]: "https://api.vultisig.com/zksync/",
+  [ChainKey.ZCASH]:
+    "https://api.vultisig.com/blockchair/zcash/dashboards/address",
 };
 
 export const balanceDenom: Record<ChainKey, string> = {
@@ -248,6 +253,7 @@ export const balanceDenom: Record<ChainKey, string> = {
   [ChainKey.TRON]: "",
   [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
+  [ChainKey.ZCASH]: "",
 };
 
 export const chooseToken: Record<ChainKey, boolean> = {
@@ -282,6 +288,7 @@ export const chooseToken: Record<ChainKey, boolean> = {
   [ChainKey.TRON]: true,
   [ChainKey.XRP]: false,
   [ChainKey.ZKSYNC]: false,
+  [ChainKey.ZCASH]: false,
 };
 
 export const exploreNFT: Record<ChainKey, string> = {
@@ -316,6 +323,7 @@ export const exploreNFT: Record<ChainKey, string> = {
   [ChainKey.TRON]: "",
   [ChainKey.XRP]: "",
   [ChainKey.ZKSYNC]: "",
+  [ChainKey.ZCASH]: "",
 };
 
 export const exploreNFTAsset: Record<CollectionKey, string> = {
@@ -355,6 +363,7 @@ export const exploreToken: Record<ChainKey, string> = {
   [ChainKey.TRON]: "https://tronscan.org/#/address/",
   [ChainKey.XRP]: "https://xrpscan.com/account/",
   [ChainKey.ZKSYNC]: "https://explorer.zksync.io/address/",
+  [ChainKey.ZCASH]: "https://blockchair.com/zcash/address/",
 };
 
 export const currencyName: Record<Currency, string> = {
@@ -1983,6 +1992,18 @@ export const defTokens: TokenProps[] = [
     isNative: false,
     logo: "",
     ticker: TickerKey.USDT,
+  },
+  {
+    chain: ChainKey.ZCASH,
+    cmcId: 1437,
+    contractAddress: "",
+    decimals: 8,
+    hexPublicKey: "ECDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: true,
+    logo: "",
+    ticker: TickerKey.ZEC,
   },
 ];
 

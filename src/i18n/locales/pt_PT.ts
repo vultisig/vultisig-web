@@ -43,9 +43,10 @@ export default {
     "Confirmo que vou perder todo o meu progresso",
   [translation.COUNTED]: "contado",
   [translation.CURRENCY]: "Moeda",
+  [translation.CURRENT_SEASON]: "Temporada atual",
   // D
   [translation.DAILY_UPDATE_POINTS]:
-    "Os pontos e saldos são sempre atualizados no final do dia",
+    "Os Vulties e saldos são sempre atualizados no final do dia",
   [translation.DOWNLOAD_APP]: "Ainda não tem um cofre? Baixe o Vultisig agora",
   [translation.DOWNLOAD_APP_DESC_ONBOARDING]:
     "Comece por baixar a aplicação Vultisig da App Store ou Google Play para aceder à plataforma e ao airdrop.",
@@ -110,6 +111,7 @@ export default {
   // O
   [translation.OTHER]: "Outro",
   // P
+  [translation.PAST_SEASONS]: "Temporadas passadas",
   [translation.POWERED_BY]: "Fornecido por",
   [translation.POSITIONS_TITLE]: "Posições",
   [translation.PROGRESS_TO_NEXT_MILESTONE]: "Progresso para o próximo marco",
@@ -180,13 +182,12 @@ export default {
   [translation.SWAP_MORE_TO_EARN_MORE_VULTIES]:
     "Troque mais para ganhar mais VULTIES",
   // T
-  [translation.TGT]: "TGT",
   [translation.TITLE_ONBOARDING]:
     "como participar no AIRDROP DE <span>$5M</span> DA VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "para o próximo marco",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres do airdrop",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres na temporada",
   [translation.TOTAL_BALANCE]: "Saldo total",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Total de wallets registadas",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Total de carteiras registadas",
   [translation.TOTAL_VULTIES]: "Vulties totais",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "TRANSFERIR FUNDOS PARA COFRES",

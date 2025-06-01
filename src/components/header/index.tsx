@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -19,6 +19,8 @@ import {
   getAssetsBalance,
   getNFTsBalance,
   getPositionsBalance,
+  getCurrentSeason,
+  handleSeasonPath,
 } from "utils/functions";
 import { VaultProps } from "utils/interfaces";
 import { getStoredVaults } from "utils/storage";
@@ -45,7 +47,6 @@ import {
   Vultisig,
 } from "icons";
 
-
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
   layout: LayoutKey;
@@ -62,10 +63,10 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const initialState: InitialState = { loading: false, visible: false };
   const [state, setState] = useState(initialState);
   const { loading, visible } = state;
-  const { activePage, baseValue, currency, achievementsConfig } =
-    useBaseContext();
+  const { activePage, baseValue, currency, seasonInfo } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
   const { pathname, hash } = useLocation();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const goBack = useGoBack();
   const vaults = getStoredVaults();
@@ -198,12 +199,12 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     case PageKey.AIRDROP:
     case PageKey.SHARED_AIRDROP:
     case PageKey.VAULT_AIRDROP:
-      selectedKey = "2-1";
+      selectedKey = getCurrentSeason(seasonInfo)?.id === id ? "8-1" : `2-${id}`;
       break;
     case PageKey.SWAP:
     case PageKey.SHARED_SWAP:
     case PageKey.VAULT_SWAP:
-      selectedKey = "2-2";
+      selectedKey = "7";
       break;
     case PageKey.ACHIEVEMENTES:
       selectedKey = "3";
@@ -220,7 +221,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       break;
   }
 
-  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
+  const isDesktop = useMediaQuery({ query: "(min-width: 1170px)" });
   const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
@@ -310,24 +311,28 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       type: "group",
       label: t(constantKeys.OTHER),
       children: [
-        {
-          key: "6-1",
-          label: (
-            <Link to={`#${constantModals.REFERRAL_CODE}`} state={true}>
-              {t(constantKeys.REFERRAL_CODE)}
-            </Link>
-          ),
-          icon: <Handshake />,
-        },
-        {
-          key: "6-2",
-          label: (
-            <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
-              {t(constantKeys.MANAGE_AIRDROP)}
-            </Link>
-          ),
-          icon: <RadioWave />,
-        },
+        ...(layout === LayoutKey.VAULT
+          ? [
+              {
+                key: "6-1",
+                label: (
+                  <Link to={`#${constantModals.REFERRAL_CODE}`} state={true}>
+                    {t(constantKeys.REFERRAL_CODE)}
+                  </Link>
+                ),
+                icon: <Handshake />,
+              },
+              {
+                key: "6-2",
+                label: (
+                  <Link to={`#${constantModals.MANAGE_AIRDROP}`} state={true}>
+                    {t(constantKeys.MANAGE_AIRDROP)}
+                  </Link>
+                ),
+                icon: <RadioWave />,
+              },
+            ]
+          : []),
         {
           key: "6-3",
           label: (
@@ -443,29 +448,38 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   const navbarMenu: MenuProps["items"] = [
     ...(vaults.length ? _firstItems : []),
     {
-      key: "2",
-      label: t(constantKeys.LEADERBOARD),
+      key: "8",
+      label: t(constantKeys.CURRENT_SEASON),
       icon: <ArrowRight />,
       type: "submenu",
       children: [
         {
-          key: "2-1",
+          key: `8-1`,
           label: (
             <Link
               to={
                 layout === LayoutKey.SHARED
-                  ? handleSharePath(constantPaths.shared.aridrop)
+                  ? handleSeasonPath(
+                      handleSharePath(constantPaths.shared.airdrop),
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
                   : vaults.length
-                  ? constantPaths.vault.aridrop
-                  : constantPaths.default.aridrop
+                  ? handleSeasonPath(
+                      constantPaths.vault.airdrop,
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
+                  : handleSeasonPath(
+                      constantPaths.default.airdrop,
+                      `${getCurrentSeason(seasonInfo)?.id}`
+                    )
               }
             >
-              {t(constantKeys.AIRDROP)}
+              {t(constantKeys.AIRDROP_LEADERBOARD)}
             </Link>
           ),
         },
         {
-          key: "2-2",
+          key: "7",
           label: (
             <Link
               to={
@@ -480,20 +494,48 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             </Link>
           ),
         },
+
+        ...(vaults.length
+          ? [
+              {
+                key: "3",
+                label: (
+                  <Link to={constantPaths.vault.achievements}>
+                    {t(constantKeys.ACHIEVEMENTS)}
+                  </Link>
+                ),
+              },
+            ]
+          : []),
       ],
     },
-    ...(vaults.length
-      ? [
-          {
-            key: "3",
-            label: (
-              <Link to={constantPaths.vault.achievements}>
-                {t(constantKeys.ACHIEVEMENTS)}
-              </Link>
-            ),
-          },
-        ]
-      : []),
+    {
+      key: "2",
+      label: t(constantKeys.PAST_SEASONS),
+      icon: <ArrowRight />,
+      type: "submenu",
+      children: seasonInfo
+        .filter((season) => new Date(season.end) < new Date())
+        .map((_season, index) => ({
+          key: `2-${index}`,
+          label: (
+            <Link
+              to={
+                layout === LayoutKey.SHARED
+                  ? handleSeasonPath(
+                      handleSharePath(constantPaths.shared.airdrop),
+                      `${index}`
+                    )
+                  : vaults.length
+                  ? handleSeasonPath(constantPaths.vault.airdrop, `${index}`)
+                  : handleSeasonPath(constantPaths.default.airdrop, `${index}`)
+              }
+            >
+              {`Season ${index}`}
+            </Link>
+          ),
+        })),
+    },
 
     ...(!vaults.length ? _lastItems : []),
   ];
@@ -529,7 +571,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               ? handleSharePath(constantPaths.shared.chains)
               : layout === LayoutKey.VAULT
               ? constantPaths.vault.chains
-              : constantPaths.default.aridrop
+              : constantPaths.default.airdrop
           }
           className="logo"
         >
@@ -568,9 +610,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               constantKeys.SEASON_END_TIME
             )}:`}</span>
             <span className="value">
-              {getRemainingTimeString(
-                achievementsConfig?.end?.toString() || ""
-              )}
+              {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
             </span>
           </div>
         )}
@@ -587,7 +627,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
                   ? handleSharePath(constantPaths.shared.chains)
                   : layout === LayoutKey.VAULT
                   ? constantPaths.vault.chains
-                  : constantPaths.default.aridrop
+                  : constantPaths.default.airdrop
               }
               className="logo"
             >
@@ -622,9 +662,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               constantKeys.SEASON_END_TIME
             )}:`}</span>
             <span className="value">
-              {getRemainingTimeString(
-                achievementsConfig?.end?.toString() || ""
-              )}
+              {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
             </span>
           </div>
           {vault && (

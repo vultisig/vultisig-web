@@ -50,6 +50,7 @@
         font-size: rem(16);
         font-weight: 700;
         line-height: rem(24);
+        text-align: right;
       }
     }
 
@@ -492,7 +493,7 @@
           left: 0;
           margin: 0;
           position: absolute;
-          top: 0;
+          top: rem(-13);
         }
 
         .name {

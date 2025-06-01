@@ -11,7 +11,7 @@ import {
   nftCollection,
 } from "utils/constants";
 import {
-  AchievementsConfig,
+  SeasonInfo,
   CoinParams,
   CoinProps,
   NFTProps,
@@ -19,6 +19,7 @@ import {
   SharedSettings,
   TokenProps,
   VaultProps,
+  SeasonsPoints,
 } from "utils/interfaces";
 import { decodeBase58 } from "ethers";
 
@@ -73,6 +74,7 @@ namespace Leaderboard {
   export interface Params {
     from: number;
     limit: number;
+    season?: string;
   }
 
   export interface Props {
@@ -134,12 +136,23 @@ const api = {
     exit: async (params: VaultProps) => {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
-  },
-  achievements: {
-    getConfig: async () => {
-      return await fetch.get<AchievementsConfig>(`/season/info`);
+    overhaul: async (id:string) => {
+      return await fetch.get<SeasonsPoints>(
+        `seasons/points/${id}`
+      );
     },
   },
+  seasons: {
+    get: async () => {
+      const response = await fetch.get<SeasonInfo[]>(`/seasons/info`);
+      const resultWithIds: SeasonInfo[] = response.data.map((item, index) => ({
+        ...item,
+        id: index.toString(),
+      }));
+      return resultWithIds;
+    },
+  },
+
   activePositions: {
     nodeInfo: (address: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -176,11 +189,6 @@ const api = {
         }>(`${externalAPI.midgardNinerealms}v2/saver/${addresses}`)
         .then(({ data }) => data.pools || [])
         .catch(() => []);
-    },
-    getTGTstake: async (address: string) => {
-      return await fetch.get<{ stakedAmount: number; reward: number }>(
-        `${externalAPI.thorwallet}stake/${address}`
-      );
     },
     getRuneProvider: (address: string): Promise<number> => {
       return new Promise((resolve) => {
@@ -877,9 +885,7 @@ const api = {
     );
   },
   leaderboard: async (params: Leaderboard.Params) => {
-    return await fetch.get<Leaderboard.Props>(
-      `leaderboard/vaults?from=${params.from}&limit=${params.limit}`
-    );
+    return await fetch.get<Leaderboard.Props>("leaderboard/vaults", { params });
   },
   oneInch: async (id: number) => {
     return await fetch
