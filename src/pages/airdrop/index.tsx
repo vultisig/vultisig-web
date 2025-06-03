@@ -286,15 +286,15 @@ const Component: FC = () => {
             currentActivity &&
             currentActivity.rank > data.length && (
               <div className="item active">
+                <img
+                  src={
+                    layout === LayoutKey.VAULT && vault.avatarUrl
+                      ? vault.avatarUrl
+                      : "/avatar/1.png"
+                  }
+                  className="avatar"
+                />
                 <div className="point">
-                  <img
-                    src={
-                      layout === LayoutKey.VAULT && vault.avatarUrl
-                        ? vault.avatarUrl
-                        : "/avatar/1.png"
-                    }
-                    className="avatar"
-                  />
                   <span className="rank">{`#${currentActivity.rank.toNumberFormat()}`}</span>
                   <span className="name">{`${
                     vault.showNameInLeaderboard

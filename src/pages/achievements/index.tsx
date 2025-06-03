@@ -124,9 +124,11 @@ const Component: FC = () => {
           const seasonAirdrop = totalAirdropAmount / 4;
           const adjustedValueInVault = vault.totalPoints;
           const averageVULTperUserPerSeason =
-            seasonAirdrop *
-            ((adjustedValueInVault * swapMultiplier * referralMultiplier) /
-              data.points);
+            data.points == 0
+              ? 0
+              : seasonAirdrop *
+                ((adjustedValueInVault * swapMultiplier * referralMultiplier) /
+                  data.points);
 
           setState((prevState) => ({
             ...prevState,
