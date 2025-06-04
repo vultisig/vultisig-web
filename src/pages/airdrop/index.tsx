@@ -204,9 +204,9 @@ const Component: FC = () => {
               const vaultNumber =
                 layout !== LayoutKey.DEFAULT && rank === currentActivity?.rank
                   ? lastCycleBalance || vaultBalance
-                  : getCurrentSeason(seasonInfo)?.id === id
+                  : getCurrentSeason(seasonInfo)?.id == id
                   ? (balance + lpValue + nftValue) * baseValue
-                  : balance + lpValue + nftValue;
+                  : balance;
 
               switch (rank) {
                 case 1:
@@ -251,7 +251,7 @@ const Component: FC = () => {
                       {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                     </span> */}
                     <span className="price">
-                      {getCurrentSeason(seasonInfo)?.id === id
+                      {getCurrentSeason(seasonInfo)?.id == id
                         ? vaultNumber.toValueFormat(currency)
                         : `${vaultNumber.toNumberFormat()} VULT`}
                     </span>
@@ -315,7 +315,7 @@ const Component: FC = () => {
                     {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
                   <span className="price">{
-                    getCurrentSeason(seasonInfo)?.id !== id ?
+                    getCurrentSeason(seasonInfo)?.id != id ?
                     `${(lastCycleBalance || vaultBalance).toNumberFormat()} VULT`:
                     (lastCycleBalance || vaultBalance).toValueFormat(currency)}</span>
                 </div>
