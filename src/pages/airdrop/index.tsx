@@ -204,7 +204,7 @@ const Component: FC = () => {
               const vaultNumber =
                 layout !== LayoutKey.DEFAULT && rank === currentActivity?.rank
                   ? lastCycleBalance || vaultBalance
-                  : getCurrentSeason(seasonInfo)?.id == id
+                  : getCurrentSeason(seasonInfo)?.id === id
                   ? (balance + lpValue + nftValue) * baseValue
                   : balance + lpValue + nftValue;
 
