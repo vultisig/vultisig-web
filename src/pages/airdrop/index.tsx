@@ -157,7 +157,7 @@ const Component: FC = () => {
             <span className="vault-dropdown">{vault.alias}</span>
           )}
 
-          {currentActivity ? (
+          {currentActivity && getCurrentSeason(seasonInfo)?.id == id  ? (
             <>
               <div className="result">
                 <div className="item point">
@@ -183,7 +183,7 @@ const Component: FC = () => {
                 </div>
               </div>
             </>
-          ) : null}
+          ) : (      <div className="result" style={{ visibility: "hidden" }} />)}
         </div>
       )}
 
