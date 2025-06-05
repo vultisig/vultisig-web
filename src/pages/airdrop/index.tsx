@@ -316,7 +316,7 @@ const Component: FC = () => {
                   </span>
                   <span className="price">{
                     getCurrentSeason(seasonInfo)?.id != id ?
-                    `${(lastCycleBalance || vaultBalance).toNumberFormat()} VULT`:
+                    `${Number(currentActivity.points).toFixed(2)} VULT`:
                     (lastCycleBalance || vaultBalance).toValueFormat(currency)}</span>
                 </div>
               </div>
