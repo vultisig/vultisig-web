@@ -342,20 +342,14 @@ export default class PositionProvider {
       const runeCMCId = this.getCMC(ChainKey.THORCHAIN, TickerKey.RUNE);
       const usdtCMCId = this.getCMC(ChainKey.ETHEREUM, TickerKey.USDT);
 
-      api.coin
-        .values([runeCMCId, usdtCMCId], Currency.USD)
-        .then((data) => {
+      Promise.all([
+        api.coin.values([runeCMCId, usdtCMCId], Currency.USD).then((data) => {
           this.runePrice = data[runeCMCId];
-        })
-        .finally(resolve);
-
-      api.coin
-        .getAssetPriceFromMidgard("THOR.TCY")
-        .then((value: number) => {
+        }),
+        api.coin.getAssetPriceFromMidgard("THOR.TCY").then((value: number) => {
           this.tcyPrice = value;
-          console.log("TCY Price:", value);
-        })
-        .finally(resolve);
+        }),
+      ]).finally(resolve);
     });
   };
 }
