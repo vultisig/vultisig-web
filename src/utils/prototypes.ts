@@ -5,6 +5,7 @@ declare global {
     toBalanceFormat(digits?:number): string;
     toHexFormat(zeroPad: number): string;
     toNumberFormat(): string;
+    toFixedNumberFormat(digits?: number): string;
     toValueFormat(currency: Currency): string;
   }
 
@@ -63,6 +64,13 @@ Number.prototype.toNumberFormat = function () {
   });
 
   return formattedValue;
+};
+
+Number.prototype.toFixedNumberFormat = function(digits = 2) {
+  return Number(this).toLocaleString("en-US", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
 };
 
 Number.prototype.toValueFormat = function (currency: Currency) {

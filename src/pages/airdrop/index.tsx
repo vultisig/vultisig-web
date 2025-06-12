@@ -157,7 +157,7 @@ const Component: FC = () => {
             <span className="vault-dropdown">{vault.alias}</span>
           )}
 
-          {currentActivity ? (
+          {currentActivity && getCurrentSeason(seasonInfo)?.id == id  ? (
             <>
               <div className="result">
                 <div className="item point">
@@ -183,7 +183,7 @@ const Component: FC = () => {
                 </div>
               </div>
             </>
-          ) : null}
+          ) : (      <div className="result" style={{ visibility: "hidden" }} />)}
         </div>
       )}
 
@@ -201,9 +201,12 @@ const Component: FC = () => {
             }) => {
               let medal: string;
 
-              const vaultNumber = layout !== LayoutKey.DEFAULT && rank === currentActivity?.rank
+              const vaultNumber =
+                layout !== LayoutKey.DEFAULT && rank === currentActivity?.rank
                   ? lastCycleBalance || vaultBalance
-                  : (balance + lpValue + nftValue) * baseValue;
+                  : getCurrentSeason(seasonInfo)?.id == id
+                  ? (balance + lpValue + nftValue) * baseValue
+                  : balance;
 
               switch (rank) {
                 case 1:
@@ -247,8 +250,11 @@ const Component: FC = () => {
                     {/* <span className="date">
                       {dayjs(registeredAt * 1000).format("DD MMM, YYYY")}
                     </span> */}
-                    <span className="price">{getCurrentSeason(seasonInfo)?.id == id ?
-                        vaultNumber.toValueFormat(currency) : `${vaultNumber.toNumberFormat()} VULT`}</span>
+                    <span className="price">
+                      {getCurrentSeason(seasonInfo)?.id == id
+                        ? vaultNumber.toValueFormat(currency)
+                        : `${vaultNumber.toNumberFormat()} VULT`}
+                    </span>
                   </div>
                   {medal && (
                     <img src={`/ranks/${medal}.svg`} className="icon" />
@@ -308,9 +314,10 @@ const Component: FC = () => {
                   <span className="date">
                     {dayjs(vault.registeredAt * 1000).format("DD MMM, YYYY")}
                   </span>
-                  <span className="price">{`${(
-                    lastCycleBalance || vaultBalance
-                  ).toValueFormat(currency)}`}</span>
+                  <span className="price">{
+                    getCurrentSeason(seasonInfo)?.id != id ?
+                    `${Number(currentActivity.points).toFixedNumberFormat()} VULT`:
+                    (lastCycleBalance || vaultBalance).toValueFormat(currency)}</span>
                 </div>
               </div>
             )}
