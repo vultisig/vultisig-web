@@ -268,7 +268,7 @@ const Component: FC = () => {
             <div className="item loading">
               <VultiLoading />
             </div>
-          ) : total > data.length && currentActivity ? (
+          ) : total > data.length ? (
             <div className="item divider">
               <div className="shape">
                 <img src="/avatar/1.png" className="main" />
@@ -276,15 +276,28 @@ const Component: FC = () => {
                 <img src="/avatar/3.png" className="top" />
               </div>
               <div className="loadmore">
-                <span className="numb">{`+ ${(
-                  (layout !== LayoutKey.DEFAULT &&
-                  currentActivity.rank > data.length
-                    ? currentActivity.rank - 1
-                    : total) - data.length
-                ).toNumberFormat()} others`}</span>
-                <span className="more" onClick={() => fetchData()}>
-                  load more
-                </span>
+                {currentActivity ? (
+                  <>
+                    <span className="numb">{`+ ${(
+                      (layout !== LayoutKey.DEFAULT &&
+                      currentActivity.rank > data.length
+                        ? currentActivity.rank - 1
+                        : total) - data.length
+                    ).toNumberFormat()} others`}</span>
+                    <span className="more" onClick={() => fetchData()}>
+                      load more
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="numb">{`+ ${(
+                      total - data.length
+                    ).toNumberFormat()} others`}</span>
+                    <span className="more" onClick={() => fetchData()}>
+                      load more
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           ) : null}
