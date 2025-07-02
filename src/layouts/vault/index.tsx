@@ -4,7 +4,6 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
   Currency,
   LayoutKey,
-  TickerKey,
   balanceAPI,
   defTokens,
   oneInchRef,
