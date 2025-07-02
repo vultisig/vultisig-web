@@ -187,6 +187,7 @@ export default {
     "как принять участие в AIRDROP НА <span>$5M</span> ОТ VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "до следующей вехи",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Общая стоимость хранилищ за сезон",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Общий объем свопов за сезон",
   [translation.TOTAL_BALANCE]: "Общий баланс",
   [translation.TOTAL_REGISTERED_WALLETS]: "Общее количество зарегистрированных кошельков",
   [translation.TOTAL_VULTIES]: "Общее количество Vulties",

@@ -195,6 +195,7 @@ export default {
     "how to participate in THE <span>$5M</span> VULTISIG AIRDROP",
   [translation.TO_NEXT_MILESTONE]: "to next milestone",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Total Value of Vaults in Season",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Total Swap Volume in Season",
   [translation.TOTAL_BALANCE]: "Total Balance",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total Registered Wallets in Season",
   [translation.TOTAL_VULTIES]: "Total Vulties",

@@ -186,6 +186,7 @@ export default {
     "como participar no AIRDROP DE <span>$5M</span> DA VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "para o próximo marco",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres na temporada",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volume total de trocas na temporada",
   [translation.TOTAL_BALANCE]: "Saldo total",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total de carteiras registadas",
   [translation.TOTAL_VULTIES]: "Vulties totais",

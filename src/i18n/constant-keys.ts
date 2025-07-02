@@ -169,6 +169,7 @@ export default keyMirror({
   TITLE_ONBOARDING: true,
   TO_NEXT_MILESTONE: true,
   TOTAL_AIRDROP_VAULT_VALUE: true,
+  TOTAL_SWAP_VOLUME_VALUE: true,
   TOTAL_BALANCE: true,
   TOTAL_REGISTERED_WALLETS: true,
   TOTAL_VULTIES: true,

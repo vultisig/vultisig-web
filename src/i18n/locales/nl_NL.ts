@@ -186,6 +186,7 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "naar de volgende mijlpaal",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Totale waarde van kluizen in het seizoen",
+    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Totale swapvolume in het seizoen",
   [translation.TOTAL_BALANCE]: "Totaal saldo",
   [translation.TOTAL_REGISTERED_WALLETS]:
     "Totaal aantal geregistreerde wallets",

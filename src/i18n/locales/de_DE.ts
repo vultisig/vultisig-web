@@ -191,6 +191,7 @@ export default {
     "Wie man am <span>$5M</span> VULTISIG AIRDROP teilnimmt",
   [translation.TO_NEXT_MILESTONE]: "bis zum nächsten Meilenstein",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Tresore in dieser Saison",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Gesamtes Tauschvolumen in der Saison",
   [translation.TOTAL_BALANCE]: "Gesamtbilanz",
   [translation.TOTAL_REGISTERED_WALLETS]:
     "Gesamtzahl registrierter Wallets",
