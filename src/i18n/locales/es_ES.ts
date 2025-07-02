@@ -188,6 +188,7 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "hasta el próximo hito",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Valor total de las bóvedas en la temporada",
+    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volumen total de intercambios en la temporada",
   [translation.TOTAL_BALANCE]: "Balance total",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total de monederos registrados",
   [translation.TOTAL_VULTIES]: "Vulties totales",

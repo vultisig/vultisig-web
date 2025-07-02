@@ -188,6 +188,7 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "fino al prossimo traguardo",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Valore totale dei caveau nella stagione",
+    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volume totale degli scambi nella stagione",
   [translation.TOTAL_BALANCE]: "Saldo totale",
   [translation.TOTAL_REGISTERED_WALLETS]: "Totale dei portafogli registrati",
   [translation.TOTAL_VULTIES]: "Vulties totali",

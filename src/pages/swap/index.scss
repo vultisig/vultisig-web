@@ -80,6 +80,37 @@
     }
   }
 
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(16);
+    margin-bottom: rem(16);
+
+    .label {
+      color: $opacity-50;
+      display: block;
+      font-size: rem(14);
+      font-weight: 500;
+      line-height: rem(22);
+    }
+
+    .value {
+      display: block;
+      font-family: $secondary-font;
+      font-size: rem(20);
+      font-weight: 700;
+      line-height: rem(30);
+      margin-top: rem(4);
+    }
+
+    .item {
+      background-color: $opacity-03;
+      border-radius: rem(8);
+      padding: rem(16) rem(24);
+      width: 100%;
+    }
+  }
+
   .winners {
     display: flex;
     flex-direction: column;
@@ -535,6 +566,9 @@
 
 @media (min-width: rem(768)) {
   .swap-page {
+    .stats {
+      flex-wrap: nowrap;
+    }
     .breadcrumb {
       flex-wrap: nowrap;
       gap: rem(32);
@@ -598,6 +632,14 @@ html[theme="light"] {
       border-color: $gray-3;
       .divider {
         background-color: $gray-3;
+      }
+    }
+    .stats {
+      .more {
+        color: $gray-8;
+      }
+      .numb {
+        color: $gray-6;
       }
     }
     .board {

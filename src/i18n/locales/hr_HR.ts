@@ -186,6 +186,7 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "do sljedeće prekretnice",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Ukupna vrijednost trezora u sezoni",
+    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Ukupni volumen zamjene u sezoni",
   [translation.TOTAL_BALANCE]: "Ukupni saldo",
   [translation.TOTAL_REGISTERED_WALLETS]: "Ukupan broj registriranih novčanika",
   [translation.TOTAL_VULTIES]: "Ukupno Vulties",

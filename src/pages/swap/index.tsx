@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import dayjs from "dayjs";
@@ -21,7 +21,9 @@ interface InitialState {
   loading: boolean;
   pageSize: number;
   total: number;
+  totalSwapVolume: number;
   currentActivity?: Activities;
+  currentSeason: number;
 }
 
 const Component: FC = () => {
@@ -32,9 +34,20 @@ const Component: FC = () => {
     loading: false,
     pageSize: 24,
     total: 0,
+    totalSwapVolume: 0,
+    currentSeason: 0,
   };
   const [state, setState] = useState(initialState);
-  const { data, loaded, loading, pageSize, total, currentActivity } = state;
+  const {
+    currentSeason,
+    data,
+    loaded,
+    loading,
+    pageSize,
+    total,
+    totalSwapVolume,
+    currentActivity,
+  } = state;
   const { changePage, baseValue, currency, seasonInfo } = useBaseContext();
   const { layout, vault } = useOutletContext<VaultOutletContext>();
 
@@ -53,6 +66,8 @@ const Component: FC = () => {
             loading: false,
             data: [...prevState.data, ...data.vaults],
             total: data.totalVaultCount,
+            totalSwapVolume: data.totalSwapVolume,
+            currentSeason: parseInt(getCurrentSeason(seasonInfo)?.id || "0"),
           }));
         })
         .catch(() => {
@@ -95,6 +110,23 @@ const Component: FC = () => {
 
   return loaded ? (
     <div className="layout-content swap-page">
+      <div className="stats">
+        <div className="item">
+          <span className="label">
+            {`${t(constantKeys.TOTAL_AIRDROP_VAULT_VALUE)} ${currentSeason}`}
+          </span>
+          <span className="value">
+            {totalSwapVolume.toValueFormat(currency)}
+          </span>
+        </div>
+        <div className="item">
+          <span className="label">
+            {`${t(constantKeys.TOTAL_REGISTERED_WALLETS)} ${currentSeason}`}
+          </span>
+          <span className="value">{total.toNumberFormat()}</span>
+        </div>
+      </div>
+
       {layout !== LayoutKey.DEFAULT && (
         <div className="breadcrumb">
           {layout === LayoutKey.VAULT ? (
