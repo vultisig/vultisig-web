@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import dayjs from "dayjs";
