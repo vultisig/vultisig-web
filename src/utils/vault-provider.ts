@@ -698,7 +698,7 @@ export default class VaultProvider {
                   (vTHORUPriceUSD * thorPriceCurrency) / thorPriceUSD;
               });
 
-            case TickerKey.RUNE:
+            case TickerKey.RUNE: {
               const runeCMCId =
                 defTokens.find(
                   (token) =>
@@ -706,24 +706,14 @@ export default class VaultProvider {
                     token.ticker === TickerKey.RUNE
                 )?.cmcId || 0;
 
-              const usdtCMCId =
-                defTokens.find(
-                  (token) =>
-                    token.chain === ChainKey.ETHEREUM &&
-                    token.ticker === TickerKey.USDT
-                )?.cmcId || 0;
-
-              return api.coin
-                .values([runeCMCId, usdtCMCId], Currency.USD)
-                .then((data) => {
-                  coin.value = data[runeCMCId];
-                });
+              return api.coin.values([runeCMCId], Currency.USD).then((data) => {
+                coin.value = data[runeCMCId];
+              });
+            }
             case TickerKey.TCY:
-              return (
-                api.coin
-                  .getAssetPriceFromMidgard("THOR.TCY")
-                  .then((value: number) => (coin.value = value))
-              );
+              return api.coin
+                .getAssetPriceFromMidgard("THOR.TCY")
+                .then((value: number) => (coin.value = value));
             default:
               coin.value = 0;
 
