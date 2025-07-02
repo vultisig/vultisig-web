@@ -107,6 +107,7 @@ export interface TokenProps {
   isNative: boolean;
   logo: string;
   ticker: string;
+  denom?: string;
 }
 
 export interface VaultProps {

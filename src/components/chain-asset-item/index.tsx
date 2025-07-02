@@ -40,7 +40,10 @@ const Component: FC<ComponentProps> = ({
           </span>
         )}
       </div>
-      {isNaN(balance) && isNaN(value) ? (
+      {isNaN(balance) ||
+      isNaN(value) ||
+      !value ||
+      !balance ? (
         <VultiLoading />
       ) : (
         <>

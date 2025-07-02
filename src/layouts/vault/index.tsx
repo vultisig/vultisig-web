@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {
   Currency,
   LayoutKey,
+  TickerKey,
   balanceAPI,
   defTokens,
   oneInchRef,
@@ -589,7 +590,7 @@ const Component: FC = () => {
       });
     } else {
       const redirectPath = handleSeasonPath(constantPaths.default.airdrop, id);
-      
+
       navigate(redirectPath, { replace: true });
     }
   };
