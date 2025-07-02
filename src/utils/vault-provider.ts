@@ -460,15 +460,22 @@ export default class VaultProvider {
 
       switch (chain) {
         // Cosmos
-        case ChainKey.AKASH: 
+        case ChainKey.AKASH:
         case ChainKey.DYDX:
         case ChainKey.GAIACHAIN:
         case ChainKey.KUJIRA:
         case ChainKey.OSMOSIS:
         case ChainKey.TERRA:
-        case ChainKey.TERRACLASSIC:
-        case ChainKey.THORCHAIN: {
+        case ChainKey.TERRACLASSIC: {
           api.balance.cosmos(path, address, decimals, denom).then(resolve);
+
+          break;
+        }
+        case ChainKey.THORCHAIN: {
+          const tokenDenom: string =
+            defTokens.find((item) => item.ticker === ticker)?.denom || "";
+
+          api.balance.cosmos(path, address, decimals, tokenDenom).then(resolve);
 
           break;
         }
@@ -661,6 +668,7 @@ export default class VaultProvider {
                 .mayachainValue()
                 .then((value) => (coin.value = value));
             case TickerKey.CACAO:
+            case TickerKey.RUJI:
             case TickerKey.KWEEN:
               return api.coin
                 .coingeckoValue(coin.ticker, currency)
@@ -674,6 +682,7 @@ export default class VaultProvider {
               return api.coin.value(usdt!.cmcId, currency).then((value) => {
                 coin.value = value * 40;
               });
+
             case TickerKey.VTHOR:
               const thor = defTokens.find(
                 ({ chain, ticker }) =>
@@ -688,6 +697,23 @@ export default class VaultProvider {
                 coin.value =
                   (vTHORUPriceUSD * thorPriceCurrency) / thorPriceUSD;
               });
+
+            case TickerKey.RUNE: {
+              const runeCMCId =
+                defTokens.find(
+                  (token) =>
+                    token.chain === ChainKey.THORCHAIN &&
+                    token.ticker === TickerKey.RUNE
+                )?.cmcId || 0;
+
+              return api.coin.values([runeCMCId], Currency.USD).then((data) => {
+                coin.value = data[runeCMCId];
+              });
+            }
+            case TickerKey.TCY:
+              return api.coin
+                .getAssetPriceFromMidgard("THOR.TCY")
+                .then((value: number) => (coin.value = value));
             default:
               coin.value = 0;
 

@@ -589,7 +589,7 @@ const Component: FC = () => {
       });
     } else {
       const redirectPath = handleSeasonPath(constantPaths.default.airdrop, id);
-      
+
       navigate(redirectPath, { replace: true });
     }
   };

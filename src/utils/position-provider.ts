@@ -308,7 +308,7 @@ export default class PositionProvider {
   public getTCYStake = (): Promise<{ tcyStake: PositionProps[] }> => {
     return new Promise((resolve) => {
       const address = this.vault.chains.find(
-          ({ name }) => name === ChainKey.THORCHAIN
+        ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
       const tcyStake: PositionProps[] = [];
 
