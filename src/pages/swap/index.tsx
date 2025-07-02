@@ -113,7 +113,7 @@ const Component: FC = () => {
       <div className="stats">
         <div className="item">
           <span className="label">
-            {`${t(constantKeys.TOTAL_AIRDROP_VAULT_VALUE)} ${currentSeason}`}
+            {`${t(constantKeys.TOTAL_SWAP_VOLUME_VALUE)} ${currentSeason}`}
           </span>
           <span className="value">
             {totalSwapVolume.toValueFormat(currency)}
