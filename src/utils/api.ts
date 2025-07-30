@@ -521,6 +521,9 @@ const api = {
       );
     },
     value: async (id: number, currency: Currency) => {
+      if( (id == 825 || id==3408) && currency==Currency.USD){
+        return 1;
+      }
       return fetch
         .get<CMC.Result>(
           `${
