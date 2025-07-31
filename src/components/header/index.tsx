@@ -446,7 +446,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   ];
 
   const navbarMenu: MenuProps["items"] = [
-    ...(vaults.length ? _firstItems : []),
+   ...(vaults.length || layout === LayoutKey.SHARED ? _firstItems : []),
     {
       key: "8",
       label: t(constantKeys.CURRENT_SEASON),
