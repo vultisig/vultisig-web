@@ -670,6 +670,7 @@ export default class VaultProvider {
             case TickerKey.CACAO:
             case TickerKey.RUJI:
             case TickerKey.KWEEN:
+            case TickerKey.CFGI:  
               return api.coin
                 .coingeckoValue(coin.ticker, currency)
                 .then((value) => (coin.value = value));
