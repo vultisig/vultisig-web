@@ -2,6 +2,10 @@ import keyMirror from "keymirror";
 
 import { TokenProps } from "utils/interfaces";
 
+export const RUJIRA_BOND_ADDRESS =
+  "thor13g83nn5ef4qzqeafp0508dnvkvm0zqr3sj7eefcn5umu65gqluusrml5cr";
+export const RUJIRA_DENOM = "x/staking-x/ruji";
+
 export enum ChainKey {
   ARBITRUM = "Arbitrum",
   AKASH = "Akash",

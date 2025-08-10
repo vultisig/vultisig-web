@@ -8,6 +8,7 @@ import {
 } from "utils/constants";
 import { PositionProps, VaultProps } from "utils/interfaces";
 import api from "utils/api";
+import { RUJIRA_BOND_ADDRESS, RUJIRA_DENOM } from "utils/constants";
 
 export default class PositionProvider {
   private vault: VaultProps;
@@ -345,27 +346,21 @@ export default class PositionProvider {
         ({ name }) => name === ChainKey.THORCHAIN
       )?.address;
       const rujiraStake: PositionProps[] = [];
-      const bondAddress =
-        "thor13g83nn5ef4qzqeafp0508dnvkvm0zqr3sj7eefcn5umu65gqluusrml5cr";
-
+      const bondAddress = RUJIRA_BOND_ADDRESS;
       const path = balanceAPI[ChainKey.THORCHAIN];
-      const data = {
-        account: {
-          addr: address,
-        },
-      };
-      
-      const jsonString = JSON.stringify(data);
-      const base64 = btoa(unescape(encodeURIComponent(jsonString)));
 
+      let base64: string;
       if (address) {
+        const payload = JSON.stringify({ account: { addr: address } });
+        if (typeof btoa === "function") {
+          base64 = btoa(payload);
+        } else {
+          base64 = Buffer.from(payload, "utf-8").toString("base64");
+        }
+
         Promise.all([
           api.activePositions.getThornodeBond(bondAddress, base64),
-          api.activePositions.getThornodeBalance(
-            path,
-            address,
-            "x/staking-x/ruji"
-          ),
+          api.activePositions.getThornodeBalance(path, address, RUJIRA_DENOM),
         ]).then(([bonded, amount]) => {
           if (bonded > 0 || amount > 0) {
             rujiraStake.push({

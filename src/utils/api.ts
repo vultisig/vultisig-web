@@ -211,7 +211,7 @@ const api = {
     getThornodeBond: async (bondAddress: string, base64Address: string) => {
       return await fetch
         .get<{ data: { bonded: string } }>(
-          `${externalAPI.thorchain}cosmwasm/wasm/v1/contract/${bondAddress}/smart/${base64Address}`
+          `${externalAPI.thorchain}cosmwasm/wasm/v1/contract/${bondAddress}/smart/${encodeURIComponent(base64Address)}`
         )
         .then(({ data }) => Number(data.data.bonded))
         .catch(() => 0);
