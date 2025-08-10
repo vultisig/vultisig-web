@@ -77,6 +77,7 @@ const Component: FC = () => {
             positionProvider.getSaverPositions().then(updatePositions),
             positionProvider.getTCYStake().then(updatePositions),
             positionProvider.getThorBond().then(updatePositions),
+            positionProvider.getRUJIRAStake().then(updatePositions),
           ]).then(() => {
             vault.positions = { updated: true };
           });

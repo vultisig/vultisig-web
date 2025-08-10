@@ -24,6 +24,7 @@ const Component: FC = () => {
     tcyStake,
     thorBond,
     thorLiquidity,
+    rujiraStake,
   } = vault.positions;
 
   const componentDidMount = () => {
@@ -92,6 +93,13 @@ const Component: FC = () => {
           text="No TCY Stake Position Found"
           title="TCY Stake"
         />
+
+        <PositionItem
+          data={rujiraStake}
+          text="No RUJIRA Stake Position Found"
+          title="RUJIRA Stake"
+        />
+
       </div>
 
       <div className="section">
