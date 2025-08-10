@@ -2,6 +2,7 @@ import {
   ChainKey,
   Currency,
   TickerKey,
+  balanceAPI,
   defTokens,
   exploreToken,
 } from "utils/constants";
@@ -12,6 +13,7 @@ export default class PositionProvider {
   private vault: VaultProps;
   private tcyPrice?: number;
   private runePrice?: number;
+  private rujiraPrice?: number;
 
   constructor(vault: VaultProps) {
     this.vault = vault;
@@ -319,7 +321,7 @@ export default class PositionProvider {
             tcyStake.push({
               base: {
                 chain: ChainKey.THORCHAIN,
-                price: (this.tcyPrice || 0) *1e-8  * data.amount,
+                price: (this.tcyPrice || 0) * 1e-8 * data.amount,
                 tiker: TickerKey.TCY,
                 tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
                 tokenAmount: (
@@ -337,6 +339,57 @@ export default class PositionProvider {
     });
   };
 
+  public getRUJIRAStake = (): Promise<{ rujiraStake: PositionProps[] }> => {
+    return new Promise((resolve) => {
+      const address = this.vault.chains.find(
+        ({ name }) => name === ChainKey.THORCHAIN
+      )?.address;
+      const rujiraStake: PositionProps[] = [];
+      const bondAddress =
+        "thor13g83nn5ef4qzqeafp0508dnvkvm0zqr3sj7eefcn5umu65gqluusrml5cr";
+
+      const path = balanceAPI[ChainKey.THORCHAIN];
+      const data = {
+        account: {
+          addr: address,
+        },
+      };
+      
+      const jsonString = JSON.stringify(data);
+      const base64 = btoa(unescape(encodeURIComponent(jsonString)));
+
+      if (address) {
+        Promise.all([
+          api.activePositions.getThornodeBond(bondAddress, base64),
+          api.activePositions.getThornodeBalance(
+            path,
+            address,
+            "x/staking-x/ruji"
+          ),
+        ]).then(([bonded, amount]) => {
+          if (bonded > 0 || amount > 0) {
+            rujiraStake.push({
+              base: {
+                chain: ChainKey.THORCHAIN,
+                price:
+                  (this.rujiraPrice || 0) * Number((bonded + amount) * 1e-8),
+                tiker: TickerKey.RUJI,
+                tokenAddress: `${exploreToken[ChainKey.THORCHAIN]}${address}`,
+                tokenAmount: (
+                  Number((amount + bonded) * 1e-8) || 0
+                ).toBalanceFormat(),
+              },
+            });
+          }
+
+          resolve({ rujiraStake });
+        });
+      } else {
+        resolve({ rujiraStake });
+      }
+    });
+  };
+
   public getPrerequisites = (): Promise<void> => {
     return new Promise((resolve) => {
       const runeCMCId = this.getCMC(ChainKey.THORCHAIN, TickerKey.RUNE);
@@ -349,6 +402,9 @@ export default class PositionProvider {
         api.coin.getAssetPriceFromMidgard("THOR.TCY").then((value: number) => {
           this.tcyPrice = value;
         }),
+        api.coin
+          .coingeckoValue(TickerKey.RUJI, Currency.USD)
+          .then((value) => (this.rujiraPrice = value)),
       ]).finally(resolve);
     });
   };
