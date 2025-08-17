@@ -132,6 +132,7 @@ export interface VaultProps {
     tcyStake?: PositionProps[];
     thorBond?: PositionProps[];
     thorLiquidity?: PositionProps[];
+    rujiraStake?: PositionProps[];
     updated?: boolean;
   };
   positionsUpdating?: boolean;

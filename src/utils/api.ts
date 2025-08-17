@@ -124,7 +124,7 @@ const externalAPI = {
   midgardNinerealms: "https://midgard.ninerealms.com/",
   solanaFM: "https://api.solana.fm/v1/",
   solanaPN: "https://solana-rpc.publicnode.com",
-  thorchain: "https://thornode.ninerealms.com/thorchain/",
+  thorchain: "https://thornode.ninerealms.com/",
   thorwallet: "https://api-v2-prod.thorwallet.org/",
   trongrid: "https://api.trongrid.io/jsonrpc",
 };
@@ -137,10 +137,8 @@ const api = {
     exit: async (params: VaultProps) => {
       return await fetch.post("vault/exit-airdrop", toSnakeCase(params));
     },
-    overhaul: async (id:string) => {
-      return await fetch.get<SeasonsPoints>(
-        `seasons/points/${id}`
-      );
+    overhaul: async (id: string) => {
+      return await fetch.get<SeasonsPoints>(`seasons/points/${id}`);
     },
   },
   seasons: {
@@ -158,7 +156,7 @@ const api = {
     nodeInfo: (address: string): Promise<number> => {
       return new Promise((resolve) => {
         fetch
-          .get<NodeInfo[]>(`${externalAPI.thorchain}nodes`)
+          .get<NodeInfo[]>(`${externalAPI.thorchain}thorchain/nodes`)
           .then(({ data }) => {
             const amount = data.reduce((acc, node) => {
               const nodeSum =
@@ -195,7 +193,7 @@ const api = {
       return new Promise((resolve) => {
         fetch
           .get<{ value: string }>(
-            `${externalAPI.thorchain}rune_provider/${address}`
+            `${externalAPI.thorchain}thorchain/rune_provider/${address}`
           )
           .then(({ data }) => {
             const result = parseInt(data?.value);
@@ -206,8 +204,33 @@ const api = {
     },
     getTcyStake: async (address: string) => {
       return await fetch.get<{ amount: number }>(
-          `${externalAPI.thorchain}tcy_staker/${address}`
+        `${externalAPI.thorchain}thorchain/tcy_staker/${address}`
       );
+    },
+
+    getThornodeBond: async (bondAddress: string, base64Address: string) => {
+      return await fetch
+        .get<{ data: { bonded: string } }>(
+          `${externalAPI.thorchain}cosmwasm/wasm/v1/contract/${bondAddress}/smart/${encodeURIComponent(base64Address)}`
+        )
+        .then(({ data }) => Number(data.data.bonded))
+        .catch(() => 0);
+    },
+
+    getThornodeBalance: async (
+      path: string,
+      address: string,
+      denom: string
+    ) => {
+      return await fetch
+        .get<{ balances: { denom: string; amount: string }[] }>(
+          `${path}/${address}`
+        )
+        .then(({ data }) => {
+          const item = data.balances.find((b) => b.denom === denom);
+          return item?.amount ? Number(item.amount) : 0;
+        })
+        .catch(() => 0);
     },
   },
   balance: {
