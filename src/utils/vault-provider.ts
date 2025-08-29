@@ -711,10 +711,35 @@ export default class VaultProvider {
                 coin.value = data[runeCMCId];
               });
             }
-            case TickerKey.TCY:
+
+            case TickerKey.YRUNE:
+            case TickerKey.YTCY: {
+              const runeCMCId =
+                defTokens.find(
+                  (token) =>
+                    token.chain === ChainKey.THORCHAIN &&
+                    token.ticker === TickerKey.RUNE
+                )?.cmcId || 0;
+
+              return Promise.all([
+                api.coin.values([runeCMCId], Currency.USD),
+                api.coin.getAssetPriceFromMidgard("THOR.TCY"),
+              ]).then(([data, value]) => {
+                debugger;
+                if (TickerKey.YRUNE === coin.ticker) {
+                  coin.value = value * 0.2 + data[runeCMCId] * 0.8;
+                } else {
+                  coin.value = value * 0.8 + data[runeCMCId] * 0.2;
+                }
+              });
+            }
+
+            case TickerKey.STCY:
+            case TickerKey.TCY: {
               return api.coin
                 .getAssetPriceFromMidgard("THOR.TCY")
-                .then((value: number) => (coin.value = value));
+                .then((value) => (coin.value = value));
+            }
             default:
               coin.value = 0;
 
