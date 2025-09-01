@@ -711,10 +711,23 @@ export default class VaultProvider {
                 coin.value = data[runeCMCId];
               });
             }
-            case TickerKey.TCY:
+
+            case TickerKey.YRUNE:
+            case TickerKey.YTCY: {
+              const denom =
+                defTokens.find((token) => token.ticker === coin.ticker)
+                  ?.denom || "";
+              return api.coin
+                .getAssetPriceFromThornode(denom.split("-")[3])
+                .then((value) => (coin.value = value));
+            }
+
+            case TickerKey.STCY:
+            case TickerKey.TCY: {
               return api.coin
                 .getAssetPriceFromMidgard("THOR.TCY")
-                .then((value: number) => (coin.value = value));
+                .then((value) => (coin.value = value));
+            }
             default:
               coin.value = 0;
 

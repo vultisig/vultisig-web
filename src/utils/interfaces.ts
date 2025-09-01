@@ -205,3 +205,8 @@ export interface MidgardPool {
 export interface SeasonsPoints {
   points: number;
 }
+export interface ThornodePrice {
+  data: {
+    navPerShare: number;
+  };
+}
