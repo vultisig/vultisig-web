@@ -21,6 +21,7 @@ import {
   VaultProps,
   MidgardPool,
   SeasonsPoints,
+  ThornodePrice,
 } from "utils/interfaces";
 import { decodeBase58 } from "ethers";
 
@@ -122,6 +123,8 @@ const externalAPI = {
   lifi: "https://li.quest/v1/",
   mayachain: "https://midgard.mayachain.info/v2/",
   midgardNinerealms: "https://midgard.ninerealms.com/",
+  thornodeMainnet:
+    "https://thornode-mainnet-api.bryanlabs.net/cosmwasm/wasm/v1/contract",
   solanaFM: "https://api.solana.fm/v1/",
   solanaPN: "https://solana-rpc.publicnode.com",
   thorchain: "https://thornode.ninerealms.com/",
@@ -650,6 +653,20 @@ const api = {
           )
           .then(({ data }) => {
             resolve(data ? data.assetPriceUSD : 0);
+          })
+          .catch(() => {
+            resolve(0);
+          });
+      });
+    },
+    getAssetPriceFromThornode: (param: string): Promise<number> => {
+      return new Promise((resolve) => {
+        fetch
+          .get<ThornodePrice>(
+            `${externalAPI.thornodeMainnet}/${param}/smart/eyJzdGF0dXMiOiB7fX0=`
+          )
+          .then(({ data }) => {
+            resolve(data?.data?.navPerShare || 0);
           })
           .catch(() => {
             resolve(0);
