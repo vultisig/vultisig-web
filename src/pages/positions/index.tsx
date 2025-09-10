@@ -84,8 +84,8 @@ const Component: FC = () => {
 
         <PositionItem
           data={rujiraStake}
-          text="No RUJIRA Stake Position Found"
-          title="RUJIRA Stake"
+          text="No Staked RUJI Position Found"
+          title="Staked RUJI"
         />
 
       </div>
