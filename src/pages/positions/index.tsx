@@ -19,7 +19,6 @@ const Component: FC = () => {
   const {
     mayaBond,
     mayaLiquidity,
-    runeProvider,
     tcyStake,
     thorBond,
     thorLiquidity,
