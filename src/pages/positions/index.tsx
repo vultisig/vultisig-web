@@ -74,17 +74,7 @@ const Component: FC = () => {
           title="Liquidity Position"
         />
 
-        <PositionItem
-          data={runeProvider}
-          text="No Rune Pool Position Found"
-          title="Rune Pool"
-        />
-
-        <PositionItem
-          data={saverPosition}
-          text="No Saver Position Found"
-          title="Saver"
-        />
+      
 
         <PositionItem data={thorBond} text="No Bond Found" title="Bond" />
 
