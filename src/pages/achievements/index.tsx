@@ -334,7 +334,7 @@ const Component: FC = () => {
         <div className="boost">
           <p>{t(constantKeys.BOOST_YOUR_EAENINGS)}</p>
           <div className="plans">
-            <a href="https://vultisig.com/download/vultisig" target="_blank">
+            <a href="https://vultisig.com/downloads" target="_blank">
               <div className="item">
                 <img src="/images/refresh.svg" />
                 <div className="info">
