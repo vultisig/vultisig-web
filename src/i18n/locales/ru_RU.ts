@@ -100,7 +100,6 @@ export default {
   [translation.MILESTONES]: "Вехи",
   [translation.MULTIPLIER]: "Множитель",
   [translation.MULTIPLIER_BOOSTS]: "Усиления множителя",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Моя доля в {0} airdrop'е",
   // N
   [translation.NO_BOND_FOUND]: "Облигации не найдены",
   [translation.NOT_COLLECTED]: "Других данных не собрано.",
@@ -165,6 +164,7 @@ export default {
   [translation.SHARE]: "Поделиться",
   [translation.SHARE_ON]: "Поделиться на {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Поделиться достижениями",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Моя доля в {0} airdrop'е",
   [translation.SHARE_SETTINGS]: "Настройте внешний вид общего хранилища",
   [translation.SHARE_VAULT_THEME]: "Тема общего хранилища",
   [translation.SHARE_VAULT_LOGO]: "Логотип общего хранилища",
@@ -189,7 +189,8 @@ export default {
   [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Общая стоимость хранилищ за сезон",
   [translation.TOTAL_SWAP_VOLUME_VALUE]: "Общий объем свопов за сезон",
   [translation.TOTAL_BALANCE]: "Общий баланс",
-  [translation.TOTAL_REGISTERED_WALLETS]: "Общее количество зарегистрированных кошельков",
+  [translation.TOTAL_REGISTERED_WALLETS]:
+    "Общее количество зарегистрированных кошельков",
   [translation.TOTAL_VULTIES]: "Общее количество Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "ПЕРЕВОД СРЕДСТВ В ХРАНИЛИЩА",

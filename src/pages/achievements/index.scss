@@ -145,10 +145,10 @@
         rgba(72, 121, 253, 0.8) 170%
       );
       border: rem(1) solid rgba(72, 121, 253, 0.2);
-      .status{
+      .status {
         opacity: 1 !important;
       }
-      .title{
+      .title {
         color: $silver-base-1 !important;
       }
       .icon {
@@ -361,7 +361,7 @@
             color: $gray-1;
           }
         }
-        &:hover{
+        &:hover {
           background-color: $blue-dark;
           border-color: $blue-normal;
         }
@@ -375,94 +375,100 @@
 }
 
 @media (min-width: rem(576)) {
-  .stats {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    li {
-      width: 48% !important;
-    }
-  }
-
-  .milestones {
-    .items {
+  .achievements-page {
+    .stats {
       flex-direction: row !important;
-      justify-content: center !important;
-      flex-wrap: wrap !important;
+      justify-content: space-between !important;
       li {
         width: 48% !important;
+      }
+    }
+
+    .milestones {
+      .items {
+        flex-direction: row !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        li {
+          width: 48% !important;
+        }
       }
     }
   }
 }
 
 @media (min-width: rem(768)) {
-  .milestones {
-    .items {
-      li {
-        width: 30% !important;
+  .achievements-page {
+    .milestones {
+      .items {
+        li {
+          width: 30% !important;
+        }
       }
     }
-  }
-  .multiplier-boosts {
-    .nfts {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: rem(8);
-      li {
-        width: 49% !important;
+    .multiplier-boosts {
+      .nfts {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: rem(8);
+        li {
+          width: 49% !important;
+        }
       }
     }
-  }
-  .boost {
-    .plans {
-      flex-direction: row !important;
-      justify-content: space-between !important;
-      .item {
-        width: 50%;
+    .boost {
+      .plans {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        .item {
+          width: 50%;
+        }
       }
     }
   }
 }
 
 @media (min-width: rem(992)) {
-  .achievements-title {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-  }
-
-  .stats {
-    li {
-      width: 23% !important;
-    }
-  }
-
-  .milestones {
-    .items {
+  .achievements-page {
+    .achievements-title {
+      flex-direction: row !important;
       justify-content: space-between !important;
-      gap: rem(10) !important;
+    }
+
+    .stats {
       li {
-        padding: rem(5) rem(5) rem(20) rem(5) !important;
-        width: rem(182) !important;
-        height: rem(240) !important;
-        .icon {
-          max-width: rem(150);
-          margin: auto;
-          opacity: 0.3;
-        }
-        .title {
-          color: $opacity-50;
-          font-size: rem(14);
-        }
-        .status {
-          display: flex;
-          justify-content: center;
-          .award {
-            margin-right: rem(5) !important;
+        width: 23% !important;
+      }
+    }
+
+    .milestones {
+      .items {
+        justify-content: space-between !important;
+        gap: rem(10) !important;
+        li {
+          padding: rem(5) rem(5) rem(20) rem(5) !important;
+          width: rem(182) !important;
+          height: rem(240) !important;
+          .icon {
+            max-width: rem(150);
+            margin: auto;
+            opacity: 0.3;
           }
-          span {
-            font-size: rem(14) !important;
+          .title {
+            color: $opacity-50;
+            font-size: rem(14);
+          }
+          .status {
+            display: flex;
+            justify-content: center;
+            .award {
+              margin-right: rem(5) !important;
+            }
+            span {
+              font-size: rem(14) !important;
+            }
           }
         }
       }

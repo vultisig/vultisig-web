@@ -100,7 +100,6 @@ export default {
   [translation.MILESTONES]: "Hitos",
   [translation.MULTIPLIER]: "Multiplicador",
   [translation.MULTIPLIER_BOOSTS]: "Impulsos de multiplicador",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Mi parte del airdrop de {0}",
   // N
   [translation.NO_BOND_FOUND]: "No se encontró bono",
   [translation.NOT_COLLECTED]: "No se recoge ninguna otra información.",
@@ -161,6 +160,7 @@ export default {
   [translation.SHARE]: "Compartir",
   [translation.SHARE_ON]: "Compartir en {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Compartir logros",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mi parte del airdrop de {0}",
   [translation.SHARE_VAULT]: "Compartir su Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizar la página compartida del Vault",
@@ -188,7 +188,8 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "hasta el próximo hito",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Valor total de las bóvedas en la temporada",
-    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volumen total de intercambios en la temporada",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]:
+    "Volumen total de intercambios en la temporada",
   [translation.TOTAL_BALANCE]: "Balance total",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total de monederos registrados",
   [translation.TOTAL_VULTIES]: "Vulties totales",

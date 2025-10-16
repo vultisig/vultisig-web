@@ -100,7 +100,6 @@ export default {
   [translation.MILESTONES]: "Meilensteine",
   [translation.MULTIPLIER]: "Multiplikator",
   [translation.MULTIPLIER_BOOSTS]: "Multiplikator-Boosts",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Mein Anteil am {0}-Airdrop",
   // N
   [translation.NO_BOND_FOUND]: "Keine Anleihe gefunden",
   [translation.NOT_COLLECTED]:
@@ -165,6 +164,7 @@ export default {
   [translation.SHARE]: "Teilen",
   [translation.SHARE_ON]: "Auf {0} teilen",
   [translation.SHARE_ACHIEVEMENTS]: "Erfolge teilen",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mein Anteil am {0}-Airdrop",
   [translation.SHARE_VAULT]: "Teilen Sie Ihr Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalisieren Sie die geteilte Vault-Seite",
@@ -190,11 +190,11 @@ export default {
   [translation.TITLE_ONBOARDING]:
     "Wie man am <span>$5M</span> VULTISIG AIRDROP teilnimmt",
   [translation.TO_NEXT_MILESTONE]: "bis zum nächsten Meilenstein",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Gesamtwert der Tresore in dieser Saison",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]:
+    "Gesamtwert der Tresore in dieser Saison",
   [translation.TOTAL_SWAP_VOLUME_VALUE]: "Gesamtes Tauschvolumen in der Saison",
   [translation.TOTAL_BALANCE]: "Gesamtbilanz",
-  [translation.TOTAL_REGISTERED_WALLETS]:
-    "Gesamtzahl registrierter Wallets",
+  [translation.TOTAL_REGISTERED_WALLETS]: "Gesamtzahl registrierter Wallets",
   [translation.TOTAL_VULTIES]: "Gesamte Vulties",
   [translation.THORCHAIN]: "Thorchain",
   [translation.TRANSFER_FUNDS_ONBOARDING]: "GELD AUF VAULTS ÜBERWEISEN",

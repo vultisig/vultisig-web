@@ -40,7 +40,7 @@ export default {
     "Ovo će također izbrisati SVE vaše prikupljene VULTIES (airdrop bodove)!",
   [translation.CONFIRM_REMOVE_CHECKBOX]:
     "Potvrđujem da ću izgubiti sav svoj napredak",
-    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopiraj sliku u međuspremnik",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Kopiraj sliku u međuspremnik",
   [translation.COUNTED]: "brojano",
   [translation.CURRENCY]: "Valuta",
   [translation.CURRENT_SEASON]: "Trenutna sezona",
@@ -99,7 +99,6 @@ export default {
   [translation.MILESTONES]: "Prekretnice",
   [translation.MULTIPLIER]: "Množitelj",
   [translation.MULTIPLIER_BOOSTS]: "Pojačanja množitelja",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Moj udio u {0} airdropu",
   // N
   [translation.NO_BOND_FOUND]: "Nije pronađena obveznica",
   [translation.NOT_COLLECTED]: "Nisu prikupljene druge informacije.",
@@ -160,6 +159,7 @@ export default {
   [translation.SHARE]: "Podijeli",
   [translation.SHARE_ON]: "Podijeli na {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Podijeli postignuća",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Moj udio u {0} airdropu",
   [translation.SHARE_VAULT]: "Podijelite svoj Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizirajte stranicu podijeljenog Vaulta",
@@ -184,9 +184,8 @@ export default {
   [translation.TITLE_ONBOARDING]:
     "kako sudjelovati u AIRDROPU OD <span>$5M</span> VULTISIG-a",
   [translation.TO_NEXT_MILESTONE]: "do sljedeće prekretnice",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]:
-    "Ukupna vrijednost trezora u sezoni",
-    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Ukupni volumen zamjene u sezoni",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Ukupna vrijednost trezora u sezoni",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Ukupni volumen zamjene u sezoni",
   [translation.TOTAL_BALANCE]: "Ukupni saldo",
   [translation.TOTAL_REGISTERED_WALLETS]: "Ukupan broj registriranih novčanika",
   [translation.TOTAL_VULTIES]: "Ukupno Vulties",
