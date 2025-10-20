@@ -174,7 +174,7 @@ const Component: FC<ModalProps> = ({ vault }) => {
         break;
       }
     }
-  }, [hash]);
+  }, [hash, seasonInfo, vault]);
 
   return (
     <>
@@ -199,7 +199,11 @@ const Component: FC<ModalProps> = ({ vault }) => {
               {t(constantKeys.SHARE_ACHIEVEMENT_TEXT)}
             </span>
             <span className="value">
-              {total > 0 ? `${rank} of ${total}` : <Spin size="small" />}
+              {Number.isFinite(total) ? (
+                `${rank} of ${total}`
+              ) : (
+                <Spin size="small" />
+              )}
             </span>
           </div>
           <div className="stats">
