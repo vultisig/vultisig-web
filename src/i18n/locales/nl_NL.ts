@@ -160,7 +160,7 @@ export default {
   [translation.SHARE]: "Delen",
   [translation.SHARE_ON]: "Delen op {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Deel prestaties",
-  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mijn aandeel in de {0} airdrop",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mijn positie op het $VULT-airdropleaderbord:",
   [translation.SHARE_VAULT]: "Deel je kluis",
   [translation.SHARE_SETTINGS_TITLE]: "Personaliseer gedeelde kluispagina",
   [translation.SHARE_SETTINGS]: "Pas de weergave van de gedeelde kluis aan",

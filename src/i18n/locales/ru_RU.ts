@@ -164,7 +164,7 @@ export default {
   [translation.SHARE]: "Поделиться",
   [translation.SHARE_ON]: "Поделиться на {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Поделиться достижениями",
-  [translation.SHARE_ACHIEVEMENT_TEXT]: "Моя доля в {0} airdrop'е",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Моё место в таблице лидеров airdrop’а $VULT:",
   [translation.SHARE_SETTINGS]: "Настройте внешний вид общего хранилища",
   [translation.SHARE_VAULT_THEME]: "Тема общего хранилища",
   [translation.SHARE_VAULT_LOGO]: "Логотип общего хранилища",

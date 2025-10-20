@@ -160,7 +160,7 @@ export default {
   [translation.SHARE]: "Compartir",
   [translation.SHARE_ON]: "Compartir en {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Compartir logros",
-  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mi parte del airdrop de {0}",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mi posición en la clasificación del airdrop de $VULT:",
   [translation.SHARE_VAULT]: "Compartir su Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizar la página compartida del Vault",

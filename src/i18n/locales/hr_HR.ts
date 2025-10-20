@@ -159,7 +159,7 @@ export default {
   [translation.SHARE]: "Podijeli",
   [translation.SHARE_ON]: "Podijeli na {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Podijeli postignuća",
-  [translation.SHARE_ACHIEVEMENT_TEXT]: "Moj udio u {0} airdropu",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Moje mjesto na $VULT ljestvici airdropa:",
   [translation.SHARE_VAULT]: "Podijelite svoj Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizirajte stranicu podijeljenog Vaulta",

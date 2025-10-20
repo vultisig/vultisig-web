@@ -159,7 +159,7 @@ export default {
   [translation.SHARE_ON]: "Compartilhar no {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Compartilhar conquistas",
   [translation.SHARE_ACHIEVEMENT_TEXT]:
-    "Copiar imagem para a área de transferência",
+    "A minha posição na tabela de classificação do airdrop do $VULT:",
   [translation.SHARE_VAULT]: "Partilhe o seu cofre",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalize a página do cofre partilhado",
