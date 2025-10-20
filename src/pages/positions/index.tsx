@@ -19,8 +19,6 @@ const Component: FC = () => {
   const {
     mayaBond,
     mayaLiquidity,
-    runeProvider,
-    saverPosition,
     tcyStake,
     thorBond,
     thorLiquidity,
@@ -74,17 +72,7 @@ const Component: FC = () => {
           title="Liquidity Position"
         />
 
-        <PositionItem
-          data={runeProvider}
-          text="No Rune Pool Position Found"
-          title="Rune Pool"
-        />
-
-        <PositionItem
-          data={saverPosition}
-          text="No Saver Position Found"
-          title="Saver"
-        />
+      
 
         <PositionItem data={thorBond} text="No Bond Found" title="Bond" />
 
@@ -96,8 +84,8 @@ const Component: FC = () => {
 
         <PositionItem
           data={rujiraStake}
-          text="No RUJIRA Stake Position Found"
-          title="RUJIRA Stake"
+          text="No Staked RUJI Position Found"
+          title="Staked RUJI"
         />
 
       </div>
