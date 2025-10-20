@@ -31,7 +31,8 @@ export default {
   [translation.CONGRATULATIONS]: "Parabéns!",
   [translation.CONNECT_OR_UPLOAD]:
     "Conecte-se com VultiConnect ou carregue o seu código QR do cofre para começar",
-    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copiar imagem para a área de transferência",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]:
+    "Copiar imagem para a área de transferência",
   [translation.CONNECT_YOUR_WALLET]: "Conecte a sua carteira",
   [translation.CONFIRM_REMOVE_VAULT_WARNING]:
     "Por favor, confirme que perderá todo o seu progresso antes de continuar",
@@ -99,7 +100,6 @@ export default {
   [translation.MILESTONES]: "Marcos",
   [translation.MULTIPLIER]: "Multiplicador",
   [translation.MULTIPLIER_BOOSTS]: " Impulsos de multiplicador",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Minha parte do airdrop de {0}",
   // N
   [translation.NO_BOND_FOUND]: "Nenhuma obrigação encontrada",
   [translation.NOT_COLLECTED]: "Nenhuma outra informação recolhida.",
@@ -158,6 +158,8 @@ export default {
   [translation.SHARE]: "Compartilhar",
   [translation.SHARE_ON]: "Compartilhar no {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Compartilhar conquistas",
+  [translation.SHARE_ACHIEVEMENT_TEXT]:
+    "A minha posição na tabela de classificação do airdrop do $VULT:",
   [translation.SHARE_VAULT]: "Partilhe o seu cofre",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalize a página do cofre partilhado",
@@ -185,7 +187,8 @@ export default {
   [translation.TITLE_ONBOARDING]:
     "como participar no AIRDROP DE <span>$5M</span> DA VULTISIG",
   [translation.TO_NEXT_MILESTONE]: "para o próximo marco",
-  [translation.TOTAL_AIRDROP_VAULT_VALUE]: "Valor total dos cofres na temporada",
+  [translation.TOTAL_AIRDROP_VAULT_VALUE]:
+    "Valor total dos cofres na temporada",
   [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volume total de trocas na temporada",
   [translation.TOTAL_BALANCE]: "Saldo total",
   [translation.TOTAL_REGISTERED_WALLETS]: "Total de carteiras registadas",

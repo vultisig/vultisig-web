@@ -1,130 +1,127 @@
 @use "~variables" as *;
 
 .modal-achievements {
-  margin-left: auto;
-  margin-right: auto;
-  .achievements-info {
-    border-radius: rem(12) !important;
-    background-image: url("/images/share-achievements.svg");
+  .card {
+    background-image: url("/images/share-achievements.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    padding: rem(30);
+    border-radius: rem(12);
+    display: flex;
+    flex-direction: column;
+    gap: rem(24);
+    padding: rem(24);
+
+    .ant-spin {
+      color: currentColor;
+
+      .ant-spin-dot-holder {
+        color: currentColor;
+      }
+    }
+
     .logo {
       align-items: center;
-      padding: 0;
       display: flex;
       gap: rem(8);
-      height: rem(28);
-      .shape {
-        height: rem(30) !important;
-      }
-      .name {
+
+      span {
         color: $gray-1;
-        font-size: rem(25);
-        line-height: rem(25);
+        font-size: rem(24);
+        line-height: rem(28);
         font-weight: 600;
       }
+
+      svg {
+        height: rem(34);
+
+        path {
+          fill: $gray-1;
+        }
+      }
     }
-    .share-vult {
+
+    .rank {
+      align-items: center;
       display: flex;
-      margin-top: rem(25);
-      gap: rem(15);
-      .share-info {
+      gap: rem(4);
+      justify-content: space-between;
+
+      .title {
+        flex: none;
+        font-size: rem(24);
+        font-weight: 600;
+        line-height: rem(28);
+        width: rem(198);
+      }
+
+      .value {
+        align-items: center;
+        background-color: rgba(#00f2fa, 0.1);
+        border: solid 1px #00f2fa;
+        border-radius: rem(30);
+        display: flex;
+        flex-grow: 1;
+        font-size: rem(24);
+        font-weight: 600;
+        height: rem(60);
+        justify-content: center;
+        padding: 0 rem(12);
+        white-space: nowrap;
+      }
+    }
+
+    .stats {
+      display: flex;
+      gap: rem(40);
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        gap: rem(8);
+        padding-left: rem(16);
+        position: relative;
+
         .title {
-          display: block;
-          font-size: rem(20);
+          font-size: rem(14);
           font-weight: 500;
-          line-height: rem(22);
-          span {
-            font-weight: 700;
-          }
+          line-height: rem(16);
         }
-        .total-vulties {
-          color: #97acbf;
-          display: block;
-          font-size: rem(16);
-          margin-top: rem(14);
-        }
-        .total-vulties-numder {
+
+        .multiplier {
           color: $cyan-base;
-          display: block;
-          font-size: rem(28);
-          font-weight: 600;
+          font-size: rem(30);
+          font-weight: 700;
           line-height: rem(30);
         }
-      }
-      .img {
-        height: 100%;
-        max-width: rem(107);
-        border-radius: 15px;
-        background-color: rgb(255 255 255 / 6%);
-      }
-    }
-    .swap-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      align-content: center;
-      margin-top: rem(21);
-      height: rem(80);
-      li {
-        border-left: 1px rgba(27, 63, 115, 1) solid;
-        // background-color: gray;
-        padding: rem(5) rem(10) rem(45) rem(10);
-        position: relative;
-        width: 33%;
-        height: 100%;
-        .title {
-          display: block;
-          color: #97acbf;
-          font-size: rem(11);
-          margin-bottom: rem(5);
-        }
-        .number {
+
+        &::before {
+          background-color: $gray-1;
+          content: "";
+          height: rem(48);
+          left: 0;
           position: absolute;
-          bottom: rem(1);
-          display: block;
-          font-size: rem(18);
-          font-weight: 600;
-        }
-        .multiplier {
-          position: absolute;
-          bottom: rem(1);
-          color: $blue-persian;
-          font-size: rem(18);
-          font-weight: 600;
+          top: 50%;
+          transform: translateY(-50%);
+          width: rem(1);
         }
       }
     }
   }
-  .contact-links {
-    margin-top: rem(24);
-    padding: rem(10);
-    text-align: center;
+
+  .ant-list-item {
+    align-items: center;
+    background-color: #03a9f4 !important;
     color: $gray-1 !important;
     cursor: pointer;
-    .anticon{
-      margin-right: rem(7);
-    }
-    .link {
-      display: flex;
-      gap: rem(12);
-      justify-content: center;
-      font-size: rem(16);
-      font-weight: 600;
-      margin-bottom: rem(8);
-    }
-    &:hover{
+    display: flex;
+    gap: rem(8);
+    justify-content: center;
+    margin-top: rem(24);
+    padding: rem(10);
+
+    &:hover {
       background-color: $blue-light-2 !important;
     }
-  }
-  .ant-modal-footer {
-    display: none;
-  }
-}
-@media (min-width: rem(576)) {
-  .swap-info {
-    height: rem(70) !important;
   }
 }
