@@ -120,6 +120,7 @@ export enum TickerKey {
   USDC = "USDC",
   USDT = "USDT",
   VTHOR = "vTHOR",
+  VULT = "VULT",
   WIF = "WIF",
   XRP = "XRP",
   ZEC = "ZEC",
@@ -467,7 +468,7 @@ export const defTokens: TokenProps[] = [
     logo: "",
     ticker: TickerKey.EMP,
   },
-   {
+  {
     chain: ChainKey.ETHEREUM,
     cmcId: 0,
     contractAddress: "0xf75302720787c2a2176c87b1919059c4eaac8b98",
@@ -478,6 +479,18 @@ export const defTokens: TokenProps[] = [
     isNative: false,
     logo: "",
     ticker: TickerKey.CFGI,
+  },
+    {
+    chain: ChainKey.ETHEREUM,
+    cmcId: 33502,
+    contractAddress: "0xb788144df611029c60b859df47e79b7726c4deba",
+    decimals: 18,
+    hexPublicKey: "ECDSA",
+    isDefault: false,
+    isLocally: true,
+    isNative: false,
+    logo: "",
+    ticker: TickerKey.VULT,
   },
   {
     chain: ChainKey.AKASH,
