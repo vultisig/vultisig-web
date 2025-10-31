@@ -34,7 +34,7 @@ export default {
   [translation.CONGRATULATIONS]: "Congratulations!",
   [translation.CONNECT_OR_UPLOAD]:
     "Connect with VultiConnect or upload your vault QR to start",
-    [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copy image to clipboard",
+  [translation.COPY_IMAGE_TO_CLIPBOARD]: "Copy image to clipboard",
   [translation.CONNECT_YOUR_WALLET]: "Connect your Wallet",
   [translation.CONFIRM_REMOVE_VAULT_WARNING]:
     "Please acknowledge that you will lose all your progress before proceeding",
@@ -103,7 +103,6 @@ export default {
   [translation.MILESTONES]: "Milestones",
   [translation.MULTIPLIER]: "Multiplier",
   [translation.MULTIPLIER_BOOSTS]: "Multiplier Boosts",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "My Share of the {0} airdrop",
 
   // N
   [translation.NFTS]: "NFTs",
@@ -135,7 +134,8 @@ export default {
   [translation.READ_MORE_ABOUT_IT]: "Read more about it",
   [translation.REFER_FRIEND_ONBOARDING]: "REFER FRIEND",
   [translation.REFERRAL_CODE]: "Referral Code",
-  [translation.REFERRAL_DESC]:"This code is saved in our database for collaboration with partners.",
+  [translation.REFERRAL_DESC]:
+    "This code is saved in our database for collaboration with partners.",
   [translation.REFER_FRIEND_ONBOARDING_EXPLAIN]:
     "Refer friends with our simple Telegram Mini App and increase your airdrop",
   [translation.REFERRAL_MULTIPLIER]: "Referral Multiplier",
@@ -169,6 +169,8 @@ export default {
   [translation.SHARE]: "Share",
   [translation.SHARE_ON]: "Share on {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Share Achievements",
+  [translation.SHARE_ACHIEVEMENT_TEXT]:
+    "My Place on the $VULT airdrop leaderboard:",
   [translation.SHARE_SETTINGS_TITLE]: "Personalize Shared Vault Page",
   [translation.SHARE_SETTINGS]: "Customize Shared Vault Appearance",
   [translation.SHARE_VAULT]: "Share your Vault",

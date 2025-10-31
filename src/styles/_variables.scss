@@ -1,4 +1,4 @@
-﻿@use "sass:math";
+@use "sass:math";
 
 @function rem($px, $base: 16) {
   @return #{math.div($px, $base)}rem;

@@ -88,7 +88,6 @@ export default keyMirror({
   MILESTONES: true,
   MULTIPLIER: true,
   MULTIPLIER_BOOSTS: true,
-  MY_SHARE_OF_THE_VULT_AIRDROP: true,
 
   // N
   NFTS: true,
@@ -147,6 +146,7 @@ export default keyMirror({
   SHARE_ON: true,
   SHARE_VAULT: true,
   SHARE_ACHIEVEMENTS: true,
+  SHARE_ACHIEVEMENT_TEXT: true,
   SHARE_SETTINGS: true,
   SHARE_SETTINGS_TITLE: true,
   SHARE_VAULT_THEME: true,

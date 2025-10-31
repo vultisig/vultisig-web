@@ -99,7 +99,6 @@ export default {
   [translation.MILESTONES]: "Mijlpalen",
   [translation.MULTIPLIER]: "Vermenigvuldiger",
   [translation.MULTIPLIER_BOOSTS]: "Vermenigvuldigingsboosts",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]: "Mijn aandeel in de {0} airdrop",
   // N
   [translation.NO_BOND_FOUND]: "Geen obligatie gevonden",
   [translation.NOT_COLLECTED]: "Geen andere informatie verzameld.",
@@ -161,6 +160,7 @@ export default {
   [translation.SHARE]: "Delen",
   [translation.SHARE_ON]: "Delen op {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Deel prestaties",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "Mijn positie op het $VULT-airdropleaderbord:",
   [translation.SHARE_VAULT]: "Deel je kluis",
   [translation.SHARE_SETTINGS_TITLE]: "Personaliseer gedeelde kluispagina",
   [translation.SHARE_SETTINGS]: "Pas de weergave van de gedeelde kluis aan",
@@ -186,7 +186,7 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "naar de volgende mijlpaal",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Totale waarde van kluizen in het seizoen",
-    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Totale swapvolume in het seizoen",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]: "Totale swapvolume in het seizoen",
   [translation.TOTAL_BALANCE]: "Totaal saldo",
   [translation.TOTAL_REGISTERED_WALLETS]:
     "Totaal aantal geregistreerde wallets",

@@ -99,8 +99,6 @@ export default {
   [translation.MILESTONES]: "Traguardi",
   [translation.MULTIPLIER]: "Moltiplicatore",
   [translation.MULTIPLIER_BOOSTS]: "Potenziamenti del moltiplicatore",
-  [translation.MY_SHARE_OF_THE_VULT_AIRDROP]:
-    "La mia parte dell'airdrop di {0}",
   // N
   [translation.NO_BOND_FOUND]: "Nessuna obbligazione trovata",
   [translation.NOT_COLLECTED]: "Nessun'altra informazione raccolta.",
@@ -162,6 +160,7 @@ export default {
   [translation.SHARE]: "Condividi",
   [translation.SHARE_ON]: "Condividi su {0}",
   [translation.SHARE_ACHIEVEMENTS]: "Condividi i risultati",
+  [translation.SHARE_ACHIEVEMENT_TEXT]: "La mia posizione nella classifica dell’airdrop di $VULT:",
   [translation.SHARE_VAULT]: "Condividi il tuo Vault",
   [translation.SHARE_SETTINGS_TITLE]:
     "Personalizza la pagina del Vault condiviso",
@@ -188,7 +187,8 @@ export default {
   [translation.TO_NEXT_MILESTONE]: "fino al prossimo traguardo",
   [translation.TOTAL_AIRDROP_VAULT_VALUE]:
     "Valore totale dei caveau nella stagione",
-    [translation.TOTAL_SWAP_VOLUME_VALUE]: "Volume totale degli scambi nella stagione",
+  [translation.TOTAL_SWAP_VOLUME_VALUE]:
+    "Volume totale degli scambi nella stagione",
   [translation.TOTAL_BALANCE]: "Saldo totale",
   [translation.TOTAL_REGISTERED_WALLETS]: "Totale dei portafogli registrati",
   [translation.TOTAL_VULTIES]: "Vulties totali",
