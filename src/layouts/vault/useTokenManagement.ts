@@ -23,7 +23,7 @@ export const useTokenManagement = ({
   onVaultsUpdate,
 }: UseTokenManagementProps) => {
   const discoverAssets = useCallback(
-    async (token: CoinParams & CoinProps, vault: VaultProps): Promise<void> => {
+    async (token: CoinParams & CoinProps, vault: VaultProps, currentVaults: VaultProps[] = vaults): Promise<void> => {
       const oneInchId = oneInchRef[token.chain];
 
       if (!oneInchId) return;
@@ -77,7 +77,7 @@ export const useTokenManagement = ({
 
         const newCoins = await vaultProvider.getValues(validCoins, Currency.USD);
 
-        const updatedVaults = vaults.map((item) =>
+        const updatedVaults = currentVaults.map((item) =>
           vaultProvider.compareVault(item, vault)
             ? {
                 ...item,
@@ -230,7 +230,7 @@ export const useTokenManagement = ({
           console.error("Failed to fetch token balance:", error);
         }
       } else {
-        await discoverAssets(newToken, vault);
+        await discoverAssets(newToken, vault, updatedVaults);
       }
     },
     [vaults, vaultProvider, onVaultsUpdate, discoverAssets]

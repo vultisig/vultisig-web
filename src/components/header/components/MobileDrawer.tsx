@@ -50,7 +50,7 @@ export default function MobileDrawer ({
       )}
 
       <Menu
-        items={navbarMenu && navbarMenu.map((item) =>
+        items={navbarMenu?.map((item) =>
           item?.type ? { ...item, type: "group" } : item
         )}
         selectedKeys={[]}

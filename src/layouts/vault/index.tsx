@@ -67,6 +67,7 @@ export default function Component (){
     async (chain: any) => {
       const fetchedTokens = await getTokens(chain);
       setTokens(fetchedTokens);
+      return fetchedTokens;
     },
     [getTokens, setTokens]
   );
