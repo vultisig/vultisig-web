@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import constantKeys from "i18n/constant-keys";
@@ -8,7 +8,7 @@ interface SeasonTimerProps {
   className?: string;
 }
 
-const SeasonTimer: FC<SeasonTimerProps> = ({ endTime, className = "balance" }) => {
+export default function SeasonTimer({ endTime, className = "balance" }: SeasonTimerProps) {
   const { t } = useTranslation();
 
   const remainingTime = useMemo(() => {
@@ -35,5 +35,5 @@ const SeasonTimer: FC<SeasonTimerProps> = ({ endTime, className = "balance" }) =
   );
 };
 
-export default SeasonTimer;
+
 

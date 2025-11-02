@@ -10,7 +10,7 @@ interface VaultState {
   vault?: VaultProps;
 }
 
-export const useVaultState = () => {
+export const useVault = () => {
   const [state, setState] = useState<VaultState>({
     tokens: defTokens,
     vaults: [],

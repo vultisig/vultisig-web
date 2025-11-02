@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { Link } from "react-router-dom";
 import { LayoutKey } from "utils/constants";
 import { VaultProps } from "utils/interfaces";
@@ -11,7 +10,7 @@ interface LogoProps {
   className?: string;
 }
 
-const Logo: FC<LogoProps> = ({ layout, vault, to, className = "logo" }) => {
+export default function Logo ({ layout, vault, to, className = "logo" }: LogoProps) {
   return (
     <Link to={to} className={className}>
       {layout === LayoutKey.SHARED ? (
@@ -32,6 +31,3 @@ const Logo: FC<LogoProps> = ({ layout, vault, to, className = "logo" }) => {
     </Link>
   );
 };
-
-export default Logo;
-

@@ -2,9 +2,9 @@ import { FC } from "react";
 import { Drawer, Menu, Divider, MenuProps } from "antd";
 import { LayoutKey } from "utils/constants";
 import { VaultProps } from "utils/interfaces";
-import Logo from "./logo";
-import SeasonTimer from "./seasonTimer";
-import VaultBalance from "./vaultBalance";
+import Logo from "./Logo";
+import SeasonTimer from "./SeasonTimer";
+import VaultBalance from "./VaultBalance"
 
 interface MobileDrawerProps {
   visible: boolean;
@@ -18,7 +18,7 @@ interface MobileDrawerProps {
   dropdownMenu: MenuProps["items"];
 }
 
-const MobileDrawer: FC<MobileDrawerProps> = ({
+export default function MobileDrawer ({
   visible,
   onClose,
   layout,
@@ -28,7 +28,7 @@ const MobileDrawer: FC<MobileDrawerProps> = ({
   vaultBalance,
   navbarMenu,
   dropdownMenu,
-}) => {
+} : MobileDrawerProps) {
   return (
     <Drawer
       footer={false}
@@ -62,6 +62,3 @@ const MobileDrawer: FC<MobileDrawerProps> = ({
     </Drawer>
   );
 };
-
-export default MobileDrawer;
-

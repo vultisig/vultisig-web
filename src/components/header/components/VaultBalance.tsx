@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Storage } from "icons";
 import constantKeys from "i18n/constant-keys";
@@ -8,7 +7,7 @@ interface VaultBalanceProps {
   className?: string;
 }
 
-const VaultBalance: FC<VaultBalanceProps> = ({ balance, className = "balance" }) => {
+export default function VaultBalance ({ balance, className = "balance" }:VaultBalanceProps) {
   const { t } = useTranslation();
 
   return (
@@ -19,6 +18,3 @@ const VaultBalance: FC<VaultBalanceProps> = ({ balance, className = "balance" })
     </div>
   );
 };
-
-export default VaultBalance;
-

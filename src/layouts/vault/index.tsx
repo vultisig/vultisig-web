@@ -1,19 +1,19 @@
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { Outlet } from "react-router-dom";
 
 import { LayoutKey } from "utils/constants";
 
 import Header from "components/header";
 import SplashScreen from "components/splash-screen";
-import VaultModals from "components/vaultModals";
+import VaultModals from "layouts/vault/components/VaultModals";
 
-import { useVaultState } from "hooks/useVaultState";
-import { useVaultChains } from "hooks/useVaultChains";
-import { useTokenManagement } from "hooks/useTokenManagement";
-import { useVaultPreparation } from "hooks/useVaultPreparation";
-import { useVaultInitialization } from "hooks/useVaultInitialization";
+import { useVault as useVault } from "layouts/vault/useVault";
+import { useVaultChains } from "layouts/vault/useVaultChains";
+import { useTokenManagement } from "layouts/vault/useTokenManagement";
+import { useVaultPreparation } from "layouts/vault/useVaultPreparation";
+import { useVaultInitialization } from "layouts/vault/useVaultInitialization";
 
-const Component: FC = () => {
+export default function Component (){
   const {
     vault,
     vaults,
@@ -24,7 +24,7 @@ const Component: FC = () => {
     setVaults,
     setTokens,
     loadVaults,
-  } = useVaultState();
+  } = useVault();
 
   const handleVaultsUpdate = useCallback(
     (updatedVaults: typeof vaults) => {
@@ -105,5 +105,3 @@ const Component: FC = () => {
     </>
   );
 };
-
-export default Component;

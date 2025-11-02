@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import { Button, Dropdown, Menu } from "antd";
@@ -15,17 +15,17 @@ import constantPaths from "routes/constant-paths";
 
 import { CircleUser, HamburgerLG } from "icons";
 
-import { useHeaderState } from "hooks/useHeaderState";
-import { useLanguageSelection } from "hooks/useLanguageSelection";
-import { usePageSelection } from "hooks/usePageSelection";
-import { useMenuItems } from "hooks/useMenuItems";
-import { useAirdropActions } from "hooks/useAirdropActions";
-import { useShareVault } from "hooks/useShareVault";
-import { useVaultBalance } from "hooks/useVaultBalance";
+import { useHeaderState } from "components/header/useHeaderState";
+import { useLanguageSelection } from "components/header/useLanguageSelection";
+import { usePageSelection } from "components/header/usePageSelection";
+import { useMenuItems } from "components/header/useMenuItems";
+import { useAirdropActions } from "components/header/useAirdropActions";
+import { useShareVault } from "components/header/useShareVault";
+import { useVaultBalance } from "components/header/useVaultBalance";
 
-import Logo from "./logo";
-import SeasonTimer from "./seasonTimer";
-import MobileDrawer from "./mobileDrawer";
+import Logo from "./components/Logo";
+import SeasonTimer from "./components/SeasonTimer";
+import MobileDrawer from "./components/MobileDrawer";
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -33,7 +33,7 @@ interface ComponentProps {
   vault?: VaultProps;
 }
 
-const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
+export default function Component ({ updateVault, layout, vault }: ComponentProps) {
   const { t } = useTranslation();
   const { baseValue, currency, seasonInfo } = useBaseContext();
   const goBack = useGoBack();
@@ -137,5 +137,3 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     </>
   );
 };
-
-export default Component;

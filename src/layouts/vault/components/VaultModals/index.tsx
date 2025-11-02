@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { VaultProps } from "utils/interfaces";
 
 import ChangeCurrency from "modals/change-currency";
@@ -20,12 +19,12 @@ interface VaultModalsProps {
   deleteVault: (vault: VaultProps) => void;
 }
 
-const VaultModals: FC<VaultModalsProps> = ({
+export default function VaultModals ({
   vault,
   vaults,
   updateVault,
   deleteVault,
-}) => {
+}: VaultModalsProps) {
   return (
     <>
       <ChangeCurrency />
@@ -42,6 +41,3 @@ const VaultModals: FC<VaultModalsProps> = ({
     </>
   );
 };
-
-export default VaultModals;
-
