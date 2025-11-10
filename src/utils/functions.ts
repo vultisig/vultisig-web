@@ -118,31 +118,19 @@ export const toSnakeCase = (obj: any): any => {
 };
 
 export const calcReferralMultiplier = (referralCount: number) => {
-  // Convert referralCount to float for math operations
-  const rc = referralCount;
-
-  // Compute numerator and denominator
-  const numerator = Math.log(1 + rc);
+  const numerator = Math.log(1 + referralCount);
   const denominator = Math.log(1 + 500);
+  const multiplier = 1 + numerator / denominator;
 
-  // Calculate multiplier
-  let multiplier = 1 + numerator / denominator;
+  if (multiplier > 2) return 2;
 
-  // Apply MIN(2, multiplier)
-  if (multiplier > 2) {
-    multiplier = 2;
-  }
-
-  // Round down to 1 decimal place (floor rounding)
-  return multiplier * 10 / 10;
+  return Math.floor(multiplier * 10) / 10;
 };
 
 export const calcSwapMultiplier = (swapVolume: number) => {
-  // Calculate the multiplier
-  let multiplier = 1 + 0.002 * Math.sqrt(swapVolume);
+  const multiplier = 1 + 0.002 * Math.sqrt(swapVolume);
 
-  // Round down to 1 decimal place (floor rounding)
-  return multiplier * 10 / 10;
+  return Math.floor(multiplier * 10) / 10;
 };
 
 export const getCurrentSeason = (
@@ -167,9 +155,8 @@ export const getCurrentSeasonVulties = (
   const currentSeasonId = parseInt(getCurrentSeason(seasonInfo)?.id || "0");
 
   return (
-    vault.seasonStats?.find(
-      (activity) => activity.seasonId == currentSeasonId
-    )?.points || 0
+    vault.seasonStats?.find((activity) => activity.seasonId == currentSeasonId)
+      ?.points || 0
   );
 };
 
