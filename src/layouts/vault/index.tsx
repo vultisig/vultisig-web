@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { Outlet } from "react-router-dom";
 
 import { LayoutKey } from "utils/constants";
+import { ChainProps } from "utils/interfaces";
 
 import Header from "components/header";
 import SplashScreen from "components/splash-screen";
@@ -64,7 +65,7 @@ export default function Component (){
   });
   
   const handleGetTokens = useCallback(
-    async (chain: any) => {
+    async (chain: ChainProps) => {
       const fetchedTokens = await getTokens(chain);
       setTokens(fetchedTokens);
       return fetchedTokens;

@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { Drawer, Menu, Divider, MenuProps } from "antd";
 import { LayoutKey } from "utils/constants";
 import { VaultProps } from "utils/interfaces";

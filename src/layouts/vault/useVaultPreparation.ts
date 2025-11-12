@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { VaultProps } from "utils/interfaces";
+import { ChainProps, VaultProps } from "utils/interfaces";
 import { Currency } from "utils/constants";
 import VaultProvider from "utils/vault-provider";
 import PositionProvider from "utils/position-provider";
@@ -7,7 +7,7 @@ import PositionProvider from "utils/position-provider";
 interface UseVaultPreparationProps {
   vault?: VaultProps;
   vaultProvider: VaultProvider;
-  onChainUpdate: (chain: any, vault: VaultProps) => void;
+  onChainUpdate: (chain: ChainProps, vault: VaultProps) => void;
   onPositionsUpdate: (vault: VaultProps) => void;
   onVaultUpdate: (vault: VaultProps) => void;
 }

@@ -201,7 +201,7 @@ export const useTokenManagement = ({
             );
             newToken.value = value;
 
-            const finalVaults = vaults.map((item) =>
+            const finalVaults = updatedVaults.map((item) =>
               vaultProvider.compareVault(item, vault)
                 ? {
                     ...item,
