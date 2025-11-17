@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { ChainProps, VaultProps } from "utils/interfaces";
 import { Currency } from "utils/constants";
 import VaultProvider from "utils/vault-provider";
@@ -19,6 +19,10 @@ export const useVaultPreparation = ({
   onPositionsUpdate,
   onVaultUpdate,
 }: UseVaultPreparationProps) => {
+  // Track the last prepared vault UID to prevent infinite loops
+  const lastPreparedVaultUid = useRef<string | null>(null);
+  const isPreparingRef = useRef<boolean>(false);
+
   const prepareVault = useCallback(
     async (targetVault: VaultProps): Promise<void> => {
       const updatedVault = {} as Partial<VaultProps>;
@@ -69,7 +73,8 @@ export const useVaultPreparation = ({
       if (!targetVault.positionsUpdating) {
         if (!targetVault.positions.updated) {
           const positionProvider = new PositionProvider(targetVault);
-          updatedVault.positionsUpdating = true;
+          // updatedVault.positionsUpdating = true;
+          onVaultUpdate({ ...targetVault, positionsUpdating: true } as VaultProps);
 
           try {
             await positionProvider.getPrerequisites();
@@ -139,23 +144,31 @@ export const useVaultPreparation = ({
           }
         }
       } else if (targetVault.positions.updated) {
-        updatedVault.positionsUpdating = false;
+        // updatedVault.positionsUpdating = false;
+        onVaultUpdate({ ...targetVault, positionsUpdating: false } as VaultProps);
       }
 
-      // Update vault if there are changes
-      if (Object.keys(updatedVault).length) {
-        onVaultUpdate({ ...targetVault, ...updatedVault } as VaultProps);
-      }
+      // // Update vault if there are changes
+      // if (Object.keys(updatedVault).length) {
+      //   onVaultUpdate({ ...targetVault, ...updatedVault } as VaultProps);
+      // }
     },
     [vaultProvider, onChainUpdate, onPositionsUpdate, onVaultUpdate]
   );
 
   // Auto-prepare vault when it changes
+  // We use vault.uid as the dependency to avoid infinite loops
+  // The preparation should only trigger when a new vault is loaded, not on every update
   useEffect(() => {
-    if (vault) {
-      prepareVault(vault);
+    if (vault && vault.uid !== lastPreparedVaultUid.current) {
+      lastPreparedVaultUid.current = vault.uid;
+      isPreparingRef.current = true;
+      prepareVault(vault).finally(() => {
+        isPreparingRef.current = false;
+      });
     }
-  }, [vault, prepareVault]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vault?.uid]);
 
   return {
     prepareVault,
