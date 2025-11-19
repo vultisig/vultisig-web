@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 import {
@@ -16,15 +16,12 @@ import {
   VaultProps,
 } from "utils/interfaces";
 import {
-  getStoredAddresses,
   getStoredVaults,
-  setStoredAddresses,
   setStoredVaults,
 } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 import api from "utils/api";
 import PositionProvider from "utils/position-provider";
-import VaultProvider from "utils/vault-provider";
 
 import Header from "components/header";
 import SplashScreen from "components/splash-screen";
@@ -41,22 +38,21 @@ import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
 import { handleSeasonPath } from "utils/functions";
 
-interface InitialState {
-  tokens: TokenProps[];
-  vaults: VaultProps[];
-  vault?: VaultProps;
-}
+import { useVault as useVault } from "./useVault";
 
-const Component: FC = () => {
-  const initialState: InitialState = {
-    tokens: defTokens,
-    vaults: [],
-  };
-  const [state, setState] = useState(initialState);
-  const { tokens, vault, vaults } = state;
+export default function Component (){
+  const {
+    vault,
+    vaults,
+    tokens,
+    vaultProvider,
+    updateVault,
+    deleteVault,
+    setState,
+  } = useVault();
+
   const { id = "0" } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const vaultProvider = new VaultProvider();
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
     const oneInchId = oneInchRef[token.chain];
 
@@ -314,44 +310,6 @@ const Component: FC = () => {
     });
   };
 
-  const deleteVault = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const vaults = prevState.vaults.filter(({ uid }) => uid !== vault.uid);
-      const addresses = getStoredAddresses();
-
-      delete addresses[vault.publicKeyEcdsa];
-      delete addresses[vault.publicKeyEddsa];
-
-      setStoredAddresses(addresses);
-
-      if (vaults.length) {
-        const vault = vaults.find(({ isActive }) => isActive);
-
-        if (vault) {
-          setStoredVaults(vaults);
-
-          return { ...prevState, vault, vaults };
-        } else {
-          const modifiedVaults = vaults.map((vault, index) => ({
-            ...vault,
-            isActive: !index,
-          }));
-          const [activeVault] = modifiedVaults;
-
-          setStoredVaults(modifiedVaults);
-
-          return { ...prevState, vault: activeVault, vaults: modifiedVaults };
-        }
-      } else {
-        setStoredVaults([]);
-
-        navigate(constantPaths.default.airdrop, { replace: true });
-
-        return { ...prevState };
-      }
-    });
-  };
-
   const prepareVault = (vault: VaultProps) => {
     const updatedVault = {} as VaultProps;
     const _assets = vault.chains.filter(({ coinsUpdated }) => !coinsUpdated);
@@ -459,27 +417,6 @@ const Component: FC = () => {
               positions: { ...item.positions, ...vault.positions },
             }
           : item
-      );
-
-      setStoredVaults(vaults);
-
-      return {
-        ...prevState,
-        vault: vaults.find(({ isActive }) => isActive),
-        vaults,
-      };
-    });
-  };
-
-  const updateVault = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const vaults = prevState.vaults.map((item) =>
-        vaultProvider.compareVault(item, vault)
-          ? vault
-          : {
-              ...item,
-              isActive: vault.isActive ? false : item.isActive,
-            }
       );
 
       setStoredVaults(vaults);
@@ -637,5 +574,3 @@ const Component: FC = () => {
     <SplashScreen />
   );
 };
-
-export default Component;
