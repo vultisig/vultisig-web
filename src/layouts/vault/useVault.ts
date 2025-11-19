@@ -168,8 +168,7 @@ export const useVault = () => {
     setVaults,
     setTokens,
     loadVaults,
-    setState,
     updateChain,
-    updatePositions
+    updatePositions,
   };
 };
