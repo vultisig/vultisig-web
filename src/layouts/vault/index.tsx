@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import { Currency, LayoutKey, balanceAPI, oneInchRef } from "utils/constants";
 import {
@@ -11,7 +10,6 @@ import {
 } from "utils/interfaces";
 import { setStoredVaults } from "utils/storage";
 import api from "utils/api";
-import PositionProvider from "utils/position-provider";
 
 import Header from "components/header";
 import SplashScreen from "components/splash-screen";
@@ -29,6 +27,7 @@ import ManageAirDrop from "modals/manage-airdrop";
 
 import { useVault as useVault } from "./useVault";
 import { useVaultInitialization } from "./useVaultInitialization";
+import { useVaultPreparation } from "./useVaultPreparation";
 
 export default function Component() {
   const {
@@ -44,8 +43,6 @@ export default function Component() {
     setState,
   } = useVault();
 
-  const { id = "0" } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
     const oneInchId = oneInchRef[token.chain];
 
@@ -303,81 +300,6 @@ export default function Component() {
     });
   };
 
-  const prepareVault = (vault: VaultProps) => {
-    const updatedVault = {} as VaultProps;
-    const _assets = vault.chains.filter(({ coinsUpdated }) => !coinsUpdated);
-    const _nfts = vault.chains.filter(({ nftsUpdated }) => !nftsUpdated);
-
-    if (_assets.length) {
-      if (!vault.assetsUpdating) {
-        updatedVault.assetsUpdating = true;
-
-        _assets.forEach((item) =>
-          vaultProvider
-            .prepareChain(item, Currency.USD)
-            .then((chain) => updateChain(chain, vault))
-        );
-      }
-    } else if (vault.assetsUpdating) {
-      updatedVault.assetsUpdating = false;
-    }
-
-    if (_nfts.length) {
-      if (!vault.nftsUpdating) {
-        updatedVault.nftsUpdating = true;
-
-        _nfts.forEach((item) =>
-          vaultProvider
-            .prepareNFT(item)
-            .then((chain) => updateChain(chain, vault))
-        );
-      }
-    } else if (vault.nftsUpdating) {
-      updatedVault.nftsUpdating = false;
-    }
-
-    if (!vault.positionsUpdating) {
-      if (!vault.positions.updated) {
-        const positionProvider = new PositionProvider(vault);
-
-        updatedVault.positionsUpdating = true;
-
-        positionProvider.getPrerequisites().then(() => {
-          Promise.all([
-            positionProvider.getLiquidityPositions().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getMayaBond().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getRuneProvider().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getSaverPositions().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getTCYStake().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getThorBond().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-            positionProvider.getRUJIRAStake().then((positions) => {
-              updatePositions({ ...vault, positions });
-            }),
-          ]).then(() => {
-            updatePositions({ ...vault, positions: { updated: true } });
-          });
-        });
-      }
-    } else if (vault.positions.updated) {
-      updatedVault.positionsUpdating = false;
-    }
-
-    if (Object.keys(updatedVault).length)
-      updateVault({ ...vault, ...updatedVault });
-  };
-
   const updateChain = (chain: ChainProps, vault: VaultProps): void => {
     setState((prevState) => {
       const vaults = prevState.vaults.map((item) =>
@@ -422,17 +344,19 @@ export default function Component() {
     });
   };
 
-  const componentDidUpdate = (): void => {
-    if (vault) prepareVault(vault);
-  };
+  useVaultPreparation({
+    vault,
+    vaultProvider,
+    onChainUpdate: updateChain,
+    onPositionsUpdate: updatePositions,
+    onVaultUpdate: updateVault,
+  });
 
   useVaultInitialization({
     loadVaults,
     setVaults,
     vaultProvider,
   });
-
-  useEffect(componentDidUpdate, [vault]);
 
   return vault ? (
     <>
