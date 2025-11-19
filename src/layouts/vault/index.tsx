@@ -41,6 +41,8 @@ export default function Component() {
     setTokens,
     loadVaults,
     setState,
+    updateChain,
+    updatePositions,
   } = useVault();
 
   const discoverAssets = (token: CoinParams & CoinProps, vault: VaultProps) => {
@@ -297,50 +299,6 @@ export default function Component() {
 
         resolve();
       });
-    });
-  };
-
-  const updateChain = (chain: ChainProps, vault: VaultProps): void => {
-    setState((prevState) => {
-      const vaults = prevState.vaults.map((item) =>
-        vaultProvider.compareVault(item, vault)
-          ? {
-              ...item,
-              chains: item.chains.map((item) =>
-                item.name === chain.name ? { ...item, ...chain } : item
-              ),
-            }
-          : item
-      );
-
-      setStoredVaults(vaults);
-
-      return {
-        ...prevState,
-        vault: vaults.find(({ isActive }) => isActive),
-        vaults,
-      };
-    });
-  };
-
-  const updatePositions = (vault: VaultProps): void => {
-    setState((prevState) => {
-      const vaults = prevState.vaults.map((item) =>
-        vaultProvider.compareVault(item, vault)
-          ? {
-              ...item,
-              positions: { ...item.positions, ...vault.positions },
-            }
-          : item
-      );
-
-      setStoredVaults(vaults);
-
-      return {
-        ...prevState,
-        vault: vaults.find(({ isActive }) => isActive),
-        vaults,
-      };
     });
   };
 

@@ -1,7 +1,12 @@
 import { useState, useMemo } from "react";
-import { VaultProps, TokenProps } from "utils/interfaces";
+import { VaultProps, TokenProps, ChainProps } from "utils/interfaces";
 import { defTokens } from "utils/constants";
-import { getStoredVaults, setStoredVaults, getStoredAddresses, setStoredAddresses } from "utils/storage";
+import {
+  getStoredVaults,
+  setStoredVaults,
+  getStoredAddresses,
+  setStoredAddresses,
+} from "utils/storage";
 import VaultProvider from "utils/vault-provider";
 
 interface VaultState {
@@ -43,7 +48,9 @@ export const useVault = () => {
 
   const deleteVault = (vaultToDelete: VaultProps): void => {
     setState((prevState) => {
-      const vaults = prevState.vaults.filter(({ uid }) => uid !== vaultToDelete.uid);
+      const vaults = prevState.vaults.filter(
+        ({ uid }) => uid !== vaultToDelete.uid
+      );
       const addresses = getStoredAddresses();
 
       delete addresses[vaultToDelete.publicKeyEcdsa];
@@ -99,6 +106,50 @@ export const useVault = () => {
     }
   };
 
+  const updateChain = (chain: ChainProps, vault: VaultProps): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? {
+              ...item,
+              chains: item.chains.map((item) =>
+                item.name === chain.name ? { ...item, ...chain } : item
+              ),
+            }
+          : item
+      );
+
+      setStoredVaults(vaults);
+
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
+    });
+  };
+
+  const updatePositions = (vault: VaultProps): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? {
+              ...item,
+              positions: { ...item.positions, ...vault.positions },
+            }
+          : item
+      );
+
+      setStoredVaults(vaults);
+
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
+    });
+  };
+
   const setTokens = (tokens: TokenProps[]): void => {
     setState((prevState) => ({ ...prevState, tokens }));
   };
@@ -118,6 +169,7 @@ export const useVault = () => {
     setTokens,
     loadVaults,
     setState,
+    updateChain,
+    updatePositions
   };
 };
-
