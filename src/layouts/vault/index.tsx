@@ -1,13 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
-import {
-  Currency,
-  LayoutKey,
-  balanceAPI,
-  defTokens,
-  oneInchRef,
-} from "utils/constants";
+import { Currency, LayoutKey, balanceAPI, oneInchRef } from "utils/constants";
 import {
   ChainProps,
   CoinParams,
@@ -15,11 +9,7 @@ import {
   TokenProps,
   VaultProps,
 } from "utils/interfaces";
-import {
-  getStoredVaults,
-  setStoredVaults,
-} from "utils/storage";
-import constantPaths from "routes/constant-paths";
+import { setStoredVaults } from "utils/storage";
 import api from "utils/api";
 import PositionProvider from "utils/position-provider";
 
@@ -36,11 +26,11 @@ import ShareAchievements from "modals/share-achievements";
 import SharedSettings from "modals/shared-settings";
 import JoinAirDrop from "modals/join-airdrop";
 import ManageAirDrop from "modals/manage-airdrop";
-import { handleSeasonPath } from "utils/functions";
 
 import { useVault as useVault } from "./useVault";
+import { useVaultInitialization } from "./useVaultInitialization";
 
-export default function Component (){
+export default function Component() {
   const {
     vault,
     vaults,
@@ -48,6 +38,9 @@ export default function Component (){
     vaultProvider,
     updateVault,
     deleteVault,
+    setVaults,
+    setTokens,
+    loadVaults,
     setState,
   } = useVault();
 
@@ -433,108 +426,12 @@ export default function Component (){
     if (vault) prepareVault(vault);
   };
 
-  const componentDidMount = (): void => {
-    const vaults = getStoredVaults();
+  useVaultInitialization({
+    loadVaults,
+    setVaults,
+    vaultProvider,
+  });
 
-    if (vaults.length) {
-      const promises = vaults.map((vault) =>
-        api.vault.get(vault).then((vault) => {
-          if (vault) {
-            if (vault.chains.length) {
-              return {
-                ...vault,
-                chains: vault.chains.map((chain) => ({ ...chain, nfts: [] })),
-              };
-            } else {
-              const promises = defTokens
-                .filter((coin) => coin.isDefault)
-                .map((coin) => vaultProvider.addToken(coin, vault));
-
-              return Promise.all(promises).then((chains) => {
-                vault.chains = chains.map(
-                  ({
-                    address,
-                    balance,
-                    chain,
-                    cmcId,
-                    contractAddress,
-                    decimals,
-                    hexPublicKey,
-                    id,
-                    isNative,
-                    logo,
-                    ticker,
-                    value,
-                  }) => ({
-                    address,
-                    balance: 0,
-                    coins: [
-                      {
-                        balance,
-                        cmcId,
-                        contractAddress,
-                        decimals,
-                        id,
-                        isNative,
-                        logo,
-                        ticker,
-                        value,
-                      },
-                    ],
-                    name: chain,
-                    nfts: [],
-                    hexPublicKey,
-                  })
-                );
-
-                return vault;
-              });
-            }
-          } else {
-            return vault;
-          }
-        })
-      );
-
-      Promise.all(promises).then((updatedVaults) => {
-        const vaults = updatedVaults.filter((vault) => vault !== undefined);
-
-        if (vaults.length) {
-          const vault = vaults.find(({ isActive }) => isActive);
-
-          if (vault) {
-            setState((prevState) => ({ ...prevState, vault, vaults }));
-
-            setStoredVaults(vaults);
-          } else {
-            const modifiedVaults = vaults.map((vault, index) => ({
-              ...vault,
-              isActive: !index,
-            }));
-            const [activeVault] = modifiedVaults;
-
-            setState((prevState) => ({
-              ...prevState,
-              vault: activeVault,
-              vaults: modifiedVaults,
-            }));
-
-            setStoredVaults(modifiedVaults);
-          }
-        } else {
-          setStoredVaults([]);
-
-          navigate(constantPaths.default.airdrop, { replace: true });
-        }
-      });
-    } else {
-      const redirectPath = handleSeasonPath(constantPaths.default.airdrop, id);
-
-      navigate(redirectPath, { replace: true });
-    }
-  };
-
-  useEffect(componentDidMount, []);
   useEffect(componentDidUpdate, [vault]);
 
   return vault ? (
@@ -573,4 +470,4 @@ export default function Component (){
   ) : (
     <SplashScreen />
   );
-};
+}
