@@ -14,93 +14,82 @@ interface UseTokenManagementProps {
   vaults: VaultProps[];
   vaultProvider: VaultProvider;
   onVaultsUpdate: (vaults: VaultProps[]) => void;
+  updateCoins: (
+    token: CoinParams & CoinProps,
+    vault: VaultProps,
+    newCoins: CoinProps[]
+  ) => void;
 }
 
 export const useTokenManagement = ({
   vaults,
   vaultProvider,
   onVaultsUpdate,
+  updateCoins,
 }: UseTokenManagementProps) => {
   const discoverAssets = async (
     token: CoinParams & CoinProps,
-    vault: VaultProps,
-    currentVaults: VaultProps[] = vaults
+    vault: VaultProps
   ): Promise<void> => {
     const oneInchId = oneInchRef[token.chain];
 
-    if (!oneInchId) return;
-
-    try {
+    if (oneInchId) {
       const path = balanceAPI[token.chain];
-      const discoveredTokens = await api.discovery.tokens(path, token.address);
-      const updatedTokens = await api.coin.getInfo(
-        oneInchId,
-        discoveredTokens.map(({ contractAddress }) => contractAddress)
-      );
 
-      const coinPromises = discoveredTokens
-        .filter(({ contractAddress }) => !!updatedTokens[contractAddress])
-        .map(async ({ contractAddress, tokenBalance }) => {
-          const cmcId = await api.coin.cmc(contractAddress);
-          const decimals = updatedTokens[contractAddress].decimals;
+      api.discovery.tokens(path, token.address).then((discoveredTokens) => {
+        api.coin
+          .getInfo(
+            oneInchId,
+            discoveredTokens.map(({ contractAddress }) => contractAddress)
+          )
+          .then((updatedTokens) => {
+            const promises = discoveredTokens
+              .filter(({ contractAddress }) => !!updatedTokens[contractAddress])
+              .map(({ contractAddress, tokenBalance }) =>
+                api.coin.cmc(contractAddress).then((cmcId) => {
+                  const decimals = updatedTokens[contractAddress].decimals;
 
-          return {
-            address: token.address,
-            balance: parseInt(tokenBalance, 16) / Math.pow(10, decimals),
-            chain: token.chain,
-            cmcId,
-            contractAddress: contractAddress,
-            decimals,
-            hexPublicKey:
-              token.hexPublicKey === "ECDSA"
-                ? vault.publicKeyEcdsa
-                : vault.publicKeyEddsa,
-            isNative: false,
-            logo: updatedTokens[contractAddress].logoURI || "",
-            ticker: updatedTokens[contractAddress].symbol,
-          };
-        });
+                  return {
+                    address: token.address,
+                    balance:
+                      parseInt(tokenBalance, 16) / Math.pow(10, decimals),
+                    chain: token.chain,
+                    cmcId,
+                    contractAddress: contractAddress,
+                    decimals,
+                    hexPublicKey:
+                      token.hexPublicKey === "ECDSA"
+                        ? vault.publicKeyEcdsa
+                        : vault.publicKeyEddsa,
+                    isNative: false,
+                    logo: updatedTokens[contractAddress].logoURI || "",
+                    ticker: updatedTokens[contractAddress].symbol,
+                  };
+                })
+              );
 
-      const coins = await Promise.all(coinPromises);
+            Promise.all(promises).then((coins) => {
+              const promises = coins
+                .filter(({ cmcId }) => cmcId)
+                .map(({ balance, ...coin }) =>
+                  api.coin
+                    .add(vault, coin)
+                    .catch(() => 0)
+                    .then((id) => ({ ...coin, balance, id, value: 0 }))
+                );
 
-      const addCoinPromises = coins
-        .filter(({ cmcId }) => cmcId)
-        .map(async ({ balance, ...coin }) => {
-          try {
-            const id = await api.coin.add(vault, coin);
-            return { ...coin, balance, id, value: 0 };
-          } catch {
-            return { ...coin, balance, id: 0, value: 0 };
-          }
-        });
+              Promise.all(promises).then((coins) => {
+                const validCoins = coins.filter(({ id }) => id);
 
-      const addedCoins = await Promise.all(addCoinPromises);
-      const validCoins = addedCoins.filter(({ id }) => id);
-
-      const newCoins = await vaultProvider.getValues(validCoins, Currency.USD);
-
-      const updatedVaults = currentVaults.map((item) =>
-        vaultProvider.compareVault(item, vault)
-          ? {
-              ...item,
-              chains: item.chains.map((chain) =>
-                chain.name === token.chain
-                  ? {
-                      ...vaultProvider.sortChain({
-                        ...chain,
-                        coins: [...chain.coins, ...newCoins],
-                      }),
-                    }
-                  : chain
-              ),
-            }
-          : item
-      );
-
-      setStoredVaults(updatedVaults);
-      onVaultsUpdate(updatedVaults);
-    } catch (error) {
-      console.error("Failed to discover assets:", error);
+                vaultProvider
+                  .getValues(validCoins, Currency.USD)
+                  .then((newCoins) => {
+                    updateCoins(token, vault, newCoins);
+                  });
+              });
+            });
+          });
+      });
     }
   };
 
@@ -226,7 +215,7 @@ export const useTokenManagement = ({
         console.error("Failed to fetch token balance:", error);
       }
     } else {
-      await discoverAssets(newToken, vault, updatedVaults);
+      await discoverAssets(newToken, vault);
     }
   };
 

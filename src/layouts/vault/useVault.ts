@@ -1,5 +1,11 @@
 import { useState, useMemo } from "react";
-import { VaultProps, TokenProps, ChainProps } from "utils/interfaces";
+import {
+  VaultProps,
+  TokenProps,
+  ChainProps,
+  CoinParams,
+  CoinProps,
+} from "utils/interfaces";
 import { defTokens } from "utils/constants";
 import {
   getStoredVaults,
@@ -150,6 +156,40 @@ export const useVault = () => {
     });
   };
 
+  const updateCoins = (
+    token: CoinParams & CoinProps,
+    vault: VaultProps,
+    newCoins: CoinProps[]
+  ): void => {
+    setState((prevState) => {
+      const vaults = prevState.vaults.map((item) =>
+        vaultProvider.compareVault(item, vault)
+          ? {
+              ...item,
+              chains: item.chains.map((chain) =>
+                chain.name === token.chain
+                  ? {
+                      ...vaultProvider.sortChain({
+                        ...chain,
+                        coins: [...chain.coins, ...newCoins],
+                      }),
+                    }
+                  : chain
+              ),
+            }
+          : item
+      );
+
+      setStoredVaults(vaults);
+
+      return {
+        ...prevState,
+        vault: vaults.find(({ isActive }) => isActive),
+        vaults,
+      };
+    });
+  };
+
   const setTokens = (tokens: TokenProps[]): void => {
     setState((prevState) => ({ ...prevState, tokens }));
   };
@@ -170,5 +210,6 @@ export const useVault = () => {
     loadVaults,
     updateChain,
     updatePositions,
+    updateCoins,
   };
 };

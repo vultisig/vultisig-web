@@ -35,12 +35,14 @@ export default function Component() {
     loadVaults,
     updateChain,
     updatePositions,
+    updateCoins,
   } = useVault();
 
   const { toggleToken, getTokens } = useTokenManagement({
     vaults,
     vaultProvider,
     onVaultsUpdate: setVaults,
+    updateCoins,
   });
 
   useVaultPreparation({
