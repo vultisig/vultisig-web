@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   VaultProps,
   TokenProps,
@@ -14,6 +15,7 @@ import {
   setStoredAddresses,
 } from "utils/storage";
 import VaultProvider from "utils/vault-provider";
+import constantPaths from "routes/constant-paths";
 
 interface VaultState {
   tokens: TokenProps[];
@@ -26,6 +28,8 @@ export const useVault = () => {
     tokens: defTokens,
     vaults: [],
   });
+
+  const navigate = useNavigate();
 
   const vaultProvider = useMemo(() => new VaultProvider(), []);
 
@@ -82,6 +86,7 @@ export const useVault = () => {
         }
       } else {
         setStoredVaults([]);
+        navigate(constantPaths.default.airdrop, { replace: true });
         return { ...prevState, vault: undefined, vaults: [] };
       }
     });
