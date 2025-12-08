@@ -105,7 +105,7 @@ const Component: FC<ComponentProps> = ({ updateVault, vault }) => {
       width={480}
     >
       <Form form={form} onFinish={handleSubmit}>
-        <Form.Item<FieldType> name="referralCode" rules={[{ required: true }]}>
+        <Form.Item<FieldType> name="referralCode" rules={[{ required: false }]}>
           <Input placeholder="Type here" />
         </Form.Item>
         <div className="desc">
