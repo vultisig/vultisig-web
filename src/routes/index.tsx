@@ -10,6 +10,12 @@ import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 import { getCurrentSeason, handleSeasonPath } from "utils/functions";
 import { useBaseContext } from "context";
+import {
+  CurrentSeasonAirdropGuard,
+  PositionsGuard,
+  AchievementsGuard,
+  SwapGuard,
+} from "utils/route-guards";
 
 const DefaultLayout = lazy(() => import("layouts/default"));
 const ShareLayout = lazy(() => import("layouts/shared"));
@@ -100,7 +106,9 @@ const Component = () => {
           path: constantPaths.default.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -108,7 +116,9 @@ const Component = () => {
           path: constantPaths.default.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -150,7 +160,9 @@ const Component = () => {
           path: constantPaths.shared.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -158,7 +170,9 @@ const Component = () => {
           path: constantPaths.shared.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -166,7 +180,9 @@ const Component = () => {
           path: constantPaths.shared.positions,
           element: (
             <Suspense>
-              <PositionsPage />
+              <PositionsGuard>
+                <PositionsPage />
+              </PositionsGuard>
             </Suspense>
           ),
         },
@@ -240,7 +256,9 @@ const Component = () => {
           path: constantPaths.vault.achievements,
           element: (
             <Suspense>
-              <AchievmentsPage />
+              <AchievementsGuard>
+                <AchievmentsPage />
+              </AchievementsGuard>
             </Suspense>
           ),
         },
@@ -248,7 +266,9 @@ const Component = () => {
           path: constantPaths.vault.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -256,7 +276,9 @@ const Component = () => {
           path: constantPaths.vault.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -264,7 +286,9 @@ const Component = () => {
           path: constantPaths.vault.positions,
           element: (
             <Suspense>
-              <PositionsPage />
+              <PositionsGuard>
+                <PositionsPage />
+              </PositionsGuard>
             </Suspense>
           ),
         },
