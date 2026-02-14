@@ -28,40 +28,27 @@ export const CurrentSeasonAirdropGuard = ({
 };
 
 /**
- * Guard for positions route.
- * Currently allows access - add conditions here if needed.
- */
-export const PositionsGuard = ({
-  children,
-}: {
-  children: ReactNode;
-}): ReactNode => {
-  // Add any conditions here if needed
-  return children;
-};
-
-/**
  * Guard for achievements route.
- * Currently allows access - add conditions here if needed.
+ * Blocks all direct access to achievements pages and redirects to root.
  */
 export const AchievementsGuard = ({
-  children,
+  children: _children,
 }: {
   children: ReactNode;
 }): ReactNode => {
-  // Add any conditions here if needed
-  return children;
+  // Block all access to achievements pages
+  return <Navigate to={constantPaths.root} replace />;
 };
 
 /**
  * Guard for swap route.
- * Currently allows access - add conditions here if needed.
+ * Blocks all direct access to swap pages and redirects to root.
  */
 export const SwapGuard = ({
-  children,
+  children: _children,
 }: {
   children: ReactNode;
 }): ReactNode => {
-  // Add any conditions here if needed
-  return children;
+  // Block all access to swap pages
+  return <Navigate to={constantPaths.root} replace />;
 };

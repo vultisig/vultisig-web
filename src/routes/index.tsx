@@ -12,7 +12,6 @@ import { getCurrentSeason, handleSeasonPath } from "utils/functions";
 import { useBaseContext } from "context";
 import {
   CurrentSeasonAirdropGuard,
-  PositionsGuard,
   AchievementsGuard,
   SwapGuard,
 } from "utils/route-guards";
@@ -190,9 +189,7 @@ const Component = () => {
           path: constantPaths.shared.positions,
           element: (
             <Suspense>
-              <PositionsGuard>
-                <PositionsPage />
-              </PositionsGuard>
+              <PositionsPage />
             </Suspense>
           ),
         },
@@ -296,9 +293,7 @@ const Component = () => {
           path: constantPaths.vault.positions,
           element: (
             <Suspense>
-              <PositionsGuard>
-                <PositionsPage />
-              </PositionsGuard>
+              <PositionsPage />
             </Suspense>
           ),
         },
