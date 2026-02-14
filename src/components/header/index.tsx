@@ -11,7 +11,7 @@ import {
   MenuProps,
   message,
 } from "antd";
-import { ClockCircleOutlined } from "@ant-design/icons";
+//import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { useBaseContext } from "context";
 import { Language, languageName, LayoutKey, PageKey } from "utils/constants";
@@ -117,7 +117,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
       });
   };
 
-  const getRemainingTimeString = (endTime: string): string => {
+  /*const getRemainingTimeString = (endTime: string): string => {
     const end = new Date(endTime).getTime();
     const now = Date.now();
     const diff = end - now;
@@ -130,7 +130,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
     const minutes = totalMinutes % 60;
 
     return `${days}d ${hours}h ${minutes}min`;
-  };
+  };*/
 
   const componentDidUpdate = (): void => {
     switch (hash) {
@@ -222,7 +222,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
   }
 
   const isDesktop = useMediaQuery({ query: "(min-width: 1170px)" });
-  const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
+  //const isTablet = useMediaQuery({ query: "(min-width: 768px)" });
 
   const dropdownMenu: MenuProps["items"] = [
     {
@@ -447,7 +447,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   const navbarMenu: MenuProps["items"] = [
    ...(vaults.length || layout === LayoutKey.SHARED ? _firstItems : []),
-    {
+    /* {
       key: "8",
       label: t(constantKeys.CURRENT_SEASON),
       icon: <ArrowRight />,
@@ -508,7 +508,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             ]
           : []),
       ],
-    },
+    }, */
     {
       key: "2",
       label: t(constantKeys.PAST_SEASONS),
@@ -603,7 +603,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           />
         )}
 
-        {isTablet && vault && (
+        {/* {isTablet && vault && (
           <div className="balance">
             <ClockCircleOutlined className="clock-icon" />
             <span className="text">{`${t(
@@ -613,7 +613,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
               {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
             </span>
           </div>
-        )}
+        )} */}
       </div>
 
       {!isDesktop && (
@@ -656,7 +656,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           placement="left"
           className="layout-menu"
         >
-          <div className="balance">
+          {/* <div className="balance">
             <ClockCircleOutlined className="clock-icon" />
             <span className="text">{`${t(
               constantKeys.SEASON_END_TIME
@@ -664,7 +664,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
             <span className="value">
               {getRemainingTimeString(getCurrentSeason(seasonInfo)?.end || "")}
             </span>
-          </div>
+          </div> */}
           {vault && (
             <>
               <div className="balance">

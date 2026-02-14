@@ -10,6 +10,12 @@ import { getStoredVaults } from "utils/storage";
 import constantPaths from "routes/constant-paths";
 import { getCurrentSeason, handleSeasonPath } from "utils/functions";
 import { useBaseContext } from "context";
+import {
+  CurrentSeasonAirdropGuard,
+  PositionsGuard,
+  AchievementsGuard,
+  SwapGuard,
+} from "utils/route-guards";
 
 const DefaultLayout = lazy(() => import("layouts/default"));
 const ShareLayout = lazy(() => import("layouts/shared"));
@@ -38,9 +44,19 @@ interface RouteConfig {
 const Component = () => {
   const vaults = getStoredVaults();
   const { seasonInfo } = useBaseContext();
+  const currentSeasonId = getCurrentSeason(seasonInfo)?.id;
+  // Use previous season instead of current season to avoid guard blocking it
+  // Find the most recent past season as fallback
+  const pastSeasons = seasonInfo.filter(
+    (season) => new Date(season.end) < new Date()
+  );
+  const fallbackSeasonId = pastSeasons.length > 0 ? String(pastSeasons.length - 1) : "0";
+  const airdropSeasonId = currentSeasonId
+    ? String(parseInt(currentSeasonId, 10) - 1)
+    : fallbackSeasonId;
   const airdropPath = handleSeasonPath(
     constantPaths.default.airdrop,
-    getCurrentSeason(seasonInfo)?.id || "0"
+    airdropSeasonId
   );
 
   const processRoutes = (routes: RouteConfig[]): RouteObject[] => {
@@ -100,7 +116,9 @@ const Component = () => {
           path: constantPaths.default.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -108,7 +126,9 @@ const Component = () => {
           path: constantPaths.default.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -150,7 +170,9 @@ const Component = () => {
           path: constantPaths.shared.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -158,7 +180,9 @@ const Component = () => {
           path: constantPaths.shared.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -166,7 +190,9 @@ const Component = () => {
           path: constantPaths.shared.positions,
           element: (
             <Suspense>
-              <PositionsPage />
+              <PositionsGuard>
+                <PositionsPage />
+              </PositionsGuard>
             </Suspense>
           ),
         },
@@ -240,7 +266,9 @@ const Component = () => {
           path: constantPaths.vault.achievements,
           element: (
             <Suspense>
-              <AchievmentsPage />
+              <AchievementsGuard>
+                <AchievmentsPage />
+              </AchievementsGuard>
             </Suspense>
           ),
         },
@@ -248,7 +276,9 @@ const Component = () => {
           path: constantPaths.vault.airdrop,
           element: (
             <Suspense>
-              <AirdropPage />
+              <CurrentSeasonAirdropGuard>
+                <AirdropPage />
+              </CurrentSeasonAirdropGuard>
             </Suspense>
           ),
         },
@@ -256,7 +286,9 @@ const Component = () => {
           path: constantPaths.vault.swap,
           element: (
             <Suspense>
-              <SwapPage />
+              <SwapGuard>
+                <SwapPage />
+              </SwapGuard>
             </Suspense>
           ),
         },
@@ -264,7 +296,9 @@ const Component = () => {
           path: constantPaths.vault.positions,
           element: (
             <Suspense>
-              <PositionsPage />
+              <PositionsGuard>
+                <PositionsPage />
+              </PositionsGuard>
             </Suspense>
           ),
         },
