@@ -6,7 +6,8 @@ import constantPaths from "routes/constant-paths";
 
 /**
  * Guard for current season airdrop routes.
- * Redirects if the season ID doesn't match the current season.
+ * Blocks access if the season ID matches the current season.
+ * Allows access to past seasons only.
  */
 export const CurrentSeasonAirdropGuard = ({
   children,
@@ -17,13 +18,13 @@ export const CurrentSeasonAirdropGuard = ({
   const { seasonInfo } = useBaseContext();
   const currentSeasonId = getCurrentSeason(seasonInfo)?.id;
 
-  // Allow access only if id matches current season
+  // Block access if id matches current season
   if (id && currentSeasonId && id === currentSeasonId) {
-    return children;
+    return <Navigate to={constantPaths.root} replace />;
   }
 
-  // Redirect to root if trying to access current season airdrop when not in current season
-  return <Navigate to={constantPaths.root} replace />;
+  // Allow access to past seasons
+  return children;
 };
 
 /**
