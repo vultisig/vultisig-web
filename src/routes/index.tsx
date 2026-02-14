@@ -44,9 +44,14 @@ interface RouteConfig {
 const Component = () => {
   const vaults = getStoredVaults();
   const { seasonInfo } = useBaseContext();
+  const currentSeasonId = getCurrentSeason(seasonInfo)?.id;
+  // Use previous season instead of current season to avoid guard blocking it
+  const airdropSeasonId = currentSeasonId
+    ? String(parseInt(currentSeasonId) - 1)
+    : "0";
   const airdropPath = handleSeasonPath(
     constantPaths.default.airdrop,
-    getCurrentSeason(seasonInfo)?.id || "0"
+    airdropSeasonId
   );
 
   const processRoutes = (routes: RouteConfig[]): RouteObject[] => {
