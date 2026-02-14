@@ -46,9 +46,14 @@ const Component = () => {
   const { seasonInfo } = useBaseContext();
   const currentSeasonId = getCurrentSeason(seasonInfo)?.id;
   // Use previous season instead of current season to avoid guard blocking it
+  // Find the most recent past season as fallback
+  const pastSeasons = seasonInfo.filter(
+    (season) => new Date(season.end) < new Date()
+  );
+  const fallbackSeasonId = pastSeasons.length > 0 ? String(pastSeasons.length - 1) : "0";
   const airdropSeasonId = currentSeasonId
-    ? String(parseInt(currentSeasonId) - 1)
-    : "0";
+    ? String(parseInt(currentSeasonId, 10) - 1)
+    : fallbackSeasonId;
   const airdropPath = handleSeasonPath(
     constantPaths.default.airdrop,
     airdropSeasonId
