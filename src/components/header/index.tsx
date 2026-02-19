@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -24,7 +24,6 @@ import {
 } from "utils/functions";
 import { VaultProps } from "utils/interfaces";
 import { getStoredVaults } from "utils/storage";
-import api from "utils/api";
 import useGoBack from "hooks/go-back";
 import i18n from "i18n/config";
 import constantKeys from "i18n/constant-keys";
@@ -46,6 +45,7 @@ import {
   Storage,
   Vultisig,
 } from "icons";
+import AirdropBanner from "components/airdrop-banner";
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -54,43 +54,42 @@ interface ComponentProps {
 }
 
 interface InitialState {
-  loading: boolean;
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
+const Component: FC<ComponentProps> = ({  layout, vault }) => {
   const { t } = useTranslation();
-  const initialState: InitialState = { loading: false, visible: false };
+  const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
-  const { loading, visible } = state;
+  const { visible } = state;
   const { activePage, baseValue, currency, seasonInfo } = useBaseContext();
   const [messageApi, contextHolder] = message.useMessage();
-  const { pathname, hash } = useLocation();
+  const { hash } = useLocation();
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const goBack = useGoBack();
   const vaults = getStoredVaults();
 
-  const handleJoinAirdrop = () => {
-    if (vault && !loading) {
-      setState((prevState) => ({ ...prevState, loading: true }));
+  // Airdrop discontinued - function disabled
+  // const handleJoinAirdrop = () => {
+  //   if (vault && !loading) {
+  //     setState((prevState) => ({ ...prevState, loading: true }));
 
-      api.airdrop
-        .join(vault)
-        .then(() => {
-          if (updateVault) updateVault({ ...vault, joinAirdrop: true });
+  //     api.airdrop
+  //       .join(vault)
+  //       .then(() => {
+  //         if (updateVault) updateVault({ ...vault, joinAirdrop: true });
 
-          setState((prevState) => ({ ...prevState, loading: false }));
+  //         setState((prevState) => ({ ...prevState, loading: false }));
 
-          navigate(`${pathname}#${constantModals.JOIN_AIRDROP}`, {
-            replace: true,
-          });
-        })
-        .catch(() => {
-          setState((prevState) => ({ ...prevState, loading: false }));
-        });
-    }
-  };
+  //         navigate(`${pathname}#${constantModals.JOIN_AIRDROP}`, {
+  //           replace: true,
+  //         });
+  //       })
+  //       .catch(() => {
+  //         setState((prevState) => ({ ...prevState, loading: false }));
+  //       });
+  //   }
+  // };
 
   const handleSharePath = (path: string): string => {
     return path
@@ -542,6 +541,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   return (
     <>
+      <AirdropBanner />
       <div className="layout-header">
         {isDesktop ? (
           <Dropdown menu={{ items: dropdownMenu }} className="menu">
@@ -555,7 +555,8 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           </Button>
         )}
         {/* <Button href={`#${constantModals.SHARE_ACHIEVEMENTS}`}>"Share"</Button> */}
-        {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
+        {/* Join Airdrop button disabled - airdrop discontinued */}
+        {/* {layout === LayoutKey.VAULT && !vault?.joinAirdrop && (
           <Button
             onClick={handleJoinAirdrop}
             loading={isDesktop && loading}
@@ -563,7 +564,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
           >
             {t(constantKeys.JOIN_AIRDROP)}
           </Button>
-        )}
+        )} */}
 
         <Link
           to={
