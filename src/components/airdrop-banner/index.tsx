@@ -6,7 +6,7 @@ const AirdropBanner: FC = () => {
     <Alert
       message={
         <span style={{ fontSize: "16px", fontWeight: 500 }}>
-          Airdrop is discontinued.{" "}
+          ⚠️ Airdrop Program Discontinued -{" "}
           <a
             href="https://x.com/vultisig/status/2006823008854298799"
             target="_blank"
@@ -17,7 +17,7 @@ const AirdropBanner: FC = () => {
               fontWeight: 600,
             }}
           >
-            Read details here
+            View official announcement
           </a>
         </span>
       }
