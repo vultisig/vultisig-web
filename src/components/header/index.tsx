@@ -46,6 +46,7 @@ import {
   Storage,
   Vultisig,
 } from "icons";
+import AirdropBanner from "components/airdrop-banner";
 
 interface ComponentProps {
   updateVault?: (vault: VaultProps) => void;
@@ -542,6 +543,7 @@ const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
 
   return (
     <>
+      <AirdropBanner />
       <div className="layout-header">
         {isDesktop ? (
           <Dropdown menu={{ items: dropdownMenu }} className="menu">
