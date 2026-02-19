@@ -57,7 +57,7 @@ interface InitialState {
   visible: boolean;
 }
 
-const Component: FC<ComponentProps> = ({ updateVault, layout, vault }) => {
+const Component: FC<ComponentProps> = ({  layout, vault }) => {
   const { t } = useTranslation();
   const initialState: InitialState = { visible: false };
   const [state, setState] = useState(initialState);
